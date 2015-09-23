@@ -1,10 +1,12 @@
 title: Xfermode in android
 date: 2015-09-23 13:10:49
-tags:
+tags: 
+- Xfermode
+- 2D graphics
+categories:
+- Android
+- UI
 ---
-@(android)[2D graphics]
-#Xfermode以及PoterDuff
-
 Xfermode有三个实现类：AvoidXfermode, PixelXorXfermode以及PorterDuffXfermode。
 前两个类因为不支持硬件加速在API level 16被标记为Deprecated了，用也可以，但是需要关闭硬件加速，简单说下。
 
@@ -14,6 +16,7 @@ Xfermode有三个实现类：AvoidXfermode, PixelXorXfermode以及PorterDuffXfer
 
 这话翻译成中文太别扭了，自己理解吧。举个栗子，如果你想对原来图像进行处理，把红色换成绿色，可以使用这个；或者，你想把不是红色的换成某个颜色，也行。这里有一个容差值的概念，比如红色是0xff0000 但是在一定范围内也都是红色，如果你设定一个容差值，那么“各种符合要求的红色”都会被处理。
 
+<!--more-->
 ## PixelXorfermode
   文档都说这种模式对于操作混合色没有什么用，还不支持硬件加速，pass，说说重头戏。
 
