@@ -79,7 +79,8 @@ duoshuo_shortname: duoshuo-zygote
 
 # baidu analytics
 baidu_analytics: 5ba59f635a6de43d516b52632af83325
-google_analytics: UA-67996870-1
+# so slow, close it.
+#google_analytics: UA-67996870-1
 
 creative_commons: by-nc-sa
 
