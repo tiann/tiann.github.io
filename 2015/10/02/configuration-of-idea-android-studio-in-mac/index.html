@@ -1,0 +1,663 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="You deserve a better life." />
+
+
+
+  <meta name="keywords" content="ideavim," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="快捷键为什么要配置？直接使用不就好！
+这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。
+基于两个前提：
+
+ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
+使用hhkb键盘，没有上下左右，没有F1..Fn系列不方便">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mac下Android studio快捷键配置">
+<meta property="og:url" content="http://yoursite.com/2015/10/02/configuration-of-idea-android-studio-in-mac/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="快捷键为什么要配置？直接使用不就好！
+这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。
+基于两个前提：
+
+ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
+使用hhkb键盘，没有上下左右，没有F1..Fn系列不方便">
+<meta property="og:updated_time" content="2015-10-08T09:49:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mac下Android studio快捷键配置">
+<meta name="twitter:description" content="快捷键为什么要配置？直接使用不就好！
+这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。
+基于两个前提：
+
+ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
+使用hhkb键盘，没有上下左右，没有F1..Fn系列不方便">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> mac下Android studio快捷键配置 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              mac下Android studio快捷键配置
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-02T14:17:47+08:00" content="2015-10-02">
+            2015-10-02
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/02/configuration-of-idea-android-studio-in-mac/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/02/configuration-of-idea-android-studio-in-mac/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>快捷键为什么要配置？直接使用不就好！</p>
+<p>这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。</p>
+<p>基于两个前提：</p>
+<ol>
+<li>ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决</li>
+<li>使用hhkb键盘，没有上下左右，没有<code>F1..Fn</code>系列不方便</li>
+</ol>
+<a id="more"></a>
+<h3 id="ideavim兼容">ideavim兼容</h3><ol>
+<li><code>ctrl + r</code>这个在vim模式下是重做，相对于<code>u</code>(undo)；对于重度vimer必不可少，虽然ide的重做也可以用；这么配置带来一个问题，那就是<code>ctrl + r</code>在IDE里面意思是<code>Run</code>，必须改键；以前习惯<code>shift + F10</code>因为windows这么配置的，但是在hhkb键盘，这个键位要摁三个键：<code>fn,shift,0</code>;二逼地配置为<code>shift + 0</code>之后，发现怎么也打不出<code>)</code>了；最终改为<strong><code>option + r</code></strong>很方便，也好记（run），不冲突。</li>
+<li><code>ctrl + a</code> 这个在Vim里面意思是光标所在的数字加一；IDE里面意思都是移到行首，等同于命令行模式下的<code>^</code>，既然选择Vim就用vim的移动方式；在插入模式下要多按键，为了避免换个IDE就傻缺，用Vim；另外IDE 的<code>cmd + ⬅️</code>也有这个意思。</li>
+<li><code>ctrl + b</code> IDE是往左移动光标；VIM是向上翻页；写代码要频繁用翻页，说明你得重构了；选IDE。<code>ctrl + f</code>同理（向下翻页）</li>
+<li><code>ctrl + e</code>  在vim里面意思是光标不动，屏幕滚动；在IDE里面是移到行尾，道理同<code>ctrl + a</code>选VIM；<code>cmd + ➡️</code>可以使用；</li>
+<li><code>ctrl + o</code> 在VIM里面意思是：在插入模式下执行命令然后回到插入模式；太有用了；比如你在插入模式，在括号里面写完了，想去行尾加个分号结束，咋办？用上下左右光标？No！你可以<code>ctrl + o A</code>多么优雅！不管IDE什么意思，必须选择Vim。IDE的意思是<code>override</code>这个必须用的，没办法改了；改成<code>ctrl + i</code>。</li>
+<li><code>ctrl + g</code> 在IDE里面在查找里面可以把下一个单词加入选择列表；用的情况比较少；在VIM里面，意思有两个：命令模式下等同于<code>:f</code>显示当前文件路径以及行数；插入模式下是一个前缀 ；<code>ctrl g k</code>等同于<code>ctrl + o gk</code> 所以还不错；选Vim。</li>
+<li><code>ctrl + i</code> IDE是实现方法（实际上改成了ctrl ＋ o的意思，不用担心这个包含前者。），很有用；VIm是光标前插入空格；选IDE；</li>
+<li><code>ctrl + p</code>以及<code>ctrl + n</code>这个是vim的自动完成；在IDE前面没啥用；IDE里面意思是光标移动，选IDE</li>
+<li><code>ctrl + T</code> 在IDE里面这个功能太好用了；重构用的；必须IDE</li>
+<li><code>ctrl + v</code> IDE里面是cvs的操作；好用；在Vim里面是进入可视化选择模式，可很有用，但是放心 还有一个快捷键<code>ctrl + q</code>是一样的功能；这个是为了兼容windows的；因为windows这个是粘贴～</li>
+</ol>
+<p>好了，vim兼容就这么多。</p>
+<p>然后配置一些HHKB不好按的键，比如Fn系列；没有这个键盘的话自行略过（真心推荐）；</p>
+<h3 id="HHKB修改">HHKB修改</h3><ol>
+<li><code>cmd + shift + F12</code> ：隐藏所有工具栏，在需要安静写代码的时候很有用；我很常用；改成<code>ctrl + option + (加号)</code> 因为这个➕在hhkb里面对应F12；</li>
+<li><code>cmd + F12</code> ： 显示文件的目录结构；太长用了，在类里面导航全靠这个；改为：<code>option + (加号)</code> 这个比上面那个常用；因此这样。</li>
+<li><code>option + F7</code> : 查找谁用了它；超有用，没有之一；添加额外选项：<code>option + 7</code></li>
+<li><code>option + cmd + F7</code>: 类似上面的，但是在一个弹出框显示；个人觉得比上面那个好用；上面那个单独的窗口导致有时候切换有可能需要鼠标；不方便，考虑这两个功能对换键位；暂时加上<code>option + cmd + 7</code></li>
+<li><code>option + ⬆️</code>：类似windows下面的<code>ctrl + w</code> IDEA最有用的特性之一。但是在HHKB按方向键要两个键，改一下；另外，通常选择之后是复制，所以，最好要用cmd组合；索性改成<code>cmd + w</code>原来这个意思是关闭标签，没啥用；一般不自动关闭的。</li>
+</ol>
+<p>另外一些需要用到Fn系列键位的，可以自行配置一下。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ideavim/" rel="tag">#ideavim</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/08/problems-when-config-react-native-env/" rel="prev">react-native环境搭建问题</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/23/Xfermode-in-android/" rel="next">Xfermode in android</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/02/configuration-of-idea-android-studio-in-mac/"
+                   data-title="mac下Android studio快捷键配置" data-url="http://yoursite.com/2015/10/02/configuration-of-idea-android-studio-in-mac/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">You deserve a better life.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ideavim兼容"><span class="nav-number">1.</span> <span class="nav-text">ideavim兼容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HHKB修改"><span class="nav-number">2.</span> <span class="nav-text">HHKB修改</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

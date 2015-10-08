@@ -1,0 +1,666 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="You deserve a better life." />
+
+
+
+  <meta name="keywords" content="hexo," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="纠结了一晚上，终究是打算从octopress切换到hexo了；平心而论，octopress没有什么不好；总结一下为什么切换：
+
+默认主题不好看，第三方主题没有想要的好的；自己定制了两天，在mac上效果不错，但是看到windows上渣显示效果瞬间放弃。总结起来，博客清晰简洁，最好不要图片，特别是大图；在高清显示器会很舒服，在渣渣显示器上就是一坨翔；最好使用颜色搭配简单动画；其次是越简洁越好，什么酷炫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wordpress&octopress to hexo">
+<meta property="og:url" content="http://yoursite.com/2015/09/22/wordpress-octopress-to-hexo/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="纠结了一晚上，终究是打算从octopress切换到hexo了；平心而论，octopress没有什么不好；总结一下为什么切换：
+
+默认主题不好看，第三方主题没有想要的好的；自己定制了两天，在mac上效果不错，但是看到windows上渣显示效果瞬间放弃。总结起来，博客清晰简洁，最好不要图片，特别是大图；在高清显示器会很舒服，在渣渣显示器上就是一坨翔；最好使用颜色搭配简单动画；其次是越简洁越好，什么酷炫">
+<meta property="og:updated_time" content="2015-09-25T11:14:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="wordpress&octopress to hexo">
+<meta name="twitter:description" content="纠结了一晚上，终究是打算从octopress切换到hexo了；平心而论，octopress没有什么不好；总结一下为什么切换：
+
+默认主题不好看，第三方主题没有想要的好的；自己定制了两天，在mac上效果不错，但是看到windows上渣显示效果瞬间放弃。总结起来，博客清晰简洁，最好不要图片，特别是大图；在高清显示器会很舒服，在渣渣显示器上就是一坨翔；最好使用颜色搭配简单动画；其次是越简洁越好，什么酷炫">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> wordpress&octopress to hexo | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              wordpress&octopress to hexo
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-22T18:58:30+08:00" content="2015-09-22">
+            2015-09-22
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/22/wordpress-octopress-to-hexo/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/22/wordpress-octopress-to-hexo/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>纠结了一晚上，终究是打算从octopress切换到hexo了；平心而论，octopress没有什么不好；总结一下为什么切换：</p>
+<ol>
+<li>默认主题不好看，第三方主题没有想要的好的；自己定制了两天，在mac上效果不错，但是看到windows上渣显示效果瞬间放弃。总结起来，博客清晰简洁，最好不要图片，特别是大图；在高清显示器会很舒服，在渣渣显示器上就是一坨翔；最好使用颜色搭配简单动画；其次是越简洁越好，什么酷炫高大上看多了都是浮夸；</li>
+<li>虽然hexo在github上star比octopress少，但是hexo 提交次数将近三倍，然后octopress几年不更新了，最近要出3.0不知道什么鬼；hexo的主题star比octopress多得多；而且我看到的几个都简洁大方，很是喜欢</li>
+<li>octopress用ruby渲染，hexo用nodejs；以前不知道什么原因不喜欢js，但是学一学也是好的，刚好最近facebook开源了Android版本的react native，借这个机会顺带装一下nodejs也算好；至于ruby，已经会了一门类似的python，但是拓宽一下知识面比较好；另外，时间肯定严重不够。</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li>虽然学习node比ruby对于我肯定时间多，但是第三方主题好意味着我不需要花太多时间定制，反而节省了时间。</li>
+</ol>
+<p>另外，附上一片<a href="http://www.techelex.org/octopress-vs-hexo/" target="_blank" rel="external">octopress-vs-hexo/</a></p>
+<h2 id="开始">开始</h2><p>好了，开搞。按照官方<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">教程</a>。</p>
+<p>sock5协议在shell里面 http代理是否有效？curl与wget 协议支持情况？浏览器能下载，shell无法curl。</p>
+<h3 id="准备">准备</h3><p>需要安装git以及nodejs；</p>
+<ol>
+<li>git的话mac安装xcode-tools即可。</li>
+</ol>
+<h4 id="nodejs安装">nodejs安装</h4><ol>
+<li>nvm 管理nodejs版本的，避免把你的电脑搞乱，跟rbenv以及python virtualenv差不多。装这个下载脚本的那个需要翻墙。</li>
+<li>用nvm安装nodejs。可以使用七牛的镜像。注意的是hexo推荐的是<strong>0.10</strong>这个版本，我尝试了最近的4.1，执行hexo命令直接出错。有了nvm我们可以多装几个版本无所谓，反正能切换。</li>
+<li>注意，node安装之后重启shell  npm无法找到，原因是nvm不知道那个💺默认的node版本，所以  <code>nvm alias default stable</code>即可。</li>
+</ol>
+<h3 id="hexo安装">hexo安装</h3><p>没什么，一条命令。想到之前用octopress的蛋疼，简直官方文档说安装命令 <code>npm install -g hexo-cli</code>通过淘宝镜像的cli可以猜到，这个是需要服务器同步然后安装的，我用了第三方的镜像，去掉这个cli即可。</p>
+<p>至此，环境搭建完成。</p>
+<h2 id="改造">改造</h2><h3 id="主题">主题</h3><p>个人喜欢两个主题：</p>
+<ol>
+<li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">next</a>简洁大方，非常nice；更新频繁，维护者众多，有保障。</li>
+<li><a href="https://github.com/someus/huno" target="_blank" rel="external">huno</a>还是对这种侧边栏有某种情结，但实际上有一些问题我暂时还解决不了静态博客也不擅长这个；那就是侧边栏如果有头像或者图片背景的时候，跳转页面不可避免地导致页面刷新和闪动，极不自然。</li>
+</ol>
+<p>另外有个主题<a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="external">yilia</a>也不错。但是个人还是感觉有点乱，不够简约。不过移动端适配做的挺好的，可以试试。</p>
+<p>最终选择next，开启mist效果。</p>
+<h3 id="头像">头像</h3><ol>
+<li>使用头像，起名  Zygote 在Android里面是天字号进程，又意为受精卵，象征着生命和希望。</li>
+<li>往上找了一只萌猫的图就当作头像了，我是猫系男生嘛～</li>
+</ol>
+<h3 id="字体">字体</h3><p>放弃了，windows上 main字体不好看，显示器的原因。在mac那些个Open Sans，Manaco什么的都很漂亮；Windows配个渣渣显示屏那真的是肉眼看到一坨坨像素。估计是被Retina惯坏了，哎，，勿黑。</p>
+<p>默认的还可以。要修改的话见这里<a href="https://github.com/iissnan/hexo-theme-next/issues/111" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next/issues/111</a></p>
+<h3 id="自定义页面">自定义页面</h3><p>添加tags页面，什么关于页面嘛，现在不太好意思加～以后再说。个人不喜欢什么SNS，搞了也不活跃，一个人安安静静地写博客，多好。</p>
+<h3 id="评论&amp;统计">评论&amp;统计</h3><p>添加评论系统 多说。天朝嘛，你懂的。</p>
+<p>站点统计  我晕，百度统计那个id我找半天。原来是插入代码里面。里面那个 ?  后面的一个md5串。</p>
+<h2 id="部署">部署</h2><pre><code><span class="bullet">8. </span>部署到git上需要安装插件  <span class="code">`cnpm install hexo-deployer-git --save`</span>
+<span class="bullet">9. </span>同时部署到github以及gitcafe见[<span class="link_label">issue</span>](<span class="link_url">https://github.com/hexojs/hexo/issues/893</span>) 注意push到哪个分支。然后，分支名字与逗号之间不能有空格，不然出错哦。最后的代码如下：
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deploy:&#10;  type: git&#10;  repo:&#10;    github: git@github.com:tiann/tiann.github.io.git,master&#10;    gitcafe: git@gitcafe.com:tiann/tiann.git,gitcafe-pages</span><br></pre></td></tr></table></figure>
+<pre><code><span class="number">1</span>. 把原始博客文件放在<span class="built_in">source</span>分支。
+</code></pre><h2 id="优化">优化</h2><h3 id="访问加速">访问加速</h3><h2 id="###">### </h2></span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag">#hexo</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/23/Xfermode-in-android/" rel="prev">Xfermode in android</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/09/22/wordpress-octopress-to-hexo/"
+                   data-title="wordpress&octopress to hexo" data-url="http://yoursite.com/2015/09/22/wordpress-octopress-to-hexo/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">You deserve a better life.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开始"><span class="nav-number">1.</span> <span class="nav-text">开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">1.1.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nodejs安装"><span class="nav-number">1.1.1.</span> <span class="nav-text">nodejs安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo安装"><span class="nav-number">1.2.</span> <span class="nav-text">hexo安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改造"><span class="nav-number">2.</span> <span class="nav-text">改造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主题"><span class="nav-number">2.1.</span> <span class="nav-text">主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#头像"><span class="nav-number">2.2.</span> <span class="nav-text">头像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字体"><span class="nav-number">2.3.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义页面"><span class="nav-number">2.4.</span> <span class="nav-text">自定义页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评论&统计"><span class="nav-number">2.5.</span> <span class="nav-text">评论&统计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署"><span class="nav-number">3.</span> <span class="nav-text">部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">4.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问加速"><span class="nav-number">4.1.</span> <span class="nav-text">访问加速</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="####"><span class="nav-number">5.</span> <span class="nav-text">### </span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
