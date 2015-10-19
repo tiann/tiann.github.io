@@ -1,0 +1,646 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="You deserve a better life." />
+
+
+
+  <meta name="keywords" content="android,log," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="如何打印日志？这不是很简单，直接使用android.util.Log这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何安全地打印日志">
+<meta property="og:url" content="http://yoursite.com/2015/10/19/how-to-log-safely-in-android/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="如何打印日志？这不是很简单，直接使用android.util.Log这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445243591752.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445245047558.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445247504072.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown1445257218.gif">
+<meta property="og:updated_time" content="2015-10-19T12:32:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何安全地打印日志">
+<meta name="twitter:description" content="如何打印日志？这不是很简单，直接使用android.util.Log这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 如何安全地打印日志 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              如何安全地打印日志
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-19T20:28:02+08:00" content="2015-10-19">
+            2015-10-19
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/19/how-to-log-safely-in-android/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/19/how-to-log-safely-in-android/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>如何打印日志？这不是很简单，直接使用<code>android.util.Log</code>这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。<br>安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了提高程序的安全性，在打印日志的时候应该注意什么。</p>
+<a id="more"></a>
+<p>首先看看绝大部分公司以及开发者的做法：</p>
+<h2 id="日志开关＋日志类">日志开关＋日志类</h2><p>为了在release版本里面没有日志输出，一个最简单的想法是：把所有打印日志的语句放在一个<code>if(DEBUG)</code>的语句里面；在日常开发的时候，<code>DEBUG</code>开关打开，发布正式版本的时候关闭这个开关即可，大致思路如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LogUtil.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogUtil</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> DEBUG = <span class="keyword">true</span>;<span class="comment">// 发布的时候修改为false</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (DEBUG) android.util.Log.d(TAG, msg);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 其他debug方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来看一个真实的例子，国外的一个apk，名字叫做powerclean；包名：com.lionmobi.powerclean;我们安装这个包；发现很正常，没有任何日志输出；然后我们逆向这个apk；随便翻看几个类，发现很多地方有类似日志输出：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445243591752.png" width="552"><br>我们打开这个叫做x的类，虽然被混淆过了，但是意思很明白，跟我们上面的思路一样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lionmobi.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">x</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> a;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        x.a = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String arg1, String arg2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x.a) &#123;</span><br><span class="line">            Log.d(arg1, arg2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">e</span><span class="params">(String arg1, String arg2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x.a) &#123;</span><br><span class="line">            Log.e(arg1, arg2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">i</span><span class="params">(String arg1, String arg2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x.a) &#123;</span><br><span class="line">            Log.i(arg1, arg2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这是一个真实的例子，而且这个app的用户还不少；接下来我们看看这种方式有什么问题。</p>
+<h2 id="静态反编译打开日志开关">静态反编译打开日志开关</h2><p>上面的那种方式有一个问题：虽然在release版本里面，确实没有日志输出；但是<strong>输出日志的代码依然存在，只是没有执行到！(if条件不成立)</strong>所以，有没有办法让这些代码执行到呢？简单来说，就是能不能在release版本里面把这个<code>DEBUG</code>变量弄成<code>true</code>呢？当然可以！而且做法还非常简单。</p>
+<p>我们使用<code>apktool</code>反编译得到这个apk的smali代码；然后上面的反编译告诉我们，这个日志类的位置是：<code>com.lionmobi.util.x</code>我们打开这个x.smali文件，内容如下：<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">.class</span><span class="keyword"> public</span> <span class="class">Lcom/lionmobi/util/x;</span></span><br><span class="line"><span class="keyword">.super</span> <span class="class">Ljava/lang/Object;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># static fields</span></span><br><span class="line"><span class="keyword">.field</span><span class="keyword"> private</span><span class="keyword"> static</span> a:Z</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># direct methods</span></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> static</span><span class="keyword"> constructor</span><span class="function"> &lt;clinit&gt;(</span><span class="function">)</span>V</span><br><span class="line"><span class="keyword">    .locals</span> 1</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> const/4 </span><span class="variable">v0</span>, 0x0 <span class="comment"># 修改为0x1 (True)</span></span><br><span class="line"></span><br><span class="line">   <span class="instruction"> sput-boolean </span><span class="variable">v0</span>, <span class="class">Lcom/lionmobi/util/x;</span>-&gt;a:Z <span class="comment">#初始化位置</span></span><br><span class="line"></span><br><span class="line">   <span class="instruction"> return-void</span><br><span class="line"></span><span class="keyword">.end method</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> public</span><span class="keyword"> static</span><span class="function"> d(</span><span class="class">Ljava/lang/String;</span><span class="class">Ljava/lang/String;</span><span class="function">)</span>V</span><br><span class="line"><span class="keyword">    .locals</span> 1</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> sget-boolean </span><span class="variable">v0</span>, <span class="class">Lcom/lionmobi/util/x;</span>-&gt;a:Z</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> if-eqz </span><span class="variable">v0</span>,<span class="keyword"> :cond_0</span></span><br><span class="line"></span><br><span class="line">   <span class="instruction"> invoke-static </span>&#123;<span class="variable">p0</span>, <span class="variable">p1</span>&#125;, <span class="class">Landroid/util/Log;</span><span class="function">-&gt;d(</span><span class="class">Ljava/lang/String;</span><span class="class">Ljava/lang/String;</span><span class="function">)</span>I</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> :cond_0</span></span><br><span class="line">   <span class="instruction"> return-void</span><br><span class="line"></span><span class="keyword">.end method</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> public</span><span class="keyword"> static</span><span class="function"> e(</span><span class="class">Ljava/lang/String;</span><span class="class">Ljava/lang/String;</span><span class="function">)</span>V</span><br><span class="line"><span class="keyword">    .locals</span> 1</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> sget-boolean </span><span class="variable">v0</span>, <span class="class">Lcom/lionmobi/util/x;</span>-&gt;a:Z</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> if-eqz </span><span class="variable">v0</span>,<span class="keyword"> :cond_0</span></span><br><span class="line"></span><br><span class="line">   <span class="instruction"> invoke-static </span>&#123;<span class="variable">p0</span>, <span class="variable">p1</span>&#125;, <span class="class">Landroid/util/Log;</span><span class="function">-&gt;e(</span><span class="class">Ljava/lang/String;</span><span class="class">Ljava/lang/String;</span><span class="function">)</span>I</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> :cond_0</span></span><br><span class="line">   <span class="instruction"> return-void</span><br><span class="line"></span><span class="keyword">.end method</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> public</span><span class="keyword"> static</span><span class="function"> i(</span><span class="class">Ljava/lang/String;</span><span class="class">Ljava/lang/String;</span><span class="function">)</span>V</span><br><span class="line"><span class="keyword">    .locals</span> 1</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> sget-boolean </span><span class="variable">v0</span>, <span class="class">Lcom/lionmobi/util/x;</span>-&gt;a:Z</span><br><span class="line"></span><br><span class="line">   <span class="instruction"> if-eqz </span><span class="variable">v0</span>,<span class="keyword"> :cond_0</span></span><br><span class="line"></span><br><span class="line">   <span class="instruction"> invoke-static </span>&#123;<span class="variable">p0</span>, <span class="variable">p1</span>&#125;, <span class="class">Landroid/util/Log;</span><span class="function">-&gt;i(</span><span class="class">Ljava/lang/String;</span><span class="class">Ljava/lang/String;</span><span class="function">)</span>I</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> :cond_0</span></span><br><span class="line">   <span class="instruction"> return-void</span><br><span class="line"></span><span class="keyword">.end method</span></span><br></pre></td></tr></table></figure></p>
+<p>很明白，那个叫做<code>a</code>的静态变量就是我们的开关， 它的初始化在哪个静态代码块里面；新建了一个局部变量0x0然后赋值给了<code>a</code>；因此，我们<strong>把这个0x0修改为0x1</strong>就打开了这个开关。很简单吧，接下来我们把修改好的smali打包回去，然后签名得到一个新的可以运行的apk；运行一下看看结果。果然，一大堆的日志输出了出来，你的程序每一步在干什么都自己告诉别人了，都不需要去猜；我就随便截个图，感受下：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445245047558.png" width="1235"></p>
+<h2 id="让release版本里面不包含日志代码">让release版本里面不包含日志代码</h2><p>从上面的分析我们得到一个结论：<strong>如果需要程序是“日志安全的”，那么release版本里面不应该存在输出日志的代码</strong>。</p>
+<p>如何做到这一点呢？我们可以做一个工具，开发的时候，正常打印日志；一旦需要发布版本，把所有打印日志的语句代码，全部删除掉。代码很简单，用一些正则表达式就可以做到。</p>
+<p>事实上，我们也可以使用一些别的工具，来实现这个类似的功能；那就是<code>proguard</code>；提到这个工具，很多认只是觉得他是一个代码混淆的工具，实际上，<strong>它还可以帮你剔除无用代码！</strong>什么样的代码是无用代码呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">	<span class="comment">// statement;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>类似于这样，静态编译的时候被认为“永远不会执行的代码”，就被认为是无用代码，会被这个工具直接优化掉，生成的class文件里面，这个if语句直接就没有了。这个功能，完美符合我们的需求；我们只需要把输出日志的代码用这样的if语句包围起来，然后release的时候肯定会用这个工具混淆；然后，在release版本里面，所有的输出日志的代码全部都没有了！不会像以前一样，留下一个影子，只是不做事。</p>
+<h2 id="正确的做法">正确的做法</h2><p>最终，我们所有打印日志的语句应该如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> DEBUG = <span class="keyword">true</span>; <span class="comment">// 必须是static final 也就是常量，这样才能在编译器优化；删除if块</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">	android.util.Log.d(TAG, <span class="string">"msg to print"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后，使用proguard优化代码即可。<br>看起来简单，好像也与最初的“日志开关”没有什么区别，仔细分析一下：</p>
+<h3 id="日志开关必须是静态常量">日志开关必须是静态常量</h3><p>对比一下正确的做法与最开始的日志开关，一个是一个<strong>静态变量</strong>，一个是<strong>静态常量</strong>；如果是<strong>常量</strong>的话，那么就是永远不变的，那么当<code>DEBUG</code>变量为<code>False</code>的时候proguard可以理所当然地认为，这一部分代码时绝对不会被执行的，这样，打印日志的语句就会被优化（删除）掉；如果是一个变量，那么在运行期间就有可能改变它的值（private仅仅是对于程序员的改变，对于编译器以及运行时，没有什么改不了），这样proguard就会置之不理，这样你的日志代码就暴露出来了，一字之差，失之千里。</p>
+<h3 id="抛弃日志类">抛弃日志类</h3><p>假设我们使用了静态常量代码块以及proguard优化代码的技术；但是依然采用上面的日志类的技术，会发生什么呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogUtil</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> DEBUG = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (DEBUG) android.util.Log.d(tag, msg);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我写了一个demo，自己打包然后反编译，得到这个日志类如下（为了方便看，没有混淆）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.test.app;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogUtil</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> DEBUG;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LogUtil</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(String tag, String msg)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们看到，if代码块已经没有了，确实不会输出任何日志；但是，我们看看调用这个类的地方！<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445247504072.png" width="575"></p>
+<p>这个<code>LogUtil.d</code>的调用，无异于掩耳盗铃；虽然破解者没办法让<code>android.util.Log</code>这个类输出任何日志，但是你这里的这个调用还是告诉了别人你在干什么；所以，要屏蔽日志的输出，必须使用if代码块直接包含要被剔除的日志。上面的那个日志类，要被优化掉，那就是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">	LogUtil.d(TAG, <span class="string">"msg"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里，不是多此一举吗，写一个日志类就是想不想重复地写<code>if (DEBUG)</code>，这里为了使这一句隐藏，还是逃不掉；但是很抱歉，逃得了和尚逃不了庙，这种方法没办法做到完全隐藏信息；<strong>必须抛弃日志类包裹日志代码的做法！</strong></p>
+<h3 id="解放双手的补充">解放双手的补充</h3><p>也许有人说，为了这个所谓的日志安全，每次输出日志都的写一个if语句，那不麻烦死；简直反人类，我懒！实际上，要少写几行代码，我们可以选择复用（代码级别，比如上面的日志类），也可以选择<strong>生成</strong>（直接生成代码）；在支持元编程的语言里面，生成代码是很常见的事情，比如C＋＋的模版元编程以及ruby吹嘘的<code>DSL</code>能力；这里没有那么高大上，用代码生成代码，我们直接借助编辑器帮助我们少写几行代码万事。</p>
+<h4 id="IDEA/Android_Studio">IDEA/Android Studio</h4><p>可以使用live template的功能；比如我的做法是，写一个<code>ifd</code>的template，每次我输入<code>ifd</code>然后自动展开成if语句，光标停在最中间：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdown1445257218.gif" width="413"></p>
+<h4 id="vim/emacs">vim/emacs</h4><p>可以使用宏录制的功能，实现上面的live template。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/log/" rel="tag">#log</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/16/simplify-the-img-upload-in-markdown/" rel="next">简化markdown写作中的贴图流程</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/19/how-to-log-safely-in-android/"
+                   data-title="如何安全地打印日志" data-url="http://yoursite.com/2015/10/19/how-to-log-safely-in-android/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">You deserve a better life.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#日志开关＋日志类"><span class="nav-number">1.</span> <span class="nav-text">日志开关＋日志类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态反编译打开日志开关"><span class="nav-number">2.</span> <span class="nav-text">静态反编译打开日志开关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让release版本里面不包含日志代码"><span class="nav-number">3.</span> <span class="nav-text">让release版本里面不包含日志代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正确的做法"><span class="nav-number">4.</span> <span class="nav-text">正确的做法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志开关必须是静态常量"><span class="nav-number">4.1.</span> <span class="nav-text">日志开关必须是静态常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抛弃日志类"><span class="nav-number">4.2.</span> <span class="nav-text">抛弃日志类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解放双手的补充"><span class="nav-number">4.3.</span> <span class="nav-text">解放双手的补充</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IDEA/Android_Studio"><span class="nav-number">4.3.1.</span> <span class="nav-text">IDEA/Android Studio</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim/emacs"><span class="nav-number">4.3.2.</span> <span class="nav-text">vim/emacs</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
