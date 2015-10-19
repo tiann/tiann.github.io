@@ -1,0 +1,673 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="You deserve a better life." />
+
+
+
+  <meta name="keywords" content="markdown,workflow," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：
+
+用截图工具截图；
+将截图保存到某个地方
+修改截图文件名
+上传截图到某个图床（如果不用“围脖是个好图床”这样的工具，还得用客户端登陆）
+拿到图床上的截图的链接；然后用markdown格式插入图片
+
+这么复杂的流程，让人简直没有了插入图片的欲望；但是大量的文字没有图片，必然让人疲惫；
+要是能随便截个图，然后直接粘贴就成了ma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简化markdown写作中的贴图流程">
+<meta property="og:url" content="http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：
+
+用截图工具截图；
+将截图保存到某个地方
+修改截图文件名
+上传截图到某个图床（如果不用“围脖是个好图床”这样的工具，还得用客户端登陆）
+拿到图床上的截图的链接；然后用markdown格式插入图片
+
+这么复杂的流程，让人简直没有了插入图片的欲望；但是大量的文字没有图片，必然让人疲惫；
+要是能随便截个图，然后直接粘贴就成了ma">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif">
+<meta property="og:updated_time" content="2015-10-19T02:53:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简化markdown写作中的贴图流程">
+<meta name="twitter:description" content="markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：
+
+用截图工具截图；
+将截图保存到某个地方
+修改截图文件名
+上传截图到某个图床（如果不用“围脖是个好图床”这样的工具，还得用客户端登陆）
+拿到图床上的截图的链接；然后用markdown格式插入图片
+
+这么复杂的流程，让人简直没有了插入图片的欲望；但是大量的文字没有图片，必然让人疲惫；
+要是能随便截个图，然后直接粘贴就成了ma">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 简化markdown写作中的贴图流程 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              简化markdown写作中的贴图流程
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-16T14:15:09+08:00" content="2015-10-16">
+            2015-10-16
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/16/simplify-the-img-upload-in-markdown/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/16/simplify-the-img-upload-in-markdown/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：</p>
+<ol>
+<li>用截图工具截图；</li>
+<li>将截图保存到某个地方</li>
+<li>修改截图文件名</li>
+<li>上传截图到某个图床（如果不用“围脖是个好图床”这样的工具，还得用客户端登陆）</li>
+<li>拿到图床上的截图的链接；然后用markdown格式插入图片</li>
+</ol>
+<p>这么复杂的流程，让人简直没有了插入图片的欲望；但是大量的文字没有图片，必然让人疲惫；</p>
+<p>要是能<strong>随便截个图，然后直接粘贴就成了markdown格式</strong>就好了；自然是能够做到！懒就是生产力～<br><a id="more"></a></p>
+<h2 id="图片上传">图片上传</h2><h3 id="准备工作">准备工作</h3><p>首先要做的是，简化上传图片到图床这个手工的过程，甚至连拖动图片到浏览器插件都省略；这里就自然少不了使用图床的SDK，用代码来帮助我们完成上传操作；</p>
+<p>这里选择七牛的图床，各种语言的SDK都有，还有免费10G空间，每个月10G流量，业界良心！注册点<a href="https://portal.qiniu.com/signup?code=3ldifp9oti442" target="_blank" rel="external">这里</a></p>
+<p>然后新建一个空间，比如我的叫做booluimg，然后点击空间设置里面的域名设置，看看域名是什么，那么以后我的图片就会上传到 <a href="http://7sbqce.com1.z0.glb.clouddn.com/" target="_blank" rel="external">http://7sbqce.com1.z0.glb.clouddn.com/</a></p>
+<h3 id="用SDK上传图片">用SDK上传图片</h3><p>使用七牛提供的python SDK，下面的代码可以将一个文件上传到七牛的空间：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> qiniu <span class="keyword">import</span> Auth, put_file</span><br><span class="line"></span><br><span class="line">access_key = <span class="string">'你的Access key'</span> <span class="comment"># AK</span></span><br><span class="line">secret_key = <span class="string">'你的Secret Key'</span> <span class="comment"># SK</span></span><br><span class="line"></span><br><span class="line">bucket_name = <span class="string">'booluimg'</span> <span class="comment"># 七牛空间名</span></span><br><span class="line"></span><br><span class="line">q = Auth(access_key, secret_key)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">upload_qiniu</span><span class="params">(path)</span>:</span></span><br><span class="line">    <span class="string">''' upload file to qiniu'''</span></span><br><span class="line">    dirname, filename = os.path.split(path)</span><br><span class="line">    key = <span class="string">'markdown/%s'</span> % filename <span class="comment"># upload to qiniu's markdown dir</span></span><br><span class="line"></span><br><span class="line">    token = q.upload_token(bucket_name, key)</span><br><span class="line">    ret, info = put_file(token, key, path, check_crc=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> ret != <span class="keyword">None</span> <span class="keyword">and</span> ret[<span class="string">'key'</span>] == key</span><br></pre></td></tr></table></figure></p>
+<h2 id="访问剪切版">访问剪切版</h2><p>如果我们进行截图或者复制图片，那么图片是存储在系统的剪切版里面的；要将这个图片上传，必需先从剪切版里面弄出来。</p>
+<h3 id="mac">mac</h3><p>mac访问剪切版比较简单，如果是文本类型，那么可以直接使用<code>pbcopy, pbpaste</code>这两个命令解决；如果访问其他的多媒体类型，可以使用系统内置的python与objc的访问接口<code>PyObjC</code>;具体关于剪切版的文档可以参考<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSPasteboard_Class/index.html#//apple_ref/occ/instm/NSPasteboard/dataForType" target="_blank" rel="external">PyObjC文档</a>，<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/#//apple_ref/occ/instm/NSData/writeToFile:atomically:" target="_blank" rel="external">Objc剪切版文档</a>(不会objc没关系，能看懂)</p>
+<p>如下：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># clipboard.py</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> AppKit <span class="keyword">import</span> NSPasteboard, NSPasteboardTypePNG, NSPasteboardTypeTIFF</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_paste_img_file</span><span class="params">()</span>:</span></span><br><span class="line">    pb = NSPasteboard.generalPasteboard()</span><br><span class="line">    data_type = pb.types()</span><br><span class="line">    <span class="comment"># if img file</span></span><br><span class="line">    <span class="keyword">print</span> data_type</span><br><span class="line">    now = int(time.time() * <span class="number">1000</span>) <span class="comment"># used for filename</span></span><br><span class="line">    <span class="keyword">if</span> NSPasteboardTypePNG <span class="keyword">in</span> data_type:</span><br><span class="line">        <span class="comment"># png</span></span><br><span class="line">        data = pb.dataForType_(NSPasteboardTypePNG)</span><br><span class="line">        filename = <span class="string">'%s.png'</span> % now</span><br><span class="line">        filepath = <span class="string">'/tmp/%s'</span> % filename</span><br><span class="line">        ret = data.writeToFile_atomically_(filepath, <span class="keyword">False</span>)</span><br><span class="line">        <span class="keyword">if</span> ret:</span><br><span class="line">            <span class="keyword">return</span> filepath</span><br><span class="line">    <span class="keyword">elif</span> NSPasteboardTypeTIFF <span class="keyword">in</span> data_type:</span><br><span class="line">        <span class="comment"># tiff</span></span><br><span class="line">        data = pb.dataForType_(NSPasteboardTypeTIFF)</span><br><span class="line">        filename = <span class="string">'%s.tiff'</span> % now</span><br><span class="line">        filepath = <span class="string">'/tmp/%s'</span> % filename</span><br><span class="line">        ret = data.writeToFile_atomically_(filepath, <span class="keyword">False</span>)</span><br><span class="line">        <span class="keyword">if</span> ret:</span><br><span class="line">            <span class="keyword">return</span> filepath</span><br><span class="line">    <span class="keyword">elif</span> NSPasteboardTypeString <span class="keyword">in</span> data_type:</span><br><span class="line">        <span class="comment"># string todo, recognise url of png &amp; jpg</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Windows">Windows</h3><p>windows下，可以装个pywin32然后使用win32api直接访问，具体如何操作自己解决。</p>
+<h2 id="自动化流程">自动化流程</h2><p>先阐述一下要达到的理想状态：用截图工具截图（图片默认保存在剪切版），然后在编辑器按下某个类似于粘贴的快捷键，得到一个上传好了到七牛的marddown格式的图片；</p>
+<p>如何达到这个要求呢？上传图片以及到从剪切版获取图片都已经完成，接下来就是这个按键的自动化操作了；在mac上，可以使用Alfred工作流，Windows上，可以使用Autohotkey。</p>
+<h3 id="mac下使用alfred工作流">mac下使用alfred工作流</h3><p>使用Alfred新建一个空白的工作流，然后新建一个trigger，快捷键绑定为“ctrl + cmd + v”;然后新建一个run script，选择python;然后填上如下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">query = <span class="string">"&#123;query&#125;"</span></span><br><span class="line"><span class="keyword">from</span> clipboard <span class="keyword">import</span> get_paste_img_file</span><br><span class="line"><span class="keyword">from</span> upload <span class="keyword">import</span> upload_qiniu</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://7sbqce.com1.z0.glb.clouddn.com/markdown"</span></span><br><span class="line"></span><br><span class="line">img_file = get_paste_img_file()</span><br><span class="line"><span class="keyword">if</span> img_file:</span><br><span class="line">    <span class="comment"># has file</span></span><br><span class="line">    ret = upload_qiniu(img_file)</span><br><span class="line">    <span class="keyword">if</span> ret:</span><br><span class="line">        <span class="comment"># upload success</span></span><br><span class="line">        name = os.path.split(img_file)[<span class="number">1</span>]</span><br><span class="line">        markdown_url = <span class="string">"![](%s/%s?imageMogr2/thumbnail/!50p/quality/100!)"</span> % (url, name)</span><br><span class="line">        <span class="comment"># make it to clipboard</span></span><br><span class="line">        os.system(<span class="string">"echo '%s' | pbcopy"</span> % markdown_url)</span><br><span class="line">        os.system(<span class="string">'osascript -e \'tell application "System Events" to keystroke "v" using command down\''</span>)</span><br><span class="line">    <span class="keyword">else</span>: <span class="keyword">print</span> <span class="string">"upload_failed"</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"get img file failed"</span></span><br></pre></td></tr></table></figure></p>
+<p>其中，复制到剪切版以及按下cmd ＋ v复制这个功能，使用的系统命令<code>pbcopy, osascript</code>这体现了python作为胶水语言的强大之处！</p>
+<p>这样，这个workflow就完成了，用系统截图工具<code>cmd + option +ctrl + 4</code>截个图，然后在一个编辑器里面按下<code>cmd + ctrl + v</code>看看是什么效果～</p>
+<p>有Alfred的童鞋可以直接用我打包好了的workflow：<a href="http://yunpan.cn/cFczYRjnJbKVK" target="_blank" rel="external">http://yunpan.cn/cFczYRjnJbKVK</a> （提取码：ff1c）<br>另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。</p>
+<p>更新：使用mac自带的<code>sips</code>工具得到图片的尺寸；然后使用<code>img</code>标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。</p>
+<h3 id="windows下使用autohotkey">windows下使用autohotkey</h3><p>windows下面没有Alfred，但是有强大的AutoHotKey，出发快捷键以及按下ctrl ＋ v完全可以用这个实现；有兴趣的可以自己实现，非常简单。</p>
+<p>最后，我们看看最终的效果：<br>按下cmd ＋ ctrl ＋ v<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif" alt="效果图"></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/markdown/" rel="tag">#markdown</a>
+          
+            <a href="/tags/workflow/" rel="tag">#workflow</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/08/problems-when-config-react-native-env/" rel="next">react-native环境搭建的正确姿势</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/16/simplify-the-img-upload-in-markdown/"
+                   data-title="简化markdown写作中的贴图流程" data-url="http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">You deserve a better life.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#图片上传"><span class="nav-number">1.</span> <span class="nav-text">图片上传</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用SDK上传图片"><span class="nav-number">1.2.</span> <span class="nav-text">用SDK上传图片</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问剪切版"><span class="nav-number">2.</span> <span class="nav-text">访问剪切版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mac"><span class="nav-number">2.1.</span> <span class="nav-text">mac</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-number">2.2.</span> <span class="nav-text">Windows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动化流程"><span class="nav-number">3.</span> <span class="nav-text">自动化流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mac下使用alfred工作流"><span class="nav-number">3.1.</span> <span class="nav-text">mac下使用alfred工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows下使用autohotkey"><span class="nav-number">3.2.</span> <span class="nav-text">windows下使用autohotkey</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

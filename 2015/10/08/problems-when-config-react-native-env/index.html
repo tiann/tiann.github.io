@@ -1,0 +1,672 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="You deserve a better life." />
+
+
+
+  <meta name="keywords" content="react-native," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。
+用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好git, nvm等工具，两条命令解决：
+
+npm install -g react-native-clireact-native init Aweso">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react-native环境搭建的正确姿势">
+<meta property="og:url" content="http://yoursite.com/2015/10/08/problems-when-config-react-native-env/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。
+用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好git, nvm等工具，两条命令解决：
+
+npm install -g react-native-clireact-native init Aweso">
+<meta property="og:updated_time" content="2015-10-19T02:53:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="react-native环境搭建的正确姿势">
+<meta name="twitter:description" content="上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。
+用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好git, nvm等工具，两条命令解决：
+
+npm install -g react-native-clireact-native init Aweso">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> react-native环境搭建的正确姿势 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              react-native环境搭建的正确姿势
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-08T17:20:14+08:00" content="2015-10-08">
+            2015-10-08
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/08/problems-when-config-react-native-env/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/08/problems-when-config-react-native-env/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。</p>
+<p>用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好<code>git</code>, <code>nvm</code>等工具，两条命令解决：</p>
+<blockquote>
+<p><code>npm install -g react-native-cli</code><br><code>react-native init AwesomeProject</code></p>
+</blockquote>
+<p>但是对于生活在水深火热的天朝的程序员，事情远没有那么简单。接下来给出正确的安装姿势，最后说说我安装过程中遇到的问题。</p>
+<a id="more"></a>
+<h2 id="正确的安装姿势">正确的安装姿势</h2><h3 id="准备工作">准备工作</h3><p>准备工作包括<code>git, node</code>等工具的安装；安装node的话最好使用一个版本管理工具比如<code>nvm</code>；这个很简单：</p>
+<ol>
+<li><code>brew install nvm</code> react-native仅支持mac平台，直接brew</li>
+<li><code>nvm install node &amp;&amp; nvm alias default node</code></li>
+</ol>
+<p>如果上面这两步执行失败，那么需要科学上网；去弄一个VPN或者代理吧，没有的话可以联系我给一个shadowsocks账号。</p>
+<p>然后清理一下环境：<code>npm cache clean</code></p>
+<p>注意，接下来的安装步骤，如果安装过程中断，最好执行上面的命令<strong>清除缓存</strong>；然后如果是初始化工程失败，最好<strong>删除整个工程目录</strong>重新开始。实际的下载安装过程不会超过十分钟；如果超过说明网络有问题，或者下面的步骤没有正确的配置。</p>
+<h3 id="手动下载node-gyp需要的源码">手动下载node-gyp需要的源码</h3><p>官方文档并没有提到这个gyp，那么<a href="https://github.com/nodejs/node-gyp" target="_blank" rel="external">node-gyp</a>是什么？</p>
+<blockquote>
+<p>Node.js native addon build tool</p>
+</blockquote>
+<p>我们使用npm安装的有些module依赖一些用c/c++编写的模块，这些模块需要本地编译安装；<code>node-gyp</code>就是一个编译工具。<br>为什么要手动安装呢？因为<code>node-gyp</code>编译需要node的源码，第一次使用的时候需要把它下载下来；但是官方的源码源速度非常慢，基本下载不了；这样会导致编译某些模块的时候卡住，我们可以使用国内的镜像手动下载。运行下面的脚本即可：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># js 版本号</span></span><br><span class="line">NODE_VERSION=`node -v | cut <span class="operator">-d</span><span class="string">'v'</span> <span class="operator">-f</span> <span class="number">2</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载源码包(使用镜像)</span></span><br><span class="line">wget http://npm.taobao.org/mirrors/node/v<span class="variable">$NODE_VERSION</span>/node-v<span class="variable">$NODE_VERSION</span>.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除现有内容不完整的目录</span></span><br><span class="line">rm -rf ~/.node-gyp</span><br><span class="line">mkdir ~/.node-gyp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩并重命名到正确格式</span></span><br><span class="line">tar zxf node-v<span class="variable">$NODE_VERSION</span>.tar.gz -C ~/.node-gyp</span><br><span class="line">mv ~/.node-gyp/node-v<span class="variable">$NODE_VERSION</span> ~/.node-gyp/<span class="variable">$NODE_VERSION</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个标记文件</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">"9\n"</span>&gt;~/.node-gyp/<span class="variable">$NODE_VERSION</span>/installVersion</span><br></pre></td></tr></table></figure></p>
+<h3 id="替换npm镜像">替换npm镜像</h3><p>npm官方的源不稳定，我们可以使用国内淘宝的源<a href="http://registry.npm.taobao.org/" target="_blank" rel="external">http://registry.npm.taobao.org/</a> ；执行下面的命令即可：<br><code>npm config set registry=http://registry.npm.taobao.org/</code></p>
+<h3 id="配置git代理">配置git代理</h3><p>不能科学上网还是不行的；在安装模块的时候，不仅需要下载模块，还需要下载node源代码；有的还是使用git管理的，而这些库，很有可能就访问不了。<br>如果全部使用代理的话，那么访问国内的镜像也使用了代理，这样会导致速度下降；因此我们只对git设置代理：<br><code>git config --global http.proxy=http://&lt;url&gt;:&lt;port&gt;</code></p>
+<p>这些配置完成，那么就可以初始化工程了；一句命令完成：<br><code>react-native init AwesomeProject</code><br>安装完毕之后，可以使用<code>npm ls</code>看一下，这个工程依赖的node模块是有多么复杂，差不多就能理解为什么在天朝配置这个环境有多么麻烦了。</p>
+<p>接下来纪录一下我安装过程中遇到的一些问题，不感兴趣可以略过。</p>
+<h2 id="遇到的问题">遇到的问题</h2><h3 id="代理和VPN">代理和VPN</h3><p>VPN和代理最大的区别是，VPN对于应用程序就相当于VPN躺在了TCP/IP协议栈里面，所有的网络请求都会通过VPN访问；而代理呢，我们需要给每个要用到代理的程序单独设置代理访问；大多数程序会检测诸如<code>HTTP_PROXY</code>的环境变量来自动使用代理，但是<strong>不是所有的程序都这么乖</strong>。</p>
+<p>所以，如果你通过某种方式给系统设置了代理，并不意味着你的每一个程序都会通过代理访问；假如你设置了环境变量<code>HTTP_PROXY</code>那么，系统只是告诉程序有代理可用，至于用不用，是程序自己的问题；如果是VPN，那么程序就算什么都没干，它也是通过VPN访问网络的。</p>
+<p>代理这么麻烦，还有一些程序不听话，要是像vpn那样就好了。解决方案自然是有，google<code>Proxifier</code>或者<code>proxycap</code>就行了。</p>
+<h3 id="mac系统设置是全局代理吗">mac系统设置是全局代理吗</h3><p>之所以提到mac，是因为react-native官方文档第一条：</p>
+<blockquote>
+<p>OS X - Only OS X is currently supported</p>
+</blockquote>
+<p>那么，我们打开<strong>系统偏好设置——网络——高级——代理</strong> 这个设置，然后配置好代理信息，对我们的安装有帮助吗？</p>
+<p>事实上，<strong>终端以及一些基于命令行的工具，不会理会系统的代理设置</strong>；具体可以看看<a href="https://discussions.apple.com/thread/2204147?tstart=0" target="_blank" rel="external">这里</a>或者<a href="http://superuser.com/questions/598869/mac-terminal-couldnt-access-network" target="_blank" rel="external">这里</a></p>
+<p>所以，在系统这里设置代理对我们没有什么作用。</p>
+<h3 id="环境变量的问题">环境变量的问题</h3><p>既然命令行工具不认系统代理设置，那么我们可以在终端手动设置环境变量：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> http_proxy=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br></pre></td></tr></table></figure></p>
+<p>注意两点：</p>
+<ol>
+<li>有的工具（没错，说的就是<code>wget,curl</code>！！）对于这个环境变量，是<strong>大小写敏感的！！</strong>，所以最好大写小写都设置。</li>
+<li>https的代理url不带https头。</li>
+</ol>
+<p>很不幸，即使这么做了，依然会出现有一些包下载不下来。看了官方文档才知道，<code>npm</code>设置代理不是这个样子的。要么在一个配置文件<code>.npmrc</code>里面设置，要么通过命令<code>npm config set XXX</code>设置。具体可以参考<a href="http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/" target="_blank" rel="external">这篇文章</a></p>
+<p>这是怎么一个奇葩的设计啊。看文章可仔细点，设置代理名字跟环境变量不一样！</p>
+<h3 id="gyp的问题">gyp的问题</h3><p>你以为到这里就结束了？！ 实际上，我们使用的很多npm的包，用到了一些c/c++的模块，需要编译安装。这个时候，需要依赖node的源代码。但是，由于这个源本身的问题，有了代理速度还是乌龟一般。没有办法，我们只有使用国内的淘宝镜像，先手动安装<code>gyp</code>。</p>
+<h3 id="openssl的问题">openssl的问题</h3><p>拜GFW所赐，使用https协议的话很有可能根本没法认证，所以最好吧官方的那个源换成http的；然后设置一下这个选项：<br><code>npm config set strict-ssl false</code></p>
+<h3 id="git协议无法clone的问题">git协议无法clone的问题</h3><p>在公司的网络环境下，很多端口被屏蔽了；git也是一样，因此使用git协议的clone的话很有可能失败，因此我们需要用https协议替代git协议；具体设置可以参考<a href="http://stackoverflow.com/questions/15669091/bower-install-using-only-https" target="_blank" rel="external">这里</a><br>OK，这些问题全部解决的话，应该能顺利安装上react-native。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react-native/" rel="tag">#react-native</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/16/simplify-the-img-upload-in-markdown/" rel="prev">简化markdown写作中的贴图流程</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/02/configuration-of-idea-android-studio-in-mac/" rel="next">mac下Android studio快捷键配置</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/08/problems-when-config-react-native-env/"
+                   data-title="react-native环境搭建的正确姿势" data-url="http://yoursite.com/2015/10/08/problems-when-config-react-native-env/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">You deserve a better life.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正确的安装姿势"><span class="nav-number">1.</span> <span class="nav-text">正确的安装姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动下载node-gyp需要的源码"><span class="nav-number">1.2.</span> <span class="nav-text">手动下载node-gyp需要的源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替换npm镜像"><span class="nav-number">1.3.</span> <span class="nav-text">替换npm镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置git代理"><span class="nav-number">1.4.</span> <span class="nav-text">配置git代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number">2.</span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理和VPN"><span class="nav-number">2.1.</span> <span class="nav-text">代理和VPN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mac系统设置是全局代理吗"><span class="nav-number">2.2.</span> <span class="nav-text">mac系统设置是全局代理吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量的问题"><span class="nav-number">2.3.</span> <span class="nav-text">环境变量的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gyp的问题"><span class="nav-number">2.4.</span> <span class="nav-text">gyp的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openssl的问题"><span class="nav-number">2.5.</span> <span class="nav-text">openssl的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git协议无法clone的问题"><span class="nav-number">2.6.</span> <span class="nav-text">git协议无法clone的问题</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
