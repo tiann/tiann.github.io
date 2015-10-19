@@ -48,8 +48,8 @@
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445243591752.png">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445245047558.png">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown/1445247504072.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown1445257218.gif">
-<meta property="og:updated_time" content="2015-10-19T12:32:22.000Z">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdown1445258458.gif">
+<meta property="og:updated_time" content="2015-10-19T12:45:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何安全地打印日志">
 <meta name="twitter:description" content="如何打印日志？这不是很简单，直接使用android.util.Log这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了">
@@ -228,7 +228,8 @@
 <p>这个<code>LogUtil.d</code>的调用，无异于掩耳盗铃；虽然破解者没办法让<code>android.util.Log</code>这个类输出任何日志，但是你这里的这个调用还是告诉了别人你在干什么；所以，要屏蔽日志的输出，必须使用if代码块直接包含要被剔除的日志。上面的那个日志类，要被优化掉，那就是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">	LogUtil.d(TAG, <span class="string">"msg"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这里，不是多此一举吗，写一个日志类就是想不想重复地写<code>if (DEBUG)</code>，这里为了使这一句隐藏，还是逃不掉；但是很抱歉，逃得了和尚逃不了庙，这种方法没办法做到完全隐藏信息；<strong>必须抛弃日志类包裹日志代码的做法！</strong></p>
 <h3 id="解放双手的补充">解放双手的补充</h3><p>也许有人说，为了这个所谓的日志安全，每次输出日志都的写一个if语句，那不麻烦死；简直反人类，我懒！实际上，要少写几行代码，我们可以选择复用（代码级别，比如上面的日志类），也可以选择<strong>生成</strong>（直接生成代码）；在支持元编程的语言里面，生成代码是很常见的事情，比如C＋＋的模版元编程以及ruby吹嘘的<code>DSL</code>能力；这里没有那么高大上，用代码生成代码，我们直接借助编辑器帮助我们少写几行代码万事。</p>
-<h4 id="IDEA/Android_Studio">IDEA/Android Studio</h4><p>可以使用live template的功能；比如我的做法是，写一个<code>ifd</code>的template，每次我输入<code>ifd</code>然后自动展开成if语句，光标停在最中间：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdown1445257218.gif" width="413"></p>
+<h4 id="IDEA/Android_Studio">IDEA/Android Studio</h4><p>可以使用live template的功能；比如我的做法是，写一个<code>ifd</code>的template，每次我输入<code>ifd</code>然后自动展开成if语句，光标停在最中间：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdown1445258458.gif" width="402"></p>
+<p># </p>
 <h4 id="vim/emacs">vim/emacs</h4><p>可以使用宏录制的功能，实现上面的live template。</p>
 </span>
       
