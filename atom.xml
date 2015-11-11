@@ -106,7 +106,7 @@
     <link href="http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/"/>
     <id>http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/</id>
     <published>2015-10-16T06:15:09.000Z</published>
-    <updated>2015-11-11T02:27:52.000Z</updated>
+    <updated>2015-11-11T08:01:16.000Z</updated>
     <content type="html"><![CDATA[<p>markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：</p>
 <ol>
 <li>用截图工具截图；</li>
@@ -117,6 +117,9 @@
 </ol>
 <p>这么复杂的流程，让人简直没有了插入图片的欲望；但是大量的文字没有图片，必然让人疲惫；</p>
 <p>要是能<strong>随便截个图，然后直接粘贴就成了markdown格式</strong>就好了；自然是能够做到！懒就是生产力～<br><a id="more"></a></p>
+<h2 id="效果预览">效果预览</h2><p>首先看看最终达到的效果：<br><img alt="效果预览" src="http://7sbqce.com1.z0.glb.clouddn.com/markdownmarkdownimg.gif" width="660"></p>
+<p>第一步，截图；第二步，粘贴；done!</p>
+<p>详见github介绍：<a href="https://github.com/tiann/markdown-img-upload" target="_blank" rel="external">https://github.com/tiann/markdown-img-upload</a></p>
 <h2 id="图片上传">图片上传</h2><h3 id="准备工作">准备工作</h3><p>首先要做的是，简化上传图片到图床这个手工的过程，甚至连拖动图片到浏览器插件都省略；这里就自然少不了使用图床的SDK，用代码来帮助我们完成上传操作；</p>
 <p>这里选择七牛的图床，各种语言的SDK都有，还有免费10G空间，每个月10G流量，业界良心！注册点<a href="https://portal.qiniu.com/signup?code=3ldifp9oti442" target="_blank" rel="external">这里</a></p>
 <p>然后新建一个空间，比如我的叫做booluimg，然后点击空间设置里面的域名设置，看看域名是什么，那么以后我的图片就会上传到 <a href="http://7sbqce.com1.z0.glb.clouddn.com/" target="_blank" rel="external">http://7sbqce.com1.z0.glb.clouddn.com/</a></p>
@@ -130,10 +133,9 @@
 <h3 id="mac下使用alfred工作流">mac下使用alfred工作流</h3><p>使用Alfred新建一个空白的工作流，然后新建一个trigger，快捷键绑定为“ctrl + cmd + v”;然后新建一个run script，选择python;然后填上如下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">query = <span class="string">"&#123;query&#125;"</span></span><br><span class="line"><span class="keyword">from</span> clipboard <span class="keyword">import</span> get_paste_img_file</span><br><span class="line"><span class="keyword">from</span> upload <span class="keyword">import</span> upload_qiniu</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://7sbqce.com1.z0.glb.clouddn.com/markdown"</span></span><br><span class="line"></span><br><span class="line">img_file = get_paste_img_file()</span><br><span class="line"><span class="keyword">if</span> img_file:</span><br><span class="line">    <span class="comment"># has file</span></span><br><span class="line">    ret = upload_qiniu(img_file)</span><br><span class="line">    <span class="keyword">if</span> ret:</span><br><span class="line">        <span class="comment"># upload success</span></span><br><span class="line">        name = os.path.split(img_file)[<span class="number">1</span>]</span><br><span class="line">        markdown_url = <span class="string">"![](%s/%s?imageMogr2/thumbnail/!50p/quality/100!)"</span> % (url, name)</span><br><span class="line">        <span class="comment"># make it to clipboard</span></span><br><span class="line">        os.system(<span class="string">"echo '%s' | pbcopy"</span> % markdown_url)</span><br><span class="line">        os.system(<span class="string">'osascript -e \'tell application "System Events" to keystroke "v" using command down\''</span>)</span><br><span class="line">    <span class="keyword">else</span>: <span class="keyword">print</span> <span class="string">"upload_failed"</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"get img file failed"</span></span><br></pre></td></tr></table></figure></p>
 <p>其中，复制到剪切版以及按下cmd ＋ v复制这个功能，使用的系统命令<code>pbcopy, osascript</code>这体现了python作为胶水语言的强大之处！</p>
 <p>这样，这个workflow就完成了，用系统截图工具<code>cmd + option +ctrl + 4</code>截个图，然后在一个编辑器里面按下<code>cmd + ctrl + v</code>看看是什么效果～</p>
-<p>有Alfred的童鞋可以直接用我打包好了的workflow：<a href="http://yunpan.cn/cFczYRjnJbKVK" target="_blank" rel="external">http://yunpan.cn/cFczYRjnJbKVK</a> （提取码：ff1c）<br>另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。</p>
+<p>另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。</p>
 <p>更新：使用mac自带的<code>sips</code>工具得到图片的尺寸；然后使用<code>img</code>标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。<br>更新2: 使用mac通知中心在上传图片失败的时候给出提醒 github地址：<a href="https://github.com/tiann/markdown-img-upload" target="_blank" rel="external">https://github.com/tiann/markdown-img-upload</a></p>
 <h3 id="windows下使用autohotkey">windows下使用autohotkey</h3><p>windows下面没有Alfred，但是有强大的AutoHotKey，出发快捷键以及按下ctrl ＋ v完全可以用这个实现；有兴趣的可以自己实现，非常简单。</p>
-<p>最后，我们看看最终的效果：<br>按下cmd ＋ ctrl ＋ v<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif" alt="效果图"></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：</p>
