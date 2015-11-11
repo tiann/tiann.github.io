@@ -85,3 +85,9 @@ baidu_analytics: 5ba59f635a6de43d516b52632af83325
 creative_commons: by-nc-sa
 
 since: 2015
+
+# rss
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20

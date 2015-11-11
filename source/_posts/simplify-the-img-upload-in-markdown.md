@@ -128,6 +128,7 @@ else:
 另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。
 
 更新：使用mac自带的`sips`工具得到图片的尺寸；然后使用`img`标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。
+更新2: 使用mac通知中心在上传图片失败的时候给出提醒 github地址：https://github.com/tiann/markdown-img-upload
 
 ### windows下使用autohotkey
 windows下面没有Alfred，但是有强大的AutoHotKey，出发快捷键以及按下ctrl ＋ v完全可以用这个实现；有兴趣的可以自己实现，非常简单。
