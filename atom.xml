@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-11-10T10:57:31.000Z</updated>
+  <updated>2015-11-11T02:19:52.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,11 +15,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[高效分割字符串]]></title>
+    <title><![CDATA[Java高效分割字符串]]></title>
     <link href="http://yoursite.com/2015/11/10/fast-split-in-android/"/>
     <id>http://yoursite.com/2015/11/10/fast-split-in-android/</id>
     <published>2015-11-10T10:52:34.000Z</published>
-    <updated>2015-11-10T10:57:31.000Z</updated>
+    <updated>2015-11-11T02:19:52.000Z</updated>
     <content type="html"><![CDATA[<p>最近优化一段代码的调用时间，发现性能瓶颈居然是io和split！io操作慢情有可原，那么对于split有没有更高效的方法呢？</p>
 <h2 id="一般方法">一般方法</h2><p>再java里面，一般的split 字符串解决方案有三种：</p>
 <ol>
@@ -106,7 +106,7 @@
     <link href="http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/"/>
     <id>http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/</id>
     <published>2015-10-16T06:15:09.000Z</published>
-    <updated>2015-10-19T02:53:35.000Z</updated>
+    <updated>2015-11-11T02:27:52.000Z</updated>
     <content type="html"><![CDATA[<p>markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：</p>
 <ol>
 <li>用截图工具截图；</li>
@@ -131,7 +131,7 @@
 <p>其中，复制到剪切版以及按下cmd ＋ v复制这个功能，使用的系统命令<code>pbcopy, osascript</code>这体现了python作为胶水语言的强大之处！</p>
 <p>这样，这个workflow就完成了，用系统截图工具<code>cmd + option +ctrl + 4</code>截个图，然后在一个编辑器里面按下<code>cmd + ctrl + v</code>看看是什么效果～</p>
 <p>有Alfred的童鞋可以直接用我打包好了的workflow：<a href="http://yunpan.cn/cFczYRjnJbKVK" target="_blank" rel="external">http://yunpan.cn/cFczYRjnJbKVK</a> （提取码：ff1c）<br>另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。</p>
-<p>更新：使用mac自带的<code>sips</code>工具得到图片的尺寸；然后使用<code>img</code>标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。</p>
+<p>更新：使用mac自带的<code>sips</code>工具得到图片的尺寸；然后使用<code>img</code>标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。<br>更新2: 使用mac通知中心在上传图片失败的时候给出提醒 github地址：<a href="https://github.com/tiann/markdown-img-upload" target="_blank" rel="external">https://github.com/tiann/markdown-img-upload</a></p>
 <h3 id="windows下使用autohotkey">windows下使用autohotkey</h3><p>windows下面没有Alfred，但是有强大的AutoHotKey，出发快捷键以及按下ctrl ＋ v完全可以用这个实现；有兴趣的可以自己实现，非常简单。</p>
 <p>最后，我们看看最终的效果：<br>按下cmd ＋ ctrl ＋ v<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif" alt="效果图"></p>
 ]]></content>
@@ -344,71 +344,6 @@
       <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
       <category term="UI" scheme="http://yoursite.com/categories/Android/UI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[wordpress&octopress to hexo]]></title>
-    <link href="http://yoursite.com/2015/09/22/wordpress-octopress-to-hexo/"/>
-    <id>http://yoursite.com/2015/09/22/wordpress-octopress-to-hexo/</id>
-    <published>2015-09-22T10:58:30.000Z</published>
-    <updated>2015-09-25T11:14:11.000Z</updated>
-    <content type="html"><![CDATA[<p>纠结了一晚上，终究是打算从octopress切换到hexo了；平心而论，octopress没有什么不好；总结一下为什么切换：</p>
-<ol>
-<li>默认主题不好看，第三方主题没有想要的好的；自己定制了两天，在mac上效果不错，但是看到windows上渣显示效果瞬间放弃。总结起来，博客清晰简洁，最好不要图片，特别是大图；在高清显示器会很舒服，在渣渣显示器上就是一坨翔；最好使用颜色搭配简单动画；其次是越简洁越好，什么酷炫高大上看多了都是浮夸；</li>
-<li>虽然hexo在github上star比octopress少，但是hexo 提交次数将近三倍，然后octopress几年不更新了，最近要出3.0不知道什么鬼；hexo的主题star比octopress多得多；而且我看到的几个都简洁大方，很是喜欢</li>
-<li>octopress用ruby渲染，hexo用nodejs；以前不知道什么原因不喜欢js，但是学一学也是好的，刚好最近facebook开源了Android版本的react native，借这个机会顺带装一下nodejs也算好；至于ruby，已经会了一门类似的python，但是拓宽一下知识面比较好；另外，时间肯定严重不够。</li>
-</ol>
-<a id="more"></a>
-<ol>
-<li>虽然学习node比ruby对于我肯定时间多，但是第三方主题好意味着我不需要花太多时间定制，反而节省了时间。</li>
-</ol>
-<p>另外，附上一片<a href="http://www.techelex.org/octopress-vs-hexo/" target="_blank" rel="external">octopress-vs-hexo/</a></p>
-<h2 id="开始">开始</h2><p>好了，开搞。按照官方<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">教程</a>。</p>
-<p>sock5协议在shell里面 http代理是否有效？curl与wget 协议支持情况？浏览器能下载，shell无法curl。</p>
-<h3 id="准备">准备</h3><p>需要安装git以及nodejs；</p>
-<ol>
-<li>git的话mac安装xcode-tools即可。</li>
-</ol>
-<h4 id="nodejs安装">nodejs安装</h4><ol>
-<li>nvm 管理nodejs版本的，避免把你的电脑搞乱，跟rbenv以及python virtualenv差不多。装这个下载脚本的那个需要翻墙。</li>
-<li>用nvm安装nodejs。可以使用七牛的镜像。注意的是hexo推荐的是<strong>0.10</strong>这个版本，我尝试了最近的4.1，执行hexo命令直接出错。有了nvm我们可以多装几个版本无所谓，反正能切换。</li>
-<li>注意，node安装之后重启shell  npm无法找到，原因是nvm不知道那个💺默认的node版本，所以  <code>nvm alias default stable</code>即可。</li>
-</ol>
-<h3 id="hexo安装">hexo安装</h3><p>没什么，一条命令。想到之前用octopress的蛋疼，简直官方文档说安装命令 <code>npm install -g hexo-cli</code>通过淘宝镜像的cli可以猜到，这个是需要服务器同步然后安装的，我用了第三方的镜像，去掉这个cli即可。</p>
-<p>至此，环境搭建完成。</p>
-<h2 id="改造">改造</h2><h3 id="主题">主题</h3><p>个人喜欢两个主题：</p>
-<ol>
-<li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">next</a>简洁大方，非常nice；更新频繁，维护者众多，有保障。</li>
-<li><a href="https://github.com/someus/huno" target="_blank" rel="external">huno</a>还是对这种侧边栏有某种情结，但实际上有一些问题我暂时还解决不了静态博客也不擅长这个；那就是侧边栏如果有头像或者图片背景的时候，跳转页面不可避免地导致页面刷新和闪动，极不自然。</li>
-</ol>
-<p>另外有个主题<a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="external">yilia</a>也不错。但是个人还是感觉有点乱，不够简约。不过移动端适配做的挺好的，可以试试。</p>
-<p>最终选择next，开启mist效果。</p>
-<h3 id="头像">头像</h3><ol>
-<li>使用头像，起名  Zygote 在Android里面是天字号进程，又意为受精卵，象征着生命和希望。</li>
-<li>往上找了一只萌猫的图就当作头像了，我是猫系男生嘛～</li>
-</ol>
-<h3 id="字体">字体</h3><p>放弃了，windows上 main字体不好看，显示器的原因。在mac那些个Open Sans，Manaco什么的都很漂亮；Windows配个渣渣显示屏那真的是肉眼看到一坨坨像素。估计是被Retina惯坏了，哎，，勿黑。</p>
-<p>默认的还可以。要修改的话见这里<a href="https://github.com/iissnan/hexo-theme-next/issues/111" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next/issues/111</a></p>
-<h3 id="自定义页面">自定义页面</h3><p>添加tags页面，什么关于页面嘛，现在不太好意思加～以后再说。个人不喜欢什么SNS，搞了也不活跃，一个人安安静静地写博客，多好。</p>
-<h3 id="评论&amp;统计">评论&amp;统计</h3><p>添加评论系统 多说。天朝嘛，你懂的。</p>
-<p>站点统计  我晕，百度统计那个id我找半天。原来是插入代码里面。里面那个 ?  后面的一个md5串。</p>
-<h2 id="部署">部署</h2><pre><code><span class="bullet">8. </span>部署到git上需要安装插件  <span class="code">`cnpm install hexo-deployer-git --save`</span>
-<span class="bullet">9. </span>同时部署到github以及gitcafe见[<span class="link_label">issue</span>](<span class="link_url">https://github.com/hexojs/hexo/issues/893</span>) 注意push到哪个分支。然后，分支名字与逗号之间不能有空格，不然出错哦。最后的代码如下：
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deploy:&#10;  type: git&#10;  repo:&#10;    github: git@github.com:tiann/tiann.github.io.git,master&#10;    gitcafe: git@gitcafe.com:tiann/tiann.git,gitcafe-pages</span><br></pre></td></tr></table></figure>
-<pre><code><span class="number">1</span>. 把原始博客文件放在<span class="built_in">source</span>分支。
-</code></pre><h2 id="优化">优化</h2><h3 id="访问加速">访问加速</h3><h2 id="###">### </h2>]]></content>
-    <summary type="html">
-    <![CDATA[<p>纠结了一晚上，终究是打算从octopress切换到hexo了；平心而论，octopress没有什么不好；总结一下为什么切换：</p>
-<ol>
-<li>默认主题不好看，第三方主题没有想要的好的；自己定制了两天，在mac上效果不错，但是看到windows上渣显示效果瞬间放弃。总结起来，博客清晰简洁，最好不要图片，特别是大图；在高清显示器会很舒服，在渣渣显示器上就是一坨翔；最好使用颜色搭配简单动画；其次是越简洁越好，什么酷炫高大上看多了都是浮夸；</li>
-<li>虽然hexo在github上star比octopress少，但是hexo 提交次数将近三倍，然后octopress几年不更新了，最近要出3.0不知道什么鬼；hexo的主题star比octopress多得多；而且我看到的几个都简洁大方，很是喜欢</li>
-<li>octopress用ruby渲染，hexo用nodejs；以前不知道什么原因不喜欢js，但是学一学也是好的，刚好最近facebook开源了Android版本的react native，借这个机会顺带装一下nodejs也算好；至于ruby，已经会了一门类似的python，但是拓宽一下知识面比较好；另外，时间肯定严重不够。</li>
-</ol>]]>
-    
-    </summary>
-    
-      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
     
   </entry>
   

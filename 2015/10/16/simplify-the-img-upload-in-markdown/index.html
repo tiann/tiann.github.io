@@ -66,7 +66,7 @@
 这么复杂的流程，让人简直没有了插入图片的欲望；但是大量的文字没有图片，必然让人疲惫；
 要是能随便截个图，然后直接粘贴就成了ma">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif">
-<meta property="og:updated_time" content="2015-10-19T02:53:35.000Z">
+<meta property="og:updated_time" content="2015-11-11T02:27:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="简化markdown写作中的贴图流程">
 <meta name="twitter:description" content="markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：
@@ -84,7 +84,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: 'post'
+    sidebar: 'hide'
   };
 </script>
 
@@ -256,7 +256,7 @@
 <p>其中，复制到剪切版以及按下cmd ＋ v复制这个功能，使用的系统命令<code>pbcopy, osascript</code>这体现了python作为胶水语言的强大之处！</p>
 <p>这样，这个workflow就完成了，用系统截图工具<code>cmd + option +ctrl + 4</code>截个图，然后在一个编辑器里面按下<code>cmd + ctrl + v</code>看看是什么效果～</p>
 <p>有Alfred的童鞋可以直接用我打包好了的workflow：<a href="http://yunpan.cn/cFczYRjnJbKVK" target="_blank" rel="external">http://yunpan.cn/cFczYRjnJbKVK</a> （提取码：ff1c）<br>另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。</p>
-<p>更新：使用mac自带的<code>sips</code>工具得到图片的尺寸；然后使用<code>img</code>标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。</p>
+<p>更新：使用mac自带的<code>sips</code>工具得到图片的尺寸；然后使用<code>img</code>标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。<br>更新2: 使用mac通知中心在上传图片失败的时候给出提醒 github地址：<a href="https://github.com/tiann/markdown-img-upload" target="_blank" rel="external">https://github.com/tiann/markdown-img-upload</a></p>
 <h3 id="windows下使用autohotkey">windows下使用autohotkey</h3><p>windows下面没有Alfred，但是有强大的AutoHotKey，出发快捷键以及按下ctrl ＋ v完全可以用这个实现；有兴趣的可以自己实现，非常简单。</p>
 <p>最后，我们看看最终的效果：<br>按下cmd ＋ ctrl ＋ v<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif" alt="效果图"></p>
 </span>
@@ -350,7 +350,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -364,7 +364,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
