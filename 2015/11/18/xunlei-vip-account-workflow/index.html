@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="ideavim," />
+  <meta name="keywords" content="alfred workflow," />
 
 
 
@@ -41,34 +41,24 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～
-快捷键为什么要配置？直接使用不就好！
-这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。
-基于两个前提：
-
-ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
-使用hhkb键盘，没有上下左右，没有F1..Fn系列不方便">
+<meta name="description" content="mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。
+想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除
+先看看效果：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac下Android studio快捷键配置">
-<meta property="og:url" content="http://yoursite.com/2015/10/02/configuration-of-idea-android-studio-in-mac/index.html">
+<meta property="og:title" content="获取迅雷会员工作流">
+<meta property="og:url" content="http://yoursite.com/2015/11/18/xunlei-vip-account-workflow/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～
-快捷键为什么要配置？直接使用不就好！
-这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。
-基于两个前提：
-
-ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
-使用hhkb键盘，没有上下左右，没有F1..Fn系列不方便">
-<meta property="og:updated_time" content="2015-10-19T02:53:35.000Z">
+<meta property="og:description" content="mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。
+想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除
+先看看效果：">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/markdownxunleivip.gif">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1447827801109.png">
+<meta property="og:updated_time" content="2015-11-18T07:01:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac下Android studio快捷键配置">
-<meta name="twitter:description" content="前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～
-快捷键为什么要配置？直接使用不就好！
-这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。
-基于两个前提：
-
-ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
-使用hhkb键盘，没有上下左右，没有F1..Fn系列不方便">
+<meta name="twitter:title" content="获取迅雷会员工作流">
+<meta name="twitter:description" content="mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。
+想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除
+先看看效果：">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -78,7 +68,7 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
   };
 </script>
 
-  <title> mac下Android studio快捷键配置 | Weishu's Notes </title>
+  <title> 获取迅雷会员工作流 | Weishu's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -187,7 +177,7 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
           
           
             
-              mac下Android studio快捷键配置
+              获取迅雷会员工作流
             
           
         </h1>
@@ -196,8 +186,8 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-02T14:17:47+08:00" content="2015-10-02">
-            2015-10-02
+          <time itemprop="dateCreated" datetime="2015-11-18T14:59:44+08:00" content="2015-11-18">
+            2015-11-18
           </time>
         </span>
 
@@ -207,8 +197,8 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/02/configuration-of-idea-android-studio-in-mac/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/02/configuration-of-idea-android-studio-in-mac/" itemprop="commentsCount"></span>
+              <a href="/2015/11/18/xunlei-vip-account-workflow/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/18/xunlei-vip-account-workflow/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -222,37 +212,15 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
       
 
       
-        <span itemprop="articleBody"><p>前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～</p>
-<p>快捷键为什么要配置？直接使用不就好！</p>
-<p>这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。</p>
-<p>基于两个前提：</p>
-<ol>
-<li>ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决</li>
-<li>使用hhkb键盘，没有上下左右，没有<code>F1..Fn</code>系列不方便</li>
-</ol>
+        <span itemprop="articleBody"><p>mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。</p>
+<p>想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。<strong>如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除</strong></p>
+<p>先看看效果：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownxunleivip.gif" alt="效果图" width="721"></p>
 <a id="more"></a>
-<h3 id="ideavim兼容">ideavim兼容</h3><ol>
-<li><code>ctrl + r</code>这个在vim模式下是重做，相对于<code>u</code>(undo)；对于重度vimer必不可少，虽然ide的重做也可以用；这么配置带来一个问题，那就是<code>ctrl + r</code>在IDE里面意思是<code>Run</code>，必须改键；以前习惯<code>shift + F10</code>因为windows这么配置的，但是在hhkb键盘，这个键位要摁三个键：<code>fn,shift,0</code>;二逼地配置为<code>shift + 0</code>之后，发现怎么也打不出<code>)</code>了；最终改为<strong><code>option + r</code></strong>很方便，也好记（run），不冲突。</li>
-<li><code>ctrl + a</code> 这个在Vim里面意思是光标所在的数字加一；IDE里面意思都是移到行首，等同于命令行模式下的<code>^</code>，既然选择Vim就用vim的移动方式；在插入模式下要多按键，为了避免换个IDE就傻缺，用Vim；另外IDE 的<code>cmd + ⬅️</code>也有这个意思。</li>
-<li><code>ctrl + b</code> IDE是往左移动光标；VIM是向上翻页；写代码要频繁用翻页，说明你得重构了；选IDE。<code>ctrl + f</code>同理（向下翻页）</li>
-<li><code>ctrl + e</code>  在vim里面意思是光标不动，屏幕滚动；在IDE里面是移到行尾，道理同<code>ctrl + a</code>选VIM；<code>cmd + ➡️</code>可以使用；</li>
-<li><code>ctrl + o</code> 在VIM里面意思是：在插入模式下执行命令然后回到插入模式；太有用了；比如你在插入模式，在括号里面写完了，想去行尾加个分号结束，咋办？用上下左右光标？No！你可以<code>ctrl + o A</code>多么优雅！不管IDE什么意思，必须选择Vim。IDE的意思是<code>override</code>这个必须用的，没办法改了；改成<code>ctrl + i</code>。</li>
-<li><code>ctrl + g</code> 在IDE里面在查找里面可以把下一个单词加入选择列表；用的情况比较少；在VIM里面，意思有两个：命令模式下等同于<code>:f</code>显示当前文件路径以及行数；插入模式下是一个前缀 ；<code>ctrl g k</code>等同于<code>ctrl + o gk</code> 所以还不错；选Vim。</li>
-<li><code>ctrl + i</code> IDE是实现方法（实际上改成了ctrl ＋ o的意思，不用担心这个包含前者。），很有用；VIm是光标前插入空格；选IDE；</li>
-<li><code>ctrl + p</code>以及<code>ctrl + n</code>这个是vim的自动完成；在IDE前面没啥用；IDE里面意思是光标移动，选IDE</li>
-<li><code>ctrl + T</code> 在IDE里面这个功能太好用了；重构用的；必须IDE</li>
-<li><code>ctrl + v</code> IDE里面是cvs的操作；好用；在Vim里面是进入可视化选择模式，可很有用，但是放心 还有一个快捷键<code>ctrl + q</code>是一样的功能；这个是为了兼容windows的；因为windows这个是粘贴～</li>
-</ol>
-<p>好了，vim兼容就这么多。</p>
-<p>然后配置一些HHKB不好按的键，比如Fn系列；没有这个键盘的话自行略过（真心推荐）；</p>
-<h3 id="HHKB修改">HHKB修改</h3><ol>
-<li><code>cmd + shift + F12</code> ：隐藏所有工具栏，在需要安静写代码的时候很有用；我很常用；改成<code>ctrl + option + (加号)</code> 因为这个➕在hhkb里面对应F12；</li>
-<li><code>cmd + F12</code> ： 显示文件的目录结构；太长用了，在类里面导航全靠这个；改为：<code>option + (加号)</code> 这个比上面那个常用；因此这样。</li>
-<li><code>option + F7</code> : 查找谁用了它；超有用，没有之一；添加额外选项：<code>option + 7</code></li>
-<li><code>option + cmd + F7</code>: 类似上面的，但是在一个弹出框显示；个人觉得比上面那个好用；上面那个单独的窗口导致有时候切换有可能需要鼠标；不方便，考虑这两个功能对换键位；暂时加上<code>option + cmd + 7</code></li>
-<li><code>option + ⬆️</code>：类似windows下面的<code>ctrl + w</code> IDEA最有用的特性之一。但是在HHKB按方向键要两个键，改一下；另外，通常选择之后是复制，所以，最好要用cmd组合；索性改成<code>cmd + w</code>原来这个意思是关闭标签，没啥用；一般不自动关闭的。</li>
-</ol>
-<p>另外一些需要用到Fn系列键位的，可以自行配置一下。</p>
+<h2 id="获取免费迅雷账号的地址">获取免费迅雷账号的地址</h2><p>随便百度一下，就能找到一堆免费迅雷会员分享的地址，具体就不指出了；然后把每天最新的账号分享信息抓取出来。</p>
+<p>这里使用python，可以用<code>pyquery</code>来解析网页，然后一个正则匹配就拿到了结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys, urllib, re</span><br><span class="line"><span class="keyword">from</span> pyquery <span class="keyword">import</span> PyQuery <span class="keyword">as</span> pq</span><br><span class="line"><span class="keyword">from</span> workflow <span class="keyword">import</span> Workflow</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_url = <span class="string">'http://www.xunleihuiyuan.net/'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(wf)</span>:</span></span><br><span class="line">    args = wf.args</span><br><span class="line"></span><br><span class="line">    results = _get_from_web()</span><br><span class="line">    map(<span class="keyword">lambda</span> (x,y):wf.add_item(<span class="string">u'账号:%s'</span> % x, <span class="string">u'密码:%s'</span> % y, arg=<span class="string">u'%s %s'</span> %(x,y), valid=<span class="keyword">True</span>), results)</span><br><span class="line">    wf.send_feedback()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_today_url</span><span class="params">()</span>:</span></span><br><span class="line">    home = urllib.urlopen(_url).read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">return</span> pq(home)(<span class="string">'.cate1 .post-title a'</span>)[<span class="number">0</span>].get(<span class="string">'href'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_from_web</span><span class="params">()</span>:</span></span><br><span class="line">    page = urllib.urlopen(_get_today_url()).read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    results = r = pq(page)(<span class="string">'.formattext div'</span>).text()</span><br><span class="line">    <span class="keyword">return</span> re.findall(<span class="string">ur'\u8d26\u53f7(\S+)\u5bc6(\w+)'</span>, results)</span><br></pre></td></tr></table></figure></p>
+<h2 id="用Alfred_workflow展示出来">用Alfred workflow展示出来</h2><p>使用python的alfred workflow sdk的话非常简单，文档在<a href="http://alfredworkflow.readthedocs.org/en/develop/index.html" target="_blank" rel="external">这里</a></p>
+<p>这里要处理的一个问题是，账号和密码如何简单滴传递出来；一起放在剪切版肯定不太合适。幸好alfred自带剪切版历史的功能，我们分别两次把账号和密码复制到剪切版，要使用的时候，激活<code>cmd + option + c</code>然后从剪切版历史里面选择账号密码即可：效果如下：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1447827801109.png" width="514"><br>然后，按下<code>cmd + 2</code>得到账号，<code>cmd + 3</code>得到密码！具体代码比较简单：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import subprocess,<span class="tag">time</span></span><br><span class="line">query = <span class="string">"&#123;query&#125;"</span></span><br><span class="line">account, pwd = query.<span class="function"><span class="title">split</span><span class="params">()</span></span></span><br><span class="line">subprocess.<span class="function"><span class="title">call</span><span class="params">(<span class="string">"echo -n %s | pbcopy"</span> % account, shell=True)</span></span></span><br><span class="line"><span class="tag">time</span>.<span class="function"><span class="title">sleep</span><span class="params">(<span class="number">0.3</span>)</span></span></span><br><span class="line">subprocess.<span class="function"><span class="title">call</span><span class="params">(<span class="string">"echo -n %s | pbcopy"</span> % pwd, shell=True)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>这样，一个简单的迅雷会员获取工作流就完成了！</p>
 </span>
       
     </div>
@@ -261,7 +229,7 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
       
         <div class="post-tags">
           
-            <a href="/tags/ideavim/" rel="tag">#ideavim</a>
+            <a href="/tags/alfred-workflow/" rel="tag">#alfred workflow</a>
           
         </div>
       
@@ -270,13 +238,11 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/08/problems-when-config-react-native-env/" rel="prev">react-native环境搭建的正确姿势</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/23/Xfermode-in-android/" rel="next">Xfermode in android</a>
+              <a href="/2015/11/10/fast-split-in-android/" rel="next">Java高效分割字符串</a>
             
           </div>
         </div>
@@ -301,8 +267,8 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/02/configuration-of-idea-android-studio-in-mac/"
-                   data-title="mac下Android studio快捷键配置" data-url="http://yoursite.com/2015/10/02/configuration-of-idea-android-studio-in-mac/">
+              <div class="ds-thread" data-thread-key="2015/11/18/xunlei-vip-account-workflow/"
+                   data-title="获取迅雷会员工作流" data-url="http://yoursite.com/2015/11/18/xunlei-vip-account-workflow/">
               </div>
             
           </div>
@@ -397,7 +363,7 @@ ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ideavim兼容"><span class="nav-number">1.</span> <span class="nav-text">ideavim兼容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HHKB修改"><span class="nav-number">2.</span> <span class="nav-text">HHKB修改</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取免费迅雷账号的地址"><span class="nav-number">1.</span> <span class="nav-text">获取免费迅雷账号的地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用Alfred_workflow展示出来"><span class="nav-number">2.</span> <span class="nav-text">用Alfred workflow展示出来</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
