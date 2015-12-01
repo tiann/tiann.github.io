@@ -16,6 +16,13 @@ markdown写作的时候，图片插入是一件比较麻烦的事情。常见的
 要是能**随便截个图，然后直接粘贴就成了markdown格式**就好了；自然是能够做到！懒就是生产力～
 <!-- more -->
 
+## 效果预览
+首先看看最终达到的效果：
+<img alt="效果预览" src="http://7sbqce.com1.z0.glb.clouddn.com/markdownmarkdownimg.gif" width="660" />
+
+第一步，截图；第二步，粘贴；done!
+
+详见github介绍：https://github.com/tiann/markdown-img-upload
 ## 图片上传
 ### 准备工作
 首先要做的是，简化上传图片到图床这个手工的过程，甚至连拖动图片到浏览器插件都省略；这里就自然少不了使用图床的SDK，用代码来帮助我们完成上传操作；
@@ -124,7 +131,6 @@ else:
 
 这样，这个workflow就完成了，用系统截图工具`cmd + option +ctrl + 4`截个图，然后在一个编辑器里面按下`cmd + ctrl + v`看看是什么效果～
 
-有Alfred的童鞋可以直接用我打包好了的workflow：http://yunpan.cn/cFczYRjnJbKVK （提取码：ff1c）
 另外有个问题是，mac的retina屏幕截图如果直接使用的话，会是原来的两倍大，我用了七牛的API将图片缩小了一半，但是质量却不太好，不知道有什么办法。
 
 更新：使用mac自带的`sips`工具得到图片的尺寸；然后使用`img`标签替代markdown格式的图片；然后使用css属性控制这个图片的宽度。
@@ -132,11 +138,6 @@ else:
 
 ### windows下使用autohotkey
 windows下面没有Alfred，但是有强大的AutoHotKey，出发快捷键以及按下ctrl ＋ v完全可以用这个实现；有兴趣的可以自己实现，非常简单。
-
-最后，我们看看最终的效果：
-按下cmd ＋ ctrl ＋ v
-![效果图](http://7sbqce.com1.z0.glb.clouddn.com/markdownUntitled.gif)
-
 
 [1]: https://portal.qiniu.com/signup?code=3ldifp9oti442
 [2]: https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSPasteboard_Class/index.html#//apple_ref/occ/instm/NSPasteboard/dataForType
