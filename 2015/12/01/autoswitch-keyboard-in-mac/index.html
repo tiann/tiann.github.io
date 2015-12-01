@@ -1,0 +1,667 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="You deserve a better life." />
+
+
+
+  <meta name="keywords" content="mac," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么鼠须管了，狼厂和企鹅都做的不错。
+不过依然有一个问题没有完全解决：不同程序之间输入的自动切换。
+相信大家一定有切换到item2输入两个命令发现是中文然后按cmd + space切换的尴尬；另外如果你如果使用vi或者emacs，那么就更蛋疼了。造成这种状况的根本原因在于：输入法的状态是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mac下自动切换输入法">
+<meta property="og:url" content="http://yoursite.com/2015/12/01/autoswitch-keyboard-in-mac/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么鼠须管了，狼厂和企鹅都做的不错。
+不过依然有一个问题没有完全解决：不同程序之间输入的自动切换。
+相信大家一定有切换到item2输入两个命令发现是中文然后按cmd + space切换的尴尬；另外如果你如果使用vi或者emacs，那么就更蛋疼了。造成这种状况的根本原因在于：输入法的状态是">
+<meta property="og:updated_time" content="2015-12-01T05:27:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mac下自动切换输入法">
+<meta name="twitter:description" content="长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么鼠须管了，狼厂和企鹅都做的不错。
+不过依然有一个问题没有完全解决：不同程序之间输入的自动切换。
+相信大家一定有切换到item2输入两个命令发现是中文然后按cmd + space切换的尴尬；另外如果你如果使用vi或者emacs，那么就更蛋疼了。造成这种状况的根本原因在于：输入法的状态是">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> mac下自动切换输入法 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              mac下自动切换输入法
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-01T10:17:29+08:00" content="2015-12-01">
+            2015-12-01
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/01/autoswitch-keyboard-in-mac/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/01/autoswitch-keyboard-in-mac/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么<strong>鼠须管</strong>了，狼厂和企鹅都做的不错。</p>
+<p>不过依然有一个问题没有完全解决：不同程序之间输入的自动切换。</p>
+<p>相信大家一定有切换到<code>item2</code>输入两个命令发现是中文然后按<code>cmd + space</code>切换的尴尬；另外如果你如果使用vi或者emacs，那么就更蛋疼了。造成这种状况的根本原因在于：<strong>输入法的状态是混乱的</strong>，我无法明白现在自己处于哪一种输入环境，除非我开始打字或者看右上角输入法的图标。我希望<code>item2</code>,<code>Intellij IDEA</code>,<code>Alfred2</code><strong>永远</strong>是英文输入状态，除非手动切换；其他的程序比如chrome浏览器，邮件客户端保持正常。</p>
+<p>打个比方，使用<code>sublime</code>写代码，大多数情况下肯定是英文输入状态，写注释的时候可能手动切换到中文；但是这里有个问题，这时候如果我切换到其他程序，然后改变了输入的状态，再次回到<code>sublime</code>，fuck!怎么又成了中文!</p>
+<p>目前解决方案有如下方式：</p>
+<ol>
+<li>mac系统自带的设置-&gt; 键盘 -&gt; 输入源 -&gt; 自动使用文稿的输入源</li>
+<li>一些输入法的类似<em>安静模式</em>的功能</li>
+</ol>
+<a id="more"></a>
+<p>第一种方式，意思就是不同的程序保持独立的输入状态，不会出现你在另外一个程序切换了输入法的时候再次回来输入法状态就变了。这个开关很有用，我使用了一段时间，发现还是怪怪的，有时候并不符合预期，但是具体场景也搞不明白，反正是一头雾水，有时候依然会陷入困惑的状态。</p>
+<p>第二种方式很有意思，应该可以满足很多非程序员的需求。这个<em>安静模式</em>，打个比方，鼠须管输入法；这种输入法其实有几种输入模式，如果对于<code>sublime</code>开启安静模式，那么在进入<code>sublime</code>程序的时候，会自动切换到英文输入模式；nice！不过问题就是：如果要切换到中文模式，需要按<code>ctrl</code>或者<code>shift</code>。如果使用一些IDE的话，肯定各种快捷键用的飞起，怎么少的了按<code>ctrl</code>和<code>shift</code>，这时候问题就来了，如果我们一不小心在使用某些快捷键的时候触发了这个输入法的模式切换功能，那么就蛋疼了：我们需要不停滴按<code>shift</code>切换确保自己处于正确的状态。更糟糕的是，如果你发现自己处于鼠须管的英文输入模式，想使用中文，然后按了<code>cmd + space</code> 切换，你有可能会切换到系统的英文输入法，打个字发现依然是英文！fuck！你不信邪，以为是没有按到，再猛敲几次<code>cmd + space</code>，最后你自己处于那个状态就晕了。</p>
+<h2 id="怎么正确配置输入法">怎么正确配置输入法</h2><p>经过这些折腾之后，可以得到输入法的这么几条最佳实践：</p>
+<ol>
+<li>最基本的原则是要很方便滴知道自己处于哪一种输入状态。如果任何时候清楚这个，那么就是简单的切换问题了。</li>
+<li>最好不要使用一个输入的两种模式，并使用<code>shift</code>或者<code>ctrl</code>切换；如上文，某些情况会陷入极度混乱，最好在输入法之间切换，模式简单。</li>
+<li>所有程序输入法状态应该有一个恒定的初始态，每次你重新进入这个程序，就会回到初始状态。</li>
+</ol>
+<p>为什么需要一个恒定的初始状态呢？为了明确自己处于哪一种输入状态，只需要在每次进入这个程序的时候，不管之前做过什么，它的状态是确定的，姑且叫它初始态；然后基于原则2，每次你希望切换的时候<code>cmd + space</code>一下，需要的时候换回来，如果你去了别的程序再回来，状态重置为初始态。</p>
+<p>好了分析了这么多，其实要解决的问题就是3一个，我们写一段小程序。</p>
+<h2 id="切换输入法实现">切换输入法实现</h2><p>mac下如果使用objc或者swift切换输入法很简单，Apple提供了很详细的Text Input Service文档（现在这个文档403了，可以使用google的cache访问)；我希望使用python来调用这些接口，很遗憾的是，<code>pyobjc</code>没有封装<code>TIS</code>系列函数，手动使用<code>ctypes</code>模块来wrap一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"><span class="keyword">import</span> ctypes.util</span><br><span class="line"><span class="keyword">import</span> objc</span><br><span class="line"><span class="keyword">import</span> CoreFoundation</span><br><span class="line"></span><br><span class="line">_objc = ctypes.PyDLL(objc._objc.__file__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># PyObject *PyObjCObject_New(id objc_object, int flags, int retain)</span></span><br><span class="line">_objc.PyObjCObject_New.restype = ctypes.py_object</span><br><span class="line">_objc.PyObjCObject_New.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">objc_object</span><span class="params">(id)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> _objc.PyObjCObject_New(id, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># kTISPropertyLocalizedName</span></span><br><span class="line">kTISPropertyUnicodeKeyLayoutData_p = ctypes.c_void_p.in_dll(carbon, <span class="string">'kTISPropertyInputSourceIsEnabled'</span>)</span><br><span class="line">kTISPropertyInputSourceLanguages_p = ctypes.c_void_p.in_dll(carbon, <span class="string">'kTISPropertyInputSourceLanguages'</span>)</span><br><span class="line">kTISPropertyInputSourceType_p = ctypes.c_void_p.in_dll(carbon, <span class="string">'kTISPropertyInputSourceType'</span>)</span><br><span class="line">kTISPropertyLocalizedName_p = ctypes.c_void_p.in_dll(carbon, <span class="string">'kTISPropertyLocalizedName'</span>)</span><br><span class="line"><span class="comment"># kTISPropertyInputSourceLanguages_p = ctypes.c_void_p.in_dll(carbon, 'kTISPropertyInputSourceLanguages')</span></span><br><span class="line"></span><br><span class="line">kTISPropertyInputSourceCategory = objc_object(ctypes.c_void_p.in_dll(carbon, <span class="string">'kTISPropertyInputSourceCategory'</span>))</span><br><span class="line">kTISCategoryKeyboardInputSource = objc_object(ctypes.c_void_p.in_dll(carbon, <span class="string">'kTISCategoryKeyboardInputSource'</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># TISCreateInputSourceList</span></span><br><span class="line">carbon.TISCreateInputSourceList.restype = ctypes.c_void_p</span><br><span class="line">carbon.TISCreateInputSourceList.argtypes = [ctypes.c_void_p, ctypes.c_bool]</span><br><span class="line"></span><br><span class="line">carbon.TISSelectInputSource.restype = ctypes.c_void_p</span><br><span class="line">carbon.TISSelectInputSource.argtypes = [ctypes.c_void_p]</span><br><span class="line"></span><br><span class="line">carbon.TISGetInputSourceProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p]</span><br><span class="line">carbon.TISGetInputSourceProperty.restype = ctypes.c_void_p</span><br><span class="line"></span><br><span class="line">carbon.TISCopyInputSourceForLanguage.argtypes = [ctypes.c_void_p]</span><br><span class="line">carbon.TISCopyInputSourceForLanguage.restype = ctypes.c_void_p</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_avaliable_languages</span><span class="params">()</span>:</span></span><br><span class="line">    single_langs = filter(<span class="keyword">lambda</span> x: x.count() == <span class="number">1</span>, \</span><br><span class="line">        map(<span class="keyword">lambda</span> x: objc_object(carbon.TISGetInputSourceProperty(CoreFoundation.CFArrayGetValueAtIndex(objc_object(s), x).__c_void_p__(), kTISPropertyInputSourceLanguages_p)), \</span><br><span class="line">            range(CoreFoundation.CFArrayGetCount(objc_object(carbon.TISCreateInputSourceList(<span class="keyword">None</span>, <span class="number">0</span>))))))</span><br><span class="line">    res = set()</span><br><span class="line">    map(<span class="keyword">lambda</span> y: res.add(y[<span class="number">0</span>]), single_langs)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_kb</span><span class="params">(lang)</span>:</span></span><br><span class="line">    cur = carbon.TISCopyInputSourceForLanguage(CoreFoundation.CFSTR(lang).__c_void_p__())</span><br><span class="line">    carbon.TISSelectInputSource(cur)</span><br></pre></td></tr></table></figure>
+<p>切换输入法主要是<code>TISSelectInputSource</code>方法，简单滴调用这个方法就可以了。使用<code>ctypes</code>包装这个方法有两个地方可以借鉴：</p>
+<h3 id="pyobjc_转ctypes兼容类型">pyobjc 转ctypes兼容类型</h3><p>pyobjc提供的对象是不能直接传递给ctypes要包装的函数使用的，需要转换成可以识别的类型。每一个pyobjc提供的对象都有一个<code>__c_void_p__()</code>方法，对它调用这个方法就可以把这个对象转换成一个<code>c_void_p</code>类型</p>
+<h3 id="ctypes指针构造出pyobjc对象">ctypes指针构造出pyobjc对象</h3><p>简单包装一下<code>objc</code>runtime里面的new方法，然后可以直接根据指针new一个对象出来。正如以上代码的<code>PyObjCObject_New</code>。（新版的pyobjc模块貌似已经包装了这个方法）</p>
+<p>PS：本人第一次包装objc接口，对于objc以及pyobjc均不熟悉，可能有更优雅的方法，请批评指正。</p>
+<h2 id="如何自动切换？">如何自动切换？</h2><p>要想实现输入法自动切换，自然是需要在某程序切换到前台的时候，帮它更改一下输入法的状态；如果知道一个程序是不是在前台呢？最笨的办法当然就是轮询，但是不够优雅。幸运的是，新的mac系统提供了这个回调。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observer</span><span class="params">(NSObject)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_</span><span class="params">(self, noti)</span>:</span></span><br><span class="line">        info = noti.userInfo().objectForKey_(NSWorkspaceApplicationKey)</span><br><span class="line">        bundleIdentifier = info.bundleIdentifier()</span><br><span class="line">        <span class="keyword">if</span> bundleIdentifier <span class="keyword">in</span> ignore_list:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"found: %s active"</span> % bundleIdentifier</span><br><span class="line">            select_kb(<span class="string">u'en'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    nc = NSWorkspace.sharedWorkspace().notificationCenter()</span><br><span class="line">    observer = Observer.new()</span><br><span class="line">    nc.addObserver_selector_name_object_(</span><br><span class="line">        observer,</span><br><span class="line">        <span class="string">"handle:"</span>,</span><br><span class="line">        NSWorkspaceDidActivateApplicationNotification,</span><br><span class="line">        <span class="keyword">None</span></span><br><span class="line">    )</span><br><span class="line">    AppHelper.runConsoleEventLoop(installInterrupt=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>这一段代码可以拿到最前台运行的application，而且是回调通知。有两个地方需要注意：</p>
+<ol>
+<li>Observer对象需要先new出来，（我直接在函数参数里面调用，直接就是segement fault，不知道原因）不能使用python的构造对象方式。需要调用new方法。</li>
+<li>需要使用AppHelper.runConsoleEventLoop 才能接收到事件，至于为什么见<a href="http://stackoverflow.com/questions/8348627/what-is-the-correct-way-to-identify-the-currently-active-application-in-osx-10" target="_blank" rel="external">参考</a>。</li>
+</ol>
+<h2 id="成果">成果</h2><p>好了，把上面两段代码整合起来；就能实现每次在打开某些程序的时候，自动切换到某个输入法了！</p>
+<p>每次我切换到<code>IDEA</code>敲代码，输入法状态永远都是英文；就算我切换到其他回个邮件，发个消息切换到了中文，再次回来依然是英文；我手动切换到了中文被打断了去做了别的事情，再次回来，依然是英文状态。我永远都知道自己处于什么输入模式，如果不满足条件，<code>cmd + space</code> 切换即可。</p>
+<p>最后，你可以使用<code>supervisor</code>之类的东西把它加入开机自动运行，这样，困惑已久的输入法问题终于得到解决。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mac/" rel="tag">#mac</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/18/xunlei-vip-account-workflow/" rel="next">获取迅雷会员工作流</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/12/01/autoswitch-keyboard-in-mac/"
+                   data-title="mac下自动切换输入法" data-url="http://yoursite.com/2015/12/01/autoswitch-keyboard-in-mac/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">You deserve a better life.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么正确配置输入法"><span class="nav-number">1.</span> <span class="nav-text">怎么正确配置输入法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换输入法实现"><span class="nav-number">2.</span> <span class="nav-text">切换输入法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pyobjc_转ctypes兼容类型"><span class="nav-number">2.1.</span> <span class="nav-text">pyobjc 转ctypes兼容类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ctypes指针构造出pyobjc对象"><span class="nav-number">2.2.</span> <span class="nav-text">ctypes指针构造出pyobjc对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何自动切换？"><span class="nav-number">3.</span> <span class="nav-text">如何自动切换？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成果"><span class="nav-number">4.</span> <span class="nav-text">成果</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
