@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-12-01T05:27:56.000Z</updated>
+  <updated>2015-12-02T06:53:30.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://yoursite.com/2015/12/01/autoswitch-keyboard-in-mac/"/>
     <id>http://yoursite.com/2015/12/01/autoswitch-keyboard-in-mac/</id>
     <published>2015-12-01T02:17:29.000Z</published>
-    <updated>2015-12-01T05:27:56.000Z</updated>
+    <updated>2015-12-02T06:53:30.000Z</updated>
     <content type="html"><![CDATA[<p>长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么<strong>鼠须管</strong>了，狼厂和企鹅都做的不错。</p>
 <p>不过依然有一个问题没有完全解决：不同程序之间输入的自动切换。</p>
 <p>相信大家一定有切换到<code>item2</code>输入两个命令发现是中文然后按<code>cmd + space</code>切换的尴尬；另外如果你如果使用vi或者emacs，那么就更蛋疼了。造成这种状况的根本原因在于：<strong>输入法的状态是混乱的</strong>，我无法明白现在自己处于哪一种输入环境，除非我开始打字或者看右上角输入法的图标。我希望<code>item2</code>,<code>Intellij IDEA</code>,<code>Alfred2</code><strong>永远</strong>是英文输入状态，除非手动切换；其他的程序比如chrome浏览器，邮件客户端保持正常。</p>
@@ -53,7 +53,7 @@
 <li>Observer对象需要先new出来，（我直接在函数参数里面调用，直接就是segement fault，不知道原因）不能使用python的构造对象方式。需要调用new方法。</li>
 <li>需要使用AppHelper.runConsoleEventLoop 才能接收到事件，至于为什么见<a href="http://stackoverflow.com/questions/8348627/what-is-the-correct-way-to-identify-the-currently-active-application-in-osx-10" target="_blank" rel="external">参考</a>。</li>
 </ol>
-<h2 id="成果">成果</h2><p>好了，把上面两段代码整合起来；就能实现每次在打开某些程序的时候，自动切换到某个输入法了！</p>
+<h2 id="成果">成果</h2><p>好了，把上面两段代码整合起来；就能实现每次在打开某些程序的时候，自动切换到某个输入法了！完整的代码见<a href="https://gist.github.com/tiann/f85e89bef4b6e9b83f2a" target="_blank" rel="external">auto_switch_kb.py</a></p>
 <p>每次我切换到<code>IDEA</code>敲代码，输入法状态永远都是英文；就算我切换到其他回个邮件，发个消息切换到了中文，再次回来依然是英文；我手动切换到了中文被打断了去做了别的事情，再次回来，依然是英文状态。我永远都知道自己处于什么输入模式，如果不满足条件，<code>cmd + space</code> 切换即可。</p>
 <p>最后，你可以使用<code>supervisor</code>之类的东西把它加入开机自动运行，这样，困惑已久的输入法问题终于得到解决。</p>
 ]]></content>
