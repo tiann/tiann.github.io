@@ -15,13 +15,13 @@ tags:
 ```java
 // LogUtil.java
 public class LogUtil {
-	private static boolean DEBUG = true;// 发布的时候修改为false
-	
-	public static void d(String tag, String msg) {
-		if (DEBUG) android.util.Log.d(TAG, msg);
-	}
+    private static boolean DEBUG = true;// 发布的时候修改为false
+    
+    public static void d(String tag, String msg) {
+        if (DEBUG) android.util.Log.d(TAG, msg);
+    }
 
-	// 其他debug方法
+    // 其他debug方法
 }
 ```
 接下来看一个真实的例子，国外的一个apk，名字叫做powerclean；包名：com.lionmobi.powerclean;我们安装这个包；发现很正常，没有任何日志输出；然后我们逆向这个apk；随便翻看几个类，发现很多地方有类似日志输出：
@@ -136,7 +136,7 @@ public class x {
 事实上，我们也可以使用一些别的工具，来实现这个类似的功能；那就是`proguard`；提到这个工具，很多认只是觉得他是一个代码混淆的工具，实际上，**它还可以帮你剔除无用代码！**什么样的代码是无用代码呢？
 ```java
 if (true) {
-	// statement;
+    // statement;
 }
 ```
 类似于这样，静态编译的时候被认为“永远不会执行的代码”，就被认为是无用代码，会被这个工具直接优化掉，生成的class文件里面，这个if语句直接就没有了。这个功能，完美符合我们的需求；我们只需要把输出日志的代码用这样的if语句包围起来，然后release的时候肯定会用这个工具混淆；然后，在release版本里面，所有的输出日志的代码全部都没有了！不会像以前一样，留下一个影子，只是不做事。
@@ -147,7 +147,7 @@ if (true) {
 private static final boolean DEBUG = true; // 必须是static final 也就是常量，这样才能在编译器优化；删除if块
 
 if (DEBUG) {
-	android.util.Log.d(TAG, "msg to print");
+    android.util.Log.d(TAG, "msg to print");
 }
 ```
 然后，使用proguard优化代码即可。
@@ -160,11 +160,11 @@ if (DEBUG) {
 假设我们使用了静态常量代码块以及proguard优化代码的技术；但是依然采用上面的日志类的技术，会发生什么呢？
 ```java
 public class LogUtil {
-	private static final boolean DEBUG = false;
+    private static final boolean DEBUG = false;
 
-	public static void d(String tag, String msg) {
-		if (DEBUG) android.util.Log.d(tag, msg);
-	}
+    public static void d(String tag, String msg) {
+        if (DEBUG) android.util.Log.d(tag, msg);
+    }
 }
 ```
 我写了一个demo，自己打包然后反编译，得到这个日志类如下（为了方便看，没有混淆）：
@@ -188,7 +188,7 @@ public class LogUtil {
 这个`LogUtil.d`的调用，无异于掩耳盗铃；虽然破解者没办法让`android.util.Log`这个类输出任何日志，但是你这里的这个调用还是告诉了别人你在干什么；所以，要屏蔽日志的输出，必须使用if代码块直接包含要被剔除的日志。上面的那个日志类，要被优化掉，那就是：
 ```java
 if (DEBUG) {
-	LogUtil.d(TAG, "msg");
+    LogUtil.d(TAG, "msg");
 }
 ```
 这里，不是多此一举吗，写一个日志类就是想不想重复地写`if (DEBUG) `，这里为了使这一句隐藏，还是逃不掉；但是很抱歉，逃得了和尚逃不了庙，这种方法没办法做到完全隐藏信息；**必须抛弃日志类包裹日志代码的做法！**
