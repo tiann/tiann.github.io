@@ -254,7 +254,13 @@ Cool！现在我们可以抛弃痛苦的嵌套非空检测了，使用Optional�
 ## 译后感
 嵌套的非空检测确实是个很头大的问题，虽然有一些静态代码检测工具可以检测到这些异常，但是这样无聊的检测代码很是让人失望。Java 8引入的`Optional`确实可以部分缓解这部分问题；但是依然存在局限性，比如，如果某个特定的方法调用出了别的运行时异常怎么办？对于?Haskell Maybe Monad只吸收了一部分，不过已经很不错了，期待什么时候能引入Grovvy的`?.`操作符，在处理空指针问题上，`?.`更加简洁有力。
 
-`Optional`虽好，但是Java 8目前并不普及，Android 就不用想了。虽然有[retrolambda][10]项目支持在Java 6里面使用lambda，但是它对默认方法以及接口的静态方法支持有限，对于Optional支持也有限。
+`Optional`虽好，但是Java 8目前并不普及，Android 就不用想了。虽然有[retrolambda][10]项目支持在Java 6里面使用lambda，但是它更多地是提供了语法糖：
+1. lambda的实现使用的是匿名内部类而不是`invokedynamic`, 见[深入探索Java 8 Lambda表达式][11]
+2. 方法引用是lambda的语法糖，实现相同
+3. 接口默认方法实际上给接口生成了一个抽象方法，然后给所有接口的实现者添加了这个默认实现
+4. 接口静态方法，实际上把静态方法放在另外一个类里面，然后把所有对接口静态方法的调用更换为对新生成类里面方法的调用
+
+鉴于以上种种原因，在生产环境基本上不可能使用*retrolambda*了，大型系统还是老实一点吧。
 
 虽然Grava项目也有一个`Optional`类，但是没有函数式接口，我们所能做的不过是把`if (obj == null)`替换为`if (opt.isPresend())`罢了；虽说能提高类型安全性，但是还是得写一堆shit一样的嵌套检测。
 
@@ -273,13 +279,14 @@ Raoul-Gabriel Urma (@raoulUK) is currently completing a PhD in computer science 
 
 **原文**：http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html
 
-[1]: http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175761.gif
-[2]: http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175762.gif
+[1]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-1.gif
+[2]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-2.gif
 [3]: http://www.oracle.com/technetwork/articles/java/architect-lambdas-part1-2080972.html
 [4]: http://www.oraclejavamagazine-digital.com/javamagazine_open/20140304#pg51
-[5]: http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175763.gif
-[6]: http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175764.gif
+[5]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-3.gif
+[6]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-4.gif
 [7]: http://www.manning.com/urma/
 [8]: http://www.slideshare.net/mariofusco/monadic-java
 [9]: http://www.oraclejavamagazine-digital.com/javamagazine_open/20140304#pg51
 [10]: https://github.com/orfjackal/retrolambda
+[11]: http://www.infoq.com/cn/articles/Java-8-Lambdas-A-Peek-Under-the-Hood
