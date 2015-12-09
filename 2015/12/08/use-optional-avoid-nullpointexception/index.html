@@ -51,7 +51,7 @@
 <meta property="og:image" content="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175762.gif">
 <meta property="og:image" content="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175763.gif">
 <meta property="og:image" content="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175764.gif">
-<meta property="og:updated_time" content="2015-12-08T13:25:22.000Z">
+<meta property="og:updated_time" content="2015-12-09T02:42:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译]厌倦了NullPointException？Optional拯救你！">
 <meta name="twitter:description" content="I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.—Tony H">
@@ -306,7 +306,14 @@
 <p>Cool！现在我们可以抛弃痛苦的嵌套非空检测了，使用Optional可以写出声明式的，更可读的代码，并且永远不会有空指针异常！</p>
 <h2 id="总结">总结</h2><p>本文介绍了如何使用Java SE 8的<code>java.util.Optional&lt;T&gt;</code>。<code>Optional</code>的目的不是替换你代码里面的每个<code>null</code>，它可以帮助你设计出更好的API，使用者通过方法签名就能知道是否有一个可选的值。另外，Optional通过强迫主动处理空指针情况，可以保护代码不出现<code>NullPointException</code>。</p>
 <h2 id="译后感">译后感</h2><p>嵌套的非空检测确实是个很头大的问题，虽然有一些静态代码检测工具可以检测到这些异常，但是这样无聊的检测代码很是让人失望。Java 8引入的<code>Optional</code>确实可以部分缓解这部分问题；但是依然存在局限性，比如，如果某个特定的方法调用出了别的运行时异常怎么办？对于?Haskell Maybe Monad只吸收了一部分，不过已经很不错了，期待什么时候能引入Grovvy的<code>?.</code>操作符，在处理空指针问题上，<code>?.</code>更加简洁有力。</p>
-<p><code>Optional</code>虽好，但是Java 8目前并不普及，Android 就不用想了。虽然有<a href="https://github.com/orfjackal/retrolambda" target="_blank" rel="external">retrolambda</a>项目支持在Java 6里面使用lambda，但是它对默认方法以及接口的静态方法支持有限，对于Optional支持也有限。</p>
+<p><code>Optional</code>虽好，但是Java 8目前并不普及，Android 就不用想了。虽然有<a href="https://github.com/orfjackal/retrolambda" target="_blank" rel="external">retrolambda</a>项目支持在Java 6里面使用lambda，但是它更多地是提供了语法糖：</p>
+<ol>
+<li>lambda的实现使用的是匿名内部类而不是<code>invokedynamic</code>, 见<a href="http://www.infoq.com/cn/articles/Java-8-Lambdas-A-Peek-Under-the-Hood" target="_blank" rel="external">深入探索Java 8 Lambda表达式</a></li>
+<li>方法引用是lambda的语法糖，实现相同</li>
+<li>接口默认方法实际上给接口生成了一个抽象方法，然后给所有接口的实现者添加了这个默认实现</li>
+<li>接口静态方法，实际上把静态方法放在另外一个类里面，然后把所有对接口静态方法的调用更换为对新生成类里面方法的调用</li>
+</ol>
+<p>鉴于以上种种原因，在生产环境基本上不可能使用<em>retrolambda</em>了，大型系统还是老实一点吧。</p>
 <p>虽然Grava项目也有一个<code>Optional</code>类，但是没有函数式接口，我们所能做的不过是把<code>if (obj == null)</code>替换为<code>if (opt.isPresend())</code>罢了；虽说能提高类型安全性，但是还是得写一堆shit一样的嵌套检测。</p>
 <p>对于Android开发，想使用这个是没有希望了。但愿<strong>Kotlin</strong>能给我们惊喜。</p>
 <h2 id="参考">参考</h2><ol>
