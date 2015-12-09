@@ -227,7 +227,7 @@
 <p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
 </blockquote>
 <p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
-<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/2175761.gif" alt=""></p>
+<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-1.gif" alt=""></p>
 <p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
 <p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
 <p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br>
