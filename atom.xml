@@ -3,9 +3,9 @@
   <title><![CDATA[Weishu's Notes]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
+  <link href="http://tianweishu.com/"/>
   <updated>2015-12-09T10:06:01.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://tianweishu.com/</id>
   
   <author>
     <name><![CDATA[weishu]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[[译]厌倦了NullPointException？Optional拯救你！]]></title>
-    <link href="http://yoursite.com/2015/12/08/use-optional-avoid-nullpointexception/"/>
-    <id>http://yoursite.com/2015/12/08/use-optional-avoid-nullpointexception/</id>
+    <link href="http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/"/>
+    <id>http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/</id>
     <published>2015-12-08T12:49:40.000Z</published>
     <updated>2015-12-09T10:06:01.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
@@ -134,18 +134,18 @@
     
     </summary>
     
-      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+      <category term="java" scheme="http://tianweishu.com/tags/java/"/>
     
-      <category term="optional" scheme="http://yoursite.com/tags/optional/"/>
+      <category term="optional" scheme="http://tianweishu.com/tags/optional/"/>
     
-      <category term="java" scheme="http://yoursite.com/categories/java/"/>
+      <category term="java" scheme="http://tianweishu.com/categories/java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[让Alfred支持拼音搜索]]></title>
-    <link href="http://yoursite.com/2015/12/07/make-alfred-support-pinyinyin-search/"/>
-    <id>http://yoursite.com/2015/12/07/make-alfred-support-pinyinyin-search/</id>
+    <link href="http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/"/>
+    <id>http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/</id>
     <published>2015-12-06T20:39:49.000Z</published>
     <updated>2015-12-07T02:09:15.000Z</updated>
     <content type="html"><![CDATA[<p>Alfred是个好东西，不过检索程序的时候不支持拼音搜索；我在论坛看到有人给作者反馈过，无奈作者说支持中文，他不知道拼音是什么，于是就不了了之了。举个例子：我想打开<code>网易云音乐</code>,可是当我输入<code>wangyiyunyinyue</code>的时候却是这样的结果:</p>
@@ -178,16 +178,16 @@
     
     </summary>
     
-      <category term="alfred" scheme="http://yoursite.com/tags/alfred/"/>
+      <category term="alfred" scheme="http://tianweishu.com/tags/alfred/"/>
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="python" scheme="http://tianweishu.com/tags/python/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[mac下自动切换输入法]]></title>
-    <link href="http://yoursite.com/2015/12/01/autoswitch-keyboard-in-mac/"/>
-    <id>http://yoursite.com/2015/12/01/autoswitch-keyboard-in-mac/</id>
+    <link href="http://tianweishu.com/2015/12/01/autoswitch-keyboard-in-mac/"/>
+    <id>http://tianweishu.com/2015/12/01/autoswitch-keyboard-in-mac/</id>
     <published>2015-12-01T02:17:29.000Z</published>
     <updated>2015-12-02T06:53:30.000Z</updated>
     <content type="html"><![CDATA[<p>长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么<strong>鼠须管</strong>了，狼厂和企鹅都做的不错。</p>
@@ -240,14 +240,14 @@
     
     </summary>
     
-      <category term="mac" scheme="http://yoursite.com/tags/mac/"/>
+      <category term="mac" scheme="http://tianweishu.com/tags/mac/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[获取迅雷会员工作流]]></title>
-    <link href="http://yoursite.com/2015/11/18/xunlei-vip-account-workflow/"/>
-    <id>http://yoursite.com/2015/11/18/xunlei-vip-account-workflow/</id>
+    <link href="http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/"/>
+    <id>http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/</id>
     <published>2015-11-18T06:59:44.000Z</published>
     <updated>2015-11-18T07:04:56.000Z</updated>
     <content type="html"><![CDATA[<p>mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。</p>
@@ -267,14 +267,14 @@
     
     </summary>
     
-      <category term="alfred workflow" scheme="http://yoursite.com/tags/alfred-workflow/"/>
+      <category term="alfred workflow" scheme="http://tianweishu.com/tags/alfred-workflow/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Java高效分割字符串]]></title>
-    <link href="http://yoursite.com/2015/11/10/fast-split-in-android/"/>
-    <id>http://yoursite.com/2015/11/10/fast-split-in-android/</id>
+    <link href="http://tianweishu.com/2015/11/10/fast-split-in-android/"/>
+    <id>http://tianweishu.com/2015/11/10/fast-split-in-android/</id>
     <published>2015-11-10T10:52:34.000Z</published>
     <updated>2015-11-11T02:19:52.000Z</updated>
     <content type="html"><![CDATA[<p>最近优化一段代码的调用时间，发现性能瓶颈居然是io和split！io操作慢情有可原，那么对于split有没有更高效的方法呢？</p>
@@ -312,14 +312,14 @@
     
     </summary>
     
-      <category term="split" scheme="http://yoursite.com/tags/split/"/>
+      <category term="split" scheme="http://tianweishu.com/tags/split/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[如何安全地打印日志]]></title>
-    <link href="http://yoursite.com/2015/10/19/how-to-log-safely-in-android/"/>
-    <id>http://yoursite.com/2015/10/19/how-to-log-safely-in-android/</id>
+    <link href="http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/"/>
+    <id>http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/</id>
     <published>2015-10-19T12:28:02.000Z</published>
     <updated>2015-12-07T03:36:09.000Z</updated>
     <content type="html"><![CDATA[<p>如何打印日志？这不是很简单，直接使用<code>android.util.Log</code>这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。<br>安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了提高程序的安全性，在打印日志的时候应该注意什么。</p>
@@ -352,16 +352,16 @@
     
     </summary>
     
-      <category term="android" scheme="http://yoursite.com/tags/android/"/>
+      <category term="android" scheme="http://tianweishu.com/tags/android/"/>
     
-      <category term="log" scheme="http://yoursite.com/tags/log/"/>
+      <category term="log" scheme="http://tianweishu.com/tags/log/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[简化markdown写作中的贴图流程]]></title>
-    <link href="http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/"/>
-    <id>http://yoursite.com/2015/10/16/simplify-the-img-upload-in-markdown/</id>
+    <link href="http://tianweishu.com/2015/10/16/simplify-the-img-upload-in-markdown/"/>
+    <id>http://tianweishu.com/2015/10/16/simplify-the-img-upload-in-markdown/</id>
     <published>2015-10-16T06:15:09.000Z</published>
     <updated>2015-11-11T08:01:16.000Z</updated>
     <content type="html"><![CDATA[<p>markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：</p>
@@ -408,16 +408,16 @@
     
     </summary>
     
-      <category term="markdown" scheme="http://yoursite.com/tags/markdown/"/>
+      <category term="markdown" scheme="http://tianweishu.com/tags/markdown/"/>
     
-      <category term="workflow" scheme="http://yoursite.com/tags/workflow/"/>
+      <category term="workflow" scheme="http://tianweishu.com/tags/workflow/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[react-native环境搭建的正确姿势]]></title>
-    <link href="http://yoursite.com/2015/10/08/problems-when-config-react-native-env/"/>
-    <id>http://yoursite.com/2015/10/08/problems-when-config-react-native-env/</id>
+    <link href="http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/"/>
+    <id>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</id>
     <published>2015-10-08T09:20:14.000Z</published>
     <updated>2015-10-19T02:53:35.000Z</updated>
     <content type="html"><![CDATA[<p>上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。</p>
@@ -476,14 +476,14 @@
     
     </summary>
     
-      <category term="react-native" scheme="http://yoursite.com/tags/react-native/"/>
+      <category term="react-native" scheme="http://tianweishu.com/tags/react-native/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[mac下Android studio快捷键配置]]></title>
-    <link href="http://yoursite.com/2015/10/02/configuration-of-idea-android-studio-in-mac/"/>
-    <id>http://yoursite.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</id>
+    <link href="http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/"/>
+    <id>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</id>
     <published>2015-10-02T06:17:47.000Z</published>
     <updated>2015-10-19T02:53:35.000Z</updated>
     <content type="html"><![CDATA[<p>前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～</p>
@@ -530,14 +530,14 @@
     
     </summary>
     
-      <category term="ideavim" scheme="http://yoursite.com/tags/ideavim/"/>
+      <category term="ideavim" scheme="http://tianweishu.com/tags/ideavim/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Xfermode in android]]></title>
-    <link href="http://yoursite.com/2015/09/23/Xfermode-in-android/"/>
-    <id>http://yoursite.com/2015/09/23/Xfermode-in-android/</id>
+    <link href="http://tianweishu.com/2015/09/23/Xfermode-in-android/"/>
+    <id>http://tianweishu.com/2015/09/23/Xfermode-in-android/</id>
     <published>2015-09-23T05:10:49.000Z</published>
     <updated>2015-09-25T11:14:11.000Z</updated>
     <content type="html"><![CDATA[<p>Xfermode有三个实现类：AvoidXfermode, PixelXorXfermode以及PorterDuffXfermode。<br>前两个类因为不支持硬件加速在API level 16被标记为Deprecated了，用也可以，但是需要关闭硬件加速，简单说下。</p>
@@ -596,13 +596,13 @@
     
     </summary>
     
-      <category term="2D graphics" scheme="http://yoursite.com/tags/2D-graphics/"/>
+      <category term="2D graphics" scheme="http://tianweishu.com/tags/2D-graphics/"/>
     
-      <category term="Xfermode" scheme="http://yoursite.com/tags/Xfermode/"/>
+      <category term="Xfermode" scheme="http://tianweishu.com/tags/Xfermode/"/>
     
-      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+      <category term="Android" scheme="http://tianweishu.com/categories/Android/"/>
     
-      <category term="UI" scheme="http://yoursite.com/categories/Android/UI/"/>
+      <category term="UI" scheme="http://tianweishu.com/categories/Android/UI/"/>
     
   </entry>
   

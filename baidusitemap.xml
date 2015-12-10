@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+    
+    
+  <url>
+    <loc>http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/</loc>
+    <lastmod>2015-12-09T10:06:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译]厌倦了NullPointException？Optional拯救你！</title>
+        <pubTime>2015-12-08T12:49:40.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>optional</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://tianweishu.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/</loc>
+    <lastmod>2015-12-07T03:36:09.000Z</lastmod>
+    <data>
+        <display>
+        <title>如何安全地打印日志</title>
+        <pubTime>2015-10-19T12:28:02.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>log</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <lastmod>2015-12-07T02:09:15.000Z</lastmod>
+    <data>
+        <display>
+        <title>让Alfred支持拼音搜索</title>
+        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
+        
+        <tag>alfred</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/12/01/autoswitch-keyboard-in-mac/</loc>
+    <lastmod>2015-12-02T06:53:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac下自动切换输入法</title>
+        <pubTime>2015-12-01T02:17:29.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/</loc>
+    <lastmod>2015-11-18T07:04:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>获取迅雷会员工作流</title>
+        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
+        
+        <tag>alfred workflow</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
+    <lastmod>2015-11-11T08:01:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>简化markdown写作中的贴图流程</title>
+        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
+        
+        <tag>markdown</tag>
+         
+        <tag>workflow</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/11/10/fast-split-in-android/</loc>
+    <lastmod>2015-11-11T02:19:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java高效分割字符串</title>
+        <pubTime>2015-11-10T10:52:34.000Z</pubTime>
+        
+        <tag>split</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <lastmod>2015-10-19T02:53:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac下Android studio快捷键配置</title>
+        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
+        
+        <tag>ideavim</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</loc>
+    <lastmod>2015-10-19T02:53:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>react-native环境搭建的正确姿势</title>
+        <pubTime>2015-10-08T09:20:14.000Z</pubTime>
+        
+        <tag>react-native</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://tianweishu.com/2015/09/23/Xfermode-in-android/</loc>
+    <lastmod>2015-09-25T11:14:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>Xfermode in android</title>
+        <pubTime>2015-09-23T05:10:49.000Z</pubTime>
+        
+        <tag>2D graphics</tag>
+         
+        <tag>Xfermode</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://tianweishu.com/categories/Android/"/>
+          
+             
+              <breadCrumb title="UI" url="http://tianweishu.com/categories/Android/UI/"/>
+          
+        </display>
+    </data>
+    </url>
+
+</urlset>
