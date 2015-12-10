@@ -5,7 +5,7 @@
 # Site
 title: Weishu's Notes
 subtitle: 
-description: You deserve a better life.
+description: 为数不多的维术
 author: weishu
 avatar: /images/avatar.jpg
 language: zh-Hans
@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://tianweishu.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -91,3 +91,9 @@ feed:
   type: atom
   path: atom.xml
   limit: 20
+
+# hexo sitemap
+sitemap:
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
