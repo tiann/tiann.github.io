@@ -13,7 +13,7 @@ categories:
 有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做`java.util.Optional` 的类来缓解这个问题。
 
 我们首先看看空指针有什么危险，`Computer`是一个嵌套的对象，如图：
-![][1]
+![Comtuper对象][1]
 
 下面的代码有什么潜在的问题呢？
 `String version = computer.getSoundcard().getUSB().getVersion();`
@@ -61,7 +61,7 @@ String version = computer?.getSoundcard()?.getUSB()?.getVersion() ?: "UNKNOWN";
 ## 果壳里的`Optional`
 受到Haskell和Scala的启发，Java8引入了一个叫做`java.util.Optional<T>`的类，这一个包含一个可选值的类型，你可以把它当作包含单个值的容器——这个容器要么包含一个值要么什么都没有，如下图：
 
-![Lift2][2]
+![Optional表示][2]
 我们在数据模型里面引入`Optional`：
 
 ```java
