@@ -2,6 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/</loc>
+    <lastmod>2015-12-10T06:37:02.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/</loc>
+    <lastmod>2015-12-10T06:36:19.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <lastmod>2015-12-10T06:34:21.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/</loc>
+    <lastmod>2015-12-10T06:31:54.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://tianweishu.com/404.html</loc>
     <lastmod>2015-12-10T06:10:01.000Z</lastmod>
   </url>
@@ -12,28 +32,8 @@
   </url>
   
   <url>
-    <loc>http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/</loc>
-    <lastmod>2015-12-09T10:06:01.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/</loc>
-    <lastmod>2015-12-07T03:36:09.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
-    <lastmod>2015-12-07T02:09:15.000Z</lastmod>
-  </url>
-  
-  <url>
     <loc>http://tianweishu.com/2015/12/01/autoswitch-keyboard-in-mac/</loc>
     <lastmod>2015-12-02T06:53:30.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/</loc>
-    <lastmod>2015-11-18T07:04:56.000Z</lastmod>
   </url>
   
   <url>
@@ -47,12 +47,12 @@
   </url>
   
   <url>
-    <loc>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <loc>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</loc>
     <lastmod>2015-10-19T02:53:35.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</loc>
+    <loc>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
     <lastmod>2015-10-19T02:53:35.000Z</lastmod>
   </url>
   
