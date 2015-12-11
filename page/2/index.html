@@ -44,7 +44,7 @@
 <meta name="description" content="为数不多的维术">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Weishu's Notes">
-<meta property="og:url" content="http://tianweishu.com/archives/2015/09/index.html">
+<meta property="og:url" content="http://tianweishu.com/page/2/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="为数不多的维术">
 <meta name="twitter:card" content="summary">
@@ -59,7 +59,7 @@
   };
 </script>
 
-  <title> 归档 | Weishu's Notes </title>
+  <title> Weishu's Notes - 为数不多的维术 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -87,7 +87,9 @@
 
 
 
-  <div class="container one-column  page-archive ">
+  <div class="container one-column 
+   page-home 
+">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -163,60 +165,121 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div id="content" class="content"> 
-
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 11 篇日志。 继续努力。
-    </span>
-
+  <section id="posts" class="posts-expand">
     
-
-      
-      
       
 
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2015">2015</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/09/23/Xfermode-in-android/" itemprop="url">
-              <span itemprop="name">Xfermode in android</span>
-            </a>
-        
-      </h1>
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/09/23/Xfermode-in-android/" itemprop="url">
+                Xfermode in android
+              </a>
+            
+          
+        </h1>
+      
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-09-23T05:10:49.000Z" itemprop="dateCreated" content="2015-09-23"> 09-23 </time>
-      </div>
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-23T13:10:49+08:00" content="2015-09-23">
+            2015-09-23
+          </time>
+        </span>
 
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Android/" itemprop="url" rel="index">
+                  <span itemprop="name">Android</span>
+                </a>
+              </span>
+
+              
+              
+                ， 
+              
+
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Android/UI/" itemprop="url" rel="index">
+                  <span itemprop="name">UI</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/23/Xfermode-in-android/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/23/Xfermode-in-android/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
     </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Xfermode有三个实现类：AvoidXfermode, PixelXorXfermode以及PorterDuffXfermode。<br>前两个类因为不支持硬件加速在API level 16被标记为Deprecated了，用也可以，但是需要关闭硬件加速，简单说下。</p>
+<h2 id="AvoidXfermode">AvoidXfermode</h2><blockquote>
+<p> AvoidXfermode xfermode will draw the src everywhere except on top of the<br> opColor or, depending on the Mode, draw only on top of the opColor.</p>
+</blockquote>
+<p>这话翻译成中文太别扭了，自己理解吧。举个栗子，如果你想对原来图像进行处理，把红色换成绿色，可以使用这个；或者，你想把不是红色的换成某个颜色，也行。这里有一个容差值的概念，比如红色是0xff0000 但是在一定范围内也都是红色，如果你设定一个容差值，那么“各种符合要求的红色”都会被处理。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/23/Xfermode-in-android/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </article>
 
 
-
     
-
   </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
  </div>
 
@@ -340,12 +403,6 @@
   
   
   
-    <script type="text/javascript">
-      postMotionOptions = {stagger: 100, drag: true};
-    </script>
-  
-
-  
     
 
   
@@ -389,12 +446,6 @@
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
-
 
   <script type="text/javascript">
     $(document).ready(function () {
