@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
+    <lastmod>2015-12-21T12:45:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android Studio你不知道的调试技巧</title>
+        <pubTime>2015-12-21T12:39:03.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://tianweishu.com/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://tianweishu.com/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</loc>
     <lastmod>2015-12-18T06:12:05.000Z</lastmod>
     <data>
@@ -194,14 +214,14 @@
 
     
   <url>
-    <loc>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</loc>
+    <loc>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
     <lastmod>2015-10-19T02:53:35.000Z</lastmod>
     <data>
         <display>
-        <title>react-native环境搭建的正确姿势</title>
-        <pubTime>2015-10-08T09:20:14.000Z</pubTime>
+        <title>mac下Android studio快捷键配置</title>
+        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
         
-        <tag>react-native</tag>
+        <tag>ideavim</tag>
          
          
            
@@ -211,14 +231,14 @@
 
     
   <url>
-    <loc>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <loc>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</loc>
     <lastmod>2015-10-19T02:53:35.000Z</lastmod>
     <data>
         <display>
-        <title>mac下Android studio快捷键配置</title>
-        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
+        <title>react-native环境搭建的正确姿势</title>
+        <pubTime>2015-10-08T09:20:14.000Z</pubTime>
         
-        <tag>ideavim</tag>
+        <tag>react-native</tag>
          
          
            

@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="react-native," />
+  <meta name="keywords" content="android," />
 
 
 
@@ -41,25 +41,32 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。
-用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好git, nvm等工具，两条命令解决：
+<meta name="description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
 
-npm install -g react-native-clireact-native init Aweso">
+你有关注过Android Studi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="react-native环境搭建的正确姿势">
-<meta property="og:url" content="http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/index.html">
+<meta property="og:title" content="Android Studio你不知道的调试技巧">
+<meta property="og:url" content="http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。
-用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好git, nvm等工具，两条命令解决：
+<meta property="og:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
 
-npm install -g react-native-clireact-native init Aweso">
-<meta property="og:updated_time" content="2015-10-19T02:53:35.000Z">
+你有关注过Android Studi">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698259155.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698641184.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699187057.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699584560.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700136670.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png">
+<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png">
+<meta property="og:updated_time" content="2015-12-21T12:45:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="react-native环境搭建的正确姿势">
-<meta name="twitter:description" content="上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。
-用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好git, nvm等工具，两条命令解决：
+<meta name="twitter:title" content="Android Studio你不知道的调试技巧">
+<meta name="twitter:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
 
-npm install -g react-native-clireact-native init Aweso">
+你有关注过Android Studi">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -69,7 +76,7 @@ npm install -g react-native-clireact-native init Aweso">
   };
 </script>
 
-  <title> react-native环境搭建的正确姿势 | Weishu's Notes </title>
+  <title> Android Studio你不知道的调试技巧 | Weishu's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -186,7 +193,7 @@ npm install -g react-native-clireact-native init Aweso">
           
           
             
-              react-native环境搭建的正确姿势
+              Android Studio你不知道的调试技巧
             
           
         </h1>
@@ -195,19 +202,34 @@ npm install -g react-native-clireact-native init Aweso">
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-08T17:20:14+08:00" content="2015-10-08">
-            2015-10-08
+          <time itemprop="dateCreated" datetime="2015-12-21T20:39:03+08:00" content="2015-12-21">
+            2015-12-21
           </time>
         </span>
 
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/实用技巧/" itemprop="url" rel="index">
+                  <span itemprop="name">实用技巧</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
         
 
         
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/08/problems-when-config-react-native-env/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/08/problems-when-config-react-native-env/" itemprop="commentsCount"></span>
+              <a href="/2015/12/21/android-studio-debug-tips-you-may-not-know/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/android-studio-debug-tips-you-may-not-know/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -228,51 +250,44 @@ npm install -g react-native-clireact-native init Aweso">
       
 
       
-        <span itemprop="articleBody"><p>上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。</p>
-<p>用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好<code>git</code>, <code>nvm</code>等工具，两条命令解决：</p>
-<blockquote>
-<p><code>npm install -g react-native-cli</code><br><code>react-native init AwesomeProject</code></p>
-</blockquote>
-<p>但是对于生活在水深火热的天朝的程序员，事情远没有那么简单。接下来给出正确的安装姿势，最后说说我安装过程中遇到的问题。</p>
-<a id="more"></a>
-<h2 id="正确的安装姿势">正确的安装姿势</h2><h3 id="准备工作">准备工作</h3><p>准备工作包括<code>git, node</code>等工具的安装；安装node的话最好使用一个版本管理工具比如<code>nvm</code>；这个很简单：</p>
-<ol>
-<li><code>brew install nvm</code> react-native仅支持mac平台，直接brew</li>
-<li><code>nvm install node &amp;&amp; nvm alias default node</code></li>
-</ol>
-<p>如果上面这两步执行失败，那么需要科学上网；去弄一个VPN或者代理吧，没有的话可以联系我给一个shadowsocks账号。</p>
-<p>然后清理一下环境：<code>npm cache clean</code></p>
-<p>注意，接下来的安装步骤，如果安装过程中断，最好执行上面的命令<strong>清除缓存</strong>；然后如果是初始化工程失败，最好<strong>删除整个工程目录</strong>重新开始。实际的下载安装过程不会超过十分钟；如果超过说明网络有问题，或者下面的步骤没有正确的配置。</p>
-<h3 id="手动下载node-gyp需要的源码">手动下载node-gyp需要的源码</h3><p>官方文档并没有提到这个gyp，那么<a href="https://github.com/nodejs/node-gyp" target="_blank" rel="external">node-gyp</a>是什么？</p>
-<blockquote>
-<p>Node.js native addon build tool</p>
-</blockquote>
-<p>我们使用npm安装的有些module依赖一些用c/c++编写的模块，这些模块需要本地编译安装；<code>node-gyp</code>就是一个编译工具。<br>为什么要手动安装呢？因为<code>node-gyp</code>编译需要node的源码，第一次使用的时候需要把它下载下来；但是官方的源码源速度非常慢，基本下载不了；这样会导致编译某些模块的时候卡住，我们可以使用国内的镜像手动下载。运行下面的脚本即可：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># js 版本号</span></span><br><span class="line">NODE_VERSION=`node -v | cut <span class="operator">-d</span><span class="string">'v'</span> <span class="operator">-f</span> <span class="number">2</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载源码包(使用镜像)</span></span><br><span class="line">wget http://npm.taobao.org/mirrors/node/v<span class="variable">$NODE_VERSION</span>/node-v<span class="variable">$NODE_VERSION</span>.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除现有内容不完整的目录</span></span><br><span class="line">rm -rf ~/.node-gyp</span><br><span class="line">mkdir ~/.node-gyp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩并重命名到正确格式</span></span><br><span class="line">tar zxf node-v<span class="variable">$NODE_VERSION</span>.tar.gz -C ~/.node-gyp</span><br><span class="line">mv ~/.node-gyp/node-v<span class="variable">$NODE_VERSION</span> ~/.node-gyp/<span class="variable">$NODE_VERSION</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个标记文件</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">"9\n"</span>&gt;~/.node-gyp/<span class="variable">$NODE_VERSION</span>/installVersion</span><br></pre></td></tr></table></figure></p>
-<h3 id="替换npm镜像">替换npm镜像</h3><p>npm官方的源不稳定，我们可以使用国内淘宝的源<a href="http://registry.npm.taobao.org/" target="_blank" rel="external">http://registry.npm.taobao.org/</a> ；执行下面的命令即可：<br><code>npm config set registry=http://registry.npm.taobao.org/</code></p>
-<h3 id="配置git代理">配置git代理</h3><p>不能科学上网还是不行的；在安装模块的时候，不仅需要下载模块，还需要下载node源代码；有的还是使用git管理的，而这些库，很有可能就访问不了。<br>如果全部使用代理的话，那么访问国内的镜像也使用了代理，这样会导致速度下降；因此我们只对git设置代理：<br><code>git config --global http.proxy=http://&lt;url&gt;:&lt;port&gt;</code></p>
-<p>这些配置完成，那么就可以初始化工程了；一句命令完成：<br><code>react-native init AwesomeProject</code><br>安装完毕之后，可以使用<code>npm ls</code>看一下，这个工程依赖的node模块是有多么复杂，差不多就能理解为什么在天朝配置这个环境有多么麻烦了。</p>
-<p>接下来纪录一下我安装过程中遇到的一些问题，不感兴趣可以略过。</p>
-<h2 id="遇到的问题">遇到的问题</h2><h3 id="代理和VPN">代理和VPN</h3><p>VPN和代理最大的区别是，VPN对于应用程序就相当于VPN躺在了TCP/IP协议栈里面，所有的网络请求都会通过VPN访问；而代理呢，我们需要给每个要用到代理的程序单独设置代理访问；大多数程序会检测诸如<code>HTTP_PROXY</code>的环境变量来自动使用代理，但是<strong>不是所有的程序都这么乖</strong>。</p>
-<p>所以，如果你通过某种方式给系统设置了代理，并不意味着你的每一个程序都会通过代理访问；假如你设置了环境变量<code>HTTP_PROXY</code>那么，系统只是告诉程序有代理可用，至于用不用，是程序自己的问题；如果是VPN，那么程序就算什么都没干，它也是通过VPN访问网络的。</p>
-<p>代理这么麻烦，还有一些程序不听话，要是像vpn那样就好了。解决方案自然是有，google<code>Proxifier</code>或者<code>proxycap</code>就行了。</p>
-<h3 id="mac系统设置是全局代理吗">mac系统设置是全局代理吗</h3><p>之所以提到mac，是因为react-native官方文档第一条：</p>
-<blockquote>
-<p>OS X - Only OS X is currently supported</p>
-</blockquote>
-<p>那么，我们打开<strong>系统偏好设置——网络——高级——代理</strong> 这个设置，然后配置好代理信息，对我们的安装有帮助吗？</p>
-<p>事实上，<strong>终端以及一些基于命令行的工具，不会理会系统的代理设置</strong>；具体可以看看<a href="https://discussions.apple.com/thread/2204147?tstart=0" target="_blank" rel="external">这里</a>或者<a href="http://superuser.com/questions/598869/mac-terminal-couldnt-access-network" target="_blank" rel="external">这里</a></p>
-<p>所以，在系统这里设置代理对我们没有什么作用。</p>
-<h3 id="环境变量的问题">环境变量的问题</h3><p>既然命令行工具不认系统代理设置，那么我们可以在终端手动设置环境变量：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> http_proxy=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br></pre></td></tr></table></figure></p>
-<p>注意两点：</p>
-<ol>
-<li>有的工具（没错，说的就是<code>wget,curl</code>！！）对于这个环境变量，是<strong>大小写敏感的！！</strong>，所以最好大写小写都设置。</li>
-<li>https的代理url不带https头。</li>
-</ol>
-<p>很不幸，即使这么做了，依然会出现有一些包下载不下来。看了官方文档才知道，<code>npm</code>设置代理不是这个样子的。要么在一个配置文件<code>.npmrc</code>里面设置，要么通过命令<code>npm config set XXX</code>设置。具体可以参考<a href="http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/" target="_blank" rel="external">这篇文章</a></p>
-<p>这是怎么一个奇葩的设计啊。看文章可仔细点，设置代理名字跟环境变量不一样！</p>
-<h3 id="gyp的问题">gyp的问题</h3><p>你以为到这里就结束了？！ 实际上，我们使用的很多npm的包，用到了一些c/c++的模块，需要编译安装。这个时候，需要依赖node的源代码。但是，由于这个源本身的问题，有了代理速度还是乌龟一般。没有办法，我们只有使用国内的淘宝镜像，先手动安装<code>gyp</code>。</p>
-<h3 id="openssl的问题">openssl的问题</h3><p>拜GFW所赐，使用https协议的话很有可能根本没法认证，所以最好吧官方的那个源换成http的；然后设置一下这个选项：<br><code>npm config set strict-ssl false</code></p>
-<h3 id="git协议无法clone的问题">git协议无法clone的问题</h3><p>在公司的网络环境下，很多端口被屏蔽了；git也是一样，因此使用git协议的clone的话很有可能失败，因此我们需要用https协议替代git协议；具体设置可以参考<a href="http://stackoverflow.com/questions/15669091/bower-install-using-only-https" target="_blank" rel="external">这里</a><br>OK，这些问题全部解决的话，应该能顺利安装上react-native。</p>
+        <span itemprop="articleBody"><p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"></p>
+<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？本文会告诉你关于Android Studio debug的一切。<br><a id="more"></a></p>
+<h2 id="调试基础">调试基础</h2><p>一般来说我们有两种办法调试一个debuggable的apk；其一是下好断点，然后用debug模式编译安装这个app；其二是 <code>attach process</code>，在Android Studio里面就是这么一个对话框：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png" width="273" alt="Attach Process"></p>
+<p>第二种方法比较常用，我们可以在启动apk之后，直接下断点，然后attach process到制定进程，条件触发之后就可以直接进入调试模式。</p>
+<p>其他的一些单步执行，<code>step into</code>, <code>step out</code>, <code>force step into</code> 等就不提了；基本的跟踪手段。</p>
+<p>还是提一下，下断点最简单的办法，是在代码编辑器的左侧，行号右边鼠标点击一下即可。</p>
+<h2 id="Evaluate_Expression">Evaluate Expression</h2><p>这个功能非常实用，可以在断点处直接进入一个求值环境，在这里你可以执行任何你感兴趣的表达式；如下图：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698259155.png" width="524" alt="Evaluate Expression"></p>
+<p>比如在断点处有一个对象<code>object</code>，如果你要查看它的某个属性很简单，在Debug窗口就能看到，但是如果你想要执行它的某个方法看看结果是什么呢？借助这个可以实现。当然它的功能远不止这么多，相当于直接进入了一个 <code>REPL</code>环境，非常实用。忘了说了，快捷键 <code>Alt + F8</code> :P</p>
+<h2 id="条件断点">条件断点</h2><p>假设你的断点在一个列表的循环里面，可是你只对这个列表的某一个元素感兴趣，只想在遇到这个元素的时候才断下来；你是一直人肉 <code>F9</code> 直到满足条件吗？条件断点就是满足这种需求的，顾名思义，在特定条件下的断点。使用起来也非常简单，在你的断点上鼠标有件会出现一个小窗口，写上条件即可。</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698641184.png" width="465" alt="条件断点"></p>
+<h2 id="日志断点">日志断点</h2><p>很多时候我们调试的时候更多的是打印日志定位异常代码，缩小范围之后再使用断点解决问题；所以经常做的事情就是在代码里面添加日志信息，输出函数参数，返回信息，输出我们感兴趣的变量信息等。</p>
+<p>但是这么做一个问题就是，我们添加了日志代码需要重新编译；在没有 <code>Instant Run</code> 之前的黑暗时代这么做是非常痛苦的，每次编译少则几十秒，多则几分钟；这样无意义的等待简直就是折磨；其实，除了热部署工具，我们还可以使用日志断点解决这个问题。</p>
+<p>首先我们在想要输出信息的地方下一个断点；然后右键这个断点，在出现的设置框里面把这个断点的 <code>suspend</code> 属性设置为 <code>False</code> ，这样虽然叫做“断点”，但是并不会真正断下来；然后，我们在 <code>log message</code> 里面填上我们想要输出的日志信息。如下图(注意标红位置）：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699187057.png" width="591" alt="日志断点"></p>
+<p>这样，每次代码执行到这个断点的位置，这个可爱的断点并不会使我们的程序停下来，而是输出我们告诉它的日志信息，然后继续执行；非常方便。</p>
+<h2 id="方法断点">方法断点</h2><p>传统的调试方式是以行为单位的，所谓单步调试；但是很多时候我们关心的是某个函数的参数，返回值；（回想一下我们使用日志的时候打印的最多的信息难道不是函数的参数和返回值吗？）使用方法断点，我们可以在函数级别进行调试；如果经常跳进跳出函数或者只对某个函数的参数感兴趣，这种类型的断点非常实用。具体使用方法有两种方式；最简单的是在你感兴趣的方法头那一行打上断点，这时候你会发现断点图标有点不一样，这就是方法断点了，如下图：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699584560.png" width="503" alt="方法断点"></p>
+<p>另外一种方式是通过<em>断点设置窗口</em>, 后面介绍。</p>
+<h2 id="异常断点">异常断点</h2><p>在有些情况下，我们只对某些特定的异常感兴趣，或者我们只对异常感兴趣；我们希望只要程序发生异常程序就能断下来；这好像保存现场一样，只要发生命案了（异常），第一时间保存现场，这样什么指纹之类的线索就会清晰很多，坏蛋就算想逃也是插翅难飞啊。</p>
+<p>Android Studio给了我们这个能力！那就是<strong>异常断点</strong>!可以在特定异常发生的时候，直接让整个程序断下来；如果你对所有异常感兴趣，直接 <code>Throwable</code> 即可。</p>
+<p>具体做法是，进入 <code>Run -&gt; View BreakPoints</code> 或者使用快捷键打开断点设置窗口；如下图：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700136670.png" width="273" alt="断点设置窗口"></p>
+<p>点击左上角的 ➕ ，会出现一个选择框；选择<code>Exception Breakpoint</code>；然后会出现一个对话框，选择你感兴趣的异常：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png" width="526" alt="异常断点"></p>
+<h2 id="Field_WatchPoint">Field WatchPoint</h2><p>在上面我们添加异常断点的时候，点击加号的时候，有四个选项；第一个就是我们前面所说的第二种方法断点的添加方式，第三个是异常断点，那么第二个 <strong>Field WatchPoint</strong> 是干什么的呢？</p>
+<p>有没有这样一种场景：你发现某个值莫名其妙滴不知道什么时候被谁给修改了，罪魁祸首是谁？Java虽然是值传递，但是引用也可以是值；对象全部存放在堆上面，而堆是被所有线程共享的，因此在非常复杂的场景下，你根本不知道这些共享变量被谁修改了，这样非常危险；在多线程环境下，不变性是一个很重要的特性，我们看到高并发的语言诸如 <code>Erlang</code>, <code>Scala</code> 对于这种不变性都有着某种程度的支持。</p>
+<p>好吧，扯远了；那么我们怎么揪出这个修改我们值的捣蛋鬼呢？那就是这个 <strong>Field WatchPoint</strong>的功能了；使用它我们可以在某个<strong>Field</strong>被访问或者修改的时候让程序断下来；完美解决这个问题。</p>
+<p>下断点的方式和方法断点类似，也有两种；第一种是直接在某个字段的声明处下断点，这时候断点图标会改变，如下图：</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png" width="354" alt="Field WatchPoint"></p>
+<p>右键这个断点我们可以进行一些设置，比如默认是被修改的时候断下来，你也可以改为每次访问这个字段就断下来。</p>
+<p>另外一种方式是 <code>Run -&gt; View BreakPoint</code> 打开设置，与异常断点类似。</p>
+<h2 id="远不止这么多">远不止这么多</h2><p>上面介绍了这么多给力的功能，其实还有很多细节；打开断点设置窗口（Run -&gt; View Breakpoint`):</p>
+<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png" width="873"></p>
+<p>我们可以对<strong>感兴趣的类，感兴趣的某个特定对象</strong>下断点，也可以设置断点的次数，还能使断点在特定的线程才断下来；这些细节就不详细介绍了，大家自己去发掘！</p>
+<p>Have Fun!!</p>
 </span>
       
     </div>
@@ -281,7 +296,7 @@ npm install -g react-native-clireact-native init Aweso">
       
         <div class="post-tags">
           
-            <a href="/tags/react-native/" rel="tag">#react-native</a>
+            <a href="/tags/android/" rel="tag">#android</a>
           
         </div>
       
@@ -290,13 +305,11 @@ npm install -g react-native-clireact-native init Aweso">
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/16/simplify-the-img-upload-in-markdown/" rel="prev">简化markdown写作中的贴图流程</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/02/configuration-of-idea-android-studio-in-mac/" rel="next">mac下Android studio快捷键配置</a>
+              <a href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" rel="next">Android Studio你不知道的快捷键(三)</a>
             
           </div>
         </div>
@@ -321,8 +334,8 @@ npm install -g react-native-clireact-native init Aweso">
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/08/problems-when-config-react-native-env/"
-                   data-title="react-native环境搭建的正确姿势" data-url="http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/">
+              <div class="ds-thread" data-thread-key="2015/12/21/android-studio-debug-tips-you-may-not-know/"
+                   data-title="Android Studio你不知道的调试技巧" data-url="http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/">
               </div>
             
           </div>
@@ -417,7 +430,7 @@ npm install -g react-native-clireact-native init Aweso">
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正确的安装姿势"><span class="nav-number">1.</span> <span class="nav-text">正确的安装姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动下载node-gyp需要的源码"><span class="nav-number">1.2.</span> <span class="nav-text">手动下载node-gyp需要的源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替换npm镜像"><span class="nav-number">1.3.</span> <span class="nav-text">替换npm镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置git代理"><span class="nav-number">1.4.</span> <span class="nav-text">配置git代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number">2.</span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理和VPN"><span class="nav-number">2.1.</span> <span class="nav-text">代理和VPN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mac系统设置是全局代理吗"><span class="nav-number">2.2.</span> <span class="nav-text">mac系统设置是全局代理吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量的问题"><span class="nav-number">2.3.</span> <span class="nav-text">环境变量的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gyp的问题"><span class="nav-number">2.4.</span> <span class="nav-text">gyp的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openssl的问题"><span class="nav-number">2.5.</span> <span class="nav-text">openssl的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git协议无法clone的问题"><span class="nav-number">2.6.</span> <span class="nav-text">git协议无法clone的问题</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#调试基础"><span class="nav-number">1.</span> <span class="nav-text">调试基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluate_Expression"><span class="nav-number">2.</span> <span class="nav-text">Evaluate Expression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件断点"><span class="nav-number">3.</span> <span class="nav-text">条件断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志断点"><span class="nav-number">4.</span> <span class="nav-text">日志断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法断点"><span class="nav-number">5.</span> <span class="nav-text">方法断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常断点"><span class="nav-number">6.</span> <span class="nav-text">异常断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Field_WatchPoint"><span class="nav-number">7.</span> <span class="nav-text">Field WatchPoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远不止这么多"><span class="nav-number">8.</span> <span class="nav-text">远不止这么多</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
