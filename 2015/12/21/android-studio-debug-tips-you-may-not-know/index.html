@@ -61,7 +61,7 @@
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png">
-<meta property="og:updated_time" content="2015-12-21T12:45:14.000Z">
+<meta property="og:updated_time" content="2015-12-22T06:59:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Studio你不知道的调试技巧">
 <meta name="twitter:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
@@ -252,7 +252,7 @@
       
         <span itemprop="articleBody"><p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
 <p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"></p>
-<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？本文会告诉你关于Android Studio debug的一切。<br><a id="more"></a></p>
+<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br><a id="more"></a></p>
 <h2 id="调试基础">调试基础</h2><p>一般来说我们有两种办法调试一个debuggable的apk；其一是下好断点，然后用debug模式编译安装这个app；其二是 <code>attach process</code>，在Android Studio里面就是这么一个对话框：</p>
 <p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png" width="273" alt="Attach Process"></p>
 <p>第二种方法比较常用，我们可以在启动apk之后，直接下断点，然后attach process到制定进程，条件触发之后就可以直接进入调试模式。</p>
