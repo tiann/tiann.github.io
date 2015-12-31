@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="android," />
+  <meta name="keywords" content="mac,sublime," />
 
 
 
@@ -41,32 +41,33 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
+<meta name="description" content="虽然大部分的时候是使用命令行，但是有些时候我们需要在Finder里面编辑某些文件的时候，如果还是拘泥于这样，就必须打开 iTerm （幸好有Profile可以一键打开终端）切换目录，编辑；这时候，类似Windows系统的右键菜单就比较方便了。
+如果Mac系统识别出这是一个文本文件，右键菜单的 打开方式 可能还有点用，如果识别不出来，那么手动选择应用程序就比较麻烦了：
 
-你有关注过Android Studi">
+其实Mac系统的 AutoM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Studio你不知道的调试技巧">
-<meta property="og:url" content="http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/index.html">
+<meta property="og:title" content="把Sublime添加到Mac右键菜单">
+<meta property="og:url" content="http://tianweishu.com/2015/12/31/add-sublime-editor-to-finder-context-menu/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
+<meta property="og:description" content="虽然大部分的时候是使用命令行，但是有些时候我们需要在Finder里面编辑某些文件的时候，如果还是拘泥于这样，就必须打开 iTerm （幸好有Profile可以一键打开终端）切换目录，编辑；这时候，类似Windows系统的右键菜单就比较方便了。
+如果Mac系统识别出这是一个文本文件，右键菜单的 打开方式 可能还有点用，如果识别不出来，那么手动选择应用程序就比较麻烦了：
 
-你有关注过Android Studi">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698259155.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698641184.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699187057.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699584560.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700136670.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png">
-<meta property="og:updated_time" content="2015-12-23T03:03:55.000Z">
+其实Mac系统的 AutoM">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545353007.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545516628.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545618554.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545743958.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545891571.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545999524.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512%2F1451546296324.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451546545636.png">
+<meta property="og:updated_time" content="2015-12-31T07:48:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Studio你不知道的调试技巧">
-<meta name="twitter:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
+<meta name="twitter:title" content="把Sublime添加到Mac右键菜单">
+<meta name="twitter:description" content="虽然大部分的时候是使用命令行，但是有些时候我们需要在Finder里面编辑某些文件的时候，如果还是拘泥于这样，就必须打开 iTerm （幸好有Profile可以一键打开终端）切换目录，编辑；这时候，类似Windows系统的右键菜单就比较方便了。
+如果Mac系统识别出这是一个文本文件，右键菜单的 打开方式 可能还有点用，如果识别不出来，那么手动选择应用程序就比较麻烦了：
 
-你有关注过Android Studi">
+其实Mac系统的 AutoM">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -76,7 +77,7 @@
   };
 </script>
 
-  <title> Android Studio你不知道的调试技巧 | Weishu's Notes </title>
+  <title> 把Sublime添加到Mac右键菜单 | Weishu's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -193,7 +194,7 @@
           
           
             
-              Android Studio你不知道的调试技巧
+              把Sublime添加到Mac右键菜单
             
           
         </h1>
@@ -202,34 +203,19 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-12-21T20:39:03+08:00" content="2015-12-21">
-            2015-12-21
+          <time itemprop="dateCreated" datetime="2015-12-31T14:53:20+08:00" content="2015-12-31">
+            2015-12-31
           </time>
         </span>
 
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
         
 
         
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/12/21/android-studio-debug-tips-you-may-not-know/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/android-studio-debug-tips-you-may-not-know/" itemprop="commentsCount"></span>
+              <a href="/2015/12/31/add-sublime-editor-to-finder-context-menu/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/31/add-sublime-editor-to-finder-context-menu/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -250,44 +236,41 @@
       
 
       
-        <span itemprop="articleBody"><p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"></p>
-<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br><a id="more"></a></p>
-<h2 id="调试基础">调试基础</h2><p>一般来说我们有两种办法调试一个debuggable的apk；其一是下好断点，然后用debug模式编译安装这个app；其二是 <code>attach process</code>，在Android Studio里面就是这么一个对话框：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png" width="273" alt="Attach Process"></p>
-<p>第二种方法比较常用，我们可以在启动apk之后，直接下断点，然后attach process到制定进程，条件触发之后就可以直接进入调试模式。</p>
-<p>其他的一些单步执行，<code>step into</code>, <code>step out</code>, <code>force step into</code> 等就不提了；基本的跟踪手段。</p>
-<p>还是提一下，下断点最简单的办法，是在代码编辑器的左侧，行号右边鼠标点击一下即可。</p>
-<h2 id="Evaluate_Expression">Evaluate Expression</h2><p>这个功能非常实用，可以在断点处直接进入一个求值环境，在这里你可以执行任何你感兴趣的表达式；如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698259155.png" width="524" alt="Evaluate Expression"></p>
-<p>比如在断点处有一个对象<code>object</code>，如果你要查看它的某个属性很简单，在Debug窗口就能看到，但是如果你想要执行它的某个方法看看结果是什么呢？借助这个可以实现。当然它的功能远不止这么多，相当于直接进入了一个 <code>REPL</code>环境，非常实用。忘了说了，快捷键 <code>Alt + F8</code> :P</p>
-<h2 id="条件断点">条件断点</h2><p>假设你的断点在一个列表的循环里面，可是你只对这个列表的某一个元素感兴趣，只想在遇到这个元素的时候才断下来；你是一直人肉 <code>F9</code> 直到满足条件吗？条件断点就是满足这种需求的，顾名思义，在特定条件下的断点。使用起来也非常简单，在你的断点上鼠标右键会出现一个小窗口，写上条件即可。</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698641184.png" width="465" alt="条件断点"></p>
-<h2 id="日志断点">日志断点</h2><p>很多时候我们调试的时候更多的是打印日志定位异常代码，缩小范围之后再使用断点解决问题；所以经常做的事情就是在代码里面添加日志信息，输出函数参数，返回信息，输出我们感兴趣的变量信息等。</p>
-<p>但是这么做一个问题就是，我们添加了日志代码需要重新编译；在没有 <code>Instant Run</code> 之前的黑暗时代这么做是非常痛苦的，每次编译少则几十秒，多则几分钟；这样无意义的等待简直就是折磨；其实，除了热部署工具，我们还可以使用日志断点解决这个问题。</p>
-<p>首先我们在想要输出信息的地方下一个断点；然后右键这个断点，在出现的设置框里面把这个断点的 <code>suspend</code> 属性设置为 <code>False</code> ，这样虽然叫做“断点”，但是并不会真正断下来；然后，我们在 <code>log message</code> 里面填上我们想要输出的日志信息。如下图(注意标红位置）：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699187057.png" width="591" alt="日志断点"></p>
-<p>这样，每次代码执行到这个断点的位置，这个可爱的断点并不会使我们的程序停下来，而是输出我们告诉它的日志信息，然后继续执行；非常方便。</p>
-<h2 id="方法断点">方法断点</h2><p>传统的调试方式是以行为单位的，所谓单步调试；但是很多时候我们关心的是某个函数的参数，返回值；（回想一下我们使用日志的时候打印的最多的信息难道不是函数的参数和返回值吗？）使用方法断点，我们可以在函数级别进行调试；如果经常跳进跳出函数或者只对某个函数的参数感兴趣，这种类型的断点非常实用。具体使用方法有两种方式；最简单的是在你感兴趣的方法头那一行打上断点，这时候你会发现断点图标有点不一样，这就是方法断点了，如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699584560.png" width="503" alt="方法断点"></p>
-<p>另外一种方式是通过<em>断点设置窗口</em>, 后面介绍。</p>
-<h2 id="异常断点">异常断点</h2><p>在有些情况下，我们只对某些特定的异常感兴趣，或者我们只对异常感兴趣；我们希望只要程序发生异常程序就能断下来；这好像保存现场一样，只要发生命案了（异常），第一时间保存现场，这样什么指纹之类的线索就会清晰很多，坏蛋就算想逃也是插翅难飞啊。</p>
-<p>Android Studio给了我们这个能力！那就是<strong>异常断点</strong>!可以在特定异常发生的时候，直接让整个程序断下来；如果你对所有异常感兴趣，直接 <code>Throwable</code> 即可。</p>
-<p>具体做法是，进入 <code>Run -&gt; View BreakPoints</code> 或者使用快捷键打开断点设置窗口；如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700136670.png" width="273" alt="断点设置窗口"></p>
-<p>点击左上角的 ➕ ，会出现一个选择框；选择<code>Exception Breakpoint</code>；然后会出现一个对话框，选择你感兴趣的异常：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png" width="526" alt="异常断点"></p>
-<h2 id="Field_WatchPoint">Field WatchPoint</h2><p>在上面我们添加异常断点的时候，点击加号的时候，有四个选项；第一个就是我们前面所说的第二种方法断点的添加方式，第三个是异常断点，那么第二个 <strong>Field WatchPoint</strong> 是干什么的呢？</p>
-<p>有没有这样一种场景：你发现某个值莫名其妙滴不知道什么时候被谁给修改了，罪魁祸首是谁？Java虽然是值传递，但是引用也可以是值；对象全部存放在堆上面，而堆是被所有线程共享的，因此在非常复杂的场景下，你根本不知道这些共享变量被谁修改了，这样非常危险；在多线程环境下，不变性是一个很重要的特性，我们看到高并发的语言诸如 <code>Erlang</code>, <code>Scala</code> 对于这种不变性都有着某种程度的支持。</p>
-<p>好吧，扯远了；那么我们怎么揪出这个修改我们值的捣蛋鬼呢？那就是这个 <strong>Field WatchPoint</strong>的功能了；使用它我们可以在某个<strong>Field</strong>被访问或者修改的时候让程序断下来；完美解决这个问题。</p>
-<p>下断点的方式和方法断点类似，也有两种；第一种是直接在某个字段的声明处下断点，这时候断点图标会改变，如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png" width="354" alt="Field WatchPoint"></p>
-<p>右键这个断点我们可以进行一些设置，比如默认是被修改的时候断下来，你也可以改为每次访问这个字段就断下来。</p>
-<p>另外一种方式是 <code>Run -&gt; View BreakPoint</code> 打开设置，与异常断点类似。</p>
-<h2 id="远不止这么多">远不止这么多</h2><p>上面介绍了这么多给力的功能，其实还有很多细节；打开断点设置窗口（Run -&gt; View Breakpoint`):</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png" width="873"></p>
-<p>我们可以对<strong>感兴趣的类，感兴趣的某个特定对象</strong>下断点，也可以设置断点的次数，还能使断点在特定的线程才断下来；这些细节就不详细介绍了，大家自己去发掘！</p>
-<p>Have Fun!!</p>
+        <span itemprop="articleBody"><p>虽然大部分的时候是使用命令行，但是有些时候我们需要在<code>Finder</code>里面编辑某些文件的时候，如果还是拘泥于这样，就必须打开 <code>iTerm</code> （幸好有Profile可以一键打开终端）切换目录，编辑；这时候，类似Windows系统的右键菜单就比较方便了。</p>
+<p>如果Mac系统识别出这是一个文本文件，右键菜单的 <strong>打开方式</strong> 可能还有点用，如果识别不出来，那么手动选择应用程序就比较麻烦了：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545353007.png" width="385"></p>
+<p>其实Mac系统的 <strong>AutoMator</strong> 是可以完成这个功能的；接下来说一下操作步骤。</p>
+<a id="more"></a>
+<ul>
+<li><p>打开 <code>Automator</code> 这个程序（可以使用Spotlight或者Alfred直接搜索），在弹出的菜单中选择 <strong>服务</strong><br><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545516628.png" width="545"></p>
+</li>
+<li><p>在左上角的搜索框搜索 <code>Finder</code> 然后在结果里面选择 <code>打开Finder项目</code><br>；然后把它拖到右边：</p>
+</li>
+</ul>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545618554.png" width="832"></p>
+<ul>
+<li>拖到右边之后，设置打开方式为「Sublime Text 2」，上面设定为“服务”收到选定的「文件或文件夹」位于「Finder」；</li>
+</ul>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545743958.png" width="616"></p>
+<ul>
+<li>然后保存项目 (Cmd + S), 写上这个操作的名字，比如 <em>Open in Sublime Text</em></li>
+</ul>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545891571.png" width="390"></p>
+<p>这时候，进入 <code>Finder</code> 选择一个文件或者文件夹，点击右键：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451545999524.png" width="228"></p>
+<p>OK，大功告成！如果想添加别的编辑器，按照类似的操作即可。</p>
+<p>但是，还有几个问题说明一下：</p>
+<ul>
+<li>右键菜单没有，出现在<strong>服务</strong>二级菜单</li>
+</ul>
+<p>有的童鞋按照这一步设置完毕之后，发现并没有直接在右键菜单出现，而是出现在服务二级菜单！这样每次都需要多点击一次，很不爽！如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512%2F1451546296324.png" width="443"></p>
+<p>这时候，其实是服务菜单里面内容太多了，因此Mac系统自动把菜单收缩到了二级菜单。可以到「系统偏好设置…」-「键盘」-「服务」中去掉不需要的选项。</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451546545636.png" width="620"></p>
+<ul>
+<li>如何删除</li>
+</ul>
+<p>如果弄错了，想删除掉；直接去 <code>~/Library/Services</code> 删除对应的目录即可。</p>
 </span>
       
     </div>
@@ -296,7 +279,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/android/" rel="tag">#android</a>
+            <a href="/tags/mac/" rel="tag">#mac</a>
+          
+            <a href="/tags/sublime/" rel="tag">#sublime</a>
           
         </div>
       
@@ -305,13 +290,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/31/add-sublime-editor-to-finder-context-menu/" rel="prev">把Sublime添加到Mac右键菜单</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" rel="next">Android Studio你不知道的快捷键(三)</a>
+              <a href="/2015/12/21/android-studio-debug-tips-you-may-not-know/" rel="next">Android Studio你不知道的调试技巧</a>
             
           </div>
         </div>
@@ -336,8 +319,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/12/21/android-studio-debug-tips-you-may-not-know/"
-                   data-title="Android Studio你不知道的调试技巧" data-url="http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/">
+              <div class="ds-thread" data-thread-key="2015/12/31/add-sublime-editor-to-finder-context-menu/"
+                   data-title="把Sublime添加到Mac右键菜单" data-url="http://tianweishu.com/2015/12/31/add-sublime-editor-to-finder-context-menu/">
               </div>
             
           </div>
@@ -432,7 +415,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#调试基础"><span class="nav-number">1.</span> <span class="nav-text">调试基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluate_Expression"><span class="nav-number">2.</span> <span class="nav-text">Evaluate Expression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件断点"><span class="nav-number">3.</span> <span class="nav-text">条件断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志断点"><span class="nav-number">4.</span> <span class="nav-text">日志断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法断点"><span class="nav-number">5.</span> <span class="nav-text">方法断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常断点"><span class="nav-number">6.</span> <span class="nav-text">异常断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Field_WatchPoint"><span class="nav-number">7.</span> <span class="nav-text">Field WatchPoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远不止这么多"><span class="nav-number">8.</span> <span class="nav-text">远不止这么多</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
