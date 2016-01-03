@@ -178,6 +178,85 @@
           
           
             
+              <a class="post-title-link" href="/2016/01/03/use-pure-ascii-present-graph/" itemprop="url">
+                ASCII Art：使用纯文本流程图
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-03T23:17:24+08:00" content="2016-01-03">
+            2016-01-03
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/01/03/use-pure-ascii-present-graph/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/03/use-pure-ascii-present-graph/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>我们使用纯文本写代码，有了Markdown又可以使用纯文本写文档，那么对于更直观的信息表达方式——图片，能不能使用纯文本描述呢？</p>
+<p>另外，你是否见到过这样的注释：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451834573842.png" alt="ASCII art图像" width="463"/></p>
+<p>没错，这种逼格极高的ASCII图片注释方式就是我们要讨论的话题。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/use-pure-ascii-present-graph/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/31/add-sublime-editor-to-finder-context-menu/" itemprop="url">
                 把Sublime添加到Mac右键菜单
               </a>
@@ -964,90 +1043,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/10/fast-split-in-android/" itemprop="url">
-                Java高效分割字符串
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-11-10T18:52:34+08:00" content="2015-11-10">
-            2015-11-10
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/10/fast-split-in-android/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/10/fast-split-in-android/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近优化一段代码的调用时间，发现性能瓶颈居然是io和split！io操作慢情有可原，那么对于split有没有更高效的方法呢？</p>
-<h2 id="一般方法">一般方法</h2><p>再java里面，一般的split 字符串解决方案有三种：</p>
-<ol>
-<li>直接用split函数</li>
-<li>使用StingTokenizer类</li>
-<li>用<code>indexOf,subString</code>实现；</li>
-</ol>
-<p>在JDK6的实现中，String类的split直接使用了正则表达式；不得不说，真是杀鸡焉用牛刀。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String[] split(String regex, <span class="keyword">int</span> limit) &#123;</span><br><span class="line">        <span class="keyword">return</span> Pattern.compile(regex).split(<span class="keyword">this</span>, limit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在Android VM(Android 4.0以上系统源码如此)里面，对这个方法做了一定的优化：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/10/fast-split-in-android/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1086,7 +1081,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1146,8 +1141,8 @@
     <footer id="footer" class="footer">
       <div class="footer-inner"> <div class="copyright" >
   
-  &copy; &nbsp; 
-  <span itemprop="copyrightYear">2015</span>
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
