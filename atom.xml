@@ -3,9 +3,9 @@
   <title><![CDATA[Weishu's Notes]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://tianweishu.com/"/>
+  <link href="http://weishu.me/"/>
   <updated>2016-01-05T01:54:35.000Z</updated>
-  <id>http://tianweishu.com/</id>
+  <id>http://weishu.me/</id>
   
   <author>
     <name><![CDATA[weishu]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[ASCII Art：使用纯文本流程图]]></title>
-    <link href="http://tianweishu.com/2016/01/03/use-pure-ascii-present-graph/"/>
-    <id>http://tianweishu.com/2016/01/03/use-pure-ascii-present-graph/</id>
+    <link href="http://weishu.me/2016/01/03/use-pure-ascii-present-graph/"/>
+    <id>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</id>
     <published>2016-01-03T15:17:24.000Z</published>
     <updated>2016-01-05T01:54:35.000Z</updated>
     <content type="html"><![CDATA[<p>我们使用纯文本写代码，有了Markdown又可以使用纯文本写文档，那么对于更直观的信息表达方式——图片，能不能使用纯文本描述呢？</p>
@@ -79,7 +79,7 @@
 </ol>
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">+------+</span>  Parse calls to   <span class="code">+--------------+</span></span><br><span class="line">|      | ----------------&gt; |              |</span><br><span class="line">| View |                   |  Presenter   |</span><br><span class="line">|      |  Updates          |              |</span><br><span class="line">|      | &lt;---------------- |              |</span><br><span class="line"><span class="code">+------+</span>                   <span class="code">+--------------+</span></span><br><span class="line"><span class="code">                             |</span></span><br><span class="line"><span class="code">                             | Manipulates</span></span><br><span class="line"><span class="code">                             v</span></span><br><span class="line"><span class="code">                           +--------------+</span></span><br><span class="line"><span class="code">                           |    Model     |</span></span><br><span class="line"><span class="code">                           +--------------+</span></span><br></pre></td></tr></table></figure>
 <p>两行代码就搞定了！自动对齐，调整位置，箭头，标签等等；我们完全不用管具体图形应该如何绘制，注意力集中在描述图像本身；还在等什么！赶紧试一试吧！！</p>
-<p>原文：<a href="http://weishu.me/2016/01/03/use-pure-ascii-present-graph/" target="_blank" rel="external">http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</a></p>
+<p>原文：<a href="http://weishu.me/2016/01/03/use-pure-ascii-present-graph/">http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>我们使用纯文本写代码，有了Markdown又可以使用纯文本写文档，那么对于更直观的信息表达方式——图片，能不能使用纯文本描述呢？</p>
@@ -93,8 +93,8 @@
   
   <entry>
     <title><![CDATA[把Sublime添加到Mac右键菜单]]></title>
-    <link href="http://tianweishu.com/2015/12/31/add-sublime-editor-to-finder-context-menu/"/>
-    <id>http://tianweishu.com/2015/12/31/add-sublime-editor-to-finder-context-menu/</id>
+    <link href="http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/"/>
+    <id>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</id>
     <published>2015-12-31T06:53:20.000Z</published>
     <updated>2015-12-31T07:48:55.000Z</updated>
     <content type="html"><![CDATA[<p>虽然大部分的时候是使用命令行，但是有些时候我们需要在<code>Finder</code>里面编辑某些文件的时候，如果还是拘泥于这样，就必须打开 <code>iTerm</code> （幸好有Profile可以一键打开终端）切换目录，编辑；这时候，类似Windows系统的右键菜单就比较方便了。</p>
@@ -141,16 +141,16 @@
     
     </summary>
     
-      <category term="mac" scheme="http://tianweishu.com/tags/mac/"/>
+      <category term="mac" scheme="http://weishu.me/tags/mac/"/>
     
-      <category term="sublime" scheme="http://tianweishu.com/tags/sublime/"/>
+      <category term="sublime" scheme="http://weishu.me/tags/sublime/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Android Studio你不知道的调试技巧]]></title>
-    <link href="http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/"/>
-    <id>http://tianweishu.com/2015/12/21/android-studio-debug-tips-you-may-not-know/</id>
+    <link href="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/"/>
+    <id>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</id>
     <published>2015-12-21T12:39:03.000Z</published>
     <updated>2015-12-23T03:03:55.000Z</updated>
     <content type="html"><![CDATA[<p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
@@ -199,16 +199,16 @@
     
     </summary>
     
-      <category term="android" scheme="http://tianweishu.com/tags/android/"/>
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
     
-      <category term="实用技巧" scheme="http://tianweishu.com/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Android Studio你不知道的快捷键(三)]]></title>
-    <link href="http://tianweishu.com/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/"/>
-    <id>http://tianweishu.com/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</id>
+    <link href="http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/"/>
+    <id>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</id>
     <published>2015-12-17T02:49:19.000Z</published>
     <updated>2015-12-18T06:12:05.000Z</updated>
     <content type="html"><![CDATA[<p>本文将继续介绍一些非常实用的但是你可能不知道的快捷键；没看过前两篇的可以移步：</p>
@@ -271,17 +271,17 @@
     
     </summary>
     
-      <category term="实用技巧" scheme="http://tianweishu.com/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Android Studio你不知道的快捷键(二)]]></title>
-    <link href="http://tianweishu.com/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/"/>
-    <id>http://tianweishu.com/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</id>
+    <link href="http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/"/>
+    <id>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</id>
     <published>2015-12-12T01:51:53.000Z</published>
     <updated>2015-12-12T01:55:41.000Z</updated>
-    <content type="html"><![CDATA[<p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">上文</a>)</p>
+    <content type="html"><![CDATA[<p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">上文</a>)</p>
 <h2 id="自动生成变量">自动生成变量</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-1.gif" alt="自动生成变量"></p>
 <p>作为一门静态类型语言，Java是有一定的类型推导能力的；那么你是否经常书写:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"testStr"</span>;</span><br><span class="line">List&lt;String&gt; testStrings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
 <p>其实大可不必写那些恼火的类型声明的，一看就知道<code>testStr, testStrings</code>就知道是什么类型，再这么干不就是废话么！好在IDEA给了我们这个能力。尝试一下这个快捷键吧，会给你惊喜。<br><a id="more"></a></p>
@@ -330,7 +330,7 @@
 <h2 id="重命名">重命名</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-6.gif" alt="重命名"></p>
 <p>好了介绍了那么多貌似很高端的玩意，来个大部分人都知道的吧。有时候你发现有个变量名字取得有问题，或者没文化的队友/自己单词拼错了咋办？需要把所有用到这个变量的地方重新命名，小case！</p>
 <p>快捷键：<code>shift + F6</code></p>
-<p>OK, 这一期的分享就到这里。如果没有看过上一篇的可以移步：<br><a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a></p>
+<p>OK, 这一期的分享就到这里。如果没有看过上一篇的可以移步：<br><a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">Android Studio你不知道的快捷键(一)</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">上文</a>)</p>
@@ -340,16 +340,16 @@
     
     </summary>
     
-      <category term="android" scheme="http://tianweishu.com/tags/android/"/>
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
     
-      <category term="实用技巧" scheme="http://tianweishu.com/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Android Studio你不知道的快捷键(一)]]></title>
-    <link href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/"/>
-    <id>http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/</id>
+    <link href="http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/"/>
+    <id>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</id>
     <published>2015-12-11T05:42:33.000Z</published>
     <updated>2015-12-11T05:59:38.000Z</updated>
     <content type="html"><![CDATA[<p>一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。</p>
@@ -404,16 +404,16 @@
     
     </summary>
     
-      <category term="android" scheme="http://tianweishu.com/tags/android/"/>
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
     
-      <category term="实用技巧" scheme="http://tianweishu.com/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[[译]厌倦了NullPointException？Optional拯救你！]]></title>
-    <link href="http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/"/>
-    <id>http://tianweishu.com/2015/12/08/use-optional-avoid-nullpointexception/</id>
+    <link href="http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/"/>
+    <id>http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/</id>
     <published>2015-12-08T12:49:40.000Z</published>
     <updated>2015-12-10T06:31:54.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
@@ -530,18 +530,18 @@
     
     </summary>
     
-      <category term="java" scheme="http://tianweishu.com/tags/java/"/>
+      <category term="java" scheme="http://weishu.me/tags/java/"/>
     
-      <category term="optional" scheme="http://tianweishu.com/tags/optional/"/>
+      <category term="optional" scheme="http://weishu.me/tags/optional/"/>
     
-      <category term="java" scheme="http://tianweishu.com/categories/java/"/>
+      <category term="java" scheme="http://weishu.me/categories/java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[让Alfred支持拼音搜索]]></title>
-    <link href="http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/"/>
-    <id>http://tianweishu.com/2015/12/07/make-alfred-support-pinyinyin-search/</id>
+    <link href="http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/"/>
+    <id>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</id>
     <published>2015-12-06T20:39:49.000Z</published>
     <updated>2015-12-10T06:34:21.000Z</updated>
     <content type="html"><![CDATA[<p>Alfred是个好东西，不过检索程序的时候不支持拼音搜索；我在论坛看到有人给作者反馈过，无奈作者说支持中文，他不知道拼音是什么，于是就不了了之了。举个例子：我想打开<code>网易云音乐</code>,可是当我输入<code>wangyiyunyinyue</code>的时候却是这样的结果:</p>
@@ -574,16 +574,16 @@
     
     </summary>
     
-      <category term="alfred" scheme="http://tianweishu.com/tags/alfred/"/>
+      <category term="alfred" scheme="http://weishu.me/tags/alfred/"/>
     
-      <category term="python" scheme="http://tianweishu.com/tags/python/"/>
+      <category term="python" scheme="http://weishu.me/tags/python/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[mac下自动切换输入法]]></title>
-    <link href="http://tianweishu.com/2015/12/01/autoswitch-keyboard-in-mac/"/>
-    <id>http://tianweishu.com/2015/12/01/autoswitch-keyboard-in-mac/</id>
+    <link href="http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/"/>
+    <id>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</id>
     <published>2015-12-01T02:17:29.000Z</published>
     <updated>2015-12-02T06:53:30.000Z</updated>
     <content type="html"><![CDATA[<p>长久以来，输入法一直是困扰mac用户的一个问题；不过随着国内厂商的跟进，这种状况得到了极大的改善。不用自己去折腾什么<strong>鼠须管</strong>了，狼厂和企鹅都做的不错。</p>
@@ -636,14 +636,14 @@
     
     </summary>
     
-      <category term="mac" scheme="http://tianweishu.com/tags/mac/"/>
+      <category term="mac" scheme="http://weishu.me/tags/mac/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[获取迅雷会员工作流]]></title>
-    <link href="http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/"/>
-    <id>http://tianweishu.com/2015/11/18/xunlei-vip-account-workflow/</id>
+    <link href="http://weishu.me/2015/11/18/xunlei-vip-account-workflow/"/>
+    <id>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</id>
     <published>2015-11-18T06:59:44.000Z</published>
     <updated>2015-12-10T06:37:02.000Z</updated>
     <content type="html"><![CDATA[<p>mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。</p>
@@ -663,14 +663,14 @@
     
     </summary>
     
-      <category term="alfred workflow" scheme="http://tianweishu.com/tags/alfred-workflow/"/>
+      <category term="alfred workflow" scheme="http://weishu.me/tags/alfred-workflow/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Java高效分割字符串]]></title>
-    <link href="http://tianweishu.com/2015/11/10/fast-split-in-android/"/>
-    <id>http://tianweishu.com/2015/11/10/fast-split-in-android/</id>
+    <link href="http://weishu.me/2015/11/10/fast-split-in-android/"/>
+    <id>http://weishu.me/2015/11/10/fast-split-in-android/</id>
     <published>2015-11-10T10:52:34.000Z</published>
     <updated>2015-11-11T02:19:52.000Z</updated>
     <content type="html"><![CDATA[<p>最近优化一段代码的调用时间，发现性能瓶颈居然是io和split！io操作慢情有可原，那么对于split有没有更高效的方法呢？</p>
@@ -708,14 +708,14 @@
     
     </summary>
     
-      <category term="split" scheme="http://tianweishu.com/tags/split/"/>
+      <category term="split" scheme="http://weishu.me/tags/split/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[如何安全地打印日志]]></title>
-    <link href="http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/"/>
-    <id>http://tianweishu.com/2015/10/19/how-to-log-safely-in-android/</id>
+    <link href="http://weishu.me/2015/10/19/how-to-log-safely-in-android/"/>
+    <id>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</id>
     <published>2015-10-19T12:28:02.000Z</published>
     <updated>2015-12-10T06:42:17.000Z</updated>
     <content type="html"><![CDATA[<p>如何打印日志？这不是很简单，直接使用<code>android.util.Log</code>这个类不就行了？然而，日志属于非常敏感的信息；逆向工程师在逆向你的程序的时候，本来需要捕捉你程序的各种输出，然后进行推测，顺藤摸瓜然后得到需要的信息；一旦你的日志泄漏，无异于门户洞开，破解你的程序如入无人之境。<br>安全的概念本来就是相对的，如果破解你程序的代价远远大于破解得到的价值，那么就可以认为程序是“安全的”；这里就分析一下，为了提高程序的安全性，在打印日志的时候应该注意什么。</p>
@@ -748,16 +748,16 @@
     
     </summary>
     
-      <category term="android" scheme="http://tianweishu.com/tags/android/"/>
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
     
-      <category term="log" scheme="http://tianweishu.com/tags/log/"/>
+      <category term="log" scheme="http://weishu.me/tags/log/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[简化markdown写作中的贴图流程]]></title>
-    <link href="http://tianweishu.com/2015/10/16/simplify-the-img-upload-in-markdown/"/>
-    <id>http://tianweishu.com/2015/10/16/simplify-the-img-upload-in-markdown/</id>
+    <link href="http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/"/>
+    <id>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</id>
     <published>2015-10-16T06:15:09.000Z</published>
     <updated>2015-11-11T08:01:16.000Z</updated>
     <content type="html"><![CDATA[<p>markdown写作的时候，图片插入是一件比较麻烦的事情。常见的流程如下：</p>
@@ -804,16 +804,16 @@
     
     </summary>
     
-      <category term="markdown" scheme="http://tianweishu.com/tags/markdown/"/>
+      <category term="markdown" scheme="http://weishu.me/tags/markdown/"/>
     
-      <category term="workflow" scheme="http://tianweishu.com/tags/workflow/"/>
+      <category term="workflow" scheme="http://weishu.me/tags/workflow/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[react-native环境搭建的正确姿势]]></title>
-    <link href="http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/"/>
-    <id>http://tianweishu.com/2015/10/08/problems-when-config-react-native-env/</id>
+    <link href="http://weishu.me/2015/10/08/problems-when-config-react-native-env/"/>
+    <id>http://weishu.me/2015/10/08/problems-when-config-react-native-env/</id>
     <published>2015-10-08T09:20:14.000Z</published>
     <updated>2015-10-19T02:53:35.000Z</updated>
     <content type="html"><![CDATA[<p>上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。</p>
@@ -872,14 +872,14 @@
     
     </summary>
     
-      <category term="react-native" scheme="http://tianweishu.com/tags/react-native/"/>
+      <category term="react-native" scheme="http://weishu.me/tags/react-native/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[mac下Android studio快捷键配置]]></title>
-    <link href="http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/"/>
-    <id>http://tianweishu.com/2015/10/02/configuration-of-idea-android-studio-in-mac/</id>
+    <link href="http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/"/>
+    <id>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</id>
     <published>2015-10-02T06:17:47.000Z</published>
     <updated>2015-10-19T02:53:35.000Z</updated>
     <content type="html"><![CDATA[<p>前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～</p>
@@ -926,14 +926,14 @@
     
     </summary>
     
-      <category term="ideavim" scheme="http://tianweishu.com/tags/ideavim/"/>
+      <category term="ideavim" scheme="http://weishu.me/tags/ideavim/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Xfermode in android]]></title>
-    <link href="http://tianweishu.com/2015/09/23/Xfermode-in-android/"/>
-    <id>http://tianweishu.com/2015/09/23/Xfermode-in-android/</id>
+    <link href="http://weishu.me/2015/09/23/Xfermode-in-android/"/>
+    <id>http://weishu.me/2015/09/23/Xfermode-in-android/</id>
     <published>2015-09-23T05:10:49.000Z</published>
     <updated>2015-09-25T11:14:11.000Z</updated>
     <content type="html"><![CDATA[<p>Xfermode有三个实现类：AvoidXfermode, PixelXorXfermode以及PorterDuffXfermode。<br>前两个类因为不支持硬件加速在API level 16被标记为Deprecated了，用也可以，但是需要关闭硬件加速，简单说下。</p>
@@ -992,13 +992,13 @@
     
     </summary>
     
-      <category term="2D graphics" scheme="http://tianweishu.com/tags/2D-graphics/"/>
+      <category term="2D graphics" scheme="http://weishu.me/tags/2D-graphics/"/>
     
-      <category term="Xfermode" scheme="http://tianweishu.com/tags/Xfermode/"/>
+      <category term="Xfermode" scheme="http://weishu.me/tags/Xfermode/"/>
     
-      <category term="Android" scheme="http://tianweishu.com/categories/Android/"/>
+      <category term="Android" scheme="http://weishu.me/categories/Android/"/>
     
-      <category term="UI" scheme="http://tianweishu.com/categories/Android/UI/"/>
+      <category term="UI" scheme="http://weishu.me/categories/Android/UI/"/>
     
   </entry>
   
