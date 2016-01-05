@@ -54,7 +54,7 @@
 
 没错，这种逼格极高的ASCII图片注释方式就是我们要讨论的话题。">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1451834573842.png">
-<meta property="og:updated_time" content="2016-01-03T17:07:10.000Z">
+<meta property="og:updated_time" content="2016-01-05T01:54:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ASCII Art：使用纯文本流程图">
 <meta name="twitter:description" content="我们使用纯文本写代码，有了Markdown又可以使用纯文本写文档，那么对于更直观的信息表达方式——图片，能不能使用纯文本描述呢？
@@ -277,7 +277,7 @@
 <h4 id="属性(Attributes)">属性(Attributes)</h4><p>可以给节点和边添加属性；比如标签，方向等；使用大括号 <code>{}</code>表示，里面的内容类似css，<code>attribute: value</code>。</p>
 <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ "Monitor Size" ] --&gt; &#123; label: 21"; &#125; [ Big ] &#123; label: "Huge"; &#125;</span><br></pre></td></tr></table></figure>
 <p>上面的DSL输入如下：<br><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">+----------------+</span>  21"   <span class="code">+------+</span></span><br><span class="line">| "Monitor Size" | -----&gt; | Huge |</span><br><span class="line"><span class="code">+----------------+</span>        <span class="code">+------+</span></span><br></pre></td></tr></table></figure></p>
-<p>Graph::Easy提供了非常多的属性; 另外，<code>Graph::Easy</code>的<a href="http://bloodgate.com/perl/graph/manual/index.html" target="_blank" rel="external">文档</a>非常详细，建议通读一遍；了解其中的原理和细节，对于绘图和布局有巨大帮助。有时间的话我就翻译一下。</p>
+<p>Graph::Easy提供了非常多的属性; 另外，<code>Graph::Easy</code>的<a href="http://bloodgate.com/perl/graph/manual/index.html" target="_blank" rel="external">文档</a>非常详细，建议通读一遍；了解其中的原理和细节，对于绘图和布局有巨大帮助。目前正在翻译，文档<a href="https://www.gitbook.com/book/weishu/graph-easy-cn/details" target="_blank" rel="external">地址</a>.</p>
 <h2 id="实例">实例</h2><p>语法是不是非常简单？有了这些知识，我们就可以建立自己的流程图了；Have a try！来个MVP模式的示意图试试～</p>
 <ol>
 <li>新建文件，<code>vi mvp.txt</code>; 输入以下代码：</li>
