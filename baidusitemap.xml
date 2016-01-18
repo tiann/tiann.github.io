@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <lastmod>2016-01-18T07:47:15.000Z</lastmod>
+    <data>
+        <display>
+        <title>你真的了解AsyncTask？</title>
+        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
     <lastmod>2016-01-13T05:50:07.000Z</lastmod>
     <data>
@@ -268,14 +285,14 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <loc>http://weishu.me/2015/10/08/problems-when-config-react-native-env/</loc>
     <lastmod>2015-10-19T02:53:35.000Z</lastmod>
     <data>
         <display>
-        <title>mac下Android studio快捷键配置</title>
-        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
+        <title>react-native环境搭建的正确姿势</title>
+        <pubTime>2015-10-08T09:20:14.000Z</pubTime>
         
-        <tag>ideavim</tag>
+        <tag>react-native</tag>
          
          
            
@@ -285,14 +302,14 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/10/08/problems-when-config-react-native-env/</loc>
+    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
     <lastmod>2015-10-19T02:53:35.000Z</lastmod>
     <data>
         <display>
-        <title>react-native环境搭建的正确姿势</title>
-        <pubTime>2015-10-08T09:20:14.000Z</pubTime>
+        <title>mac下Android studio快捷键配置</title>
+        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
         
-        <tag>react-native</tag>
+        <tag>ideavim</tag>
          
          
            
