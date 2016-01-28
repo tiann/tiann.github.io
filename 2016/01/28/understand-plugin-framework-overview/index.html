@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="android," />
+  <meta name="keywords" content="android,droidplugin,plugin framework," />
 
 
 
@@ -41,35 +41,25 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。
+<meta name="description" content="2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：
 
-下文所有快捷键基于如下keymapWindows: DefaultLinux: DefaultOSX: Mac OSX 10.5+
-
-自动补全的时候是Enter还是Tab？在使用自动补全的时候Enter和Tab的行为还是有一些细微的区别的：">
+从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。
+在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Studio你不知道的快捷键(一)">
-<meta property="og:url" content="http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/index.html">
+<meta property="og:title" content="插件框架原理解析——概要">
+<meta property="og:url" content="http://weishu.me/2016/01/28/understand-plugin-framework-overview/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。
+<meta property="og:description" content="2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：
 
-下文所有快捷键基于如下keymapWindows: DefaultLinux: DefaultOSX: Mac OSX 10.5+
-
-自动补全的时候是Enter还是Tab？在使用自动补全的时候Enter和Tab的行为还是有一些细微的区别的：">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-1.gif">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-2.gif">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-3.gif">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-4.gif">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-5.gif">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-6.gif">
-<meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-7.gif">
-<meta property="og:updated_time" content="2015-12-11T05:59:38.000Z">
+从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。
+在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个">
+<meta property="og:updated_time" content="2016-01-28T03:10:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Studio你不知道的快捷键(一)">
-<meta name="twitter:description" content="一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。
+<meta name="twitter:title" content="插件框架原理解析——概要">
+<meta name="twitter:description" content="2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：
 
-下文所有快捷键基于如下keymapWindows: DefaultLinux: DefaultOSX: Mac OSX 10.5+
-
-自动补全的时候是Enter还是Tab？在使用自动补全的时候Enter和Tab的行为还是有一些细微的区别的：">
+从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。
+在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -79,7 +69,7 @@
   };
 </script>
 
-  <title> Android Studio你不知道的快捷键(一) | Weishu's Notes </title>
+  <title> 插件框架原理解析——概要 | Weishu's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -196,7 +186,7 @@
           
           
             
-              Android Studio你不知道的快捷键(一)
+              插件框架原理解析——概要
             
           
         </h1>
@@ -205,34 +195,19 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-12-11T13:42:33+08:00" content="2015-12-11">
-            2015-12-11
+          <time itemprop="dateCreated" datetime="2016-01-28T11:07:36+08:00" content="2016-01-28">
+            2016-01-28
           </time>
         </span>
 
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
         
 
         
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/11/shortcut-of-android-studio-you-may-not-know/" itemprop="commentsCount"></span>
+              <a href="/2016/01/28/understand-plugin-framework-overview/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/28/understand-plugin-framework-overview/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -253,48 +228,39 @@
       
 
       
-        <span itemprop="articleBody"><p>一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。</p>
-<blockquote>
-<p>下文所有快捷键基于如下keymap<br>Windows: Default<br>Linux: Default<br>OSX: Mac OSX 10.5+</p>
-</blockquote>
-<h2 id="自动补全的时候是Enter还是Tab？">自动补全的时候是Enter还是Tab？</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-1.gif" alt="自动补全enter和tab区别" width="252"><br>在使用自动补全的时候<code>Enter</code>和<code>Tab</code>的行为还是有一些细微的区别的：<br><a id="more"></a></p>
+        <span itemprop="articleBody"><p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
 <ol>
-<li>使用<code>Enter</code>会补全你选择的语句</li>
-<li>使用<code>Tab</code>的话，会替换掉你之前在这里的内容（删除后面的语句直到遇到点号，逗号，分号）</li>
+<li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
+<li>在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个app进行升级，那么发布流程不仅复杂而且效率低下；在讲究小步快跑和持续迭代的移动互联网必将遭到淘汰。</li>
 </ol>
-<p>这种情况我们还是会经常遇到的，比如要替换一个资源的ID（R.id.a_xxx_xxx)，想必大多数人都是先选择<code>a.xxx_xxx</code>删除，然后输入新的内容，或者相反；其实这时候，用<code>Tab</code>才是最优雅的方式。</p>
-<p>快捷键：（在补全的时候)<strong><code>Enter/Tab</code></strong></p>
-<h2 id="返回编辑器窗口">返回编辑器窗口</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-2.gif" alt="返回编辑器窗口" width="550"><br>正在写代码的时候，很多操作会让焦点脱离编辑器；比如<em>Find Usage</em>, <em>Logcat</em>, 切换到项目结构视图，类型继承树等；如果视图切换了如何快速切回编辑器继续写代码呢？简单的鼠标点一下编辑器就可以了，但其实还有两种选择：</p>
+<p>H5和Hybird可以解决这些问题，但是始终比不上native的用户体验；于是，国外的FaceBook推出了<code>react-native</code>；而国内各大厂商几乎都选择纯native的插件化技术。可以说，Android的未来必将是<code>react-native</code>和插件化的天下。</p>
+<a id="more"></a>
+<p><code>react-native</code>资料很多，但是讲述插件化的却凤毛菱角；插件化技术听起来高深莫测，实际上要解决的就是两个问题：</p>
 <ol>
-<li><code>Esc</code>: 让编辑器窗口获取焦点，这时候就可以输入代码了</li>
-<li><code>Shift + Esc</code>: 这个会让编辑器获取焦点，并且顺手帮你把刚刚打开的窗口关闭了。</li>
+<li>代码加载</li>
+<li>资源加载</li>
 </ol>
-<p>个人喜欢第二种；Find Usage完毕了，<code>Shift + Esc</code>, 优雅～</p>
-<ol>
-<li><code>Esc</code>: 返回编辑器</li>
-<li><code>Shift + Esc</code>: 返回编辑器并关闭当前窗口</li>
-</ol>
-<h2 id="返回上次打开的工具窗口">返回上次打开的工具窗口</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-3.gif" alt="返回最后打开的工具窗口" width="495"><br>接上面那个功能，如果你<code>Shift + Esc</code> 写了一会儿代码，发现又需要打开刚刚的窗口怎么办？这种场景通常发生在<em>Logcat</em>这个Tol Window上，看完了日志，写代码，写完代码看日志；如何快速切换？</p>
-<p>快捷键：<code>F12</code></p>
-<h2 id="快捷打开窗口">快捷打开窗口</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-4.gif" alt="使用数字快捷打开窗口" width="567"><br>有木有发现有的窗口上面有个数字？这样的窗口（工具窗）我们可以快捷打开！</p>
+<h2 id="代码加载">代码加载</h2><p>类的加载可以使用Java的<code>ClassLoader</code>机制，但是对于Android来说，并不是说类加载进来就可以用了，很多组件都是有“生命”的；因此对于这些有血有肉的类，必须给它们注入活力，也就是所谓的<strong>组件生命周期管理</strong>；</p>
+<p>另外，如何管理加载进来的类也是一个问题。假设多个插件依赖了相同的类，是抽取公共依赖进行管理还是插件单独依赖；这就是<strong>ClassLoader的管理问题</strong>；</p>
+<h2 id="资源加载">资源加载</h2><p>资源加载方案大家使用的原理都差不多，都是用<code>AssetManager</code>的隐藏方法<code>addAssetPath</code>；但是，不同插件的资源如何管理？是公用一套资源还是插件独立资源？共用资源如何避免资源冲突？对于资源加载，有的方案共用一套资源并采用资源分段机制解决冲突（要么修改<code>aapt</code>要么添加编译插件）；有的方案选择独立资源，不同插件有自己的资源，公共资源全部copy。</p>
+<p>目前国内开源的较成熟的插件方案有<a href="https://github.com/singwhatiwanna/dynamic-load-apk" target="_blank" rel="external">DL</a>和<a href="https://github.com/Qihoo360/DroidPlugin" target="_blank" rel="external">DroidPlugin</a>；但是DL方案仅仅对Frameworl的表层做了处理，严重依赖<code>that</code>语法，编写插件代码和主程序代码需单独区分；而<strong>DroidPlugin</strong>则对于Hook增强了Framework层的很多系统服务，开发插件就跟开发独立app差不多；就拿Activity生命周期的管理来说，DL的代理方式就像是牵线木偶，插件只不过是操纵傀儡而已；而DroidPlugin则是借尸还魂，插件Activity是有血有肉的交给系统管理真正组件；DroidPluginHook了系统几乎所有的Sevice，欺骗了大部分的系统API；因此学习DroidPlugin对于整个Android FrameWork层大有裨益。</p>
+<p>接下来的一系列文章将以DroidPlugin为例讲解插件框架的原理，揭开插件化的神秘面纱；同时你还能帮助深入理解Android Framewrok主要内容如下：</p>
 <ul>
-<li>Mac: <code>Cmd + 数字</code></li>
-<li>windows/Linux: <code>Alt + 数字</code></li>
+<li>Hook机制之动态代理</li>
+<li>Hook机制之Binder Hook</li>
+<li>Activity生命周期管理，占坑和Hook</li>
+<li>广播的处理方式</li>
+<li>Service的处理方式</li>
+<li>Service处理方式</li>
+<li>插件加载解析之自定义包管理服务(PackageManager)</li>
+<li>插件进程管理机制（ActivityMAnager）</li>
+<li>插件机制之资源管理</li>
+<li>DroidPlugin插件通信机制</li>
+<li>DroidPlugin框架缺陷</li>
+<li>不同插件框架方案对比</li>
+<li>插件化的未来</li>
 </ul>
-<h2 id="任意窗口切换">任意窗口切换</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-5.gif" alt="窗口切换" width="532"><br>上面的切换还是无法满足你的要求？记得Mac的<code>Cmd + Tab</code>，Windows的<code>Alt/Win + Tab</code>吗？Android Studio也有这个类似的功能，可以让你切换到任意窗口！</p>
-<p>在这个切换窗口打开的时候，你可以直接按数字切换到对应的工具窗口，或者输入字母搜索右边的编辑器窗口，如果你需要关闭某个窗口，在上面按<code>BackSpace</code>即可。</p>
-<p>快捷键：<code>Ctrl + Tab</code></p>
-<h2 id="隐藏所有窗口">隐藏所有窗口</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-6.gif" alt="隐藏所有窗口" width="566"><br>好了学了那么多打开窗口的技能，如果你想关闭那些乱七八糟的窗口，安安静静写代码应该怎么办？</p>
-<ul>
-<li>Mac: <code>CMD + Shift + F12</code></li>
-<li>windows/Linux: <code>Ctrl + shift + F12</code></li>
-</ul>
-<p>如果需要恢复所有窗口，再按一次这个快捷键即可。</p>
-<h2 id="参数提示">参数提示</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-7.gif" alt="参数提示" width="472"><br>这个功能估计很多人知道了，但是还是提一下。在自动补全以后，如果某个方法参数超级长，你不知道参数是什么怎么办？可以试试这个。</p>
-<ul>
-<li>Mac: <code>CMD + P</code></li>
-<li>win/Linux: <code>Ctrl + P</code></li>
-</ul>
+<p>另外，对于每一章内容都会有详细的demo，具体见<a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>；喜欢就点个关注吧～定期更新，敬请期待！</p>
 </span>
       
     </div>
@@ -305,6 +271,10 @@
           
             <a href="/tags/android/" rel="tag">#android</a>
           
+            <a href="/tags/droidplugin/" rel="tag">#droidplugin</a>
+          
+            <a href="/tags/plugin-framework/" rel="tag">#plugin framework</a>
+          
         </div>
       
 
@@ -312,13 +282,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" rel="prev">Android Studio你不知道的快捷键(二)</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/08/use-optional-avoid-nullpointexception/" rel="next">[译]厌倦了NullPointException？Optional拯救你！</a>
+              <a href="/2016/01/18/dive-into-asynctask/" rel="next">你真的了解AsyncTask？</a>
             
           </div>
         </div>
@@ -343,8 +311,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/12/11/shortcut-of-android-studio-you-may-not-know/"
-                   data-title="Android Studio你不知道的快捷键(一)" data-url="http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/">
+              <div class="ds-thread" data-thread-key="2016/01/28/understand-plugin-framework-overview/"
+                   data-title="插件框架原理解析——概要" data-url="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">
               </div>
             
           </div>
@@ -439,7 +407,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自动补全的时候是Enter还是Tab？"><span class="nav-number">1.</span> <span class="nav-text">自动补全的时候是Enter还是Tab？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回编辑器窗口"><span class="nav-number">2.</span> <span class="nav-text">返回编辑器窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回上次打开的工具窗口"><span class="nav-number">3.</span> <span class="nav-text">返回上次打开的工具窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷打开窗口"><span class="nav-number">4.</span> <span class="nav-text">快捷打开窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任意窗口切换"><span class="nav-number">5.</span> <span class="nav-text">任意窗口切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏所有窗口"><span class="nav-number">6.</span> <span class="nav-text">隐藏所有窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数提示"><span class="nav-number">7.</span> <span class="nav-text">参数提示</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码加载"><span class="nav-number">1.</span> <span class="nav-text">代码加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源加载"><span class="nav-number">2.</span> <span class="nav-text">资源加载</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-01-18T07:47:15.000Z</updated>
+  <updated>2016-01-28T03:10:57.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,11 +15,69 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[插件框架原理解析——概要]]></title>
+    <link href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/"/>
+    <id>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</id>
+    <published>2016-01-28T03:07:36.000Z</published>
+    <updated>2016-01-28T03:10:57.000Z</updated>
+    <content type="html"><![CDATA[<p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
+<ol>
+<li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
+<li>在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个app进行升级，那么发布流程不仅复杂而且效率低下；在讲究小步快跑和持续迭代的移动互联网必将遭到淘汰。</li>
+</ol>
+<p>H5和Hybird可以解决这些问题，但是始终比不上native的用户体验；于是，国外的FaceBook推出了<code>react-native</code>；而国内各大厂商几乎都选择纯native的插件化技术。可以说，Android的未来必将是<code>react-native</code>和插件化的天下。</p>
+<a id="more"></a>
+<p><code>react-native</code>资料很多，但是讲述插件化的却凤毛菱角；插件化技术听起来高深莫测，实际上要解决的就是两个问题：</p>
+<ol>
+<li>代码加载</li>
+<li>资源加载</li>
+</ol>
+<h2 id="代码加载">代码加载</h2><p>类的加载可以使用Java的<code>ClassLoader</code>机制，但是对于Android来说，并不是说类加载进来就可以用了，很多组件都是有“生命”的；因此对于这些有血有肉的类，必须给它们注入活力，也就是所谓的<strong>组件生命周期管理</strong>；</p>
+<p>另外，如何管理加载进来的类也是一个问题。假设多个插件依赖了相同的类，是抽取公共依赖进行管理还是插件单独依赖；这就是<strong>ClassLoader的管理问题</strong>；</p>
+<h2 id="资源加载">资源加载</h2><p>资源加载方案大家使用的原理都差不多，都是用<code>AssetManager</code>的隐藏方法<code>addAssetPath</code>；但是，不同插件的资源如何管理？是公用一套资源还是插件独立资源？共用资源如何避免资源冲突？对于资源加载，有的方案共用一套资源并采用资源分段机制解决冲突（要么修改<code>aapt</code>要么添加编译插件）；有的方案选择独立资源，不同插件有自己的资源，公共资源全部copy。</p>
+<p>目前国内开源的较成熟的插件方案有<a href="https://github.com/singwhatiwanna/dynamic-load-apk" target="_blank" rel="external">DL</a>和<a href="https://github.com/Qihoo360/DroidPlugin" target="_blank" rel="external">DroidPlugin</a>；但是DL方案仅仅对Frameworl的表层做了处理，严重依赖<code>that</code>语法，编写插件代码和主程序代码需单独区分；而<strong>DroidPlugin</strong>则对于Hook增强了Framework层的很多系统服务，开发插件就跟开发独立app差不多；就拿Activity生命周期的管理来说，DL的代理方式就像是牵线木偶，插件只不过是操纵傀儡而已；而DroidPlugin则是借尸还魂，插件Activity是有血有肉的交给系统管理真正组件；DroidPluginHook了系统几乎所有的Sevice，欺骗了大部分的系统API；因此学习DroidPlugin对于整个Android FrameWork层大有裨益。</p>
+<p>接下来的一系列文章将以DroidPlugin为例讲解插件框架的原理，揭开插件化的神秘面纱；同时你还能帮助深入理解Android Framewrok主要内容如下：</p>
+<ul>
+<li>Hook机制之动态代理</li>
+<li>Hook机制之Binder Hook</li>
+<li>Activity生命周期管理，占坑和Hook</li>
+<li>广播的处理方式</li>
+<li>Service的处理方式</li>
+<li>Service处理方式</li>
+<li>插件加载解析之自定义包管理服务(PackageManager)</li>
+<li>插件进程管理机制（ActivityMAnager）</li>
+<li>插件机制之资源管理</li>
+<li>DroidPlugin插件通信机制</li>
+<li>DroidPlugin框架缺陷</li>
+<li>不同插件框架方案对比</li>
+<li>插件化的未来</li>
+</ul>
+<p>另外，对于每一章内容都会有详细的demo，具体见<a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>；喜欢就点个关注吧～定期更新，敬请期待！</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
+<ol>
+<li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
+<li>在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个app进行升级，那么发布流程不仅复杂而且效率低下；在讲究小步快跑和持续迭代的移动互联网必将遭到淘汰。</li>
+</ol>
+<p>H5和Hybird可以解决这些问题，但是始终比不上native的用户体验；于是，国外的FaceBook推出了<code>react-native</code>；而国内各大厂商几乎都选择纯native的插件化技术。可以说，Android的未来必将是<code>react-native</code>和插件化的天下。</p>]]>
+    
+    </summary>
+    
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
+    
+      <category term="droidplugin" scheme="http://weishu.me/tags/droidplugin/"/>
+    
+      <category term="plugin framework" scheme="http://weishu.me/tags/plugin-framework/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[你真的了解AsyncTask？]]></title>
     <link href="http://weishu.me/2016/01/18/dive-into-asynctask/"/>
     <id>http://weishu.me/2016/01/18/dive-into-asynctask/</id>
     <published>2016-01-18T07:41:08.000Z</published>
-    <updated>2016-01-18T07:47:15.000Z</updated>
+    <updated>2016-01-18T07:47:21.000Z</updated>
     <content type="html"><![CDATA[<p>虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？</p>
 <p>AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将带你了解AsyncTask背后的原理，并给出一个久经考验的AsyncTask修改版。</p>
 <a id="more"></a>
