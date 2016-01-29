@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
-    <lastmod>2016-01-29T02:02:42.000Z</lastmod>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/</loc>
+    <lastmod>2016-01-29T07:20:55.000Z</lastmod>
     <data>
         <display>
-        <title>插件框架原理解析——概要</title>
-        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
+        <title>插件框架原理解析——Hook机制之动态代理</title>
+        <pubTime>2016-01-28T12:27:13.000Z</pubTime>
         
         <tag>android</tag>
          
@@ -24,13 +24,15 @@
     </url>
 
     
+    
+    
   <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/</loc>
-    <lastmod>2016-01-28T12:29:34.000Z</lastmod>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
+    <lastmod>2016-01-29T02:02:42.000Z</lastmod>
     <data>
         <display>
-        <title>插件框架原理解析——Hook机制之动态代理</title>
-        <pubTime>2016-01-28T12:27:13.000Z</pubTime>
+        <title>插件框架原理解析——概要</title>
+        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
         
         <tag>android</tag>
          
@@ -81,7 +83,6 @@
     </url>
 
     
-    
   <url>
     <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
     <lastmod>2016-01-05T01:54:35.000Z</lastmod>
@@ -96,7 +97,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
