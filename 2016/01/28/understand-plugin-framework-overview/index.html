@@ -53,7 +53,7 @@
 
 从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。
 在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个">
-<meta property="og:updated_time" content="2016-01-28T03:19:20.000Z">
+<meta property="og:updated_time" content="2016-01-29T02:02:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="插件框架原理解析——概要">
 <meta name="twitter:description" content="2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：
@@ -246,7 +246,7 @@
 <p>目前国内开源的较成熟的插件方案有<a href="https://github.com/singwhatiwanna/dynamic-load-apk" target="_blank" rel="external">DL</a>和<a href="https://github.com/Qihoo360/DroidPlugin" target="_blank" rel="external">DroidPlugin</a>；但是DL方案仅仅对Frameworl的表层做了处理，严重依赖<code>that</code>语法，编写插件代码和主程序代码需单独区分；而DroidPlugin通过Hook增强了Framework层的很多系统服务，开发插件就跟开发独立app差不多；就拿Activity生命周期的管理来说，DL的代理方式就像是牵线木偶，插件只不过是操纵傀儡而已；而DroidPlugin则是借尸还魂，插件是有血有肉的系统管理的真正组件；DroidPlugin Hook了系统几乎所有的Sevice，欺骗了大部分的系统API；掌握这个Hook过程需要掌握很多系统原理，因此学习DroidPlugin对于整个Android FrameWork层大有裨益。</p>
 <p>接下来的一系列文章将以DroidPlugin为例讲解插件框架的原理，揭开插件化的神秘面纱；同时还能帮助深入理解Android Framewrok；主要内容如下：</p>
 <ul>
-<li>Hook机制之动态代理</li>
+<li><a href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/">Hook机制之动态代理</a></li>
 <li>Hook机制之Binder Hook</li>
 <li>Activity生命周期管理，占坑和Hook</li>
 <li>插件的广播机制，静态广播非静态</li>
