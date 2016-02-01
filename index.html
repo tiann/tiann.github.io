@@ -178,6 +178,114 @@
           
           
             
+              <a class="post-title-link" href="/2016/02/01/avoid-switching-keyboard-in-markdown/" itemprop="url">
+                提升markdown的中文的输入效率
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-02-01T16:15:56+08:00" content="2016-02-01">
+            2016-02-01
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/实用技巧/" itemprop="url" rel="index">
+                  <span itemprop="name">实用技巧</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/02/01/avoid-switching-keyboard-in-markdown/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/avoid-switching-keyboard-in-markdown/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>Markdown这种格式的出现大大提升了写作的效率，它让我们只关注文字本身而不用关心格式；但是markdown对于非英文的用户其实并不友好：每当我们需要使用<code>#[-</code>等标志符的时候，需要不断地切换输入法。</p>
+<p>首先，切换输入法(就算是按<code>shift</code>键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/2016markdown.gif" alt="效果图"></p>
+<p>避免输入法切换最简单的办法就是把markdown使用的那些特定字符<code>!-[]#*()</code>，直接使用半角符号代替全角符号；完成这个功能最好的角色是输入法；但目前除了可以定制的鼠须管等能完成，其他的国产输入以及系统输入法都不支持；在第三方输入法支持这个功能之前，我这里给出一个简单的方案。</p>
+<h3 id="如果你使用鼠须管">如果你使用鼠须管</h3><p>鼠须管/小狼嚎 输入法是可以定制的，如果你是这种输入法的用户，那么恭喜你，实现方式非常简单；修改一下配置即可，具体做法见<a href="http://irising.me/2013/07/17627/" target="_blank" rel="external">调整「鼠须管」实现高效的Markdown输入</a></p>
+<h3 id="如果你使用Mac">如果你使用Mac</h3><p>如果你使用第三方输入法或者mac的系统输入法，那么我们可以通过修改键盘映射来解决这个问题：把全角的markdown映射为半角符号。具体做法如下：</p>
+<h5 id="安装Karabiner软件">安装Karabiner软件</h5><p>下载地址点<a href="https://pqrs.org/osx/karabiner/" target="_blank" rel="external">这里</a>；按照步骤安装，注意开启之后需要在系统设置里面给它使用辅助功能权限</p>
+<h5 id="设置键盘映射">设置键盘映射</h5><p>首先，打开Karabiner软件，选择<code>Misc&amp;Uninstall</code>选项卡，如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1454310098796.png" width="740"></p>
+<p>然后，点击上图标识的<code>open private.xml</code>那个按钮，用文本编辑器打开这个文件：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1454310263101.png" width="574"></p>
+<p>接着去 <a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">gist</a>上把<code>markdown_keyboard_remapping.xml</code>里面的代码copy到这个文件里面，全部替换即可(代码有点长，我就不贴了，自行<a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">下载</a>)：</p>
+<p>最后，打开Karabiner软件的第一个选项卡，重新加载配置就完成了，如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1454310388700.png" width="771"></p>
+<h3 id="如果你使用Windows">如果你使用Windows</h3><p>Windows下面有神器<code>AutoHotKey</code>，解决这个完全不在话下；与Mac下面简单粗暴地直接把全角符号替换为半角符号不同，AHK可以保留原来的方案，用<code>alt ＋ 符号</code>来输入需要的半角符号；这样两种可以共存。</p>
+<ol>
+<li>首先，安装AHK软件，下载点<a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">这里</a></li>
+<li>然后下载文件<a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">markdown_keyboard_remapping.ahk</a></li>
+</ol>
+<p>接着双击这个文件，整个过程就完成了；最好把这个文件加入开机启动，这样每次开机就能用了。</p>
+<p>Windows下面的使用方法是<code>alt ＋ 数字键/符号键</code>；比如想输入<code>[</code>，可以在任何输入法下直接使用<code>alt ＋ [</code>；如果想输入<code>#</code>，可以直接使用<code>alt ＋ 3</code>。</p>
+<p>通过这种设置，我们使用markdown写作的时候就流畅多了!避免了繁琐的各种切换，真正享受到markdown格式的好处，Have Fun!</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/01/28/understand-plugin-framework-proxy-hook/" itemprop="url">
                 插件框架原理解析——Hook机制之动态代理
               </a>
@@ -931,106 +1039,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" itemprop="url">
-                Android Studio你不知道的快捷键(一)
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-11T13:42:33+08:00" content="2015-12-11">
-            2015-12-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/11/shortcut-of-android-studio-you-may-not-know/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。</p>
-<blockquote>
-<p>下文所有快捷键基于如下keymap<br>Windows: Default<br>Linux: Default<br>OSX: Mac OSX 10.5+</p>
-</blockquote>
-<h2 id="自动补全的时候是Enter还是Tab？">自动补全的时候是Enter还是Tab？</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-1.gif" alt="自动补全enter和tab区别" width="252"/><br>在使用自动补全的时候<code>Enter</code>和<code>Tab</code>的行为还是有一些细微的区别的：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
   </nav>
 
  </div>
@@ -1064,21 +1077,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">分类</span>
               
           </div>
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">标签</span>
               
           </div>

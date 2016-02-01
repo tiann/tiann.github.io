@@ -178,6 +178,101 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" itemprop="url">
+                Android Studio你不知道的快捷键(一)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-11T13:42:33+08:00" content="2015-12-11">
+            2015-12-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/实用技巧/" itemprop="url" rel="index">
+                  <span itemprop="name">实用技巧</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/11/shortcut-of-android-studio-you-may-not-know/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>一般来说键盘用的越多鼠标用的越少，那么写起代码来效率就越高；常见的快捷键想必大家都已经掌握，接下来我就分享一些你可能不知道的但确非常实用的快捷键。</p>
+<blockquote>
+<p>下文所有快捷键基于如下keymap<br>Windows: Default<br>Linux: Default<br>OSX: Mac OSX 10.5+</p>
+</blockquote>
+<h2 id="自动补全的时候是Enter还是Tab？">自动补全的时候是Enter还是Tab？</h2><p><img src="http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-11-1.gif" alt="自动补全enter和tab区别" width="252"/><br>在使用自动补全的时候<code>Enter</code>和<code>Tab</code>的行为还是有一些细微的区别的：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/08/use-optional-avoid-nullpointexception/" itemprop="url">
                 [译]厌倦了NullPointException？Optional拯救你！
               </a>
@@ -914,118 +1009,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/23/Xfermode-in-android/" itemprop="url">
-                Xfermode in android
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-23T13:10:49+08:00" content="2015-09-23">
-            2015-09-23
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Android/" itemprop="url" rel="index">
-                  <span itemprop="name">Android</span>
-                </a>
-              </span>
-
-              
-              
-                ， 
-              
-
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Android/UI/" itemprop="url" rel="index">
-                  <span itemprop="name">UI</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/23/Xfermode-in-android/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/23/Xfermode-in-android/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>Xfermode有三个实现类：AvoidXfermode, PixelXorXfermode以及PorterDuffXfermode。<br>前两个类因为不支持硬件加速在API level 16被标记为Deprecated了，用也可以，但是需要关闭硬件加速，简单说下。</p>
-<h2 id="AvoidXfermode">AvoidXfermode</h2><blockquote>
-<p> AvoidXfermode xfermode will draw the src everywhere except on top of the<br> opColor or, depending on the Mode, draw only on top of the opColor.</p>
-</blockquote>
-<p>这话翻译成中文太别扭了，自己理解吧。举个栗子，如果你想对原来图像进行处理，把红色换成绿色，可以使用这个；或者，你想把不是红色的换成某个颜色，也行。这里有一个容差值的概念，比如红色是0xff0000 但是在一定范围内也都是红色，如果你设定一个容差值，那么“各种符合要求的红色”都会被处理。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/Xfermode-in-android/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
   </nav>
 
  </div>
@@ -1059,21 +1047,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">分类</span>
               
           </div>
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">标签</span>
               
           </div>
