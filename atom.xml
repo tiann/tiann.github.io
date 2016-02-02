@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-02-01T08:38:52.000Z</updated>
+  <updated>2016-02-02T02:41:41.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,11 +15,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[提升markdown的中文的输入效率]]></title>
+    <title><![CDATA[提升markdown的中文输入效率]]></title>
     <link href="http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/"/>
     <id>http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/</id>
     <published>2016-02-01T08:15:56.000Z</published>
-    <updated>2016-02-01T08:38:52.000Z</updated>
+    <updated>2016-02-02T02:41:41.000Z</updated>
     <content type="html"><![CDATA[<p>Markdown这种格式的出现大大提升了写作的效率，但是它对于非英文的用户其实并不友好：每当我们需要使用<code>#[-</code>等标志符的时候，需要不断地切换输入法。</p>
 <p>首先，切换输入法(就算是按<code>shift</code>键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：</p>
 <p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/2016markdown_keyboard_remapping.gif" alt="效果图"></p>
