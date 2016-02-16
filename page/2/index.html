@@ -178,6 +178,100 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" itemprop="url">
+                Android Studio你不知道的快捷键(二)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-12T09:51:53+08:00" content="2015-12-12">
+            2015-12-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/实用技巧/" itemprop="url" rel="index">
+                  <span itemprop="name">实用技巧</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">上文</a>)</p>
+<h2 id="自动生成变量">自动生成变量</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-1.gif" alt="自动生成变量" /></p>
+<p>作为一门静态类型语言，Java是有一定的类型推导能力的；那么你是否经常书写:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"testStr"</span>;</span><br><span class="line">List&lt;String&gt; testStrings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
+<p>其实大可不必写那些恼火的类型声明的，一看就知道<code>testStr, testStrings</code>就知道是什么类型，再这么干不就是废话么！好在IDEA给了我们这个能力。尝试一下这个快捷键吧，会给你惊喜。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" itemprop="url">
                 Android Studio你不知道的快捷键(一)
               </a>
@@ -926,89 +1020,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/02/configuration-of-idea-android-studio-in-mac/" itemprop="url">
-                mac下Android studio快捷键配置
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-02T14:17:47+08:00" content="2015-10-02">
-            2015-10-02
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/02/configuration-of-idea-android-studio-in-mac/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/02/configuration-of-idea-android-studio-in-mac/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>前两天重装了mac系统；之前的配置都丢了，因此纪录一下配置的过程以防惨案再次发生～</p>
-<p>快捷键为什么要配置？直接使用不就好！</p>
-<p>这个事实基于我们使用vim模拟，IdeaVim；会有一些快捷键的冲突；然后使用HHKB的话，为了契合这个键盘，需要做一些额外的处理。</p>
-<p>基于两个前提：</p>
-<ol>
-<li>ideavim的某些ctrl开头的快捷键与IDE冲突，需要手动解决</li>
-<li>使用hhkb键盘，没有上下左右，没有<code>F1..Fn</code>系列不方便</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/02/configuration-of-idea-android-studio-in-mac/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1047,7 +1058,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -178,6 +178,84 @@
           
           
             
+              <a class="post-title-link" href="/2016/02/16/understand-plugin-framework-binder-hook/" itemprop="url">
+                插件框架原理解析——Hook机制之Binder Hook
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-02-16T19:22:45+08:00" content="2016-02-16">
+            2016-02-16
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/02/16/understand-plugin-framework-binder-hook/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/16/understand-plugin-framework-binder-hook/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Android系统通过Binder机制给应用程序提供了一系列的系统服务，诸如<code>ActivityManagerService</code>，<code>ClipboardManager</code>， <code>AudioManager</code>等；这些广泛存在系统服务给应用程序提供了诸如任务管理，音频，视频等异常强大的功能。</p>
+<p>插件框架作为各个插件的管理者，为了使得插件能够<strong>无缝地</strong>使用这些系统服务，自然会对这些系统服务做出一定的改造(Hook)，使得插件的开发和使用更加方便，从而大大降低插件的开发和维护成本。比如，Hook住<code>ActivityManagerService</code>可以让插件无缝地使用<code>startActivity</code>方法而不是使用特定的方式(比如that语法)来启动插件或者主程序的任意界面。</p>
+<p>我们把这种Hook系统服务的机制称之为Binder Hook，因为本质上这些服务提供者都是存在于系统各个进程的Binder对象。因此，要理解接下来的内容必须了解Android的Binder机制，可以参考我之前的文章<a href="http://weishu.me/2016/01/12/binder-index-for-newer/">Binder学习指南</a></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/16/understand-plugin-framework-binder-hook/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/02/01/avoid-switching-keyboard-in-markdown/" itemprop="url">
                 提升markdown的中文输入效率
               </a>
@@ -930,100 +1008,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" itemprop="url">
-                Android Studio你不知道的快捷键(二)
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-12T09:51:53+08:00" content="2015-12-12">
-            2015-12-12
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">上文</a>)</p>
-<h2 id="自动生成变量">自动生成变量</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-1.gif" alt="自动生成变量" /></p>
-<p>作为一门静态类型语言，Java是有一定的类型推导能力的；那么你是否经常书写:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"testStr"</span>;</span><br><span class="line">List&lt;String&gt; testStrings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
-<p>其实大可不必写那些恼火的类型声明的，一看就知道<code>testStr, testStrings</code>就知道是什么类型，再这么干不就是废话么！好在IDEA给了我们这个能力。尝试一下这个快捷键吧，会给你惊喜。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1062,7 +1046,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
