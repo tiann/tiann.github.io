@@ -200,7 +200,7 @@
     <link href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/"/>
     <id>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</id>
     <published>2016-01-28T03:07:36.000Z</published>
-    <updated>2016-01-29T02:02:42.000Z</updated>
+    <updated>2016-02-16T11:27:50.000Z</updated>
     <content type="html"><![CDATA[<p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
 <ol>
 <li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
@@ -220,7 +220,7 @@
 <p>接下来的一系列文章将以DroidPlugin为例讲解插件框架的原理，揭开插件化的神秘面纱；同时还能帮助深入理解Android Framewrok；主要内容如下：</p>
 <ul>
 <li><a href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/">Hook机制之动态代理</a></li>
-<li>Hook机制之Binder Hook</li>
+<li><a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Hook机制之Binder Hook</a></li>
 <li>Activity生命周期管理，占坑和Hook</li>
 <li>插件的广播机制，静态广播非静态</li>
 <li>Service组件的管理，占坑和Hook</li>
