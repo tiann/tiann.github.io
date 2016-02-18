@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-02-16T11:24:19.000Z</updated>
+  <updated>2016-02-18T03:24:50.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,11 +15,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[插件框架原理解析——Hook机制之Binder Hook]]></title>
+    <title><![CDATA[Android插件化原理解析——Hook机制之Binder Hook]]></title>
     <link href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/"/>
     <id>http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/</id>
     <published>2016-02-16T11:22:45.000Z</published>
-    <updated>2016-02-16T11:24:19.000Z</updated>
+    <updated>2016-02-18T03:24:50.000Z</updated>
     <content type="html"><![CDATA[<p>Android系统通过Binder机制给应用程序提供了一系列的系统服务，诸如<code>ActivityManagerService</code>，<code>ClipboardManager</code>， <code>AudioManager</code>等；这些广泛存在系统服务给应用程序提供了诸如任务管理，音频，视频等异常强大的功能。</p>
 <p>插件框架作为各个插件的管理者，为了使得插件能够<strong>无缝地</strong>使用这些系统服务，自然会对这些系统服务做出一定的改造(Hook)，使得插件的开发和使用更加方便，从而大大降低插件的开发和维护成本。比如，Hook住<code>ActivityManagerService</code>可以让插件无缝地使用<code>startActivity</code>方法而不是使用特定的方式(比如that语法)来启动插件或者主程序的任意界面。</p>
 <p>我们把这种Hook系统服务的机制称之为Binder Hook，因为本质上这些服务提供者都是存在于系统各个进程的Binder对象。因此，要理解接下来的内容必须了解Android的Binder机制，可以参考我之前的文章<a href="http://weishu.me/2016/01/12/binder-index-for-newer/">Binder学习指南</a></p>
@@ -137,11 +137,11 @@
   </entry>
   
   <entry>
-    <title><![CDATA[插件框架原理解析——Hook机制之动态代理]]></title>
+    <title><![CDATA[Android插件化原理解析——Hook机制之动态代理]]></title>
     <link href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/"/>
     <id>http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/</id>
     <published>2016-01-28T12:27:13.000Z</published>
-    <updated>2016-01-29T07:20:55.000Z</updated>
+    <updated>2016-02-18T03:25:34.000Z</updated>
     <content type="html"><![CDATA[<p>使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。</p>
 <p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的<code>dynamic-proxy-hook</code>模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
 <h2 id="代理是什么">代理是什么</h2><p>为什么需要代理呢？其实这个代理与日常生活中的“代理”，“中介”差不多；比如你想海淘买东西，总不可能亲自飞到国外去购物吧，这时候我们使用第三方海淘服务比如惠惠购物助手等；同样拿购物为例，有时候第三方购物会有折扣比如当初的米折网，这时候我们可以少花点钱；当然有时候这个“代理”比较坑，坑我们的钱，坑我们的货。</p>
@@ -196,11 +196,11 @@
   </entry>
   
   <entry>
-    <title><![CDATA[插件框架原理解析——概要]]></title>
+    <title><![CDATA[Android插件化原理解析——概要]]></title>
     <link href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/"/>
     <id>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</id>
     <published>2016-01-28T03:07:36.000Z</published>
-    <updated>2016-02-16T11:30:02.000Z</updated>
+    <updated>2016-02-18T03:25:17.000Z</updated>
     <content type="html"><![CDATA[<p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
 <ol>
 <li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
