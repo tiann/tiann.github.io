@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-03-07T10:41:08.000Z</updated>
+  <updated>2016-03-07T10:49:23.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/"/>
     <id>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</id>
     <published>2016-03-07T08:35:46.000Z</published>
-    <updated>2016-03-07T10:41:08.000Z</updated>
+    <updated>2016-03-07T10:49:23.000Z</updated>
     <content type="html"><![CDATA[<p>在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是<strong>代理方式</strong>和<strong>Binder Hook</strong>；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。</p>
 <p>ActivityManagerService对于FrameWork层的重要性不言而喻，Android的四大组件无一不与它打交道：</p>
 <ol>
@@ -71,7 +71,7 @@
 <p>可以看到，简单的几行代码，<code>AMS</code>已经被我们完全劫持了!! 至于劫持了能干什么，自己发挥想象吧~ </p>
 <p>DroidPlugin关于<code>AMS</code>的Hook，可以查看<code>IActivityManagerHook</code>这个类，它处理了我上述所说的兼容性问题，其他原理相同。另外，也许有童鞋有疑问了，你用<code>startActivity</code>为例怎么能确保Hook掉这个静态变量之后就能保证所有使用<code>AMS</code>的入口都被Hook了呢？</p>
 <p>答曰：无他，唯手熟尔。</p>
-<p>Android Framewrok层对于四大组件的处理，调用<code>AMS</code>服务的时候，全部都是通过使用这种方式；若有疑问可以自行查看源码。你可以从<code>Context</code>类的startActivity,startService,bindService,registerBroadcastReceiver,getContentResolver,等等入口进行跟踪，最终都会发现它们都会使用ActivityManagerNative的这个<code>AMS</code>代理对象来完成对远程AMS的访问。</p>
+<p>Android Framewrok层对于四大组件的处理，调用<code>AMS</code>服务的时候，全部都是通过使用这种方式；若有疑问可以自行查看源码。你可以从<code>Context</code>类的startActivity, startService,bindService, registerBroadcastReceiver, getContentResolver 等等入口进行跟踪，最终都会发现它们都会使用ActivityManagerNative的这个<code>AMS</code>代理对象来完成对远程AMS的访问。</p>
 <h2 id="PMS获取过程">PMS获取过程</h2><p><code>PMS</code>的获取也是通过Context完成的，具体就是<code>getPackageManager</code>这个方法；我们姑且当作已经知道了Context的实现在ContextImpl类里面，直奔<code>ContextImpl</code>类的<code>getPackageManager</code>方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> PackageManager <span class="title">getPackageManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mPackageManager != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> mPackageManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IPackageManager pm = ActivityThread.getPackageManager();</span><br><span class="line">    <span class="keyword">if</span> (pm != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Doesn't matter if we make more than one instance.</span></span><br><span class="line">        <span class="keyword">return</span> (mPackageManager = <span class="keyword">new</span> ApplicationPackageManager(<span class="keyword">this</span>, pm));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到，这里干了两件事：</p>
