@@ -178,6 +178,91 @@
           
           
             
+              <a class="post-title-link" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" itemprop="url">
+                Android 插件化原理解析——Hook机制之AMS&PMS
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-07T16:35:46+08:00" content="2016-03-07">
+            2016-03-07
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/03/07/understand-plugin-framework-ams-pms-hook/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/07/understand-plugin-framework-ams-pms-hook/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是<strong>代理方式</strong>和<strong>Binder Hook</strong>；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerService以及PackageManagerService的Hook方式（以下简称AMS，PMS）。</p>
+<p>ActivityManagerService对于FrameWork层的重要性不言而喻，Android的四大组件无一不与它打交道：</p>
+<ol>
+<li><code>startActivity</code>最终调用了AMS的<code>startActivity</code>系列方法，实现了Activity的启动；Activity的生命周期回调，也在AMS中完成；</li>
+<li><code>startService,bindService</code>最终调用到AMS的startService和bindService方法；</li>
+<li>动态广播的注册和接收在<code>AMS</code>中完成（静态广播在<code>PMS</code>中完成）</li>
+<li><code>getContentResolver</code>最终从<code>AMS</code>的<code>getContentProvider</code>获取到ContentProvider</li>
+</ol>
+<p>而<code>PMS</code>则完成了诸如权限校捡(<code>checkPermission,checkUidPermission</code>)，Apk meta信息获取(<code>getApplicationInfo</code>等)，四大组件信息获取(<code>query</code>系列方法)等重要功能。</p>
+<p>在上文<a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Android插件化原理解析——Hook机制之Binder Hook</a>中讲述了DroidPlugin的Binder Hook机制；我们知道<code>AMS</code>和<code>PMS</code>就是以Binder方式提供给应用程序使用的系统服务，理论上我们也可以采用这种方式Hook掉它们。但是由于这两者使用得如此频繁，Framework给他们了一些“特别优待”，这也给了我们相对于Binder Hook更加稳定可靠的hook方式。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/02/16/understand-plugin-framework-binder-hook/" itemprop="url">
                 Android插件化原理解析——Hook机制之Binder Hook
               </a>
@@ -910,104 +995,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" itemprop="url">
-                Android Studio你不知道的快捷键(三)
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-17T10:49:19+08:00" content="2015-12-17">
-            2015-12-17
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>本文将继续介绍一些非常实用的但是你可能不知道的快捷键；没看过前两篇的可以移步：</p>
-<ol>
-<li><a href="http://www.tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a></li>
-<li><a href="http://www.tianweishu.com/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/">Android Studio你不知道的快捷键(二)</a></li>
-</ol>
-<h1 id="Select_In-">Select In..</h1><p>说实话，想不出一个比较好的翻译 :P 干脆使用英文吧。</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-1.gif" alt="Select In.." width="449"/></p>
-<p>有没有这样的场景：你在Android Studio打开了一个图片文件（或者别的文件），想在资源浏览器里面查看这图片；在Eclipse里面我想大部分的人是<code>Alt + Enter</code>进入文件属性复制地址，然后在系统资源管理器里面打开；或者装一个EasyExplore插件。在Android Studio里面，这是内建支持的！而且还不止如此！比如你想看看某个文件在包的哪个目录，通常是不是点击Project View上面的那个小圆坐标；用这个快捷键鼠标就能搞定。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1046,7 +1033,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">23</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

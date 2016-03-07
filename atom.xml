@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-02-18T03:24:50.000Z</updated>
+  <updated>2016-03-07T08:41:25.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -13,6 +13,113 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Android 插件化原理解析——Hook机制之AMS&PMS]]></title>
+    <link href="http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/"/>
+    <id>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</id>
+    <published>2016-03-07T08:35:46.000Z</published>
+    <updated>2016-03-07T08:41:25.000Z</updated>
+    <content type="html"><![CDATA[<p>在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是<strong>代理方式</strong>和<strong>Binder Hook</strong>；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerService以及PackageManagerService的Hook方式（以下简称AMS，PMS）。</p>
+<p>ActivityManagerService对于FrameWork层的重要性不言而喻，Android的四大组件无一不与它打交道：</p>
+<ol>
+<li><code>startActivity</code>最终调用了AMS的<code>startActivity</code>系列方法，实现了Activity的启动；Activity的生命周期回调，也在AMS中完成；</li>
+<li><code>startService,bindService</code>最终调用到AMS的startService和bindService方法；</li>
+<li>动态广播的注册和接收在<code>AMS</code>中完成（静态广播在<code>PMS</code>中完成）</li>
+<li><code>getContentResolver</code>最终从<code>AMS</code>的<code>getContentProvider</code>获取到ContentProvider</li>
+</ol>
+<p>而<code>PMS</code>则完成了诸如权限校捡(<code>checkPermission,checkUidPermission</code>)，Apk meta信息获取(<code>getApplicationInfo</code>等)，四大组件信息获取(<code>query</code>系列方法)等重要功能。</p>
+<p>在上文<a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Android插件化原理解析——Hook机制之Binder Hook</a>中讲述了DroidPlugin的Binder Hook机制；我们知道<code>AMS</code>和<code>PMS</code>就是以Binder方式提供给应用程序使用的系统服务，理论上我们也可以采用这种方式Hook掉它们。但是由于这两者使用得如此频繁，Framework给他们了一些“特别优待”，这也给了我们相对于Binder Hook更加稳定可靠的hook方式。</p>
+<a id="more"></a>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的<code>ams-pms-hook</code>模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+<h2 id="AMS获取过程">AMS获取过程</h2><p>前文提到Android的四大组件无一不与<code>AMS</code>相关，也许读者还有些许疑惑；这里我就挑一个例子，依据Android源码来说明，一个简单的<code>startActivity</code>是如何调用<code>AMS</code>最终通过IPC到system_server的。</p>
+<p>不论读者是否知道，我们使用<code>startActivity</code>有两种形式：</p>
+<ol>
+<li>直接调用<code>Context</code>类的<code>startActivity</code>方法；这种方式启动的Activity没有Activity栈，因此不能以standard方式启动，必须加上<code>FLAG_ACTIVITY_NEW_TASK</code>这个Flag。</li>
+<li>调用被<code>Activity</code>类重载过的<code>startActivity</code>方法，通常在我们的Activity中直接调用这个方法就是这种形式；</li>
+</ol>
+<h3 id="Context-startActivity">Context.startActivity</h3><p>我们查看<code>Context</code>类的<code>startActivity</code>方法，发现这竟然是一个抽象类；查看<code>Context</code>的类继承关系图如下：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1457322345547.png" width="329"></p>
+<p>我们看到诸如<code>Activity</code>，<code>Service</code>等并没有直接继承<code>Context</code>，而是继承了<code>ContextWrapper</code>；继续查看<code>ContextWrapper</code>的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    mBase.startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>WTF!! 果然人如其名，只是一个wrapper而已；这个<code>mBase</code>是什么呢？这里我先直接告诉你，它的真正实现是<code>ContextImpl</code>类；至于为什么，有一条思路：<em>mBase是在ContextWrapper构造的时候传递进来的，那么在ContextWrapper构造的时候可以找到答案</em><br>什么时候会构造ContextWrapper呢？它的子类<code>Application</code>，<code>Service</code>等被创建的时候。</p>
+<p>因此可以在App的主线程<code>AcitivityThread</code>的<code>performLaunchActivit</code>方法里面找到答案；更详细的解析可以参考老罗的<a href="http://blog.csdn.net/luoshengyang/article/details/6689748" target="_blank" rel="external"> Android应用程序启动过程源代码分析</a></p>
+<p>好了，我们姑且当作已经知道Context.startActivity最终使用了ContextImpl里面的方法，代码如下：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> startActivity(Intent intent, Bundle <span class="keyword">options</span>) &#123;</span><br><span class="line">    warnIfCallingFromSystemProcess();</span><br><span class="line">    <span class="keyword">if</span> ((intent.getFlags()&amp;Intent.FLAG_ACTIVITY_NEW_TASK) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AndroidRuntimeException(</span><br><span class="line">                <span class="string">"Calling startActivity() from outside of an Activity "</span></span><br><span class="line">                + <span class="string">" context requires the FLAG_ACTIVITY_NEW_TASK flag."</span></span><br><span class="line">                + <span class="string">" Is this really what you want?"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    mMainThread.getInstrumentation().execStartActivity(</span><br><span class="line">        getOuterContext(), mMainThread.getApplicationThread(), <span class="keyword">null</span>,</span><br><span class="line">        (Activity)<span class="keyword">null</span>, intent, -<span class="number">1</span>, <span class="keyword">options</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码相当简单；我们知道了两件事：</p>
+<ol>
+<li>其一，我们知道了为什么在Service等非Activity的Context里面启动Activity为什么需要添加<code>FLAG_ACTIVITY_NEW_TASK</code>；</li>
+<li>其二，真正的<code>startActivity</code>使用了<code>Instrumentation</code>类的<code>execStartActivity</code>方法；继续跟踪：</li>
+</ol>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public <span class="type">ActivityResult</span> execStartActivity(</span><br><span class="line">        <span class="type">Context</span> who, <span class="type">IBinder</span> contextThread, <span class="type">IBinder</span> token, <span class="type">Activity</span> target,</span><br><span class="line">        <span class="type">Intent</span> intent, <span class="type">int</span> requestCode, <span class="type">Bundle</span> options) &#123;</span><br><span class="line">	// ... 省略无关代码</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        intent.migrateExtraStreamToClipData();</span><br><span class="line">        intent.prepareToLeaveProcess();</span><br><span class="line">        // ----------------look here!!!!!!!!!!!!!!!!!!!</span><br><span class="line">        <span class="type">int</span> <span class="literal">result</span> = <span class="type">ActivityManagerNative</span>.getDefault()</span><br><span class="line">            .startActivity(whoThread, who.getBasePackageName(), intent,</span><br><span class="line">                    intent.resolveTypeIfNeeded(who.getContentResolver()),</span><br><span class="line">                    token, target != null ? target.mEmbeddedID : null,</span><br><span class="line">                    requestCode, <span class="number">0</span>, null, null, options);</span><br><span class="line">        checkStartActivityResult(<span class="literal">result</span>, intent);</span><br><span class="line">    &#125; catch (<span class="type">RemoteException</span> e) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里我们发现真正调用的是<code>ActivityManagerNative</code>的<code>startActivity</code>方法；如果你不清楚<code>ActivityManager</code>，<code>ActivityManagerService</code>以及<code>ActivityManagerNative</code>之间的关系；建议先仔细阅读我之前关于Binder的文章 <a href="http://weishu.me/2016/01/12/binder-index-for-newer/">Binder学习指南</a>。</p>
+<h3 id="Activity-startActivity">Activity.startActivity</h3><p>Activity类的<code>startActivity</code>方法相比Context而言直观了很多；这个<code>startActivity</code>通过若干次调用辗转到达<code>startActivityForResult</code>这个方法，在这个方法内部有如下代码：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Instrumentation.ActivityResult ar =</span><br><span class="line">    mInstrumentation.execStartActivity(</span><br><span class="line">        <span class="keyword">this</span>, mMainThread.getApplicationThread(), mToken, <span class="keyword">this</span>,</span><br><span class="line">        intent, requestCode, <span class="keyword">options</span>);</span><br></pre></td></tr></table></figure>
+<p>可以看到，其实通过Activity和ContextImpl类启动Activity并无本质不同，他们都通过<code>Instrumentation</code>这个辅助类调用到了<code>ActivityManagerNative</code>的方法。</p>
+<h2 id="Hook_AMS">Hook AMS</h2><p>OK，我们到现在知道；其实<code>startActivity</code>最终通过<code>ActivityManagerNative</code>这个方法远程调用了<code>AMS</code>的<code>startActivity</code>方法。那么这个<code>ActivityManagerNative</code>是什么呢？</p>
+<p>ActivityManagerNative实际上就是<code>ActivityManagerService</code>这个远程对象的Binder代理对象；每次需要与AMS打交道的时候，需要借助这个代理对象完成通过驱动进而完成IPC调用。</p>
+<p>我们继续看<code>ActivityManagerNative</code>的<code>getDefault()</code>方法做了什么：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">public</span> <span class="function">IActivityManager <span class="title">getDefault</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">return</span> gDefault.<span class="title">get</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>gDefault</code>这个静态变量的定义如下：</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton&lt;IActivityManager&gt; gDefault = <span class="keyword">new</span> Singleton&lt;IActivityManager&gt;() &#123;</span><br><span class="line">    <span class="keyword">protected</span> IActivityManager create() &#123;</span><br><span class="line">        IBinder b = ServiceManager.getService(<span class="string">"activity</span><br><span class="line">        IActivityManager am = asInterface(</span><br><span class="line">        return am;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span></span><br></pre></td></tr></table></figure>
+<p>由于整个Framework与AMS打交道是如此频繁，framework使用了一个单例把这个<code>AMS</code>的代理对象保存了起来；这样只要需要与<code>AMS</code>进行IPC调用，获取这个单例即可。这是<code>AMS</code>这个系统服务与其他普通服务的不同之处，也是我们不通过Binder Hook的原因——我们只需要简单地Hook掉这个单例即可。</p>
+<p>这里还有一点小麻烦：Android不同版本之间对于如何保存这个单例的代理对象是不同的；Android 2.x系统直接使用了一个简单的静态变量存储，Android 4.x以上抽象出了一个Singleton类；具体的差异可以使用<code>grepcode</code>进行比较：<a href="http://grepcode.com/file_/repository.grepcode.com/java/ext/com.google.android/android/4.0.1_r1/android/app/ActivityManagerNative.java/?v=diff&amp;id2=2.3.3_r1" target="_blank" rel="external">差异</a></p>
+<p>我们以4.x以上的代码为例说明如何Hook掉<code>AMS</code>；方法使用的动态代理，如果有不理解的，可以参考之前的系列文章<a href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/">Android插件化原理解析——Hook机制之动态代理</a></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Class</span>&lt;?&gt; activityManagerNativeClass = <span class="keyword">Class</span>.forName(<span class="string">"android.app.ActivityManagerNative"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取 gDefault 这个字段, 想办法替换它</span></span><br><span class="line">Field gDefaultField = activityManagerNativeClass.getDeclaredField(<span class="string">"gDefault"</span>);</span><br><span class="line">gDefaultField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">Object gDefault = gDefaultField.get(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.x以上的gDefault是一个 android.util.Singleton对象; 我们取出这个单例里面的字段</span></span><br><span class="line"><span class="keyword">Class</span>&lt;?&gt; singleton = <span class="keyword">Class</span>.forName(<span class="string">"android.util.Singleton"</span>);</span><br><span class="line">Field mInstanceField = singleton.getDeclaredField(<span class="string">"mInstance"</span>);</span><br><span class="line">mInstanceField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ActivityManagerNative 的gDefault对象里面原始的 IActivityManager对象</span></span><br><span class="line">Object rawIActivityManager = mInstanceField.get(gDefault);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个这个对象的代理对象, 然后替换这个字段, 让我们的代理对象帮忙干活</span></span><br><span class="line"><span class="keyword">Class</span>&lt;?&gt; iActivityManagerInterface = <span class="keyword">Class</span>.forName(<span class="string">"android.app.IActivityManager"</span>);</span><br><span class="line">Object proxy = Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),</span><br><span class="line">        <span class="keyword">new</span> <span class="keyword">Class</span>&lt;?&gt;[] &#123; iActivityManagerInterface &#125;, <span class="keyword">new</span> IActivityManagerHandler(rawIActivityManager));</span><br><span class="line">mInstanceField.set(gDefault, proxy);</span><br></pre></td></tr></table></figure>
+<p>好了，我们hook成功之后启动Activity看看会发生什么：</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">D/HookHelper﹕ hey, baby; you are hook!!</span><br><span class="line">D/HookHelper﹕ <span class="function"><span class="keyword">method</span>:</span>activityResumed called <span class="keyword">with</span> args:[android.os.BinderProxy@<span class="number">9</span>bc71b2]</span><br><span class="line">D/HookHelper﹕ hey, baby; you are hook!!</span><br><span class="line">D/HookHelper﹕ <span class="function"><span class="keyword">method</span>:</span>activityIdle called <span class="keyword">with</span> args:[android.os.BinderProxy@<span class="number">9</span>bc71b2, null, <span class="keyword">false</span>]</span><br><span class="line">D/HookHelper﹕ hey, baby; you are hook!!</span><br><span class="line">D/HookHelper﹕ <span class="function"><span class="keyword">method</span>:</span>startActivity called <span class="keyword">with</span> args:[android.app.ActivityThread$ApplicationThread@<span class="number">17</span>e750c, com.weishu.upf.ams_pms_hook.app, Intent <span class="comment">&#123; act=android.intent.action.VIEW dat=http://wwww.baidu.com/... &#125;</span>, null, android.os.BinderProxy@<span class="number">9</span>bc71b2, null, -<span class="number">1</span>, <span class="number">0</span>, null, null]</span><br><span class="line">D/HookHelper﹕ hey, baby; you are hook!!</span><br><span class="line">D/HookHelper﹕ <span class="function"><span class="keyword">method</span>:</span>activityPaused called <span class="keyword">with</span> args:[android.os.BinderProxy@<span class="number">9</span>bc71b2]</span><br></pre></td></tr></table></figure>
+<p>可以看到，简单的几行代码，<code>AMS</code>已经被我们完全劫持了!! 至于劫持了能干什么，自己发挥想象吧~ </p>
+<p>DroidPlugin关于<code>AMS</code>的Hook，可以查看<code>IActivityManagerHook</code>这个类，它处理了我上述所说的兼容性问题，其他原理相同。另外，也许有童鞋有疑问了，你用<code>startActivity</code>为例怎么能确保Hook掉这个静态变量之后就能保证所有使用<code>AMS</code>的入口都被Hook了呢？</p>
+<p>答曰：无他，唯手熟尔。</p>
+<p>Android Framewrok层对于四大组件的处理，调用<code>AMS</code>服务的时候，全部都是通过使用这种方式；若有疑问可以自行查看源码。你可以从<code>Context</code>类的<code>startActivity</code>，<code>startService</code>，<code>bindService</code>，<code>registerBroadcastReceiver</code>，<code>getContentResolver</code>等等入口进行跟踪，最终都会发现它们都会使用<code>ActivityManagerNative</code>的这个<code>AMS</code>代理对象来完成对远程AMS的访问。</p>
+<h2 id="PMS获取过程">PMS获取过程</h2><p><code>PMS</code>的获取也是通过Context完成的，具体就是<code>getPackageManager</code>这个方法；我们姑且当作已经知道了Context的实现在ContextImpl类里面，直奔<code>ContextImpl</code>类的<code>getPackageManager</code>方法：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function">PackageManager <span class="title">getPackageManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mPackageManager != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> mPackageManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IPackageManager pm = ActivityThread.getPackageManager();</span><br><span class="line">    <span class="keyword">if</span> (pm != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Doesn't matter if we make more than one instance.</span></span><br><span class="line">        <span class="keyword">return</span> (mPackageManager = <span class="keyword">new</span> ApplicationPackageManager(<span class="keyword">this</span>, pm));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，这里干了两件事：</p>
+<ol>
+<li>真正的<code>PMS</code>的代理对象在<code>ActivityThread</code>类里面</li>
+<li><code>ContextImpl</code>通过<code>ApplicationPackageManager</code>对它还进行了一层包装</li>
+</ol>
+<p>我们继续查看<code>ActivityThread</code>类的<code>getPackageManager</code>方法，源码如下：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function">IPackageManager <span class="title">getPackageManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sPackageManager != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> sPackageManager;</span><br><span class="line">    &#125;</span><br><span class="line">    IBinder b = ServiceManager.getService(<span class="string">"package"</span>);</span><br><span class="line">    sPackageManager = IPackageManager.Stub.asInterface(b);</span><br><span class="line">    <span class="keyword">return</span> sPackageManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，和<code>AMS</code>一样，<code>PMS</code>的Binder代理对象也是一个全局变量存放在一个静态字段中；我们可以如法炮制，Hook掉PMS。</p>
+<p>现在我们的目的很明切，如果需要Hook <code>PMS</code>有两个地方需要Hook掉：</p>
+<ol>
+<li><code>ActivityThread</code>的静态字段<code>sPackageManager</code></li>
+<li>通过Context类的<code>getPackageManager</code>方法获取到的<code>ApplicationPackageManager</code>对象里面的<code>mPM</code>字段。</li>
+</ol>
+<h2 id="Hook_PMS">Hook PMS</h2><p>现在使用代理Hook应该是轻车熟路了吧，通过上面的分析，我们Hook两个地方；代码信手拈来：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取全局的ActivityThread对象</span></span><br><span class="line">Class&lt;?&gt; activityThreadClass = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod(<span class="string">"currentActivityThread"</span>);</span><br><span class="line"><span class="built_in">Object</span> currentActivityThread = currentActivityThreadMethod.invoke(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取ActivityThread里面原始的 sPackageManager</span></span><br><span class="line">Field sPackageManagerField = activityThreadClass.getDeclaredField(<span class="string">"sPackageManager"</span>);</span><br><span class="line">sPackageManagerField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"><span class="built_in">Object</span> sPackageManager = sPackageManagerField.<span class="literal">get</span>(currentActivityThread);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 准备好代理对象, 用来替换原始的对象</span></span><br><span class="line">Class&lt;?&gt; iPackageManagerInterface = Class.forName(<span class="string">"android.content.pm.IPackageManager"</span>);</span><br><span class="line"><span class="built_in">Object</span> proxy = Proxy.newProxyInstance(iPackageManagerInterface.getClassLoader(),</span><br><span class="line">        <span class="keyword">new</span> Class&lt;?&gt;[] &#123; iPackageManagerInterface &#125;,</span><br><span class="line">        <span class="keyword">new</span> HookHandler(sPackageManager));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 替换掉ActivityThread里面的 sPackageManager 字段</span></span><br><span class="line">sPackageManagerField.<span class="literal">set</span>(currentActivityThread, proxy);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 替换 ApplicationPackageManager里面的 mPM对象</span></span><br><span class="line">PackageManager pm = context.getPackageManager();</span><br><span class="line">Field mPmField = pm.getClass().getDeclaredField(<span class="string">"mPM"</span>);</span><br><span class="line">mPmField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">mPmField.<span class="literal">set</span>(pm, proxy);</span><br></pre></td></tr></table></figure>
+<p>好了，Hook完毕我们验证以下结论；调用一下<code>PMS</code>的<code>getInstalledApplications</code>方法，打印日志如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">03</span>-<span class="number">07</span> <span class="number">15</span>:<span class="number">07</span>:<span class="number">27.187</span>    <span class="number">8306</span>-<span class="number">8306</span>/com.weishu.upf.ams_pms_hook.app D/IActivityManagerHandler﹕ hey, baby; you are hook!!</span><br><span class="line"><span class="number">03</span>-<span class="number">07</span> <span class="number">15</span>:<span class="number">07</span>:<span class="number">27.187</span>    <span class="number">8306</span>-<span class="number">8306</span>/com.weishu.upf.ams_pms_hook.app D/IActivityManagerHandler﹕ method:getInstalledApplications called with args:[<span class="number">0</span>, <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>OK，我们又成功劫持了<code>PackageManager</code>！！DroidPlugin 处理PMS的代码可以在<code>IPackageManagerHook</code>查看。</p>
+<p>在结束讲解PackageManager的Hook之前，我们需要说明一点；那就是<code>Context</code>的实现类里面没有使用静态全局变量来保存<code>PMS</code>的代理对象，而是每拥有一个<code>Context</code>的实例就持有了一个<code>PMS</code>代理对象的引用；所以这里有个很蛋疼的事情，那就是我们如果想要完全Hook住<code>PMS</code>，需要精确控制整个进程内部创建的<code>Context</code>对象；所幸，插件框架中，插件的Activity，Service，ContentProvider，Broadcast等所有使用到Context的地方，都是由框架控制创建的；因此我们要小心翼翼地替换掉所有这些对象持有的<code>PMS</code>代理对象。</p>
+<p>我前面也提到过，<strong>静态变量和单例</strong>都是良好的Hook点，这里很好地反证了这句话：想要Hook掉一个实例变量该是多么麻烦!</p>
+<h2 id="小结">小结</h2><p>写到这里，关于DroidPlugin的Hook技术的讲解已经完结了；我相信读者或多或少地认识到，其实Hook并不是一项神秘的技术；一个干净，透明的框架少不了AOP，而AOP也少不了Hook。</p>
+<p>我所讲解的Hook仅仅使用反射和动态代理技术，更加强大的Hook机制可以进行<em>子节码编织</em>，比如J2EE广泛使用了cglib和asm进行AOP编程；而Android上现有的插件框架还是加载编译时代码，采用动态生成类的技术理论上也是可行的；之前有一篇文章<a href="https://segmentfault.com/a/1190000004077469" target="_blank" rel="external">Android动态加载黑科技 动态创建Activity模式</a>，就讲述了这种方式；现在全球的互联网公司不排除有用这种技术实现插件框架的可能 ；我相信不远的未来，这种技术也会在Android上大放异彩。</p>
+<p>了解完Hook技术之后，接下来的系列文章会讲述DroidPlugin对Android四大组件在插件系统上的处理，插件框架对于这一部分的实现是DroidPlugin的精髓，Hook只不过是工具而已。学习这部分内容需要对于Activity，Service，Broadcast以及ContentProvider的工作机制有一定的了解，因此我也会在必要的时候穿插讲解一些Android Framework的知识；我相信这一定会对读者大有裨益。</p>
+<p>喜欢就点个赞吧～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>和我的 <a href="http://weishu.me">博客</a>!</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是<strong>代理方式</strong>和<strong>Binder Hook</strong>；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerService以及PackageManagerService的Hook方式（以下简称AMS，PMS）。</p>
+<p>ActivityManagerService对于FrameWork层的重要性不言而喻，Android的四大组件无一不与它打交道：</p>
+<ol>
+<li><code>startActivity</code>最终调用了AMS的<code>startActivity</code>系列方法，实现了Activity的启动；Activity的生命周期回调，也在AMS中完成；</li>
+<li><code>startService,bindService</code>最终调用到AMS的startService和bindService方法；</li>
+<li>动态广播的注册和接收在<code>AMS</code>中完成（静态广播在<code>PMS</code>中完成）</li>
+<li><code>getContentResolver</code>最终从<code>AMS</code>的<code>getContentProvider</code>获取到ContentProvider</li>
+</ol>
+<p>而<code>PMS</code>则完成了诸如权限校捡(<code>checkPermission,checkUidPermission</code>)，Apk meta信息获取(<code>getApplicationInfo</code>等)，四大组件信息获取(<code>query</code>系列方法)等重要功能。</p>
+<p>在上文<a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Android插件化原理解析——Hook机制之Binder Hook</a>中讲述了DroidPlugin的Binder Hook机制；我们知道<code>AMS</code>和<code>PMS</code>就是以Binder方式提供给应用程序使用的系统服务，理论上我们也可以采用这种方式Hook掉它们。但是由于这两者使用得如此频繁，Framework给他们了一些“特别优待”，这也给了我们相对于Binder Hook更加稳定可靠的hook方式。</p>]]>
+    
+    </summary>
+    
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
+    
+      <category term="droidplugin" scheme="http://weishu.me/tags/droidplugin/"/>
+    
+      <category term="plugin framework" scheme="http://weishu.me/tags/plugin-framework/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Android插件化原理解析——Hook机制之Binder Hook]]></title>
@@ -1296,72 +1403,6 @@
       <category term="markdown" scheme="http://weishu.me/tags/markdown/"/>
     
       <category term="workflow" scheme="http://weishu.me/tags/workflow/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[react-native环境搭建的正确姿势]]></title>
-    <link href="http://weishu.me/2015/10/08/problems-when-config-react-native-env/"/>
-    <id>http://weishu.me/2015/10/08/problems-when-config-react-native-env/</id>
-    <published>2015-10-08T09:20:14.000Z</published>
-    <updated>2015-10-19T02:53:35.000Z</updated>
-    <content type="html"><![CDATA[<p>上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。</p>
-<p>用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好<code>git</code>, <code>nvm</code>等工具，两条命令解决：</p>
-<blockquote>
-<p><code>npm install -g react-native-cli</code><br><code>react-native init AwesomeProject</code></p>
-</blockquote>
-<p>但是对于生活在水深火热的天朝的程序员，事情远没有那么简单。接下来给出正确的安装姿势，最后说说我安装过程中遇到的问题。</p>
-<a id="more"></a>
-<h2 id="正确的安装姿势">正确的安装姿势</h2><h3 id="准备工作">准备工作</h3><p>准备工作包括<code>git, node</code>等工具的安装；安装node的话最好使用一个版本管理工具比如<code>nvm</code>；这个很简单：</p>
-<ol>
-<li><code>brew install nvm</code> react-native仅支持mac平台，直接brew</li>
-<li><code>nvm install node &amp;&amp; nvm alias default node</code></li>
-</ol>
-<p>如果上面这两步执行失败，那么需要科学上网；去弄一个VPN或者代理吧，没有的话可以联系我给一个shadowsocks账号。</p>
-<p>然后清理一下环境：<code>npm cache clean</code></p>
-<p>注意，接下来的安装步骤，如果安装过程中断，最好执行上面的命令<strong>清除缓存</strong>；然后如果是初始化工程失败，最好<strong>删除整个工程目录</strong>重新开始。实际的下载安装过程不会超过十分钟；如果超过说明网络有问题，或者下面的步骤没有正确的配置。</p>
-<h3 id="手动下载node-gyp需要的源码">手动下载node-gyp需要的源码</h3><p>官方文档并没有提到这个gyp，那么<a href="https://github.com/nodejs/node-gyp" target="_blank" rel="external">node-gyp</a>是什么？</p>
-<blockquote>
-<p>Node.js native addon build tool</p>
-</blockquote>
-<p>我们使用npm安装的有些module依赖一些用c/c++编写的模块，这些模块需要本地编译安装；<code>node-gyp</code>就是一个编译工具。<br>为什么要手动安装呢？因为<code>node-gyp</code>编译需要node的源码，第一次使用的时候需要把它下载下来；但是官方的源码源速度非常慢，基本下载不了；这样会导致编译某些模块的时候卡住，我们可以使用国内的镜像手动下载。运行下面的脚本即可：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># js 版本号</span></span><br><span class="line">NODE_VERSION=`node -v | cut <span class="operator">-d</span><span class="string">'v'</span> <span class="operator">-f</span> <span class="number">2</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载源码包(使用镜像)</span></span><br><span class="line">wget http://npm.taobao.org/mirrors/node/v<span class="variable">$NODE_VERSION</span>/node-v<span class="variable">$NODE_VERSION</span>.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除现有内容不完整的目录</span></span><br><span class="line">rm -rf ~/.node-gyp</span><br><span class="line">mkdir ~/.node-gyp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩并重命名到正确格式</span></span><br><span class="line">tar zxf node-v<span class="variable">$NODE_VERSION</span>.tar.gz -C ~/.node-gyp</span><br><span class="line">mv ~/.node-gyp/node-v<span class="variable">$NODE_VERSION</span> ~/.node-gyp/<span class="variable">$NODE_VERSION</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个标记文件</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">"9\n"</span>&gt;~/.node-gyp/<span class="variable">$NODE_VERSION</span>/installVersion</span><br></pre></td></tr></table></figure></p>
-<h3 id="替换npm镜像">替换npm镜像</h3><p>npm官方的源不稳定，我们可以使用国内淘宝的源<a href="http://registry.npm.taobao.org/" target="_blank" rel="external">http://registry.npm.taobao.org/</a> ；执行下面的命令即可：<br><code>npm config set registry=http://registry.npm.taobao.org/</code></p>
-<h3 id="配置git代理">配置git代理</h3><p>不能科学上网还是不行的；在安装模块的时候，不仅需要下载模块，还需要下载node源代码；有的还是使用git管理的，而这些库，很有可能就访问不了。<br>如果全部使用代理的话，那么访问国内的镜像也使用了代理，这样会导致速度下降；因此我们只对git设置代理：<br><code>git config --global http.proxy=http://&lt;url&gt;:&lt;port&gt;</code></p>
-<p>这些配置完成，那么就可以初始化工程了；一句命令完成：<br><code>react-native init AwesomeProject</code><br>安装完毕之后，可以使用<code>npm ls</code>看一下，这个工程依赖的node模块是有多么复杂，差不多就能理解为什么在天朝配置这个环境有多么麻烦了。</p>
-<p>接下来纪录一下我安装过程中遇到的一些问题，不感兴趣可以略过。</p>
-<h2 id="遇到的问题">遇到的问题</h2><h3 id="代理和VPN">代理和VPN</h3><p>VPN和代理最大的区别是，VPN对于应用程序就相当于VPN躺在了TCP/IP协议栈里面，所有的网络请求都会通过VPN访问；而代理呢，我们需要给每个要用到代理的程序单独设置代理访问；大多数程序会检测诸如<code>HTTP_PROXY</code>的环境变量来自动使用代理，但是<strong>不是所有的程序都这么乖</strong>。</p>
-<p>所以，如果你通过某种方式给系统设置了代理，并不意味着你的每一个程序都会通过代理访问；假如你设置了环境变量<code>HTTP_PROXY</code>那么，系统只是告诉程序有代理可用，至于用不用，是程序自己的问题；如果是VPN，那么程序就算什么都没干，它也是通过VPN访问网络的。</p>
-<p>代理这么麻烦，还有一些程序不听话，要是像vpn那样就好了。解决方案自然是有，google<code>Proxifier</code>或者<code>proxycap</code>就行了。</p>
-<h3 id="mac系统设置是全局代理吗">mac系统设置是全局代理吗</h3><p>之所以提到mac，是因为react-native官方文档第一条：</p>
-<blockquote>
-<p>OS X - Only OS X is currently supported</p>
-</blockquote>
-<p>那么，我们打开<strong>系统偏好设置——网络——高级——代理</strong> 这个设置，然后配置好代理信息，对我们的安装有帮助吗？</p>
-<p>事实上，<strong>终端以及一些基于命令行的工具，不会理会系统的代理设置</strong>；具体可以看看<a href="https://discussions.apple.com/thread/2204147?tstart=0" target="_blank" rel="external">这里</a>或者<a href="http://superuser.com/questions/598869/mac-terminal-couldnt-access-network" target="_blank" rel="external">这里</a></p>
-<p>所以，在系统这里设置代理对我们没有什么作用。</p>
-<h3 id="环境变量的问题">环境变量的问题</h3><p>既然命令行工具不认系统代理设置，那么我们可以在终端手动设置环境变量：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> http_proxy=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://&lt;proxy_url&gt;:&lt;port&gt;</span><br></pre></td></tr></table></figure></p>
-<p>注意两点：</p>
-<ol>
-<li>有的工具（没错，说的就是<code>wget,curl</code>！！）对于这个环境变量，是<strong>大小写敏感的！！</strong>，所以最好大写小写都设置。</li>
-<li>https的代理url不带https头。</li>
-</ol>
-<p>很不幸，即使这么做了，依然会出现有一些包下载不下来。看了官方文档才知道，<code>npm</code>设置代理不是这个样子的。要么在一个配置文件<code>.npmrc</code>里面设置，要么通过命令<code>npm config set XXX</code>设置。具体可以参考<a href="http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/" target="_blank" rel="external">这篇文章</a></p>
-<p>这是怎么一个奇葩的设计啊。看文章可仔细点，设置代理名字跟环境变量不一样！</p>
-<h3 id="gyp的问题">gyp的问题</h3><p>你以为到这里就结束了？！ 实际上，我们使用的很多npm的包，用到了一些c/c++的模块，需要编译安装。这个时候，需要依赖node的源代码。但是，由于这个源本身的问题，有了代理速度还是乌龟一般。没有办法，我们只有使用国内的淘宝镜像，先手动安装<code>gyp</code>。</p>
-<h3 id="openssl的问题">openssl的问题</h3><p>拜GFW所赐，使用https协议的话很有可能根本没法认证，所以最好吧官方的那个源换成http的；然后设置一下这个选项：<br><code>npm config set strict-ssl false</code></p>
-<h3 id="git协议无法clone的问题">git协议无法clone的问题</h3><p>在公司的网络环境下，很多端口被屏蔽了；git也是一样，因此使用git协议的clone的话很有可能失败，因此我们需要用https协议替代git协议；具体设置可以参考<a href="http://stackoverflow.com/questions/15669091/bower-install-using-only-https" target="_blank" rel="external">这里</a><br>OK，这些问题全部解决的话，应该能顺利安装上react-native。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>上个月Facebook开源了Android版的react-native，react-native为何物就不多介绍，个人认为虽然取代不了native，但是确实有可能是移动端的未来。</p>
-<p>用这个新的工具最开始自然是需要搭建一个开发环境；官网说的可是简单：装好<code>git</code>, <code>nvm</code>等工具，两条命令解决：</p>
-<blockquote>
-<p><code>npm install -g react-native-cli</code><br><code>react-native init AwesomeProject</code></p>
-</blockquote>
-<p>但是对于生活在水深火热的天朝的程序员，事情远没有那么简单。接下来给出正确的安装姿势，最后说说我安装过程中遇到的问题。</p>]]>
-    
-    </summary>
-    
-      <category term="react-native" scheme="http://weishu.me/tags/react-native/"/>
     
   </entry>
   
