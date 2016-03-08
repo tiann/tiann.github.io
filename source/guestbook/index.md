@@ -1,8 +1,10 @@
-title: guestbook
+title: 留言板
 date: 2015-12-10 12:53:31
 type: guestbook
 ---
-<blockquote class="blockquote-center">念念不忘，必有回响。</blockquote>
+
+<blockquote class="blockquote-center">不为繁华易素心</blockquote>
+
 <br/>
 > 最近访客
 

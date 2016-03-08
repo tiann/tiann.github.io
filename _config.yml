@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://tianweishu.com
+url: http://weishu.me
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -72,7 +72,7 @@ deploy:
   type: git
   repo: 
     github: git@github.com:tiann/tiann.github.io.git,master
-    gitcafe: git@gitcafe.com:tiann/tiann.git,gitcafe-pages
+    gitcafe: git@git.coding.net:weishu/weishu.git,gitcafe-pages
 
 # duoshuo 
 duoshuo_shortname: duoshuo-zygote
