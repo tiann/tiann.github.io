@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
+    <lastmod>2016-03-08T02:00:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——概要</title>
+        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
     <lastmod>2016-03-08T01:57:45.000Z</lastmod>
     <data>
@@ -53,27 +74,6 @@
         <display>
         <title>Android插件化原理解析——Hook机制之动态代理</title>
         <pubTime>2016-01-28T12:27:13.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
-    <lastmod>2016-02-18T03:25:17.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android插件化原理解析——概要</title>
-        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
         
         <tag>android</tag>
          
