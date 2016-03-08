@@ -41,22 +41,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益与这种及其方便的跨进程通信机制。
+<meta name="description" content="毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益于这种及其方便的跨进程通信机制。
 理解Binder对于理解整个Android系统有着非常重要的作用，Android系统的四大组件，AMS，PMS等系统服务无一不与Binder挂钩；如果对Binder不甚了解，那么就很难了解这些系统机制，从">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Binder学习指南">
 <meta property="og:url" content="http://weishu.me/2016/01/12/binder-index-for-newer/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益与这种及其方便的跨进程通信机制。
+<meta property="og:description" content="毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益于这种及其方便的跨进程通信机制。
 理解Binder对于理解整个Android系统有着非常重要的作用，Android系统的四大组件，AMS，PMS等系统服务无一不与Binder挂钩；如果对Binder不甚了解，那么就很难了解这些系统机制，从">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/20161-8.jpg">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/binder-model.png">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/2016binder-procedure.png">
 <meta property="og:image" content="http://7sbqce.com1.z0.glb.clouddn.com/20161-12.jpg">
-<meta property="og:updated_time" content="2016-02-25T09:16:10.000Z">
+<meta property="og:updated_time" content="2016-03-08T01:57:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Binder学习指南">
-<meta name="twitter:description" content="毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益与这种及其方便的跨进程通信机制。
+<meta name="twitter:description" content="毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益于这种及其方便的跨进程通信机制。
 理解Binder对于理解整个Android系统有着非常重要的作用，Android系统的四大组件，AMS，PMS等系统服务无一不与Binder挂钩；如果对Binder不甚了解，那么就很难了解这些系统机制，从">
 
 
@@ -226,7 +226,7 @@
       
 
       
-        <span itemprop="articleBody"><p>毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益与这种及其方便的跨进程通信机制。</p>
+        <span itemprop="articleBody"><p>毫不夸张地说，Binder是Android系统中最重要的特性之一；正如其名“粘合剂”所喻，它是系统间各个组件的桥梁，Android系统的开放式设计也很大程度上得益于这种及其方便的跨进程通信机制。</p>
 <p>理解Binder对于理解整个Android系统有着非常重要的作用，Android系统的四大组件，AMS，PMS等系统服务无一不与Binder挂钩；如果对Binder不甚了解，那么就很难了解这些系统机制，从而仅仅浮游与表面，不懂Binder你都不好意思说自己会Android开发；要深入Android，Binder是必须迈出的一步。</p>
 <p>现在网上有不少资料介绍Binder，个人觉得最好的两篇如下：</p>
 <ol>

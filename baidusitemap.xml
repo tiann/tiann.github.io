@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
+    <lastmod>2016-03-08T01:57:45.000Z</lastmod>
+    <data>
+        <display>
+        <title>Binder学习指南</title>
+        <pubTime>2016-01-12T13:26:09.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>binder</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</loc>
     <lastmod>2016-03-07T10:49:23.000Z</lastmod>
     <data>
@@ -24,25 +43,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
-    <lastmod>2016-02-25T09:16:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>Binder学习指南</title>
-        <pubTime>2016-01-12T13:26:09.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>binder</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
     
     
     
