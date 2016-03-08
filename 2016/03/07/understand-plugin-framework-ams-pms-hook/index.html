@@ -50,7 +50,7 @@ ActivityManagerServ">
 <meta property="og:description" content="在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是代理方式和Binder Hook；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。
 ActivityManagerServ">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1457322345547.png">
-<meta property="og:updated_time" content="2016-03-07T10:49:23.000Z">
+<meta property="og:updated_time" content="2016-03-08T04:04:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 插件化原理解析——Hook机制之AMS&PMS">
 <meta name="twitter:description" content="在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是代理方式和Binder Hook；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。
@@ -260,7 +260,7 @@ ActivityManagerServ">
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Instrumentation.ActivityResult ar =</span><br><span class="line">    mInstrumentation.execStartActivity(</span><br><span class="line">        <span class="keyword">this</span>, mMainThread.getApplicationThread(), mToken, <span class="keyword">this</span>,</span><br><span class="line">        intent, requestCode, options);</span><br></pre></td></tr></table></figure>
 <p>可以看到，其实通过Activity和ContextImpl类启动Activity并无本质不同，他们都通过<code>Instrumentation</code>这个辅助类调用到了<code>ActivityManagerNative</code>的方法。</p>
 <h2 id="Hook_AMS">Hook AMS</h2><p>OK，我们到现在知道；其实<code>startActivity</code>最终通过<code>ActivityManagerNative</code>这个方法远程调用了<code>AMS</code>的<code>startActivity</code>方法。那么这个<code>ActivityManagerNative</code>是什么呢？</p>
-<p>ActivityManagerNative实际上就是<code>ActivityManagerService</code>这个远程对象的Binder代理对象；每次需要与AMS打交道的时候，需要借助这个代理对象完成通过驱动进而完成IPC调用。</p>
+<p>ActivityManagerNative实际上就是<code>ActivityManagerService</code>这个远程对象的Binder代理对象；每次需要与AMS打交道的时候，需要借助这个代理对象通过驱动进而完成IPC调用。</p>
 <p>我们继续看<code>ActivityManagerNative</code>的<code>getDefault()</code>方法做了什么：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> IActivityManager <span class="title">getDefault</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gDefault.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>gDefault</code>这个静态变量的定义如下：</p>
@@ -298,7 +298,7 @@ ActivityManagerServ">
 <p>在结束讲解PackageManager的Hook之前，我们需要说明一点；那就是<code>Context</code>的实现类里面没有使用静态全局变量来保存<code>PMS</code>的代理对象，而是每拥有一个<code>Context</code>的实例就持有了一个<code>PMS</code>代理对象的引用；所以这里有个很蛋疼的事情，那就是我们如果想要完全Hook住<code>PMS</code>，需要精确控制整个进程内部创建的<code>Context</code>对象；所幸，插件框架中，插件的Activity，Service，ContentProvider，Broadcast等所有使用到Context的地方，都是由框架控制创建的；因此我们要小心翼翼地替换掉所有这些对象持有的<code>PMS</code>代理对象。</p>
 <p>我前面也提到过，<strong>静态变量和单例</strong>都是良好的Hook点，这里很好地反证了这句话：想要Hook掉一个实例变量该是多么麻烦!</p>
 <h2 id="小结">小结</h2><p>写到这里，关于DroidPlugin的Hook技术的讲解已经完结了；我相信读者或多或少地认识到，其实Hook并不是一项神秘的技术；一个干净，透明的框架少不了AOP，而AOP也少不了Hook。</p>
-<p>我所讲解的Hook仅仅使用反射和动态代理技术，更加强大的Hook机制可以进行<em>子节码编织</em>，比如J2EE广泛使用了cglib和asm进行AOP编程；而Android上现有的插件框架还是加载编译时代码，采用动态生成类的技术理论上也是可行的；之前有一篇文章<a href="https://segmentfault.com/a/1190000004077469" target="_blank" rel="external">Android动态加载黑科技 动态创建Activity模式</a>，就讲述了这种方式；现在全球的互联网公司不排除有用这种技术实现插件框架的可能 ；我相信不远的未来，这种技术也会在Android上大放异彩。</p>
+<p>我所讲解的Hook仅仅使用反射和动态代理技术，更加强大的Hook机制可以进行<strong>字节码编织</strong>，比如J2EE广泛使用了cglib和asm进行AOP编程；而Android上现有的插件框架还是加载编译时代码，采用动态生成类的技术理论上也是可行的；之前有一篇文章<a href="https://segmentfault.com/a/1190000004077469" target="_blank" rel="external">Android动态加载黑科技 动态创建Activity模式</a>，就讲述了这种方式；现在全球的互联网公司不排除有用这种技术实现插件框架的可能 ；我相信不远的未来，这种技术也会在Android上大放异彩。</p>
 <p>了解完Hook技术之后，接下来的系列文章会讲述DroidPlugin对Android四大组件在插件系统上的处理，插件框架对于这一部分的实现是DroidPlugin的精髓，Hook只不过是工具而已。学习这部分内容需要对于Activity，Service，Broadcast以及ContentProvider的工作机制有一定的了解，因此我也会在必要的时候穿插讲解一些Android Framework的知识；我相信这一定会对读者大有裨益。</p>
 <p>喜欢就点个赞吧～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>和我的 <a href="http://weishu.me">博客</a>!</p>
 </span>
