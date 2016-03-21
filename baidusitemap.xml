@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
+    <lastmod>2016-03-21T11:44:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——Activity生命周期管理</title>
+        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</loc>
     <lastmod>2016-03-09T02:51:05.000Z</lastmod>
     <data>
