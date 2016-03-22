@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
+    <lastmod>2016-03-22T02:50:06.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
     <lastmod>2016-03-21T11:44:43.000Z</lastmod>
   </url>
@@ -9,11 +14,6 @@
   <url>
     <loc>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</loc>
     <lastmod>2016-03-09T02:51:05.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
-    <lastmod>2016-03-08T02:00:38.000Z</lastmod>
   </url>
   
   <url>

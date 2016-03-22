@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
+    <lastmod>2016-03-22T02:50:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——概要</title>
+        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
     <lastmod>2016-03-21T11:44:43.000Z</lastmod>
     <data>
@@ -31,27 +52,6 @@
         <display>
         <title>Android 插件化原理解析——Hook机制之AMS&PMS</title>
         <pubTime>2016-03-07T08:35:46.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
-    <lastmod>2016-03-08T02:00:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android插件化原理解析——概要</title>
-        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
         
         <tag>android</tag>
          
