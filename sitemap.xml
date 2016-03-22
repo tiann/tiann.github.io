@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</loc>
+    <lastmod>2016-03-22T03:05:44.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
     <lastmod>2016-03-22T02:50:06.000Z</lastmod>
   </url>
@@ -74,11 +79,6 @@
   <url>
     <loc>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</loc>
     <lastmod>2015-12-18T06:12:05.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</loc>
-    <lastmod>2015-12-12T01:55:41.000Z</lastmod>
   </url>
   
   <url>
