@@ -4,8 +4,31 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/04/12/understand-plugin-framework-receiver/</loc>
+    <lastmod>2016-04-12T11:09:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——广播的管理</title>
+        <pubTime>2016-04-12T11:08:16.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>broadcastreceiver</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/04/05/understand-plugin-framework-classloader/</loc>
-    <lastmod>2016-04-06T06:17:04.000Z</lastmod>
+    <lastmod>2016-04-12T11:09:45.000Z</lastmod>
     <data>
         <display>
         <title>Android 插件化原理解析——插件加载机制</title>
@@ -15,9 +38,11 @@
          
         <tag>binder</tag>
          
+        <tag>classloader</tag>
+         
         <tag>droidplugin</tag>
          
-        <tag>plugin frameworkh</tag>
+        <tag>plugin framework</tag>
          
          
            

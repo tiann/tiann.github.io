@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="android,binder,droidplugin,plugin frameworkh," />
+  <meta name="keywords" content="android,binder,classloader,droidplugin,plugin framework," />
 
 
 
@@ -51,7 +51,7 @@
 但是我们启动的『没有在AndroidManifet.xml中显式声明』的Activity和宿主程序存在于同一个Apk中；通常情">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1459829051777.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1459829674687.png">
-<meta property="og:updated_time" content="2016-04-06T06:17:04.000Z">
+<meta property="og:updated_time" content="2016-04-12T11:09:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 插件化原理解析——插件加载机制">
 <meta name="twitter:description" content="上文 Activity生命周期管理 中我们地完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的任务；通过Hook AMS和拦截ActivityThread中H类对于组件调度我们成功地绕过了AndroidMAnifest.xml的限制。
@@ -395,9 +395,11 @@
           
             <a href="/tags/binder/" rel="tag">#binder</a>
           
+            <a href="/tags/classloader/" rel="tag">#classloader</a>
+          
             <a href="/tags/droidplugin/" rel="tag">#droidplugin</a>
           
-            <a href="/tags/plugin-frameworkh/" rel="tag">#plugin frameworkh</a>
+            <a href="/tags/plugin-framework/" rel="tag">#plugin framework</a>
           
         </div>
       
@@ -405,6 +407,8 @@
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/12/understand-plugin-framework-receiver/" rel="prev">Android插件化原理解析——广播的管理</a>
             
           </div>
 
@@ -476,7 +480,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">26</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -490,7 +494,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">标签</span>
               
           </div>
