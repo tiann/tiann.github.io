@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-05-02T16:13:16.000Z</updated>
+  <updated>2016-05-02T16:15:55.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2016/05/03/programmer-and-chef/"/>
     <id>http://weishu.me/2016/05/03/programmer-and-chef/</id>
     <published>2016-05-02T16:11:57.000Z</published>
-    <updated>2016-05-02T16:13:16.000Z</updated>
+    <updated>2016-05-02T16:15:55.000Z</updated>
     <content type="html"><![CDATA[<p>程序员不就是那种「挣得多，花的少；睡得晚，死得早」的那类人么？跟做满汉全席的的大厨有什么关系？</p>
 <p>程序员按照需求文档编写软件，厨师对着食谱蒸煮煎炸；厨师发明新菜，程序员造轮子；两者在工作的过程中都需要较高的专注度、坚持力，对细节的把控和足够的耐心。不止如此，作为程序员，你还能在厨房里找到编程领域的答案！</p>
 <a id="more"></a>
@@ -45,9 +45,9 @@
     
     </summary>
     
-      <category term="programmer" scheme="http://weishu.me/tags/programmer/"/>
+      <category term="bootstrap" scheme="http://weishu.me/tags/bootstrap/"/>
     
-      <category term="weishu" scheme="http://weishu.me/tags/weishu/"/>
+      <category term="programmer" scheme="http://weishu.me/tags/programmer/"/>
     
   </entry>
   
