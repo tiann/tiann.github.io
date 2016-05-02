@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-05-02T16:15:55.000Z</updated>
+  <updated>2016-04-12T11:09:56.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -13,43 +13,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title><![CDATA[每一个优秀的程序员都是名合格的厨师]]></title>
-    <link href="http://weishu.me/2016/05/03/programmer-and-chef/"/>
-    <id>http://weishu.me/2016/05/03/programmer-and-chef/</id>
-    <published>2016-05-02T16:11:57.000Z</published>
-    <updated>2016-05-02T16:15:55.000Z</updated>
-    <content type="html"><![CDATA[<p>程序员不就是那种「挣得多，花的少；睡得晚，死得早」的那类人么？跟做满汉全席的的大厨有什么关系？</p>
-<p>程序员按照需求文档编写软件，厨师对着食谱蒸煮煎炸；厨师发明新菜，程序员造轮子；两者在工作的过程中都需要较高的专注度、坚持力，对细节的把控和足够的耐心。不止如此，作为程序员，你还能在厨房里找到编程领域的答案！</p>
-<a id="more"></a>
-<h2 id="鸡蛋问题&amp;&amp;自举">鸡蛋问题&amp;&amp;自举</h2><p>在编程领域，「自举」绝对是一个相当有趣的问题：编译器怎么自己编译自己？先有Class还是先有Object？这个问题说通俗点就是所谓的「先有鸡还是先有蛋」？</p>
-<p>如果你下过厨做过菜，这个问题简直不要太简单。「西红柿炒鸡蛋」绝对是下厨的入门菜之一，我们看看这道菜怎么做：</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1462198708813.png" width="350"></p>
-<p>或许你现在还一头雾水，这道菜里面出了有鸡蛋这个材料勉强跟「鸡蛋问题」扯得上关系之外，其他的那是八杆子打不着啊？</p>
-<p>接下来你可以把西红柿&amp;鸡蛋这两个材料类比为编译器&amp;编程语言，Class&amp;Object，鸡&amp;蛋；OK我们看菜谱。</p>
-<p>首先「打好鸡蛋，切好西红柿」，这时候鸡蛋能吃吗？西红柿能吃吗？不能吃。（嗯，生的西红柿也能吃，但不是我们要做的西红柿炒鸡蛋）；然后第二步第三步，「煎鸡蛋」这时候鸡蛋勉强能吃了，但是最终目的没达到；接下来放西红柿接着炒，注意这一步，这是这道菜的关键！！鸡蛋和西红柿现在都处于半可用的状态但是不完全可用，完整的西红柿鸡蛋还木有完成。接下来炒一会儿放入番茄酱和盐，这道菜就完成了。</p>
-<p>现在还没看出来这道菜与鸡蛋问题和自举有什么关系？</p>
-<p>鸡蛋问题难以理解的根源在哪里？<strong>在于假定「鸡」和「蛋」有一个要先进入「完全可用」的状态！</strong> 但其实我们可以假定有一种混沌状态，我们在混沌中把鸡和蛋都初始化好，在这个初始化过程中，两者都不处于「完全可用」的状态，也就是说一只不完整的鸡和一个不完整的蛋；但是，一旦这个初始化过程完成，鸡和蛋都进入了完全可用的状态，鸡可以生蛋，蛋可以生鸡。正如我们在做这道菜，在西红柿鸡蛋可以下锅开吃之前，鸡蛋和西红柿都处于一种「不完全可用」的状态（生的西红柿和煎好的蛋都可以吃但是都不是最终的西红柿鸡蛋）然后我们在关键的那一步里面放在一锅炒，给番茄酱和盐；最终西红柿鸡蛋成功出炉，西红柿和鸡蛋同时进入「完全可用」的状态！</p>
-<p>不论是古老的神话传说盘古开天辟地，还是现在的宇宙起源理论宇宙大爆炸，都蕴含着这种思想，我们把这些与「自举」统称为「西红柿炒鸡蛋理论」！！</p>
-<h2 id="同步&amp;&amp;异步&amp;&amp;非阻塞">同步&amp;&amp;异步&amp;&amp;非阻塞</h2><p>也许上述玄之又玄的「鸡蛋问题」还不能让你信服程序员和厨师这两个职业是如此地有渊源，接下来我就举一个比较直观的例子。</p>
-<p>如何解释同步IO，非阻塞IO，异步IO？也许有童鞋要搬出APUE这本书上的专业解释了，我只想说，杀鸡焉用牛刀！要记住，我们程序员是天生有大厨基因的，代码上理解不了我们去厨房找答案！</p>
-<p>很久很久以前，在没有电饭煲和煤气灶的年代；人们煮饭必须自己生火，由于柴火不稳定，因此做饭的时候必须对灶台寸步不离；在煮饭的时候，我们啥也不能干只能等着，这就是所谓的同步阻塞IO，在进行IO的时候CPU只能在那干瞪眼。后来有了煤气灶，于是就不用照看火苗了，我们拿捏好时间，只需要时不时去灶台看一下饭煮好了没有，如果没有煮好，我们可以去切菜，洗碗等等；这就是所谓的同步非阻塞，在进行IO的时候我们不会进行死等，没有数据的时候CPU可以选择去干点别的，于是看起来就像CPU进行IO的时候并没有「阻塞住」。再后来有了超级牛逼的煮饭神器——电饭煲，把米下好之后，我们完全可以无所顾忌第去干别的，不用担心水闷出锅了、饭煮糊了等等一系列问题，在饭煮熟的时候电饭煲会通知我们——滴的一声（牛逼吧，我家的电饭煲更牛逼还能唱歌呢）；这就是所谓的异步IO，在进行IO的时候，CPU直接去干别的，等IO事件完成之后操作系统会通知CPU，这时候CPU可以选择做自己喜欢的事情；可以看出，要支持异步IO必须有这么一个「牛逼的电饭煲」，也就是说需要操作系统的支持，在Linux下面一般是epoll，windows下呢则是IOCP。是不是豁然开朗？电饭煲理论完美诠释同步/异步/阻塞非阻塞。</p>
-<p>这下你相信程序员和大厨是想通的吧，其实远不止「西红柿炒鸡蛋理论」和「电饭煲理论」，我们还能从厨房的角度解释各种计算机领域的问题，你可以自行脑补并发程序设计原理。</p>
-<p>所以说，可爱的程序员宝宝们，不论你会不会下厨房，都应该试一试；能写好代码的你们天生就是Master Chef！！</p>
-<p>PS：最近实在是太忙，好久没更新博客了；拿这么一篇充数博各位一笑，轻拍:)</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>程序员不就是那种「挣得多，花的少；睡得晚，死得早」的那类人么？跟做满汉全席的的大厨有什么关系？</p>
-<p>程序员按照需求文档编写软件，厨师对着食谱蒸煮煎炸；厨师发明新菜，程序员造轮子；两者在工作的过程中都需要较高的专注度、坚持力，对细节的把控和足够的耐心。不止如此，作为程序员，你还能在厨房里找到编程领域的答案！</p>]]>
-    
-    </summary>
-    
-      <category term="bootstrap" scheme="http://weishu.me/tags/bootstrap/"/>
-    
-      <category term="programmer" scheme="http://weishu.me/tags/programmer/"/>
-    
-  </entry>
   
   <entry>
     <title><![CDATA[Android插件化原理解析——广播的管理]]></title>
@@ -1703,6 +1666,33 @@
     </summary>
     
       <category term="mac" scheme="http://weishu.me/tags/mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[获取迅雷会员工作流]]></title>
+    <link href="http://weishu.me/2015/11/18/xunlei-vip-account-workflow/"/>
+    <id>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</id>
+    <published>2015-11-18T06:59:44.000Z</published>
+    <updated>2015-12-10T06:37:02.000Z</updated>
+    <content type="html"><![CDATA[<p>mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。</p>
+<p>想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。<strong>如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除</strong></p>
+<p>先看看效果：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownxunleivip.gif" alt="效果图" width="721"></p>
+<a id="more"></a>
+<h2 id="获取免费迅雷账号的地址">获取免费迅雷账号的地址</h2><p>随便百度一下，就能找到一堆免费迅雷会员分享的地址，具体就不指出了；然后把每天最新的账号分享信息抓取出来。</p>
+<p>这里使用python，可以用<code>pyquery</code>来解析网页，然后一个正则匹配就拿到了结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys, urllib, re</span><br><span class="line"><span class="keyword">from</span> pyquery <span class="keyword">import</span> PyQuery <span class="keyword">as</span> pq</span><br><span class="line"><span class="keyword">from</span> workflow <span class="keyword">import</span> Workflow</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">_url = <span class="string">'http://www.xunleihuiyuan.net/'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(wf)</span>:</span></span><br><span class="line">    args = wf.args</span><br><span class="line"></span><br><span class="line">    results = _get_from_web()</span><br><span class="line">    map(<span class="keyword">lambda</span> (x,y):wf.add_item(<span class="string">u'账号:%s'</span> % x, <span class="string">u'密码:%s'</span> % y, arg=<span class="string">u'%s %s'</span> %(x,y), valid=<span class="keyword">True</span>), results)</span><br><span class="line">    wf.send_feedback()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_today_url</span><span class="params">()</span>:</span></span><br><span class="line">    home = urllib.urlopen(_url).read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">return</span> pq(home)(<span class="string">'.cate1 .post-title a'</span>)[<span class="number">0</span>].get(<span class="string">'href'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_from_web</span><span class="params">()</span>:</span></span><br><span class="line">    page = urllib.urlopen(_get_today_url()).read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    results = r = pq(page)(<span class="string">'.formattext div'</span>).text()</span><br><span class="line">    <span class="keyword">return</span> re.findall(<span class="string">ur'\u8d26\u53f7(\S+)\u5bc6(\w+)'</span>, results)</span><br></pre></td></tr></table></figure></p>
+<h2 id="用Alfred_workflow展示出来">用Alfred workflow展示出来</h2><p>使用python的alfred workflow sdk的话非常简单，文档在<a href="http://alfredworkflow.readthedocs.org/en/develop/index.html" target="_blank" rel="external">这里</a></p>
+<p>这里要处理的一个问题是，账号和密码如何简单滴传递出来；一起放在剪切版肯定不太合适。幸好alfred自带剪切版历史的功能，我们分别两次把账号和密码复制到剪切版，要使用的时候，激活<code>cmd + option + c</code>然后从剪切版历史里面选择账号密码即可：效果如下：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1447827801109.png" width="514" alt="alfred历史剪切版功能"><br>然后，按下<code>cmd + 2</code>得到账号，<code>cmd + 3</code>得到密码！具体代码比较简单：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import subprocess,<span class="tag">time</span></span><br><span class="line">query = <span class="string">"&#123;query&#125;"</span></span><br><span class="line">def <span class="function"><span class="title">copy_osx</span><span class="params">(text)</span></span>:</span><br><span class="line">        <span class="tag">p</span> = subprocess.<span class="function"><span class="title">Popen</span><span class="params">([<span class="string">'pbcopy'</span>, <span class="string">'w'</span>], stdin=subprocess.PIPE, close_fds=True)</span></span></span><br><span class="line">        <span class="tag">p</span>.<span class="function"><span class="title">communicate</span><span class="params">(input=text.encode(<span class="string">'utf-8'</span>)</span></span>)</span><br><span class="line">account, pwd = query.<span class="function"><span class="title">split</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="title">copy_osx</span><span class="params">(account)</span></span></span><br><span class="line"><span class="tag">time</span>.<span class="function"><span class="title">sleep</span><span class="params">(<span class="number">0.3</span>)</span></span></span><br><span class="line"><span class="function"><span class="title">copy_osx</span><span class="params">(pwd)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>这样，一个简单的迅雷会员获取工作流就完成了！</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。</p>
+<p>想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。<strong>如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除</strong></p>
+<p>先看看效果：<br><img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownxunleivip.gif" alt='效果图' width="721" /></p>]]>
+    
+    </summary>
+    
+      <category term="alfred workflow" scheme="http://weishu.me/tags/alfred-workflow/"/>
     
   </entry>
   
