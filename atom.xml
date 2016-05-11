@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-05-11T13:20:06.000Z</updated>
+  <updated>2016-05-11T13:20:08.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2016/05/11/understand-plugin-framework-service/"/>
     <id>http://weishu.me/2016/05/11/understand-plugin-framework-service/</id>
     <published>2016-05-11T13:02:50.000Z</published>
-    <updated>2016-05-11T13:20:06.000Z</updated>
+    <updated>2016-05-11T13:20:08.000Z</updated>
     <content type="html"><![CDATA[<p>在 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 以及 <a href="http://weishu.me/2016/04/12/understand-plugin-framework-receiver/">广播的管理</a> 中我们详细探讨了Android系统中的Activity、BroadcastReceiver组件的工作原理以及它们的插件化方案，相信读者已经对Android Framework和插件化技术有了一定的了解；本文将探讨Android四大组件之一——Service组件的插件化方式。</p>
 <p>与Activity, BroadcastReceiver相比，Service组件的不同点在哪里呢？我们能否用与之相同的方式实现Service的插件化？如果不行，它们的差别在哪里，应该如何实现Service的插件化？</p>
 <p>我们接下来将围绕这几个问题展开，最终给出Service组件的插件化方式；阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的 service-management 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
