@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
+    <lastmod>2016-05-17T13:26:16.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://weishu.me/2016/05/11/understand-plugin-framework-service/</loc>
     <lastmod>2016-05-12T04:11:53.000Z</lastmod>
   </url>
@@ -9,11 +14,6 @@
   <url>
     <loc>http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/</loc>
     <lastmod>2016-04-20T09:09:43.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
-    <lastmod>2016-04-13T02:48:10.000Z</lastmod>
   </url>
   
   <url>
