@@ -1,0 +1,739 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android,debug,framework," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
+Debug the fucking source code!!
+之前分享过一个答案：大家遇到过什么 Andr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何调试Android Framework？">
+<meta property="og:url" content="http://weishu.me/2016/05/30/how-to-debug-android-framework/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
+Debug the fucking source code!!
+之前分享过一个答案：大家遇到过什么 Andr">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464599537380.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1464596347439.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1464596367660.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596414635.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596428584.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596441461.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596456242.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596476109.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464598434021.png">
+<meta property="og:updated_time" content="2016-05-30T09:29:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何调试Android Framework？">
+<meta name="twitter:description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
+Debug the fucking source code!!
+之前分享过一个答案：大家遇到过什么 Andr">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 如何调试Android Framework？ | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              如何调试Android Framework？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-05-30T17:26:05+08:00" content="2016-05-30">
+            2016-05-30
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/05/30/how-to-debug-android-framework/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/how-to-debug-android-framework/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：</p>
+<p><strong>Debug the fucking source code!!</strong></p>
+<p>之前分享过一个答案：<a href="https://www.zhihu.com/question/40300713/answer/86706105" target="_blank" rel="external">大家遇到过什么 Android 兼容性问题？</a>，这里面的有一些非常诡异的问题，我相信光靠看代码你是永远定位不出来的。还有我写的一系列<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件框架原理</a>的文章，这里面涉及到大量Android Framework层的知识，有小伙伴会问，这些Framework层的原理，你是如何学习的呢，有诀窍吗？有！那就是调试。</p>
+<p>Debug是一项非常非常重要的技能，毋庸多言。今天我就给大家分享一下「调试Android Framework」的经验，一旦掌握这项技能，那么Java层的任何问题都拦不住你了。</p>
+<a id="more"></a>
+<h2 id="概览">概览</h2><p>其实整个调试过程非常简单：</p>
+<ol>
+<li>在你要调试进程的合适位置打上断点</li>
+<li>跟踪代码（Step in/out/over等等）</li>
+</ol>
+<p>在展开讲述这两方面之前，有必要先简单了解下调试的基础知识。Java平台的调试是有一个规范化的标准的，那就是JPDA（Java Platform Debugger Architecture）；通过 JPDA 提供的 API，开发人员可以方便灵活的搭建 Java 调试应用程序。 JPDA 主要由三个部分组成：Java 虚拟机工具接口（JVMTI），Java 调试线协议（JDWP）。</p>
+<p>Java程序的调试无非就是通过一个调试器（debugger）获取对应Java虚拟机的信息，上文所述的JDWP就是调试器与虚拟机通信的桥梁。在dalvik虚拟机内部有一个专门的jdwp线程，Android系统的adbd进程通过socket与各个虚拟机的jdwp线程进行通信，外部调试器通过adb工具与adbd通信进而完成与jdwp的通信。我们通常所说的「attach debugger」指的就是这个意思——连接到指定的需要调试的进程。</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464599537380.png" alt="调试器工作原理"></p>
+<h2 id="如何在正确的地方下断点">如何在正确的地方下断点</h2><p>「正确的地方」包含两个含义：首先，调试是以进程为单位进行的，如果你需要调试运行在进程A 中的代码，却把debugger attach到了B进程，那么这个断点压根儿就是牛头不对马嘴；另外呢，比如你想调试Android的多媒体框架，你得知道media相关的类在哪吧，也就是说需要在正确的函数里面下断点。</p>
+<h3 id="如何在合适的进程下断点？">如何在合适的进程下断点？</h3><p>如果是调试我们自己写的App，在Android Studio里面非常简单，在Run菜单de最后面有一个attach debugger to android process 的选项，点击之后会出现一个菜单，选择自己需要调试的进程即可；但是，如果需要调试Android Framework层的代码，这样做是达不到目的的——Framework层的代码通常运行在别的进程（比如ActivityManagerService运行在system_server进程），而这些进程通常情况下是不可调试的，也就是说在attach debugger to android process 的那个菜单里面不会有系统的进程，如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1464596347439.png" alt="普通的无法调试的Android设备"></p>
+<p>为什么不可调试呢？上文我们简要讲述了调试器的工作原理，我们知道每一个虚拟机有一个jdwp线程，如果这个线程拒绝连接到调试器，你也就没办法对这个进程进行调试了。Android的所有App进程都是通过Zygote进程fork出来的，我们在<code>android.os.Process</code>这个类里面可以看到android进程的启动过程有这么一句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((debugFlags &amp; Zygote.DEBUG_ENABLE_DEBUGGER) != <span class="number">0</span>) &#123;</span><br><span class="line">    argsForZygote.add(<span class="string">"--enable-debugger"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说，一个进程是否可以调试是由进程启动时候的参数决定的；普通的App进程如果是debug keystore默认是可以调试的，有或者你在AndroidManifest里面指定debuggable为true也是可以调试的。对系统进程，我们只有采取系统级别的手段：让整个系统可以调试——debug版或者编译参数debuggable为1的系统。</p>
+<p>解决这个办法很简单：使用模拟器（真机也行，限Nexus系列刷原生Android系统，把系统启动的debuggable参数修改为1），我的Nexus 5 可以调试的进程如下：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1464596367660.png" alt="可调试任意进程的设备"></p>
+<p>这样，系统中所有的Android进程都可以调试了；这一点很重要，比如你要分析Activity的启动流程，相当多一部分代码是在ActivityManagerService所在的进程system_server执行的，如果你把断点打在别的进程，就会产生跟丢了的情况。在比如，你要调试ActivityThread的main函数，在main函数里面执行了一句attach，最终调用AMS的attachApplication的时候，代码就通过Binder IPC调用到了AMS的system_server进程。</p>
+<p>明白你要执行的代码运行在哪一个进程相当重要，在Android中，由于Binder通信机制的存在，「进程迁移」使用的非常非常频繁，因此需要对binder机制有一定的了解；详细的话可以参考我的博客：<a href="http://weishu.me/2016/01/12/binder-index-for-newer/">Binder学习指南</a></p>
+<h3 id="如何在对应的代码处下断点？">如何在对应的代码处下断点？</h3><p>假设我们现在把debugger attach到了正确的进程，那么断点应该下在哪里呢？直观来讲，就是说我需要导入所有的Android源码吗？如果不是应该导入哪些代码，怎么导入？</p>
+<p>首先，如果你需要调试的类在sdk里面导出了，你压根儿就不需要再导入源码，Android Studio自动帮你关联了这部分代码（前提是你用SDK Manager下载了sdk的源码，如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596414635.png" alt="SDK manager下载源码"></p>
+<p>比如你要调试ActivityManagerServce类的attachApplication方法，那么很简单；创建一个空的Android项目，SDK版本选择与你要调试的模拟器/真机 的android相同（这很重要，下文会讲述）；然后attrach 到system_server进程，直接在attach_application上面打上断点；随便启动一个app，可以看到我们熟悉的调试界面：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596428584.png" alt="调试attachApplication"></p>
+<p>如果这部分类在sdk中没有导入（比如@hide)的，又或者压根儿不是SDK的类，（比如系统app的源码）那应该怎么办呢？直接导入这部分代码即可。不需要是Android项目，普通的Java项目即可；举个例子，假设你想调试原生Android系统的「系统设置」这个程序，该如何做呢？</p>
+<p>根据上面的分析，我们首先得知道「系统设置˜」运行在哪一个进程，通常情况下进程名字就是包名；我们查出设置的包名即可，而包名是在源码的AndroidManifeist中声明的，因此，我们找到「系统设置」这个程序的源码即可；源码在 <a href="https://android.googlesource.com/" target="_blank" rel="external">https://android.googlesource.com/</a> ，系统App的源码在/packages这个子目录下面，我们一个个找，最终可以确定「系统设置」的源码在 <a href="https://android.googlesource.com/platform/packages/apps/Settings/" target="_blank" rel="external">https://android.googlesource.com/platform/packages/apps/Settings/</a> ；然后我们把这部分代码git clone下来，导入Android Studio：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596441461.png" alt="调试Settings"></p>
+<p>我们去AndroidManifest中查到，「系统设置」的包名为：com.android.settings，这样我们attach到这个进程 ：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596456242.png" alt="attach setting进程"></p>
+<p>然后，我们随便打个断点玩一玩，比如进入设置主界面的时候，断下来；我们在AndroidManifest中查到设置程序的入口界面为：Settings，我们在这个类的onCreate里面打一个断点，然后进入设置程序，发现完美滴断下来了：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596476109.png" alt="在setting中断点成功"></p>
+<p>OK，到这里；应该学会如何在正确的位置打断点了：正确的进程，正确的位置。接下来，要完成调试，还需要一些技巧。</p>
+<h2 id="如何跟踪代码？">如何跟踪代码？</h2><p>或许你会说，跟踪代码不就是step in/out/over么，这有什么难的？但其实事情并没有你想象的那么简单，要优雅滴调试，还是需要一些姿势的。</p>
+<h3 id="行号对应">行号对应</h3><p>跟踪代码一个首要的问题是行号对应。如果你在正确位置下了断点，但是跟踪的时候，单步调试，发现运行的代码和Android Studio里面的代码对不上号，那么就很蛋疼；要使得调试器的行号能够对应，必须保证设备上的代码和调试器的代码是同一份；简单来说，需要使用Android的原生系统（模拟器，Nexus系列真机），然后调试器里面使用的SDK版本，必须和设备的系统版本一致。</p>
+<h3 id="行号不对应怎么办？">行号不对应怎么办？</h3><p>一定要注意行号对应这一点，这会使调试过程简单很多；如果没有办法，行号对不上，那该如何调试呢？</p>
+<p>行号不对应带来的一个首要问题就是，下断点的时候都有可能出现问题；比如你在TestClass的第100行下了一个断点，但是由于行号不对应，有可能真正执行的代码第100行是没有意义的空行或者是在下一个函数里面，这样断点就没有起到应有的作用了。</p>
+<p>要解决行好对应的问题，必须使用<strong>方法断点</strong>；我们直接在某个函数的入口设置断点，这样即使行号对不上，也能在正确的入口出断下来，这一点非常重要。</p>
+<p>解决了如何下断点的问题，那么行号不对应，怎么知道执行到哪了，怎么查看局部变量？</p>
+<p><strong>观察栈桢</strong></p>
+<p>在Android Studio的调试器的左边，显示了每一个线程执行的栈桢，栈桢里面包含了当前线程丰富的信息：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464598434021.png" width="292"></p>
+<p>看到没，真正运行的代码在哪一行，当前运行的是什么函数一目了然；接下来你在step into/out的时候，不能以源代码的行数为准，而应该以这个栈桢所显示的代码行数为准。</p>
+<h3 id="熟练使用断点">熟练使用断点</h3><p>OK，现在不论行号是否能对应，我们都能正确滴下断点调试了。断点有很多种类型，方法断点，watch point，条件断点都能够很好滴辅助我们调试；如果你连这几个名词都没有听说过，一定要恶补一下；可以参阅我的博客：<a href="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/">Android Studio你不知道的调试技巧</a>；我就不再复述了。</p>
+<p>如果你仔细看完了本文和我给出的链接，那么应该对Debug技术不再陌生了；接下来你可以选择Framework层的代码，手动调试一下加深理解；在日后的工作过程中，不断滴加强debug技术的练习，让它称为你解决复杂问题的条件反射，一定会事半功倍！还有记住：</p>
+<blockquote>
+<p>Debug the fucking source code.</p>
+</blockquote>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/debug/" rel="tag">#debug</a>
+          
+            <a href="/tags/framework/" rel="tag">#framework</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/11/understand-plugin-framework-service/" rel="next">Android 插件化原理解析——Service的插件化</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/05/30/how-to-debug-android-framework/"
+                   data-title="如何调试Android Framework？" data-url="http://weishu.me/2016/05/30/how-to-debug-android-framework/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在正确的地方下断点"><span class="nav-number">2.</span> <span class="nav-text">如何在正确的地方下断点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何在合适的进程下断点？"><span class="nav-number">2.1.</span> <span class="nav-text">如何在合适的进程下断点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何在对应的代码处下断点？"><span class="nav-number">2.2.</span> <span class="nav-text">如何在对应的代码处下断点？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何跟踪代码？"><span class="nav-number">3.</span> <span class="nav-text">如何跟踪代码？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#行号对应"><span class="nav-number">3.1.</span> <span class="nav-text">行号对应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行号不对应怎么办？"><span class="nav-number">3.2.</span> <span class="nav-text">行号不对应怎么办？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熟练使用断点"><span class="nav-number">3.3.</span> <span class="nav-text">熟练使用断点</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementById('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
