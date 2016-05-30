@@ -60,7 +60,7 @@ Debug the fucking source code!!
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596456242.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596476109.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464598434021.png">
-<meta property="og:updated_time" content="2016-05-30T09:29:38.000Z">
+<meta property="og:updated_time" content="2016-05-30T09:32:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何调试Android Framework？">
 <meta name="twitter:description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
@@ -244,7 +244,7 @@ Debug the fucking source code!!
 <li>在你要调试进程的合适位置打上断点</li>
 <li>跟踪代码（Step in/out/over等等）</li>
 </ol>
-<p>在展开讲述这两方面之前，有必要先简单了解下调试的基础知识。Java平台的调试是有一个规范化的标准的，那就是JPDA（Java Platform Debugger Architecture）；通过 JPDA 提供的 API，开发人员可以方便灵活的搭建 Java 调试应用程序。 JPDA 主要由三个部分组成：Java 虚拟机工具接口（JVMTI），Java 调试线协议（JDWP）。</p>
+<p>在展开讲述这两方面之前，有必要先简单了解下调试的基础知识。Java平台的调试是有一个规范化的标准的，那就是JPDA（Java Platform Debugger Architecture）；通过 JPDA 提供的 API，开发人员可以方便灵活的搭建 Java 调试应用程序。 JPDA 主要由三个部分组成：Java 虚拟机工具接口（JVMTI），Java 调试线协议（JDWP），以及 Java 调试接口（JDI）。</p>
 <p>Java程序的调试无非就是通过一个调试器（debugger）获取对应Java虚拟机的信息，上文所述的JDWP就是调试器与虚拟机通信的桥梁。在dalvik虚拟机内部有一个专门的jdwp线程，Android系统的adbd进程通过socket与各个虚拟机的jdwp线程进行通信，外部调试器通过adb工具与adbd通信进而完成与jdwp的通信。我们通常所说的「attach debugger」指的就是这个意思——连接到指定的需要调试的进程。</p>
 <p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464599537380.png" alt="调试器工作原理"></p>
 <h2 id="如何在正确的地方下断点">如何在正确的地方下断点</h2><p>「正确的地方」包含两个含义：首先，调试是以进程为单位进行的，如果你需要调试运行在进程A 中的代码，却把debugger attach到了B进程，那么这个断点压根儿就是牛头不对马嘴；另外呢，比如你想调试Android的多媒体框架，你得知道media相关的类在哪吧，也就是说需要在正确的函数里面下断点。</p>
