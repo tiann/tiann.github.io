@@ -41,14 +41,14 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
+<meta name="description" content="Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
 Debug the fucking source code!!
 之前分享过一个答案：大家遇到过什么 Andr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何调试Android Framework？">
 <meta property="og:url" content="http://weishu.me/2016/05/30/how-to-debug-android-framework/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
+<meta property="og:description" content="Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
 Debug the fucking source code!!
 之前分享过一个答案：大家遇到过什么 Andr">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464599537380.png">
@@ -60,10 +60,10 @@ Debug the fucking source code!!
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596456242.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596476109.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464598434021.png">
-<meta property="og:updated_time" content="2016-05-30T09:32:03.000Z">
+<meta property="og:updated_time" content="2016-05-30T11:14:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何调试Android Framework？">
-<meta name="twitter:description" content="Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
+<meta name="twitter:description" content="Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
 Debug the fucking source code!!
 之前分享过一个答案：大家遇到过什么 Andr">
 
@@ -234,7 +234,7 @@ Debug the fucking source code!!
       
 
       
-        <span itemprop="articleBody"><p>Linus有一句名言广为人知：Look the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：</p>
+        <span itemprop="articleBody"><p>Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：</p>
 <p><strong>Debug the fucking source code!!</strong></p>
 <p>之前分享过一个答案：<a href="https://www.zhihu.com/question/40300713/answer/86706105" target="_blank" rel="external">大家遇到过什么 Android 兼容性问题？</a>，这里面的有一些非常诡异的问题，我相信光靠看代码你是永远定位不出来的。还有我写的一系列<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件框架原理</a>的文章，这里面涉及到大量Android Framework层的知识，有小伙伴会问，这些Framework层的原理，你是如何学习的呢，有诀窍吗？有！那就是调试。</p>
 <p>Debug是一项非常非常重要的技能，毋庸多言。今天我就给大家分享一下「调试Android Framework」的经验，一旦掌握这项技能，那么Java层的任何问题都拦不住你了。</p>
