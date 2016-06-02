@@ -60,7 +60,7 @@ Debug the fucking source code!!
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596456242.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596476109.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464598434021.png">
-<meta property="og:updated_time" content="2016-05-30T11:14:23.000Z">
+<meta property="og:updated_time" content="2016-06-02T11:41:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何调试Android Framework？">
 <meta name="twitter:description" content="Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：
@@ -260,7 +260,7 @@ Debug the fucking source code!!
 <h3 id="如何在对应的代码处下断点？">如何在对应的代码处下断点？</h3><p>假设我们现在把debugger attach到了正确的进程，那么断点应该下在哪里呢？直观来讲，就是说我需要导入所有的Android源码吗？如果不是应该导入哪些代码，怎么导入？</p>
 <p>首先，如果你需要调试的类在sdk里面导出了，你压根儿就不需要再导入源码，Android Studio自动帮你关联了这部分代码（前提是你用SDK Manager下载了sdk的源码，如下图：</p>
 <p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596414635.png" alt="SDK manager下载源码"></p>
-<p>比如你要调试ActivityManagerServce类的attachApplication方法，那么很简单；创建一个空的Android项目，SDK版本选择与你要调试的模拟器/真机 的android相同（这很重要，下文会讲述）；然后attrach 到system_server进程，直接在attach_application上面打上断点；随便启动一个app，可以看到我们熟悉的调试界面：</p>
+<p>比如你要调试ActivityManagerService类的attachApplication方法，那么很简单；创建一个空的Android项目，SDK版本选择与你要调试的模拟器/真机 的android相同（这很重要，下文会讲述）；然后attrach 到system_server进程（debugger显示的名字为system_process)，直接在attach_application上面打上断点；随便启动一个app，可以看到我们熟悉的调试界面：</p>
 <p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1464596428584.png" alt="调试attachApplication"></p>
 <p>如果这部分类在sdk中没有导入（比如@hide)的，又或者压根儿不是SDK的类，（比如系统app的源码）那应该怎么办呢？直接导入这部分代码即可。不需要是Android项目，普通的Java项目即可；举个例子，假设你想调试原生Android系统的「系统设置」这个程序，该如何做呢？</p>
 <p>根据上面的分析，我们首先得知道「系统设置˜」运行在哪一个进程，通常情况下进程名字就是包名；我们查出设置的包名即可，而包名是在源码的AndroidManifeist中声明的，因此，我们找到「系统设置」这个程序的源码即可；源码在 <a href="https://android.googlesource.com/" target="_blank" rel="external">https://android.googlesource.com/</a> ，系统App的源码在/packages这个子目录下面，我们一个个找，最终可以确定「系统设置」的源码在 <a href="https://android.googlesource.com/platform/packages/apps/Settings/" target="_blank" rel="external">https://android.googlesource.com/platform/packages/apps/Settings/</a> ；然后我们把这部分代码git clone下来，导入Android Studio：</p>
