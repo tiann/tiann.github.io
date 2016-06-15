@@ -4,6 +4,27 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
+    <lastmod>2016-06-15T02:19:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——Activity生命周期管理</title>
+        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/05/30/how-to-debug-android-framework/</loc>
     <lastmod>2016-06-02T11:41:03.000Z</lastmod>
     <data>
@@ -125,27 +146,6 @@
         <tag>binder</tag>
          
         <tag>classloader</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
-    <lastmod>2016-03-23T08:50:25.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android 插件化原理解析——Activity生命周期管理</title>
-        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
-        
-        <tag>android</tag>
          
         <tag>droidplugin</tag>
          

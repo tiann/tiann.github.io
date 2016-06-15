@@ -496,7 +496,7 @@
     <link href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/"/>
     <id>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</id>
     <published>2016-03-21T11:43:32.000Z</published>
-    <updated>2016-03-23T08:50:25.000Z</updated>
+    <updated>2016-06-15T02:19:58.000Z</updated>
     <content type="html"><![CDATA[<p>之前的 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？</p>
 <p>在Java平台要做到动态运行模块、热插拔可以使用<code>ClassLoader</code>技术进行动态类加载，比如广泛使用的<code>OSGi</code>技术。在Android上当然也可以使用动态加载技术，但是仅仅把类加载进来就足够了吗？<code>Activity</code>，<code>Service</code>等组件是有生命周期的，它们统一由系统服务<code>AMS</code>管理；使用<code>ClassLoader</code>可以从插件中创建Activity对象，但是，一个没有生命周期的Activity对象有什么用？所以在Android系统上，仅仅完成动态类加载是不够的；我们需要想办法把我们加载进来的Activity等组件交给系统管理，让<code>AMS</code>赋予组件生命周期；这样才算是一个有血有肉的完善的插件化方案。</p>
 <p>接下来的系列文章会讲述 DroidPlugin对于Android四大组件的处理方式，我们且看它如何采用Hook技术坑蒙拐骗把系统玩弄于股掌之中，最终赋予Activity，Service等组件生命周期，完成借尸还魂的。</p>
@@ -618,7 +618,7 @@
 <p>一切的秘密在<code>token</code>里面。<code>AMS</code>与<code>ActivityThread</code>之间对于Activity的生命周期的交互，并没有直接使用Activity对象进行交互，而是使用一个token来标识，这个token是binder对象，因此可以方便地跨进程传递。Activity里面有一个成员变量<code>mToken</code>代表的就是它，token可以唯一地标识一个Activity对象，它在Activity的<code>attach</code>方法里面初始化；</p>
 <p>在<code>AMS</code>处理Activity的任务栈的时候，使用这个token标记Activity，因此在我们的demo里面，<code>AMS</code>进程里面的token对应的是StubActivity，也就是<code>AMS</code>还在傻乎乎地操作StubActivity（关于这一点，你可以dump出任务栈的信息，可以观察到dump出的确实是StubActivity）。但是在我们App进程里面，token对应的却是TargetActivity！因此，在ActivityThread执行回调的时候，能正确地回调到TargetActivity相应的方法。</p>
 <p>为什么App进程里面，token对应的是TargetActivity呢？</p>
-<p>回到代码，ActivityClientRecord是在<code>mActivities</code>里面取出来的，确实是根据token取；那么这个token是什么时候添加进去的呢？我们看performLaunchActivity就完成明白了：它通过classloader加载了TargetActivity，然后完成一切操作之后把这个activity添加进了<code>mActivities</code>！另外，在这个方法里面我们还能看到对Ativity<code>attact</code>方法的调用，它传递给了新创建的Activity一个token对象，而这个token是在ActivityClientRecord构造函数里面初始化的。</p>
+<p>回到代码，ActivityClientRecord是在<code>mActivities</code>里面取出来的，确实是根据token取；那么这个token是什么时候添加进去的呢？我们看performLaunchActivity就完成明白了：它通过classloader加载了TargetActivity，然后完成一切操作之后把这个activity添加进了<code>mActivities</code>！另外，在这个方法里面我们还能看到对Ativity<code>attach</code>方法的调用，它传递给了新创建的Activity一个token对象，而这个token是在ActivityClientRecord构造函数里面初始化的。</p>
 <p>至此我们已经可以确认，通过这种方式启动的Activity有它自己完整而独立的生命周期！</p>
 <h2 id="小节">小节</h2><p>本文讲述了『启动一个并没有在AndroidManifest.xml中显示声明的Activity』的解决办法，我们成功地绕过了Android的这个限制，这个是插件Activity管理技术的基础；但是要做到启动一个插件Activity问题远没有这么简单。</p>
 <p>首先，在Android中，Activity有不同的启动模式；我们声明了一个替身StubActivity，肯定没有满足所有的要求；因此，我们需要在AndroidManifest.xml中声明一系列的有不同launchMode的Activity，还需要完成替身与真正Activity launchMode的匹配过程；这样才能完成启动各种类型Activity的需求，关于这一点，在 DroidPlugin 的com.morgoo.droidplugin.stub包下面可以找到。</p>
