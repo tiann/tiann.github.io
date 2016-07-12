@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-07-12T11:22:26.000Z</updated>
+  <updated>2016-07-12T11:29:38.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/"/>
     <id>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</id>
     <published>2016-07-12T11:18:07.000Z</published>
-    <updated>2016-07-12T11:22:26.000Z</updated>
+    <updated>2016-07-12T11:29:38.000Z</updated>
     <content type="html"><![CDATA[<p>目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？</p>
 <p>与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要少得多；但是，ContentProvider这个组件对于Android系统有着特别重要的作用——作为一种极其方便的<strong>数据共享</strong>的手段，ContentProvider使得广大第三方App能够在壁垒森严的系统中自由呼吸。</p>
 <p>在Android系统中，每一个应用程序都有自己的用户ID，而每一个应用程序所创建的文件的读写权限都是只赋予给自己所属的用户，这就限制了应用程序之间相互读写数据的操作。应用程序之间如果希望能够进行交互，只能采取跨进程通信的方式；Binder机制能够满足一般的IPC需求，但是如果应用程序之间需要共享大量数据，单纯使用Binder是很难办到的——我相信大家对于Binder 1M缓冲区以及TransactionTooLargeException一定不陌生；ContentProvider使用了匿名共享内存(Ashmem)机制完成数据共享，因此它可以很方便地完成大量数据的传输。Android系统的短信，联系人，相册，媒体库等等一系列的基础功能都依赖与ContentProvider，它的重要性可见一斑。</p>
@@ -31,7 +31,7 @@
 <li>我们没有办法在第三方App中启动或者绑定插件中的Service组件；因为插件的Service并不是真正的Service组件，系统能感知到的只是那个代理Service；因此如果插件如果带有远程Service组件，它根本不能给第三方App提供远程服务。</li>
 </ol>
 <p>虽然在插件系统中一派生机勃勃的景象，Activity，Service等插件组件百花齐放，插件与宿主、插件与插件在一起愉快滴玩耍；但是一旦脱离了插件系统的温室，这一片和谐景象不复存在：插件组件不过是傀儡而已，活着的，只有宿主——整个插件系统就是一座鬼城，各个插件组件借尸还魂般地依附在宿主身上，了无生机。</p>
-<p>既然希望把插件的ContentProvider共享给整个系统，让第三方的App都能获取到我们插件共享的数据，我们必须解决这个问题；下文将会围绕这个目标展开，完成ContentProvider的插件化，并且顺带给出上述问题的解决方案。阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的 service-management 模块。另外，插件框架原理解析系列文章见 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+<p>既然希望把插件的ContentProvider共享给整个系统，让第三方的App都能获取到我们插件共享的数据，我们必须解决这个问题；下文将会围绕这个目标展开，完成ContentProvider的插件化，并且顺带给出上述问题的解决方案。阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的 contentprovider-management 模块。另外，插件框架原理解析系列文章见 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
 <h2 id="ContentProvider工作原理">ContentProvider工作原理</h2><p>首先我们还是得分析一下ContentProvider的工作原理，很多插件化的思路，以及一些Hook点的发现都严重依赖于对于系统工作原理的理解；对于ContentProvider的插件化，这一点特别重要。</p>
 <h3 id="铺垫工作">铺垫工作</h3><p>如同我们通过<code>startActivity</code>来启动Activity一样，与ContentProvider打交道的过程也是从Context类的一个方法开始的，这个方法叫做<code>getContentResolver</code>，使用ContentProvider的典型代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ContentResolver resolver = content.getContentResolver();</span><br><span class="line">resolver.query(Uri.parse(<span class="string">"content://authority/test"</span>), <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
@@ -116,13 +116,13 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 为了使得插件的ContentProvder提供给外部使用，我们需要一个StubProvider做中转；</span><br><span class="line"> * 如果外部程序需要使用插件系统中插件的ContentProvider，不能直接查询原来的那个uri</span><br><span class="line"> * 我们对uri做一些手脚，使得插件系统能识别这个uri；</span><br><span class="line"> *</span><br><span class="line"> * 这里的处理方式如下：</span><br><span class="line"> *</span><br><span class="line"> * 原始查询插件的URI应该为：</span><br><span class="line"> * content://plugin_auth/path/query</span><br><span class="line"> *</span><br><span class="line"> * 如果需要查询插件，需要修改为：</span><br><span class="line"> *</span><br><span class="line"> * content://stub_auth/plugin_auth/path/query</span><br><span class="line"> *</span><br><span class="line"> * 也就是，我们把插件ContentProvider的信息放在URI的path中保存起来；</span><br><span class="line"> * 然后在StubProvider中做分发。</span><br><span class="line"> *</span><br><span class="line"> * 当然，也可以使用QueryParamerter,比如：</span><br><span class="line"> * content://plugin_auth/path/query/ -&gt;  content://stub_auth/path/query?plugin=plugin_auth</span><br><span class="line"> * <span class="doctag">@param</span> raw 外部查询我们使用的URI</span><br><span class="line"> * <span class="doctag">@return</span> 插件真正的URI</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Uri <span class="title">getRealUri</span><span class="params">(Uri raw)</span> </span>&#123;</span><br><span class="line">    String rawAuth = raw.getAuthority();</span><br><span class="line">    <span class="keyword">if</span> (!AUTHORITY.equals(rawAuth)) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">"rawAuth:"</span> + rawAuth);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String uriString = raw.toString();</span><br><span class="line">    uriString = uriString.replaceAll(rawAuth + <span class="string">'/'</span>, <span class="string">""</span>);</span><br><span class="line">    Uri newUri = Uri.parse(uriString);</span><br><span class="line">    Log.i(TAG, <span class="string">"realUri:"</span> + newUri);</span><br><span class="line">    <span class="keyword">return</span> newUri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通过以上过程我们就实现了ContentProvider的插件化。需要说明的是，DroidPlugind的插件化与上述介绍的方案有一些不同之处：</p>
 <ol>
-<li>首先DroidPlugin并没有选择预先安装的方案，而是选择Hook ActivityManagerNative，拦截它的getContentProvider以及publishContentProvider方法实现对于插件组件的控制；从这里可以看出它对ContentProvider与Service的插件化几乎是相同的，Hook才是DroidPlugin Stype ^_^.</li>
+<li>首先DroidPlugin并没有选择预先安装的方案，而是选择Hook ActivityManagerNative，拦截它的getContentProvider以及publishContentProvider方法实现对于插件组件的控制；从这里可以看出它对ContentProvider与Service的插件化几乎是相同的，Hook才是DroidPlugin Style ^_^.</li>
 <li>然后，关于携带插件信息，或者说「插件查询协议」方面；DroidPlugin把插件信息放在查询参数里面，本文呢则是路径参数；这一点完全看个人喜好。</li>
 </ol>
 <h2 id="小结">小结</h2><p>本文我们通过「代理分发技术」以及「插件查询协议」完成了ContentProvider组件的插件化，并且给出了对「插件共享组件」的问题的一般解决方案。值得一提的是，系统的ContentProvider其实是lazy load的，也就是说只有在需要使用的时候才会启动对应的ContentProvider，而我们对于插件的实现则是<strong>预先加载</strong>，这里还有改进的空间，读者可以思考一下解决方案。</p>
 <p>由于ContentProvider的使用频度非常低，而很多它使用的场景（比如系统）并不太需要「插件化」，因此在实际的插件方案中，提供ContentProvider插件化的方案非常之少；就算需要实现ContentProvider的插件化，也只是解决插件内部之间共享组件的问题，并没有把插件组件暴露给整个系统。我个人觉得，如果只是希望插件化，那么是否支持ContentProvider无伤大雅，但是，如果希望实现虚拟化或者说容器技术，所有组件是必须支持插件化的。</p>
 <p>至此，对于Android系统的四大组件的插件化已经全部介绍完毕；由于是最后一个要介绍的组件，我并没有像之前一样先给出组件的运行原理，然后一通分析最后给出插件方案，而是一边分析代码一边给出自己的思路，把思考——推翻——改进的整个过程完全展现了出来，Android的插件化已经到达了百花齐放的阶段，插件化之路也不只有一条，但是万变不离其宗，希望我的分析和思考对各位读者理解甚至创造插件化方案带来帮助。接下来我会介绍「插件通信机制」，它与本文的ContentProvider以及我反复强调过的一些特性密切相关，敬请期待！</p>
-<p>喜欢就点个赞吧，兜里有一块钱的童鞋可以点击下面的打赏然后扫一下二维码哦～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a> 和我的 <a href="http://weishu.me">博客</a>! 另外很抱歉一个多月没有更新博客了，每天看到各位的来访记录深感惭愧，实在是业务繁忙，身不由已！不出意外接下来会以正常速度更新内容，谢谢支持 ^_^.</p>
+<p>喜欢就点个赞吧，兜里有一块钱的童鞋可以点击下面的打赏然后扫一下二维码哦～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a> 和我的 <a href="http://weishu.me">博客</a>! 另外很抱歉一个多月没有更新博客了，每天看到各位的来访记录深感惭愧，实在是业务繁忙，身不由已！不出意外接下来会以正常速度更新内容，谢谢支持 ^_^</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？</p>
@@ -1064,7 +1064,7 @@
     <link href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/"/>
     <id>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</id>
     <published>2016-01-28T03:07:36.000Z</published>
-    <updated>2016-05-17T13:26:16.000Z</updated>
+    <updated>2016-07-12T11:30:32.000Z</updated>
     <content type="html"><![CDATA[<p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
 <ol>
 <li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
@@ -1090,12 +1090,9 @@
 <li><a href="http://weishu.me/2016/04/05/understand-plugin-framework-classloader/">插件加载机制</a></li>
 <li><a href="http://weishu.me/2016/04/12/understand-plugin-framework-receiver/">广播的管理方式</a></li>
 <li><a href="http://weishu.me/2016/05/11/understand-plugin-framework-service/">Service的插件化</a></li>
-<li>ContentProvider的管理</li>
-<li>插件加载解析之自定义包管理服务(PackageManager)</li>
-<li>插件进程管理机制（ActivityManager）</li>
-<li>插件机制之资源管理</li>
+<li><a href="http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/">ContentProvider的插件化</a></li>
 <li>DroidPlugin插件通信机制</li>
-<li>DroidPlugin框架缺陷</li>
+<li>插件机制之资源管理</li>
 <li>不同插件框架方案对比</li>
 <li>插件化的未来</li>
 </ul>
