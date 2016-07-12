@@ -1,0 +1,782 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="ContentProvider,android,droidplugin,plugin framework," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？
+与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android插件化原理解析——ContentProvider的插件化">
+<meta property="og:url" content="http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？
+与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1468313182087.png">
+<meta property="og:updated_time" content="2016-07-12T11:22:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android插件化原理解析——ContentProvider的插件化">
+<meta name="twitter:description" content="目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？
+与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> Android插件化原理解析——ContentProvider的插件化 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Android插件化原理解析——ContentProvider的插件化
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-07-12T19:18:07+08:00" content="2016-07-12">
+            2016-07-12
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/07/12/understand-plugin-framework-content-provider/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/12/understand-plugin-framework-content-provider/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？</p>
+<p>与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要少得多；但是，ContentProvider这个组件对于Android系统有着特别重要的作用——作为一种极其方便的<strong>数据共享</strong>的手段，ContentProvider使得广大第三方App能够在壁垒森严的系统中自由呼吸。</p>
+<p>在Android系统中，每一个应用程序都有自己的用户ID，而每一个应用程序所创建的文件的读写权限都是只赋予给自己所属的用户，这就限制了应用程序之间相互读写数据的操作。应用程序之间如果希望能够进行交互，只能采取跨进程通信的方式；Binder机制能够满足一般的IPC需求，但是如果应用程序之间需要共享大量数据，单纯使用Binder是很难办到的——我相信大家对于Binder 1M缓冲区以及TransactionTooLargeException一定不陌生；ContentProvider使用了匿名共享内存(Ashmem)机制完成数据共享，因此它可以很方便地完成大量数据的传输。Android系统的短信，联系人，相册，媒体库等等一系列的基础功能都依赖与ContentProvider，它的重要性可见一斑。</p>
+<p>既然ContentProvider的核心特性是数据共享，那么要实现它的插件化，必须能让插件能够把它的ContentProvider共享给系统——如果不能「<strong>provide content</strong>」那还叫什么ContentProvider？</p>
+<p>但是，如果回想一下Activity等组件的插件化方式，在涉及到「共享」这个问题上，一直没有较好的解决方案：<br><a id="more"></a></p>
+<ol>
+<li>系统中的第三方App无法启动插件中带有特定IntentFilter的Activity，因为系统压根儿感受不到插件中这个真正的Activity的存在。</li>
+<li>插件中的静态注册的广播并不真正是静态的，而是使用动态注册广播模拟实现的；这就导致如果宿主程序进程死亡，这个静态广播不会起作用；这个问题的根本原因在由于BroadcastReceiver的IntentFilter的不可预知性，使得我们没有办法把静态广播真正“共享”给系统。</li>
+<li>我们没有办法在第三方App中启动或者绑定插件中的Service组件；因为插件的Service并不是真正的Service组件，系统能感知到的只是那个代理Service；因此如果插件如果带有远程Service组件，它根本不能给第三方App提供远程服务。</li>
+</ol>
+<p>虽然在插件系统中一派生机勃勃的景象，Activity，Service等插件组件百花齐放，插件与宿主、插件与插件在一起愉快滴玩耍；但是一旦脱离了插件系统的温室，这一片和谐景象不复存在：插件组件不过是傀儡而已，活着的，只有宿主——整个插件系统就是一座鬼城，各个插件组件借尸还魂般地依附在宿主身上，了无生机。</p>
+<p>既然希望把插件的ContentProvider共享给整个系统，让第三方的App都能获取到我们插件共享的数据，我们必须解决这个问题；下文将会围绕这个目标展开，完成ContentProvider的插件化，并且顺带给出上述问题的解决方案。阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的 service-management 模块。另外，插件框架原理解析系列文章见 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+<h2 id="ContentProvider工作原理">ContentProvider工作原理</h2><p>首先我们还是得分析一下ContentProvider的工作原理，很多插件化的思路，以及一些Hook点的发现都严重依赖于对于系统工作原理的理解；对于ContentProvider的插件化，这一点特别重要。</p>
+<h3 id="铺垫工作">铺垫工作</h3><p>如同我们通过<code>startActivity</code>来启动Activity一样，与ContentProvider打交道的过程也是从Context类的一个方法开始的，这个方法叫做<code>getContentResolver</code>，使用ContentProvider的典型代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ContentResolver resolver = content.getContentResolver();</span><br><span class="line">resolver.query(Uri.parse(<span class="string">"content://authority/test"</span>), <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>直接去ContextImpl类里面查找的<code>getContentResolver</code>实现，发现这个方法返回的类型是android.app.ContextImpl.ApplicationContentResolver，这个类是抽象类android.content.ContentResolver的子类，<code>resolver.query</code>实际上是调用父类ContentResolver的<code>query</code>实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="annotation">@Nullable</span> <span class="function">Cursor <span class="title">query</span><span class="params">(<span class="keyword">final</span> @NonNull Uri uri, @Nullable String[] projection,</span><br><span class="line">        @Nullable String selection, @Nullable String[] selectionArgs,</span><br><span class="line">        @Nullable String sortOrder, @Nullable CancellationSignal cancellationSignal)</span> </span>&#123;</span><br><span class="line">    Preconditions.checkNotNull(uri, <span class="string">"uri"</span>);</span><br><span class="line">    IContentProvider unstableProvider = acquireUnstableProvider(uri);</span><br><span class="line">    <span class="keyword">if</span> (unstableProvider == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    IContentProvider stableProvider = <span class="keyword">null</span>;</span><br><span class="line">    Cursor qCursor = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">long</span> startTime = SystemClock.uptimeMillis();</span><br><span class="line"></span><br><span class="line">        ICancellationSignal remoteCancellationSignal = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (cancellationSignal != <span class="keyword">null</span>) &#123;</span><br><span class="line">            cancellationSignal.throwIfCanceled();</span><br><span class="line">            remoteCancellationSignal = unstableProvider.createCancellationSignal();</span><br><span class="line">            cancellationSignal.setRemote(remoteCancellationSignal);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            qCursor = unstableProvider.query(mPackageName, uri, projection,</span><br><span class="line">                    selection, selectionArgs, sortOrder, remoteCancellationSignal);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DeadObjectException e) &#123;</span><br><span class="line">            <span class="comment">// The remote process has died...  but we only hold an unstable</span></span><br><span class="line">            <span class="comment">// reference though, so we might recover!!!  Let's try!!!!</span></span><br><span class="line">            <span class="comment">// This is exciting!!1!!1!!!!1</span></span><br><span class="line">            unstableProviderDied(unstableProvider);</span><br><span class="line">            stableProvider = acquireProvider(uri);</span><br><span class="line">            <span class="keyword">if</span> (stableProvider == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            qCursor = stableProvider.query(mPackageName, uri, projection,</span><br><span class="line">                    selection, selectionArgs, sortOrder, remoteCancellationSignal);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 略...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这里面的那个<code>try..catch</code>语句，<code>query</code>方法首先尝试调用抽象方法acquireUnstableProvider拿到一个IContentProvider对象，并尝试调用这个”unstable”对象的<code>query</code>方法，万一调用失败（抛出DeadObjectExceptopn，熟悉Binder的应该了解这个异常）说明ContentProvider所在的进程已经死亡，这时候会尝试调用<code>acquireProvider</code>这个抽象方法来获取一个可用的IContentProvider（代码里面那个萌萌的注释说明了一切^_^）；由于这两个<code>acquire*</code>都是抽象方法，我们可以直接看子类<code>ApplicationContentResolver</code>的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> IContentProvider <span class="title">acquireUnstableProvider</span><span class="params">(Context c, String auth)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mMainThread.acquireProvider(c,</span><br><span class="line">            ContentProvider.getAuthorityWithoutUserId(auth),</span><br><span class="line">            resolveUserIdFromAuthority(auth), <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> IContentProvider <span class="title">acquireProvider</span><span class="params">(Context context, String auth)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mMainThread.acquireProvider(context,</span><br><span class="line">            ContentProvider.getAuthorityWithoutUserId(auth),</span><br><span class="line">            resolveUserIdFromAuthority(auth), <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这两个抽象方法最终都通过调用<code>ActivityThread</code>类的<code>acquireProvider</code>获取到IContentProvider，接下来我们看看到底是如何获取到ContentProvider的。</p>
+<h3 id="ContentProvider获取过程">ContentProvider获取过程</h3><p>ActivityThread类的<code>acquireProvider</code>方法如下，我们需要知道的是，方法的最后一个参数<code>stable</code>代表着ContentProvider所在的进程是否存活，如果进程已死，可能需要在必要的时候唤起这个进程；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> IContentProvider <span class="title">acquireProvider</span><span class="params">(</span><br><span class="line">        Context c, String auth, <span class="keyword">int</span> userId, <span class="keyword">boolean</span> stable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> IContentProvider provider = acquireExistingProvider(c, auth, userId, stable);</span><br><span class="line">    <span class="keyword">if</span> (provider != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> provider;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IActivityManager.ContentProviderHolder holder = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        holder = ActivityManagerNative.getDefault().getContentProvider(</span><br><span class="line">                getApplicationThread(), auth, userId, stable);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (RemoteException ex) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (holder == <span class="keyword">null</span>) &#123;</span><br><span class="line">        Slog.e(TAG, <span class="string">"Failed to find provider info for "</span> + auth);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    holder = installProvider(c, holder, holder.info,</span><br><span class="line">            <span class="keyword">true</span> <span class="comment">/*noisy*/</span>, holder.noReleaseNeeded, stable);</span><br><span class="line">    <span class="keyword">return</span> holder.provider;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法首先通过<code>acquireExistingProvider</code>尝试从本进程中获取ContentProvider，如果获取不到，那么再请求<code>AMS</code>获取对应ContentProvider；想象一下，如果你查询的是自己App内部的ContentProvider组件，干嘛要劳烦AMS呢？不论是从哪里获取到的ContentProvider，获取完毕之后会调用<code>installProvider</code>来安装ContentProvider。</p>
+<p>OK打住，我们思考一下，如果要实现ContentProvider的插件化，我们需要完成一些什么工作？开篇的时候我提到了数据共享，那么具体来说，实现插件的数据共享，需要完成什么？ContentProvider是一个数据共享组件，也就是说它不过是<strong>一个携带数据的载体而已</strong>。为了支持跨进程共享，这个载体是<strong>Binder调用</strong>，为了共享大量数据，使用了匿名共享内存；这么说还是有点抽象，那么想一下，给出一个ContentProvider，你能对它做一些什么操作？如果能让插件支持这些操作，不就支持了插件化么？这就是典型的duck type思想——如果一个东西看起来像ContentProvider，用起来也像ContentProvider，那么它就是ContentProvider。</p>
+<p>ContentProvider主要支持<code>query, insert, update, delete</code>操作，由于这个组件一般工作在别的进程，因此这些调用都是Binder调用。从上面的代码可以看到，这些调用最终都是委托给一个IContentProvider的Binder对象完成的，如果我们Hook掉这个对象，那么对于ContentProvider的所有操作都会被我们拦截掉，这时候我们可以做进一步的操作来完成对于插件ContentProvider组件的支持。要拦截这个过程，我们可以<strong>假装插件的ContentProvider是自己App的ContentProvider</strong>，也就是说，让<code>acquireExistingProvider</code>方法可以直接获取到插件的ContentProvider，这样我们就不需要欺骗AMS就能完成插件化了。当然，你也可以选择Hook掉AMS，让AMS的<code>getContentProvider</code>方法返回被我们处理过的对象，这也是可行的；但是，为什么要舍近求远呢？</p>
+<p>从上文的分析暂时得出结论：我们可以把插件的ContentProvider信息预先放在App进程内部，使得对于ContentProvider执行CURD操作的时候，可以获取到插件的组件，这样或许就可以实现插件化了。具体来说，我们要做的事情就是让<code>ActivityThread</code>的<code>acquireExistingProvider</code>方法能够返回插件的ContentProvider信息，我们看看这个方法的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> IContentProvider <span class="title">acquireExistingProvider</span><span class="params">(</span><br><span class="line">        Context c, String auth, <span class="keyword">int</span> userId, <span class="keyword">boolean</span> stable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (mProviderMap) &#123;</span><br><span class="line">        <span class="keyword">final</span> ProviderKey key = <span class="keyword">new</span> ProviderKey(auth, userId);</span><br><span class="line">        <span class="keyword">final</span> ProviderClientRecord pr = mProviderMap.get(key);</span><br><span class="line">        <span class="keyword">if</span> (pr == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 略。。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出，App内部自己的ContentProvider信息保存在ActivityThread类的<code>mProviderMap</code>中，这个map的类型是ArrayMap<providerkey, providerclientrecord="">；我们当然可以通过反射修改这个成员变量，直接把插件的ContentProvider信息填进去，但是这个ProviderClientRecord对象如何构造？我们姑且看看系统自己是如果填充这个字段的。在ActivityThread类中搜索一遍，发现调用mProviderMap对象的<code>put</code>方法的之后<code>installProviderAuthoritiesLocked</code>，而这个方法最终被<code>installProvider</code>方法调用。在分析ContentProvider的获取过程中我们已经知道，不论是通过本进程的<code>acquireExistingProvider</code>还是借助AMS的<code>getContentProvider</code>得到ContentProvider，最终都会对这个对象执行<code>installProvider</code>操作，也就是「安装」在本进程内部。那么，我们接着看这个<code>installProvider</code>做了什么，它是如何「安装」ContentProvider的。</providerkey,></p>
+<h3 id="进程内部ContentProvider安装过程">进程内部ContentProvider安装过程</h3><p>首先，如果之前没有“安装”过，那么holder为null，下面的代码会被执行，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> java.lang.ClassLoader cl = c.getClassLoader();</span><br><span class="line">localProvider = (ContentProvider)cl.</span><br><span class="line">    loadClass(info.name).newInstance();</span><br><span class="line">provider = localProvider.getIContentProvider();</span><br><span class="line"><span class="keyword">if</span> (provider == <span class="keyword">null</span>) &#123;</span><br><span class="line">    Slog.e(TAG, <span class="string">"Failed to instantiate class "</span> +</span><br><span class="line">          info.name + <span class="string">" from sourceDir "</span> +</span><br><span class="line">          info.applicationInfo.sourceDir);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (DEBUG_PROVIDER) Slog.v(</span><br><span class="line">    TAG, <span class="string">"Instantiating local provider "</span> + info.name);</span><br><span class="line"><span class="comment">// <span class="label">XXX Need to create the correct context for this provider.</span></span></span><br><span class="line">localProvider.attachInfo(c, info);</span><br></pre></td></tr></table></figure>
+<p>比较直观，直接load这个ContentProvider所在的类，然后用反射创建出这个ContentProvider对象；但是由于查询是需要进行跨进程通信的，在本进程创建出这个对象意义不大，所以我们需要取出ContentProvider承载跨进程通信的Binder对象IContentProvider；创建出对象之后，接下来就是构建合适的信息，保存在ActivityThread内部，也就是<code>mProviderMap</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (localProvider != <span class="keyword">null</span>) &#123;</span><br><span class="line">    ComponentName cname = <span class="keyword">new</span> ComponentName(info.packageName, info.name);</span><br><span class="line">    ProviderClientRecord pr = mLocalProvidersByName.get(cname);</span><br><span class="line">    <span class="keyword">if</span> (pr != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (DEBUG_PROVIDER) &#123;</span><br><span class="line">            Slog.v(TAG, <span class="string">"installProvider: lost the race, "</span></span><br><span class="line">                    + <span class="string">"using existing local provider"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        provider = pr.mProvider;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        holder = <span class="keyword">new</span> IActivityManager.ContentProviderHolder(info);</span><br><span class="line">        holder.provider = provider;</span><br><span class="line">        holder.noReleaseNeeded = <span class="keyword">true</span>;</span><br><span class="line">        pr = installProviderAuthoritiesLocked(provider, localProvider, holder);</span><br><span class="line">        mLocalProviders.put(jBinder, pr);</span><br><span class="line">        mLocalProvidersByName.put(cname, pr);</span><br><span class="line">    &#125;</span><br><span class="line">    retHolder = pr.mHolder;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br></pre></td></tr></table></figure>
+<p>以上就是安装代码，不难理解。</p>
+<h3 id="思路尝试——本地安装">思路尝试——本地安装</h3><p>那么，了解了「安装」过程再结合上文的分析，我们似乎可以完成ContentProvider的插件化了——直接把插件的ContentProvider安装在进程内部就行了。如果插件系统有多个进程，那么必须在每个进程都「安装」一遍，如果你熟悉Android进程的启动流程那么就会知道，这个安装ContentProvider的过程适合放在Application类中，因为每个Android进程启动的时候，App的Application类是会被启动的。</p>
+<p>看起来实现ContentProvider的思路有了，但是这里实际上有一个严重的缺陷！</p>
+<p>我们依然没有解决「共享」的问题。我们只是在插件系统启动的进程里面的ActivityThread的<code>mProviderMap</code>给修改了，这使得只有通过插件系统启动的进程，才能感知到插件中的ContentProvider(因为我们手动把插件中的信息install到这个进程中去了)；如果第三方的App想要使用插件的ContentProvider，那系统只会告诉它查无此人。</p>
+<p>那么，我们应该如何解决共享这个问题呢？看来还是逃不过AMS的魔掌，我们继续跟踪源码，看看如果在本进程查询不到ContentProvider，AMS是如何完成这个过程的。在ActivityThread的<code>acquireProvider</code>方法中我们提到，如果<code>acquireExistingProvider</code>方法返回null，会调用ActivityManagerNative的<code>getContentProvider</code>方法通过AMS查询整个系统中是否存在需要的这个ContentProvider。如果第三方App查询插件系统的ContentProvider必然走的是这个流程，我们仔细分析一下这个过程；</p>
+<h3 id="AMS中的ContentProvider">AMS中的ContentProvider</h3><p>首先我们查阅ActivityManagerService的<code>getContentProvider</code>方法，这个方法间接调用了<code>getContentProviderImpl</code>方法；<code>getContentProviderImpl</code>方法体相当的长，但是实际上只做了两件事件事（我这就不贴代码了，读者可以对着源码看一遍）：</p>
+<ol>
+<li>使用PackageManagerService的resolveContentProvider根据Uri中提供的auth信息查阅对应的ContentProivoder的信息ProviderInfo。</li>
+<li>根据查询到的ContentProvider信息，尝试将这个ContentPRovider组件安装到系统上。</li>
+</ol>
+<h4 id="查询ContentProvider组件的过程">查询ContentProvider组件的过程</h4><p>查询ContentProvider组件的过程看起来很简单，直接调用PackageManager的<code>resolveContentProvider</code>就能从URI中获取到对应的<code>ProviderInfo</code>信息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ProviderInfo <span class="title">resolveContentProvider</span><span class="params">(String name, <span class="keyword">int</span> flags, <span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!sUserManager.exists(userId)) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// reader</span></span><br><span class="line">    <span class="keyword">synchronized</span> (mPackages) &#123;</span><br><span class="line">        <span class="keyword">final</span> PackageParser.Provider provider = mProvidersByAuthority.get(name);</span><br><span class="line">        PackageSetting ps = provider != <span class="keyword">null</span></span><br><span class="line">                ? mSettings.mPackages.get(provider.owner.packageName)</span><br><span class="line">                : <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> ps != <span class="keyword">null</span></span><br><span class="line">                &amp;&amp; mSettings.isEnabledLPr(provider.info, flags, userId)</span><br><span class="line">                &amp;&amp; (!mSafeMode || (provider.info.applicationInfo.flags</span><br><span class="line">                        &amp;ApplicationInfo.FLAG_SYSTEM) != <span class="number">0</span>)</span><br><span class="line">                ? PackageParser.generateProviderInfo(provider, flags,</span><br><span class="line">                        ps.readUserState(userId), userId)</span><br><span class="line">                : <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是实际上我们关心的是，这个<code>mProvidersByAuthority</code>里面的信息是如何添加进PackageManagerService的，会在什么时候更新？在PackageManagerService这个类中搜索mProvidersByAuthority.put这个调用，会发现在<code>scanPackageDirtyLI</code>会更新<code>mProvidersByAuthority</code>这个map的信息，接着往前追踪会发现：<strong>这些信息是在Android系统启动的时候收集的</strong>。也就是说，Android系统在启动的时候会扫描一些App的安装目录，典型的比如/data/app/*，获取这个目录里面的apk文件，读取其AndroidManifest.xml中的信息，然后把这些信息保存在PackageManagerService中。合理猜测，在系统启动之后，安装新的App也会触发对新App中AndroidManifest.xml的操作，感兴趣的读者可以自行翻阅源码。</p>
+<p>现在我们知道，查询ContentProvider的信息来源在Android系统启动的时候已经初始化好了，这个过程对于我们第三方app来说是鞭长莫及；想要通过像在进程内部Hack这个查找过程是不可能的。</p>
+<h4 id="安装ContentProvider组件的过程">安装ContentProvider组件的过程</h4><p>获取到URI对应的ContentPRovider的信息之后，接下来就是把它安装到系统上了，这样以后有别的查询操作就可以直接拿来使用；但是这个安装过程AMS是没有办法以一己之力完成的。想象一下App DemoA 查询App DemoB 的某个ContentProviderAppB，那么这个ContentProviderAppB必然存在于DemoB这个App中，AMS所在的进程(system_server)连这个ContentProviderAppB的类都没有，因此，AMS必须委托DemoB完成它的ContentProviderAppB的安装；这里就分两种情况：其一，DemoB这个App已经在运行了，那么AMS直接通知DemoB安装ContentProviderAppB（如果B已经安装了那就更好了）；其二，DemoB这个app没在运行，那么必须把B进程唤醒，让它干活；这个过程也就是ActivityManagerService的<code>getContentProviderImpl</code>方法所做的，如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (proc != <span class="keyword">null</span> &amp;&amp; proc.thread != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!proc.pubProviders.containsKey(cpi.name)) &#123;</span><br><span class="line">        proc.pubProviders.put(cpi.name, cpr);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            proc.thread.scheduleInstallProvider(cpi);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    proc = startProcessLocked(cpi.processName,</span><br><span class="line">            cpr.appInfo, <span class="keyword">false</span>, <span class="number">0</span>, <span class="string">"content provider"</span>,</span><br><span class="line">            <span class="keyword">new</span> ComponentName(cpi.applicationInfo.packageName,</span><br><span class="line">                    cpi.name), <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>);</span><br><span class="line">    <span class="keyword">if</span> (proc == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果查询的ContentProvider所在进程处于运行状态，那么AMS会通过这个进程给AMS的ApplicationThread这个Binder对象完成scheduleInstallProvider调用，这个过程比较简单，最终会调用到目标进程的<code>installProvider</code>方法，而这个方法我们在上文已经分析过了。我们看一下如果目标进程没有启动，会发生什么情况。</p>
+<p>如果ContentProvider所在的进程已经死亡，那么会调用startProcessLocked来启动新的进程，<code>startProcessLocked</code>有一系列重载函数，我们一路跟踪，发现最终启动进程的操作交给了<code>Process</code>类的<code>start</code>方法完成，这个方法通过socket与Zygote进程进行通信，通知Zygote进程fork出一个子进程，然后通过反射调用了之前传递过来的一个入口类的main函数，一般来说这个入口类就是ActivityThread，因此子进程fork出来之后会执行ActivityThread类的main函数。</p>
+<p>在我们继续观察子进程ActivityThread的main函数执行之前，我们看看AMS进程这时候会干什么——startProcessLocked之后AMS进程和fork出来的DemoB进程分道扬镳；AMS会继续往下面执行。我们暂时回到AMS的<code>getContentProviderImpl</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Wait for the provider to be published...</span></span><br><span class="line"><span class="keyword">synchronized</span> (cpr) &#123;</span><br><span class="line">    <span class="keyword">while</span> (cpr.provider == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cpr.launchingApp == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">                conn.waiting = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            cpr.wait();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">                conn.waiting = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你没看错，一个死循环就是糊在上面：AMS进程会通过一个死循环等到进程B完成ContentProvider的安装，等待完成之后会把ContentProvider的信息返回给进程A。那么，我们现在的疑惑是，<strong>进程B在启动之后，在哪个时间点会完成ContentProvider的安装呢？</strong> </p>
+<p>我们接着看ActivityThread的main函数，顺便寻找我们上面那个问题的答案；这个分析实际上就是Android App的启动过程，更详细的过程可以参阅老罗的文章 <a href="http://blog.csdn.net/luoshengyang/article/details/6689748" target="_blank" rel="external">Android应用程序启动过程源代码分析</a>，这里只给出简要调用流程：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1468313182087.png" alt="App启动简要流程"></p>
+<p>最终，DemoB进程启动之后会执行ActivityThread类的handleBindApplication方法，这个方法相当之长，基本完成了App进程启动之后所有必要的操作；这里我们只关心ContentPRovider相关的初始化操作，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// If the app is being launched for full backup or restore, bring it up in</span></span><br><span class="line"><span class="comment">// a restricted environment with the base application class.</span></span><br><span class="line">Application app = data.info.makeApplication(data.restrictedBackupMode, <span class="keyword">null</span>);</span><br><span class="line">mInitialApplication = app;</span><br><span class="line"></span><br><span class="line"><span class="comment">// don't bring up providers in restricted mode; they may depend on the</span></span><br><span class="line"><span class="comment">// app's custom Application class</span></span><br><span class="line"><span class="keyword">if</span> (!data.restrictedBackupMode) &#123;</span><br><span class="line">    List&lt;ProviderInfo&gt; providers = data.providers;</span><br><span class="line">    <span class="keyword">if</span> (providers != <span class="keyword">null</span>) &#123;</span><br><span class="line">        installContentProviders(app, providers);</span><br><span class="line">        <span class="comment">// For process that contains content providers, we want to</span></span><br><span class="line">        <span class="comment">// ensure that the JIT is enabled "at some point".</span></span><br><span class="line">        mH.sendEmptyMessageDelayed(H.ENABLE_JIT, <span class="number">10</span>*<span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Do this after providers, since instrumentation tests generally start their</span></span><br><span class="line"><span class="comment">// test thread at this point, and we don't want that racing.</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mInstrumentation.onCreate(data.instrumentationArgs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mInstrumentation.callApplicationOnCreate(app);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>仔细观察以上代码，你会发现：<strong>ContentProvider的安装比Application的onCreate回调还要早！！</strong>因此，分析到这里我们已经明白了前面提出的那个问题，<strong>进程启动之后会在Applition类的onCreate 回调之前，在Application对象创建之后完成ContentProvider的安装</strong>。</p>
+<p>然后不要忘了，我们的AMS进程还在那傻傻等待DemoB进程完成ContentProviderAppB的安装呢！在DemoB的Application的onCreate回调之前，DemoB的ContentProviderAppB已经安装好了，因此AMS停止等待，把DemoB安装的结果返回给请求这个ContentProvider的DemoA。我们必须对这个时序保持敏感，有时候就是失之毫厘，差之千里！！</p>
+<p>到这里，有关ContentProvider的调用过程以及简要的工作原理我们已经分析完毕，关于它如何共享数据，如何使用匿名共享内存这部分不是插件化的重点，感兴趣的可以参考 <a href="http://blog.csdn.net/luoshengyang/article/details/6967204" target="_blank" rel="external">Android应用程序组件Content Provider在应用程序之间共享数据的原理分析</a>。</p>
+<h2 id="不同之处">不同之处</h2><p>在实现ContentProvider的插件化之前，通过分析这个组件的工作原理，我们可以得出它的一些与众不同的特性：</p>
+<ol>
+<li>ContentPRovider本身是用来共享数据的，因此它提供一般的CURD服务；它类似HTTP这种无状态的服务，没有Activity，Service所谓的生命周期的概念，服务要么可用，要么不可用；对应着ContentPRovider要么启动，要么随着进程死亡；而通常情况下，死亡之后还会被系统启动。所以，ContentProvider，只要有人需要这个服务，系统可以保证是永生的；这是与其他组件的最大不同；完全不用考虑生命周期的概念。</li>
+<li>ContentProvider被设计为共享数据，这种数据量一般来说是相当大的；熟悉Binder的人应该知道，Binder进行数据传输有1M限制，因此如果要使用Binder传输大数据，必须使用类似socket的方式一段一段的读，也就是说需要自己在上层架设一层协议；ContentProvider并没有采取这种方式，而是采用了Android系统的匿名共享内存机制，利用Binder来传输这个文件描述符，进而实现文件的共享；这是第二个不同，因为其他的三个组建通信都是基于Binder的，只有ContentProvider使用了Ashmem。</li>
+<li>一个App启动过程中，ContentProvider组件的启动是非常早的，甚至比Application的onCreate还要早；我们可以利用这个特性结合它不死的特点，完成一些有意义的事情。</li>
+<li>ContentProvider存在优先查询本进程的特点，使得它的插件化甚至不需要Hook AMS就能完成。</li>
+</ol>
+<h2 id="思路分析">思路分析</h2><p>在分析ContentProvider的工作原理的过程中我们提出了一种插件化方案：在进程启动之初，手动把ContentProvider安装到本进程，使得后续对于插件ContentProvider的请求能够顺利完成。我们也指出它的一个严重缺陷，那就是它只能在插件系统内部掩耳盗铃，在插件系统之外，第三方App依然无法感知到插件中的ContentProvider的存在。</p>
+<p>如果插件的ContentProvider组件仅仅是为了共享给其他插件或者宿主程序使用，那么这种方案可以解决问题；不需要Hook AMS，非常简单。</p>
+<p>但是，如果希望把插件ContenProvider共享给整个系统呢？在分析AMS中获取ContentProvider的过程中我们了解到，ContentProvider信息的注册是在Android系统启动或者新安装App的时候完成的，而AMS把ContentProvider返回给第三方App也是在system_server进程完成；我们无法对其暗箱操作。</p>
+<p>在完成Activity，Service组件的插件化之后，这种限制对我们来说已经是小case了：我们在宿主程序里面注册一个货真价实、被系统认可的StubContentProvider组件，把这个组件共享给第三方App；然后通过<strong>代理分发技术</strong>把第三方App对于插件ContentProvider的请求通过这个StubContentProvider分发给对应的插件。</p>
+<p>但是这还存在一个问题，�由于第三方App查阅的其实是StubContentProvider，因此他们查阅的URI也必然是StubContentProvider的authority，要查询到插件的ContentProvider，必须把要查询的真正的插件ContentProvider信息传递进来。这个问题的解决方案也很容易，我们可以制定一个「插件查询协议」来实现。</p>
+<p>举个例子，假设插件系统的宿主程序在AndroidManifest.xml中注册了一个StubContentProvider，它的Authority为<code>com.test.host_authority</code>；由于这个组件被注册在AndroidManifest.xml中，是系统认可的ContentProvider组件，整个系统都是可以使用这个共享组件的，使用它的URI一般为<code>content://com.test.host_authority</code>；那么，如果插件系统中存在一个插件，这个插件提供了一个PluginContentProvider，它的Authority为<code>com.test.plugin_authorith</code>，因为这个插件的PluginContentProvider没有在宿主程序的AndroidMainifest.xml中注册（预先注册就失去插件的意义了），整个系统是无法感知到它的存在的；前面提到代理分发技术，也就是，我们让第三方App请求宿主程序的StubContentProvider，这个StubContentProvider把请求转发给合适的插件的ContentProvider就能完成了(插件内部通过预先installProvider可以查询所有的ContentProvider组件)；这个协议可以有很多，比如说：如果第三方App需要请求插件的StubContentProvider，可以以<code>content://com.test.host_authority/com.test.plugin_authorith</code>去查询系统；也就是说，我们假装请求StubContentProvider，把真正的需要请求的PluginContentPRovider的Authority放在路径参数里面，StubContentProvider收到这个请求之后，拿到这个真正的Authority去请求插件的PluginContentPRovider，拿到结果之后再返回给第三方App。</p>
+<p>这样，我们通过「代理分发技术」以及「插件查询协议」可以完美解决「共享」的问题，开篇提到了我们之前对于Activity，Service组件插件化方案中对于「共享」功能的缺失，按照这个思路，基本可以解决这一系列问题。比如，对于第三方App无法绑定插件服务的问题，我们可以注册一个StubService，把真正需要bind的插件服务信息放在intent的某个字段中，然后在StubService的onBind中解析出这个插件服务信息，然后去拿到插件Service组件的Binder对象返回给第三方。</p>
+<h2 id="实现">实现</h2><p>上文详细分析了如何实现ContentPRovider的插件化，接下来我们就实现这个过程。</p>
+<h3 id="预先installProvider">预先installProvider</h3><p>要实现预先installProvider，我们首先需要知道，所谓的「预先」到底是在什么时候？</p>
+<p>前文我们提到过App进程安装ContentProvider的时机非常之早，在Application类的onCreate回调执行之前已经完成了；这意味着什么？</p>
+<p>现在我们对于ContentProvider插件化的实现方式是通过「代理分发技术」，也就是说在请求插件ContentProvider的时候会先请求宿主程序的StubContentProvider；如果一个第三方App查询插件的ContentProvider，而宿主程序没有启动的话，AMS会启动宿主程序并等待宿主程序的StubContentProvider完成安装，<strong>一旦安装完成就会把得到的IContentProvider返回给这个第三方App</strong>；第三方App拿到IContentPRovider这个Binder对象之后就可能发起CURD操作，如果这个时候插件ContentProvider还没有启动，那么肯定就会出异常；要记住，“这个时候”可能宿主程序的onCreate还没有执行完毕呢！！</p>
+<p>所以，我们基本可以得出结论，预先安装这个所谓的「预先」必须早于Application的onCreate方法，在Android SDK给我们的回调里面，attachBaseContent这个方法是可以满足要求的，它在Application这个对象被创建之后就会立即调用。</p>
+<p>解决了实际问题，那么我们接下来就可以安装ContentProvider了。</p>
+<p>安装ContentProvider也就是要调用ActivityThread类的<code>installProvider</code>方法，这个方法需要的参数有点多，而且它的第二个参数IActivityManager.ContentProviderHolder是一个隐藏类，我们不知道如何构造，就算通过反射构造由于SDK没有暴露稳定性不易保证，我们看看有什么方法调用了这个installProvider。</p>
+<p>installContentProviders这个方法直接调用installProvder看起来可以使用，但是它是一个private的方法，还有public的方法吗？继续往上寻找调用链，发现了installSystemProviders这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">installSystemProviders</span><span class="params">(List&lt;ProviderInfo&gt; providers)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (providers != <span class="keyword">null</span>) &#123;</span><br><span class="line">        installContentProviders(mInitialApplication, providers);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，我们说过ContentProvider的安装必须相当早，必须在Application类的attachBaseContent方法内，而这个<code>mInitialApplication</code>字段是在<code>onCreate</code>方法调用之后初始化的，所以，如果直接使用这个<code>installSystemProviders</code>势必抛出空指针异常；因此，我们只有退而求其次，选择<strong>通过installContentProviders这个方法完成ContentPRovider的安装</strong></p>
+<p>要调用这个方法必须拿到ContentProvider对应的ProviderInfo，这个我们在之前也介绍过，可以通过PackageParser类完成，当然这个类有一些兼容性问题，我们需要手动处理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 解析Apk文件中的 &lt;provider&gt;, 并存储起来</span><br><span class="line"> * 主要是调用PackageParser类的generateProviderInfo方法</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> apkFile 插件对应的apk文件</span><br><span class="line"> * <span class="doctag">@throws</span> Exception 解析出错或者反射调用出错, 均会抛出异常</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;ProviderInfo&gt; <span class="title">parseProviders</span><span class="params">(File apkFile)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Class&lt;?&gt; packageParserClass = Class.forName(<span class="string">"android.content.pm.PackageParser"</span>);</span><br><span class="line">    Method parsePackageMethod = packageParserClass.getDeclaredMethod(<span class="string">"parsePackage"</span>, File.class, <span class="keyword">int</span>.class);</span><br><span class="line"></span><br><span class="line">    Object packageParser = packageParserClass.newInstance();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 首先调用parsePackage获取到apk对象对应的Package对象</span></span><br><span class="line">    Object packageObj = parsePackageMethod.invoke(packageParser, apkFile, PackageManager.GET_PROVIDERS);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取Package对象里面的services字段</span></span><br><span class="line">    <span class="comment">// 接下来要做的就是根据这个List&lt;Provider&gt; 获取到Provider对应的ProviderInfo</span></span><br><span class="line">    Field providersField = packageObj.getClass().getDeclaredField(<span class="string">"providers"</span>);</span><br><span class="line">    List providers = (List) providersField.get(packageObj);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用generateProviderInfo 方法, 把PackageParser.Provider转换成ProviderInfo</span></span><br><span class="line">    Class&lt;?&gt; packageParser$ProviderClass = Class.forName(<span class="string">"android.content.pm.PackageParser$Provider"</span>);</span><br><span class="line">    Class&lt;?&gt; packageUserStateClass = Class.forName(<span class="string">"android.content.pm.PackageUserState"</span>);</span><br><span class="line">    Class&lt;?&gt; userHandler = Class.forName(<span class="string">"android.os.UserHandle"</span>);</span><br><span class="line">    Method getCallingUserIdMethod = userHandler.getDeclaredMethod(<span class="string">"getCallingUserId"</span>);</span><br><span class="line">    <span class="keyword">int</span> userId = (Integer) getCallingUserIdMethod.invoke(<span class="keyword">null</span>);</span><br><span class="line">    Object defaultUserState = packageUserStateClass.newInstance();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 需要调用 android.content.pm.PackageParser#generateProviderInfo</span></span><br><span class="line">    Method generateProviderInfo = packageParserClass.getDeclaredMethod(<span class="string">"generateProviderInfo"</span>,</span><br><span class="line">            packageParser$ProviderClass, <span class="keyword">int</span>.class, packageUserStateClass, <span class="keyword">int</span>.class);</span><br><span class="line"></span><br><span class="line">    List&lt;ProviderInfo&gt; ret = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">// 解析出intent对应的Provider组件</span></span><br><span class="line">    <span class="keyword">for</span> (Object service : providers) &#123;</span><br><span class="line">        ProviderInfo info = (ProviderInfo) generateProviderInfo.invoke(packageParser, service, <span class="number">0</span>, defaultUserState, userId);</span><br><span class="line">        ret.add(info);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解析出ProviderInfo之后，就可以直接调用installContentProvider了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 在进程内部安装provider, 也就是调用 ActivityThread.installContentProviders方法</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> context you know</span><br><span class="line"> * <span class="doctag">@param</span> apkFile</span><br><span class="line"> * <span class="doctag">@throws</span> Exception</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">installProviders</span><span class="params">(Context context, File apkFile)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    List&lt;ProviderInfo&gt; providerInfos = parseProviders(apkFile);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (ProviderInfo providerInfo : providerInfos) &#123;</span><br><span class="line">        providerInfo.applicationInfo.packageName = context.getPackageName();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Log.d(<span class="string">"test"</span>, providerInfos.toString());</span><br><span class="line">    Class&lt;?&gt; activityThreadClass = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">    Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod(<span class="string">"currentActivityThread"</span>);</span><br><span class="line">    Object currentActivityThread = currentActivityThreadMethod.invoke(<span class="keyword">null</span>);</span><br><span class="line">    Method installProvidersMethod = activityThreadClass.getDeclaredMethod(<span class="string">"installContentProviders"</span>, Context.class, List.class);</span><br><span class="line">    installProvidersMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    installProvidersMethod.invoke(currentActivityThread, context, providerInfos);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整个安装过程<strong>必须在Application类的attachBaseContent里面完成</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 一定需要Application，并且在attachBaseContext里面Hook</span><br><span class="line"> * 因为provider的初始化非常早，比Application的onCreate还要早</span><br><span class="line"> * 在别的地方hook都晚了。</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@author</span> weishu</span><br><span class="line"> * <span class="doctag">@date</span> 16/3/29</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UPFApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.attachBaseContext(base);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            File apkFile = getFileStreamPath(<span class="string">"testcontentprovider-debug.apk"</span>);</span><br><span class="line">            <span class="keyword">if</span> (!apkFile.exists()) &#123;</span><br><span class="line">                Utils.extractAssets(base, <span class="string">"testcontentprovider-debug.apk"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            File odexFile = getFileStreamPath(<span class="string">"test.odex"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Hook ClassLoader, 让插件中的类能够被成功加载</span></span><br><span class="line">            BaseDexClassLoaderHookHelper.patchClassLoader(getClassLoader(), apkFile, odexFile);</span><br><span class="line">            ProviderHelper.installProviders(base, getFileStreamPath(<span class="string">"testcontentprovider-debug.apk"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"hook failed"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代理分发以及协议解析">代理分发以及协议解析</h3><p>把插件中的ContentProvider安装到插件系统中之后，在插件内部就可以自由使用这些ContentProvider了；要把这些插件共享给整个系统，我们还需要一个货真价实的ContentProvider组件来执行分发：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">provider</span></span><br><span class="line">    <span class="attribute">android:name</span>=<span class="value">"com.example.weishu.contentprovider_management.StubContentProvider"</span></span><br><span class="line">    <span class="attribute">android:authorities</span>=<span class="value">"com.example.weishu.contentprovider_management.StubContentProvider"</span></span><br><span class="line">    <span class="attribute">android:process</span>=<span class="value">":p"</span></span><br><span class="line">    <span class="attribute">android:exported</span>=<span class="value">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>第三方App如果要查询到插件的ContentPRovider，必须遵循一个「插件查询协议」，这样StubContentPRovider才能把对于插件的请求分发到正确的插件组件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 为了使得插件的ContentProvder提供给外部使用，我们需要一个StubProvider做中转；</span><br><span class="line"> * 如果外部程序需要使用插件系统中插件的ContentProvider，不能直接查询原来的那个uri</span><br><span class="line"> * 我们对uri做一些手脚，使得插件系统能识别这个uri；</span><br><span class="line"> *</span><br><span class="line"> * 这里的处理方式如下：</span><br><span class="line"> *</span><br><span class="line"> * 原始查询插件的URI应该为：</span><br><span class="line"> * content://plugin_auth/path/query</span><br><span class="line"> *</span><br><span class="line"> * 如果需要查询插件，需要修改为：</span><br><span class="line"> *</span><br><span class="line"> * content://stub_auth/plugin_auth/path/query</span><br><span class="line"> *</span><br><span class="line"> * 也就是，我们把插件ContentProvider的信息放在URI的path中保存起来；</span><br><span class="line"> * 然后在StubProvider中做分发。</span><br><span class="line"> *</span><br><span class="line"> * 当然，也可以使用QueryParamerter,比如：</span><br><span class="line"> * content://plugin_auth/path/query/ -&gt;  content://stub_auth/path/query?plugin=plugin_auth</span><br><span class="line"> * <span class="doctag">@param</span> raw 外部查询我们使用的URI</span><br><span class="line"> * <span class="doctag">@return</span> 插件真正的URI</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Uri <span class="title">getRealUri</span><span class="params">(Uri raw)</span> </span>&#123;</span><br><span class="line">    String rawAuth = raw.getAuthority();</span><br><span class="line">    <span class="keyword">if</span> (!AUTHORITY.equals(rawAuth)) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">"rawAuth:"</span> + rawAuth);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String uriString = raw.toString();</span><br><span class="line">    uriString = uriString.replaceAll(rawAuth + <span class="string">'/'</span>, <span class="string">""</span>);</span><br><span class="line">    Uri newUri = Uri.parse(uriString);</span><br><span class="line">    Log.i(TAG, <span class="string">"realUri:"</span> + newUri);</span><br><span class="line">    <span class="keyword">return</span> newUri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过以上过程我们就实现了ContentProvider的插件化。需要说明的是，DroidPlugind的插件化与上述介绍的方案有一些不同之处：</p>
+<ol>
+<li>首先DroidPlugin并没有选择预先安装的方案，而是选择Hook ActivityManagerNative，拦截它的getContentProvider以及publishContentProvider方法实现对于插件组件的控制；从这里可以看出它对ContentProvider与Service的插件化几乎是相同的，Hook才是DroidPlugin Stype ^_^.</li>
+<li>然后，关于携带插件信息，或者说「插件查询协议」方面；DroidPlugin把插件信息放在查询参数里面，本文呢则是路径参数；这一点完全看个人喜好。</li>
+</ol>
+<h2 id="小结">小结</h2><p>本文我们通过「代理分发技术」以及「插件查询协议」完成了ContentProvider组件的插件化，并且给出了对「插件共享组件」的问题的一般解决方案。值得一提的是，系统的ContentProvider其实是lazy load的，也就是说只有在需要使用的时候才会启动对应的ContentProvider，而我们对于插件的实现则是<strong>预先加载</strong>，这里还有改进的空间，读者可以思考一下解决方案。</p>
+<p>由于ContentProvider的使用频度非常低，而很多它使用的场景（比如系统）并不太需要「插件化」，因此在实际的插件方案中，提供ContentProvider插件化的方案非常之少；就算需要实现ContentProvider的插件化，也只是解决插件内部之间共享组件的问题，并没有把插件组件暴露给整个系统。我个人觉得，如果只是希望插件化，那么是否支持ContentProvider无伤大雅，但是，如果希望实现虚拟化或者说容器技术，所有组件是必须支持插件化的。</p>
+<p>至此，对于Android系统的四大组件的插件化已经全部介绍完毕；由于是最后一个要介绍的组件，我并没有像之前一样先给出组件的运行原理，然后一通分析最后给出插件方案，而是一边分析代码一边给出自己的思路，把思考——推翻——改进的整个过程完全展现了出来，Android的插件化已经到达了百花齐放的阶段，插件化之路也不只有一条，但是万变不离其宗，希望我的分析和思考对各位读者理解甚至创造插件化方案带来帮助。接下来我会介绍「插件通信机制」，它与本文的ContentProvider以及我反复强调过的一些特性密切相关，敬请期待！</p>
+<p>喜欢就点个赞吧，兜里有一块钱的童鞋可以点击下面的打赏然后扫一下二维码哦～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a> 和我的 <a href="http://weishu.me">博客</a>! 另外很抱歉一个多月没有更新博客了，每天看到各位的来访记录深感惭愧，实在是业务繁忙，身不由已！不出意外接下来会以正常速度更新内容，谢谢支持 ^_^.</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ContentProvider/" rel="tag">#ContentProvider</a>
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/droidplugin/" rel="tag">#droidplugin</a>
+          
+            <a href="/tags/plugin-framework/" rel="tag">#plugin framework</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/30/how-to-debug-android-framework/" rel="next">如何调试Android Framework？</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/07/12/understand-plugin-framework-content-provider/"
+                   data-title="Android插件化原理解析——ContentProvider的插件化" data-url="http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ContentProvider工作原理"><span class="nav-number">1.</span> <span class="nav-text">ContentProvider工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#铺垫工作"><span class="nav-number">1.1.</span> <span class="nav-text">铺垫工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ContentProvider获取过程"><span class="nav-number">1.2.</span> <span class="nav-text">ContentProvider获取过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程内部ContentProvider安装过程"><span class="nav-number">1.3.</span> <span class="nav-text">进程内部ContentProvider安装过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路尝试——本地安装"><span class="nav-number">1.4.</span> <span class="nav-text">思路尝试——本地安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMS中的ContentProvider"><span class="nav-number">1.5.</span> <span class="nav-text">AMS中的ContentProvider</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查询ContentProvider组件的过程"><span class="nav-number">1.5.1.</span> <span class="nav-text">查询ContentProvider组件的过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装ContentProvider组件的过程"><span class="nav-number">1.5.2.</span> <span class="nav-text">安装ContentProvider组件的过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同之处"><span class="nav-number">2.</span> <span class="nav-text">不同之处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路分析"><span class="nav-number">3.</span> <span class="nav-text">思路分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预先installProvider"><span class="nav-number">4.1.</span> <span class="nav-text">预先installProvider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理分发以及协议解析"><span class="nav-number">4.2.</span> <span class="nav-text">代理分发以及协议解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"duoshuo-zygote"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementById('footer')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

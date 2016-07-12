@@ -4,6 +4,29 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
+    <lastmod>2016-07-12T11:22:22.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——ContentProvider的插件化</title>
+        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
+        
+        <tag>ContentProvider</tag>
+         
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
     <lastmod>2016-06-15T02:19:58.000Z</lastmod>
     <data>
