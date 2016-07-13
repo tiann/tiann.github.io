@@ -4,13 +4,15 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
-    <lastmod>2016-07-12T11:30:32.000Z</lastmod>
+    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
+    <lastmod>2016-07-13T01:46:14.000Z</lastmod>
     <data>
         <display>
-        <title>Android插件化原理解析——概要</title>
-        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
+        <title>Android插件化原理解析——ContentProvider的插件化</title>
+        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
         
+        <tag>ContentProvider</tag>
+         
         <tag>android</tag>
          
         <tag>droidplugin</tag>
@@ -25,15 +27,13 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
-    <lastmod>2016-07-12T11:29:38.000Z</lastmod>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-overview/</loc>
+    <lastmod>2016-07-12T11:30:32.000Z</lastmod>
     <data>
         <display>
-        <title>Android插件化原理解析——ContentProvider的插件化</title>
-        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
+        <title>Android插件化原理解析——概要</title>
+        <pubTime>2016-01-28T03:07:36.000Z</pubTime>
         
-        <tag>ContentProvider</tag>
-         
         <tag>android</tag>
          
         <tag>droidplugin</tag>

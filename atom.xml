@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-07-12T11:29:38.000Z</updated>
+  <updated>2016-07-13T01:46:14.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/"/>
     <id>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</id>
     <published>2016-07-12T11:18:07.000Z</published>
-    <updated>2016-07-12T11:29:38.000Z</updated>
+    <updated>2016-07-13T01:46:14.000Z</updated>
     <content type="html"><![CDATA[<p>目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？</p>
 <p>与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要少得多；但是，ContentProvider这个组件对于Android系统有着特别重要的作用——作为一种极其方便的<strong>数据共享</strong>的手段，ContentProvider使得广大第三方App能够在壁垒森严的系统中自由呼吸。</p>
 <p>在Android系统中，每一个应用程序都有自己的用户ID，而每一个应用程序所创建的文件的读写权限都是只赋予给自己所属的用户，这就限制了应用程序之间相互读写数据的操作。应用程序之间如果希望能够进行交互，只能采取跨进程通信的方式；Binder机制能够满足一般的IPC需求，但是如果应用程序之间需要共享大量数据，单纯使用Binder是很难办到的——我相信大家对于Binder 1M缓冲区以及TransactionTooLargeException一定不陌生；ContentProvider使用了匿名共享内存(Ashmem)机制完成数据共享，因此它可以很方便地完成大量数据的传输。Android系统的短信，联系人，相册，媒体库等等一系列的基础功能都依赖与ContentProvider，它的重要性可见一斑。</p>
@@ -30,7 +30,7 @@
 <li>插件中的静态注册的广播并不真正是静态的，而是使用动态注册广播模拟实现的；这就导致如果宿主程序进程死亡，这个静态广播不会起作用；这个问题的根本原因在由于BroadcastReceiver的IntentFilter的不可预知性，使得我们没有办法把静态广播真正“共享”给系统。</li>
 <li>我们没有办法在第三方App中启动或者绑定插件中的Service组件；因为插件的Service并不是真正的Service组件，系统能感知到的只是那个代理Service；因此如果插件如果带有远程Service组件，它根本不能给第三方App提供远程服务。</li>
 </ol>
-<p>虽然在插件系统中一派生机勃勃的景象，Activity，Service等插件组件百花齐放，插件与宿主、插件与插件在一起愉快滴玩耍；但是一旦脱离了插件系统的温室，这一片和谐景象不复存在：插件组件不过是傀儡而已，活着的，只有宿主——整个插件系统就是一座鬼城，各个插件组件借尸还魂般地依附在宿主身上，了无生机。</p>
+<p>虽然在插件系统中一派生机勃勃的景象，Activity，Service等插件组件百花齐放，插件与宿主、插件与插件争奇斗艳；但是一旦脱离了插件系统的温室，这一片和谐景象不复存在：插件组件不过是傀儡而已；活着的，只有宿主——整个插件系统就是一座死寂的鬼城，各个插件组件借尸还魂般地依附在宿主身上，了无生机。</p>
 <p>既然希望把插件的ContentProvider共享给整个系统，让第三方的App都能获取到我们插件共享的数据，我们必须解决这个问题；下文将会围绕这个目标展开，完成ContentProvider的插件化，并且顺带给出上述问题的解决方案。阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的 contentprovider-management 模块。另外，插件框架原理解析系列文章见 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
 <h2 id="ContentProvider工作原理">ContentProvider工作原理</h2><p>首先我们还是得分析一下ContentProvider的工作原理，很多插件化的思路，以及一些Hook点的发现都严重依赖于对于系统工作原理的理解；对于ContentProvider的插件化，这一点特别重要。</p>
 <h3 id="铺垫工作">铺垫工作</h3><p>如同我们通过<code>startActivity</code>来启动Activity一样，与ContentProvider打交道的过程也是从Context类的一个方法开始的，这个方法叫做<code>getContentResolver</code>，使用ContentProvider的典型代码如下：</p>
