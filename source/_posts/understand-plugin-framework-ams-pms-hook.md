@@ -48,7 +48,7 @@ public void startActivity(Intent intent) {
 WTF!! 果然人如其名，只是一个wrapper而已；这个`mBase`是什么呢？这里我先直接告诉你，它的真正实现是`ContextImpl`类；至于为什么，有一条思路：*mBase是在ContextWrapper构造的时候传递进来的，那么在ContextWrapper构造的时候可以找到答案*
 什么时候会构造ContextWrapper呢？它的子类`Application`，`Service`等被创建的时候。
 
-因此可以在App的主线程`AcitivityThread`的`performLaunchActivit`方法里面找到答案；更详细的解析可以参考老罗的[ Android应用程序启动过程源代码分析][3]
+可以在App的主线程`AcitivityThread`的`performLaunchActivit`方法里面找到答案；更详细的解析可以参考老罗的[ Android应用程序启动过程源代码分析][3]
 
 好了，我们姑且当作已经知道Context.startActivity最终使用了ContextImpl里面的方法，代码如下：
 
@@ -68,7 +68,7 @@ public void startActivity(Intent intent, Bundle options) {
 ```
 代码相当简单；我们知道了两件事：
 
-1. 其一，我们知道了为什么在Service等非Activity的Context里面启动Activity为什么需要添加`FLAG_ACTIVITY_NEW_TASK`；
+1. 其一，我们知道了在Service等非Activity的Context里面启动Activity为什么需要添加`FLAG_ACTIVITY_NEW_TASK`；
 2. 其二，真正的`startActivity`使用了`Instrumentation`类的`execStartActivity`方法；继续跟踪：
 
 ```java

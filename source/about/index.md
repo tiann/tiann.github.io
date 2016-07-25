@@ -37,12 +37,6 @@ date: 2016-01-05 13:53:09
 
 > You Deserve A Better Life.
 
-# TODO
-
-- 26岁
-- 创业
-- 财务自由
-
 # 联系我
 
 知乎：[weishu](https://www.zhihu.com/people/tian-weishu)

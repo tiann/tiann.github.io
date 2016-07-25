@@ -37,15 +37,13 @@ H5和Hybird可以解决这些问题，但是始终比不上native的用户体验
 - [Hook机制之动态代理][1]
 - [Hook机制之Binder Hook][2]
 - [Hook机制之AMS&PMS][3]
-- Activity生命周期管理，占坑和Hook
-- 插件的广播机制，静态广播非静态
-- Service组件的管理，占坑和Hook
-- ContentProvider的管理
-- 插件加载解析之自定义包管理服务(PackageManager)
-- 插件进程管理机制（ActivityManager）
-- 插件机制之资源管理
+- [Activity生命周期管理][4]
+- [插件加载机制][5]
+- [广播的管理方式][6]
+- [Service的插件化][7]
+- [ContentProvider的插件化][8]
 - DroidPlugin插件通信机制
-- DroidPlugin框架缺陷
+- 插件机制之资源管理
 - 不同插件框架方案对比
 - 插件化的未来
 
@@ -54,3 +52,8 @@ H5和Hybird可以解决这些问题，但是始终比不上native的用户体验
 [1]: http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/
 [2]: http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/
 [3]: http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/
+[4]: http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/
+[5]: http://weishu.me/2016/04/05/understand-plugin-framework-classloader/
+[6]: http://weishu.me/2016/04/12/understand-plugin-framework-receiver/
+[7]: http://weishu.me/2016/05/11/understand-plugin-framework-service/
+[8]: http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/

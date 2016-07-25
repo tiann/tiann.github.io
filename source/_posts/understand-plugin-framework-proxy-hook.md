@@ -74,16 +74,17 @@ public class ProxyShopping implements Shopping {
 
 ## 动态代理
 
-传统的静态代理模式需要为每一个需要代理的类写一个代理类，如果需要代理的类有几百个那不是要累死？为了更优雅地实现代理模式，JDK提供了动态代理方式，可以简单理解为在JVM可以在运行时帮我们动态生成一系列的代理类，这样我们就不需要手写每一个静态的代理类了。依然以购物为例，用动态代理实现如下：
+传统的静态代理模式需要为每一个需要代理的类写一个代理类，如果需要代理的类有几百个那不是要累死？为了更优雅地实现代理模式，JDK提供了动态代理方式，可以简单理解为JVM可以在运行时帮我们动态生成一系列的代理类，这样我们就不需要手写每一个静态的代理类了。依然以购物为例，用动态代理实现如下：
 
 ```java
 public static void main(String[] args) {
-    Shopping women = new ShoppingImpl
+    Shopping women = new ShoppingImpl();
     // 正常购物
-    System.out.println(Arrays.toString(women.doShopping(100)
+    System.out.println(Arrays.toString(women.doShopping(100)));
     // 招代理
-    women = (Shopping) Proxy.newProxyInstance(Shopping.class.getClassLoader(), 
-            women.getClass().getInterfaces(), new ShoppingHandler(women
+    women = (Shopping) Proxy.newProxyInstance(Shopping.class.getClassLoader(),
+            women.getClass().getInterfaces(), new ShoppingHandler(women));
+
     System.out.println(Arrays.toString(women.doShopping(100)));
 }
 ```
@@ -171,24 +172,24 @@ public class EvilInstrumentation extends Instrumentation {
 Ok，有了代理对象，我们要做的就是偷梁换柱！代码比较简单，采用反射直接修改：
 
 ```java
-public static void attactContext() throws Exception{
-        // 先获取到当前的ActivityThread对象
-        Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
-        Field currentActivityThreadField = activityThreadClass.getDeclaredField("sCurrentActivityThread");
-        currentActivityThreadField.setAccessible(true);
-        Object currentActivityThread = currentActivityThreadField.get(null);
+public static void attachContext() throws Exception{
+    // 先获取到当前的ActivityThread对象
+    Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
+    Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod("currentActivityThread");
+    currentActivityThreadMethod.setAccessible(true);
+    Object currentActivityThread = currentActivityThreadMethod.invoke(null);
 
-        // 拿到原始的 mInstrumentation字段
-        Field mInstrumentationField = activityThreadClass.getField("mInstrumentation");
-        mInstrumentationField.setAccessible(true);
-        Instrumentation mInstrumentation = (Instrumentation) mInstrumentationField.get(currentActivityThread);
-        
-        // 创建代理对象
-        Instrumentation evilInstrumentation = new EvilInstrumentation(mInstrumentation);
-        
-        // 偷梁换柱
-        mInstrumentationField.set(currentActivityThread, evilInstrumentation);
-    }
+    // 拿到原始的 mInstrumentation字段
+    Field mInstrumentationField = activityThreadClass.getDeclaredField("mInstrumentation");
+    mInstrumentationField.setAccessible(true);
+    Instrumentation mInstrumentation = (Instrumentation) mInstrumentationField.get(currentActivityThread);
+
+    // 创建代理对象
+    Instrumentation evilInstrumentation = new EvilInstrumentation(mInstrumentation);
+
+    // 偷梁换柱
+    mInstrumentationField.set(currentActivityThread, evilInstrumentation);
+}
 ```
 
 好了，我们启动一个Activity测试一下，结果如下：

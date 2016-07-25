@@ -57,7 +57,7 @@ List<String> testStrings = new ArrayList<String>();
 好了学会了上面那几个快捷键，万一玩high了，比如提取了太多的方法，想“弄回去”，该怎么办呢？这个操作叫他`Inline..`：
 
 - Mac: `Cmd + Alt + N`
-- Win/Linux: `Ctrl + Alt + M`
+- Win/Linux: `Ctrl + Alt + N`
 
 上面那个图只是参考，其实不仅可以作用于变量，还可以是方法/参数，个人觉得方法inline比较有用。
 
