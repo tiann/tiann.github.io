@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-10-12T16:45:21.000Z</updated>
+  <updated>2016-10-12T16:59:48.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2016/10/13/sharedpreference-advices/"/>
     <id>http://weishu.me/2016/10/13/sharedpreference-advices/</id>
     <published>2016-10-12T16:31:19.000Z</published>
-    <updated>2016-10-12T16:45:21.000Z</updated>
+    <updated>2016-10-12T16:59:48.000Z</updated>
     <content type="html"><![CDATA[<p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
 <h2 id="存储超大的value">存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
 <p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1476286071563.png" width="664"></p>
@@ -67,8 +67,8 @@
 </tr>
 <tr>
 <td>Nexus5X</td>
-<td>6.5</td>
 <td>3.5</td>
+<td>6.5</td>
 </tr>
 </tbody>
 </table>
