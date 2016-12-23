@@ -178,6 +178,87 @@
           
           
             
+              <a class="post-title-link" href="/2016/12/23/dive-into-android-optimize-vm-heap/" itemprop="url">
+                Android性能优化之虚拟机调优
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-12-23T22:53:09+08:00" content="2016-12-23">
+            2016-12-23
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/12/23/dive-into-android-optimize-vm-heap/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/23/dive-into-android-optimize-vm-heap/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>介绍完 <a href="https://zhuanlan.zhihu.com/p/24414378">深入学习Android：虚拟机&amp;运行时</a> 之后，很多小伙伴问我，你描述的这些知识结构看起来艰深晦涩高大上，实际工作中能有多大用途呢？今天我就简单举个例子。</p>
+<p>众所周知，我们的Android App运行在Java虚拟机之上，而Java是一门带GC的语言。在虚拟机进行垃圾回收的时候，要做一件很形象的事叫做STW（stop the world）；也就是说，为了回收那些不再使用的对象，虚拟机必须要停止所有的线程来进行必要的工作。虽说这一点在ART运行时上得到了很大的改善，但是GC的存在对App运行时的性能始终有着微妙的影响。如果你观察过手机输入的日志，一定会看到类似如下的内容：</p>
+<blockquote>
+<p>12-23 18:46:07.300 28643-28658/? I/art: Background sticky concurrent mark sweep GC freed 15442(1400KB) AllocSpace objects, 8(128KB) LOS objects, 4% free, 32MB/33MB, paused 10.356ms total 53.023ms at GCDaemon thread CareAboutPauseTimes 1<br>12-23 18:46:12.250 28643-28658/? I/art: Background partial concurrent mark sweep GC freed 28723(1856KB) AllocSpace objects, 6(92KB) LOS objects, 11% free, 31MB/35MB, paused 2.380ms <strong>total 108.502ms</strong> at GCDaemon thread CareAboutPauseTimes 1</p>
+</blockquote>
+<p>上面的日志反映一个事实：GC是有代价的。有很多有关性能优化的文章提到GC，会花长篇大论讲述垃圾回收的过程以及原理，但所做的策略无非就是「不要创建不必要的对象」，「避免内存泄漏」最终就提到MAT，LeakCanary等工具的使用上去了；我只能说这很苍白无力——写出这样的代码、学会使用工具应该是基本要求。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/12/23/dive-into-android-optimize-vm-heap/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/10/13/sharedpreference-advices/" itemprop="url">
                 请不要滥用SharedPreference
               </a>
@@ -892,104 +973,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/02/01/avoid-switching-keyboard-in-markdown/" itemprop="url">
-                提升markdown的中文输入效率
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-02-01T16:15:56+08:00" content="2016-02-01">
-            2016-02-01
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/02/01/avoid-switching-keyboard-in-markdown/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/avoid-switching-keyboard-in-markdown/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>Markdown这种格式的出现大大提升了写作的效率，但是它对于非英文的用户其实并不友好：每当我们需要使用<code>#[-</code>等标志符的时候，需要不断地切换输入法。</p>
-<p>首先，切换输入法(就算是按<code>shift</code>键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201602markdown_keymap_remapping.gif" alt="效果图"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/01/avoid-switching-keyboard-in-markdown/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
   </nav>
 
  </div>
@@ -1023,7 +1011,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1037,7 +1025,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">标签</span>
               
           </div>
