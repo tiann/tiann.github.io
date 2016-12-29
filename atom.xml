@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-12-23T14:57:22.000Z</updated>
+  <updated>2016-12-29T17:10:46.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -13,6 +13,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[史上最简单Android源码编译环境搭建方法]]></title>
+    <link href="http://weishu.me/2016/12/30/simple-way-to-compile-android-source/"/>
+    <id>http://weishu.me/2016/12/30/simple-way-to-compile-android-source/</id>
+    <published>2016-12-29T17:08:41.000Z</published>
+    <updated>2016-12-29T17:10:46.000Z</updated>
+    <content type="html"><![CDATA[<p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p>
+<p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p>
+<p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p>
+<p>然后就是编译环境问题。由于Android源码庞大，依赖复杂；一旦使用的编译工具链有细微的不同就可能引发编译失败。<a href="https://source.android.com/source/initializing.html" target="_blank" rel="external">官方文档</a> 推荐使用Ubuntu 14.04进行编译。如果我们用Windows或者Mac系统，传统方式是使用虚拟机；但是在今天，我们完全可以使用 <strong>Docker</strong> 替代！！借助Docker，我们可以不用担心编译环境问题；不论我们的开发机是什么系统，可以使用Docker创建Ubuntu Image，并且直接在这个Ubuntu系统环境中创建编译所需要的工具链（JDK，ubuntu系统的依赖库等等）；而且，Docker运行的Ubuntu的系统开销比虚拟机低得多，这样下载以及编译速度就有了质的提升。更重要的是，这个环境可以作为一个Image打包发布！这样，你在不同的开发机，还有你与你的同事之间有了同一套编译环境，这会省去很多不必要的麻烦。关于Docker的更多内容，见 <a href="http://www.docker.com/" target="_blank" rel="external">Docker官网</a></p>
+<a id="more"></a>
+<p>当然，这个伟大的创举并不是我完成的，而是 <a href="https://github.com/kylemanna/docker-aosp" target="_blank" rel="external">kylemanna/docker-aosp</a>！我针对Docker以及天朝的网络环境做了一部分修改，fork了一份 <a href="https://github.com/tiann/docker-aosp" target="_blank" rel="external">tiann/docker-aosp</a>。</p>
+<p>废话不多说，我们看看具体如何使用，以及怎么个简单法。</p>
+<h2 id="使用步骤">使用步骤</h2><h3 id="安装Docker">安装Docker</h3><p>Docker的下载地址见 <a href="https://www.docker.com/products/overview" target="_blank" rel="external">Docker下载</a> ；下载完毕安装即可。</p>
+<h3 id="准备工作">准备工作</h3><p>如果你不是Mac系统，可以直接略过这一步。</p>
+<p>Mac的文件系统默认不区分大小写，这不满足Android源码编译系统的要求（编译的时候直接Error）；因此需要单独创建一个大小写敏感的磁盘映像。步骤如下：</p>
+<ol>
+<li>打开Mac的系统软件：<strong>磁盘工具</strong></li>
+<li><p>CMD + N，创建新的磁盘映像，参数设置如下图：</p>
+<p> <img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1483019239159.png" width="430"></p>
+<p> 其中磁盘大小设置为 50~100G合适，<strong>格式一定要选择带区分大小写标志的。</strong></p>
+</li>
+</ol>
+<h3 id="开始下载编译">开始下载编译</h3><p>真正的下载编译过程相当简单，脚本会自动完成；步骤如下：</p>
+<ol>
+<li><p>设置Android源码下载存放的目录；如果是Mac系统，这一步必须设置为一个大小写敏感的目录；不然后面编译的时候会失败。如果不设置这一步，那么源码会下载到 <code>~/aosp-root</code> 目录；设置过程如下：</p>
+<p> <code>export AOSP_VOL=/Volume/Android/</code></p>
+</li>
+<li><p>下载wrapper脚本；如果需要下载其他系统版本，直接修改下载完毕后的build-nougat.sh文件的 android-4.4.4_r2.0.1改成你需要的分支即可，分支的信息见 <a href="https://source.android.com/source/build-numbers.html#source-code-tags-and-builds" target="_blank" rel="external">分支列表</a></p>
+<p> <code>curl -O https://raw.githubusercontent.com/kylemanna/docker-aosp/master/tests/build-nougat.sh</code></p>
+</li>
+<li><p>运行脚本，开始自动下载安装过程；Windows系统可以使用 <a href="https://msdn.microsoft.com/en-us/commandline/wsl/about" target="_blank" rel="external">Bash for Windows</a> 或者cygwin。</p>
+<p> <code>bash ./build-nougat.sh</code></p>
+</li>
+</ol>
+<p>这样，所有的工作就都做完了。只需静静等待即可；时间视下载速度而定，清华的镜像速度还可以，笔者使用不到2小时就完成了下载编译过程。</p>
+<p>三步完成，是不是灰常简单？赶紧下载编译安装属于你的Android系统吧 ^_^</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p>
+<p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p>
+<p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p>
+<p>然后就是编译环境问题。由于Android源码庞大，依赖复杂；一旦使用的编译工具链有细微的不同就可能引发编译失败。<a href="https://source.android.com/source/initializing.html">官方文档</a> 推荐使用Ubuntu 14.04进行编译。如果我们用Windows或者Mac系统，传统方式是使用虚拟机；但是在今天，我们完全可以使用 <strong>Docker</strong> 替代！！借助Docker，我们可以不用担心编译环境问题；不论我们的开发机是什么系统，可以使用Docker创建Ubuntu Image，并且直接在这个Ubuntu系统环境中创建编译所需要的工具链（JDK，ubuntu系统的依赖库等等）；而且，Docker运行的Ubuntu的系统开销比虚拟机低得多，这样下载以及编译速度就有了质的提升。更重要的是，这个环境可以作为一个Image打包发布！这样，你在不同的开发机，还有你与你的同事之间有了同一套编译环境，这会省去很多不必要的麻烦。关于Docker的更多内容，见 <a href="http://www.docker.com/">Docker官网</a></p>]]>
+    
+    </summary>
+    
+      <category term="android source" scheme="http://weishu.me/tags/android-source/"/>
+    
+      <category term="compile" scheme="http://weishu.me/tags/compile/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Android性能优化之虚拟机调优]]></title>
@@ -1797,77 +1849,6 @@
 <p>有没有这样的场景：你在Android Studio打开了一个图片文件（或者别的文件），想在资源浏览器里面查看这图片；在Eclipse里面我想大部分的人是<code>Alt + Enter</code>进入文件属性复制地址，然后在系统资源管理器里面打开；或者装一个EasyExplore插件。在Android Studio里面，这是内建支持的！而且还不止如此！比如你想看看某个文件在包的哪个目录，通常是不是点击Project View上面的那个小圆坐标；用这个快捷键鼠标就能搞定。<br>]]>
     
     </summary>
-    
-      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Android Studio你不知道的快捷键(二)]]></title>
-    <link href="http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/"/>
-    <id>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</id>
-    <published>2015-12-12T01:51:53.000Z</published>
-    <updated>2016-03-22T03:05:44.000Z</updated>
-    <content type="html"><![CDATA[<p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">上文</a>)</p>
-<h2 id="自动生成变量">自动生成变量</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-1.gif" alt="自动生成变量"></p>
-<p>作为一门静态类型语言，Java是有一定的类型推导能力的；那么你是否经常书写:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"testStr"</span>;</span><br><span class="line">List&lt;String&gt; testStrings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
-<p>其实大可不必写那些恼火的类型声明的，一看就知道<code>testStr, testStrings</code>就知道是什么类型，再这么干不就是废话么！好在IDEA给了我们这个能力。尝试一下这个快捷键吧，会给你惊喜。<br><a id="more"></a></p>
-<ul>
-<li>Mac: <code>Cmd + Alt + V</code></li>
-<li>Win/Linux: <code>Ctrl + Alt + V</code></li>
-</ul>
-<p>有的童鞋可能会问了：我使用<code>ArrayList, HashMap</code>的时候，习惯类型声明为<code>List,Map</code>等接口，这个自动生成的类型声明还是具体的实现啊，怎么办？这一点IDE已经帮你想到了，试试<code>shift + tab</code>,他会给你一个可以选择的类型列表～</p>
-<h2 id="自动提取参数">自动提取参数</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-2.gif" alt="自动提取参数"></p>
-<p>有时候你正在写一个方法的时候发现。哎哟，这个变量最好是当作参数传递进来啊；要做成这么一件事，你必须把这个方法内部所有使用这个局部变量的地方替换，把所有调用这个函数的地方添加参数，繁琐至极！好了有了这个你可以随便玩了：</p>
-<ul>
-<li>Mac: <code>Cmd + Alt + P</code></li>
-<li>Win/Linux: <code>Ctrl + Alt + P</code></li>
-</ul>
-<p>当然，如果你想保留原来的方法，只是搞一个参数不同的方法（重载）出来，可以在弹出的那个对话框里面打勾。</p>
-<h2 id="自动提取方法">自动提取方法</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-3.gif" alt="自动提取方法"></p>
-<p>写代码的时候是否会发现不知不觉的这个方法已经太长了，适合分解然后提取出一个个子方法；或者是重构的时候看到一个一两千的函数，你是不是头都大了？一般情况下，我们都是把要提取的代码copy出来，然后写一个方法（还要什么该死的方法签名）然后把这段代码复制进来；其实这个过程是机械的，完全可以由IDE完成：</p>
-<ul>
-<li>Mac: <code>Cmd + Alt + M</code></li>
-<li>Win/Linux: <code>Ctrl + Alt + M</code></li>
-</ul>
-<p>如果想改变方法的签名，在对话框里面选择你需要的就可以了～</p>
-<blockquote>
-<p>上面提到了三个快捷键其实是比较类似的，如何记忆呢？</p>
-<ol>
-<li>首先组合键都是<code>Cmd/Ctrl + Alt</code></li>
-<li>然后提取变量<strong>V</strong>ariable=<strong>V</strong>，参数<strong>P</strong>arameters=<strong>P</strong>，方法<strong>M</strong>ethod=<strong>M</strong></li>
-</ol>
-</blockquote>
-<h2 id="内联变量/参数/方法">内联变量/参数/方法</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-4.gif" alt="内联"></p>
-<p>好了学会了上面那几个快捷键，万一玩high了，比如提取了太多的方法，想“弄回去”，该怎么办呢？这个操作叫他<code>Inline..</code>：</p>
-<ul>
-<li>Mac: <code>Cmd + Alt + N</code></li>
-<li>Win/Linux: <code>Ctrl + Alt + N</code></li>
-</ul>
-<p>上面那个图只是参考，其实不仅可以作用于变量，还可以是方法/参数，个人觉得方法inline比较有用。</p>
-<h2 id="万能重构键">万能重构键</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-5.png" alt="万能重构键"></p>
-<p>静态类型语言重构起来相对容易的，但是通常修改一个地方会牵扯到很多别的地方，我们只有一处一处找到这些编译错误然后手动修复。其实有好多工作是可以自动完成的，比如删除某个方法；先确认有没有人调用（Alt ＋ F7），没有的话把方法体删了，有的话去看看调用的地方再决定怎么办。</p>
-<p>但是重构的操作实在是太多了！我们没有办法也没有必要一个个记住，知道这个快捷键即可，我叫他<em>万能重构键</em>:</p>
-<ul>
-<li>Mac : <code>Ctrl + T</code></li>
-<li>Win/Linux: <code>Ctrl + Alt + Shift + T</code></li>
-</ul>
-<p>在Win/Linux上可以考虑把这个快捷键改一下键，一下按四个键臣妾很难做到啊。。</p>
-<p>这个重构菜单每一个功能都可以自己去尝试一下，使用之后不好用你来打我。</p>
-<h2 id="重命名">重命名</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-6.gif" alt="重命名"></p>
-<p>好了介绍了那么多貌似很高端的玩意，来个大部分人都知道的吧。有时候你发现有个变量名字取得有问题，或者没文化的队友/自己单词拼错了咋办？需要把所有用到这个变量的地方重新命名，小case！</p>
-<p>快捷键：<code>shift + F6</code></p>
-<p>OK, 这一期的分享就到这里。如果没有看过上一篇的可以移步：<br><a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">Android Studio你不知道的快捷键(一)</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">上文</a>)</p>
-<h2 id="自动生成变量">自动生成变量</h2><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-12-1.gif" alt="自动生成变量" /></p>
-<p>作为一门静态类型语言，Java是有一定的类型推导能力的；那么你是否经常书写:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"testStr"</span>;</span><br><span class="line">List&lt;String&gt; testStrings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
-<p>其实大可不必写那些恼火的类型声明的，一看就知道<code>testStr, testStrings</code>就知道是什么类型，再这么干不就是废话么！好在IDEA给了我们这个能力。尝试一下这个快捷键吧，会给你惊喜。<br>]]>
-    
-    </summary>
-    
-      <category term="android" scheme="http://weishu.me/tags/android/"/>
     
       <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
