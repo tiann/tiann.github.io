@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2016-12-29T17:10:46.000Z</updated>
+  <updated>2017-01-14T09:34:36.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,11 +15,195 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[如何调试Android Native Framework]]></title>
+    <link href="http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/"/>
+    <id>http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/</id>
+    <published>2017-01-14T09:02:03.000Z</published>
+    <updated>2017-01-14T09:34:36.000Z</updated>
+    <content type="html"><![CDATA[<p>半年前写了一篇文章，介绍 <a href="http://weishu.me/2016/05/30/how-to-debug-android-framework/">如何调试Android Framework</a>，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。</p>
+<p>Android Studio 2.2版本带来了全新的对Android Native代码的开发以及调试支持，另外LLDB的Android调试插件也日渐成熟，我终于可以把这篇文章继续下去了！本文将带来Android Framework中native代码的调试方法。</p>
+<p>在正式介绍如何调试之前，必须先说明一些基本的概念。调试器在调试一个可执行文件的时候，必须知道一些调试信息才能进行调试，这个调试信息可多可少（也可以没有）。最直观的比如行号信息，如果调试器知道行号信息，那么在进行调试的时候就能知道当前执行到了源代码的哪一行，如果调试器还知道对应代码的源文件在哪，那么现代IDE的调试器一般就能顺着源码带你飞了，这就是所谓的源码调试。相反，如果没有行号和源码信息，那么只能进行更低级别的调试了，调试器只能告诉你一些寄存器的值；而当前运行的代码也只是PC寄存器所指向的二进制数据，这些数据要么是虚拟机指令，要么是汇编指令；这就是所谓的无源码调试。显然无源码调试相比源码级别的调试要麻烦的多；接下来将围绕这两个方面分别介绍。</p>
+<a id="more"></a>
+<h2 id="用Android_Studio进行源码调试">用Android Studio进行源码调试</h2><p>如上文所述，如果需要实现源码调试，必须知道足够的调试信息；在native调试中就是所谓的「调试符号」。但是release版本的动态链接库或者可执行文件一般并不会包含我们需要的调试信息，在Android系统中，<code>/system/lib/*</code> 目录下的那些系统so并没有足够的调试信息，因此如果要进行源码调试，必须自己编译Android源代码，才能获取调试信息，进而让调试器协助我们调试。</p>
+<p>Android源码编译是个麻烦事儿，我写过一篇文章介绍 <a href="https://zhuanlan.zhihu.com/p/24633328?refer=weishu" target="_blank" rel="external">如何使用Docker调试</a> ；但是，Android版本众多，如果真的需要调试各个版本，在本地进行编译几乎是不可能的——一个版本约占60G空间，如果每个版本都编译，你的Mac还有空间可用吗？因此比较推荐使用云服务进行源码编译；比如使用阿里云的ECS，20M的网速15分钟就能下载完源码；编译速度还勉强，4核8G两个半小时。扯远了 :) 如果你没有精力编译Android源码，我这个 <a href="https://github.com/tiann/android-native-debug" target="_blank" rel="external">Demo工程</a> 可以让你尝尝鲜，里面包含一些调试的必要文件，可以体会一下Native调试的感觉。</p>
+<p>如果我们已经拥有了调试符号，那么还需要保证你的符号文件和设备上真正运行的动态链接库或者可执行文件是对应的，不然就是鸡同鸭讲了。最简单的办法就是使用模拟器。我们编译完源码之后，一个主要的编译产物就是 <code>system.img</code>，这个 <code>system.img</code>会在启动之后挂载到设备的 /system 分区，而system分区包含了Android系统运行时的绝大部分可执行文件和动态链接库，而这些文件就是我们的编译输出，正好可以与编译得到的调试符号进行配合调试。模拟器有一个 <code>-system</code>选项用来指定模拟器使用的 system.img文件；于是这个问题也解决了。</p>
+<p>最后一个问题就是，既然是源码调试，当然需要源码了；我们可以在 <a href="https://android.googlesource.com/" target="_blank" rel="external">AOSP</a> 上下载需要的源码即可；需要注意的是，在check分支的时候，必须保证你的分支和编译源码时候的分支是一致的。</p>
+<p>需要说明的是，虽然我们使用Android Studio调试，但是其背后的支撑技术实际上是 <a href="http://lldb.llvm.org/" target="_blank" rel="external">LLDB</a>。LLDB是一个相当强大的调试器，如果你现在还不知道它为何物，那真的是孤陋寡闻了！建议先简单学习一下 <a href="http://lldb.llvm.org/index.html" target="_blank" rel="external">教程</a></p>
+<p>万事俱备，Let’s go!</p>
+<h3 id="建立Android_Studio工程">建立Android Studio工程</h3><p>实际上任何Android Studio工程都可以进行native源码调试，但是为了方便还是新建一个工程；这个工程是一个空工程，没有任何实际用途；为了体验方便，你可以使用我的这个 <a href="https://github.com/tiann/android-native-debug" target="_blank" rel="external">Demo</a> 工程，里面包含了调试符号以及模拟器需要使用的system.img。一定要注意Android Studio的版本必须是2.2以上（我的是2.2.3稳定版)。</p>
+<h3 id="下载需要调试模块的源码">下载需要调试模块的源码</h3><p>如果你本地编译了Android源码，那么就不需要这一步了；但是更多的时候我们只是想调试某一个模块，那么只需要下载这个模块的源码就够了。我这里演示的是调试 ART 运行时，因此直接下载ART模块的源码即可，我编译的Android源码版本是 <code>android-5.1.1_r9</code>，因此需要check这个分支的源码，地址在这里：<a href="https://android.googlesource.com/platform/art/+/android-5.1.1_r9" target="_blank" rel="external">ART-android-5.1.1_r9</a></p>
+<h3 id="运行模拟器">运行模拟器</h3><p>由于我们的调试符号需要与运行时的动态链接库对应，因此我们需要借助模拟器；首先创建一个编译出来的调试符号对应的API版本的模拟器，我这里提供的是5.1.1也就是API 22；然后使用编译出来的 system.img 启动模拟器（[Demo]工程的image目录有我编译出来的文件，可以直接使用。）：</p>
+<blockquote>
+<p>emulator -avd 22 -verbose -no-boot-anim -system /path/to/system.img</p>
+</blockquote>
+<p>这个过程灰常灰常长！！我启动这个模拟器花了半个多小时，也是醉。现在是2017年，已经是Android创建的第十个年头，ARM模拟器还是烂的一塌糊涂，无力吐槽。一个能让它快一点的诀窍是创建一个小一点的SD card；我设置的是10M。</p>
+<h3 id="开始调试">开始调试</h3><h4 id="选择native调试模式">选择native调试模式</h4><p>首先我们对调试的宿主工程设置一下，选择native调试功能。点击运行下面的按钮 <code>Edit Configuration</code>：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484287940736.png" width="232"></p>
+<p>然后在debugger栏选择Native：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288018710.png" width="400"></p>
+<p>然后我们点击旁边的 <code>Debug</code>小按钮运行调试程序：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288078862.png" width="183"></p>
+<h4 id="设置调试符号以及关联源码">设置调试符号以及关联源码</h4><p>在运行程序之后，我们可以在Android Studio的状态栏看到，LLDB调试插件自动帮我们完成了so查找路径的过程，这一点比gdb方便多了！在Android Studio的Debug窗口会自动弹出来，如下：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288380978.png" width="474"></p>
+<p>我们点击那个 <code>pause program</code> 按钮，可以让程序暂停运行：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288440156.png" width="615"></p>
+<p>上图左边是正在运行的线程的堆栈信息，右边有两个tab，一个用来显示变量的值；一个是lldb交互式调试窗口！我们先切换到lldb窗口，输入如下命令设置一个断点：</p>
+<blockquote>
+<p>(lldb) br s -n CollectGarbageInternal<br>Breakpoint 2: where = libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, bool), address = 0xb4648c20</p>
+</blockquote>
+<p>可以看到，断点已经成功设置；这个断点在libart.so中，不过现在还没有调试符号信息以及源码信息，我们只知道它的地址。接下来我们设置调试符号以及关联源码。</p>
+<p>接下来我们把编译得到的符号文件 libart.so 告诉调试器（符号文件和真正的动态链接库这两个文件名字相同，只不过一个在编译输出的symbols目录) ；在lldb窗口执行：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(lldb<span class="function">)</span><span class="instruction"> add-dsym </span>/Users/weishu/dev/github/Android-native-debug/app/symbols/libart.so</span><br><span class="line">symbol file '/Users/weishu/dev/github/Android-native-debug/app/symbols/libart.so' \</span><br><span class="line">has been added to '/Users/weishu/.lldb/module_cache/remote-android/.cache/C51E51E5-0000-0000-0000-000000000000/libart.so'</span><br></pre></td></tr></table></figure>
+<p>注意后面那个目录你的机器上与我的可能不同，需要修改一下。我们再看看有什么变化，看一下刚刚的断点：</p>
+<blockquote>
+<p>(lldb) br list 2<br>2: name = ‘CollectGarbageInternal’, locations = 1, resolved = 1, hit count = 0<br>  2.1: where = libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, bool) <strong>at heap.cc:2124</strong>, address = 0xb4648c20, resolved, hit count = 0 </p>
+</blockquote>
+<p>行号信息已经加载出来了！！在 <code>heap.cc</code> 这个文件的第2124行。不过如果这时候断点命中，依然无法关联到源码。我们看一下调试器所所知道的源码信息：</p>
+<blockquote>
+<p>(lldb) source info<br>Lines found in module `libart.so<br>[0xb4648c20-0xb4648c28): <strong>/Volumes/Android/android-5.1.1_r9/art/runtime/gc/heap.cc</strong>:2124</p>
+</blockquote>
+<p>纳尼？？这个目录是个什么鬼，根本没有这个目录好伐？难道是调试器搞错了？</p>
+<p>在继续介绍之前我们需要了解一些关于「调试符号」的知识；我们拿到的调试符号文件其实是一个DWARF文件，只不过这个文件被嵌入到了ELF文件格式之中，而其中的调试符号则在一些名为 <code>.debug_*</code> 的段之中，我们可以用 <code>readelf -S libart.so</code> 查看一下：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484289374465.png" width="616"></p>
+<p>编译器在编译libart.so的时候，记录下了<strong>编译时候</strong>源代码与代码偏移之间的对应关系，因此调试器可以从调试符号文件中获取到源码行号信息；如下：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484289826696.png" width="486"></p>
+<p>这下我们明白了上面那个莫名其妙的目录是什么了；原来是在编译<code>libart.so</code>的那个机器上存在源码。那么问题来了，我们绝大多数情况下是使用另外一台机器上的源码进行调试的——比如我提供的那个 <a href="https://github.com/tiann/android-native-debug" target="_blank" rel="external">Demo工程</a> 包含的带符号libart.so里面保存的源文件信息的目录实际上是我编译的电脑上的目录，而你调试的时候需要使用自己电脑上的目录。知道了问题所在，解决就很简单了，我们需要映射一下；在Android Studio的Debug 窗口的lldb 那个tab执行如下命令：</p>
+<blockquote>
+<p>(lldb) settings set target.source-map /Volumes/Android/android-5.1.1_r9/ /Users/weishu/dev/github/Android-native-debug/app/source/</p>
+</blockquote>
+<p>第一个参数的意思是编译时候的目录信息，第二个参数是你机器上的源码存放路径；设置成自己的即可。</p>
+<p>这时候，我们再触发断点（点击demo项目的Debug按钮），看看发生了什么？！</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484290490320.png" width="1191"></p>
+<p>至此，我们已经成功滴完成了在Android Studio中Native代码的源码调试。你可以像调试Java代码一样调试Native代码，step/in/out/over，条件断点，watch point任你飞。你可以借助这个工具去探究Android底层运行原理，比如垃圾回收机制，对象分配机制，Binder通信等等，完全不在话下！</p>
+<h2 id="无源码调试">无源码调试</h2><p>接下来再介绍一下操作简单但是使用门槛高的「无源码调试」方式；本来打算继续使用Android Studio的，但是无奈现阶段还有BUG，给官方提了issue但是响应很慢：<a href="https://code.google.com/p/android/issues/detail?id=231116。因此我们直接使用" target="_blank" rel="external">https://code.google.com/p/android/issues/detail?id=231116。因此我们直接使用</a> LLDB 调试；当然，用gdb也能进行无源码调试，但是使用lldb比gdb的步骤要简单得多；不信你可以看下文。</p>
+<h3 id="安装Android_LLDB工具">安装Android LLDB工具</h3><p>要使用lldb进行调试，首先需要在调试设备上运行一个lldb-server，这个lldb-server attach到我们需要调试的进程，然后我们的开发机与这个server进行通信，就可以进行调试了。熟悉gdb调试的同学应该很清楚这一点。我们可以用Android Studio直接下载这个工具，打开SDK Manager：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484280931189.png" width="720"></p>
+<p>如上图，勾选这个即可；下载的内容会存放到你的 $ANDROID_SDK/lldb 目录下。</p>
+<h3 id="使用步骤">使用步骤</h3><p>安装好必要的工具之后，就可以开始调试了；整体步骤比较简单：把lldb-server推送到调试设备并运行这个server，在开发机上连上这个server即可；以下是详细步骤。</p>
+<h4 id="在手机端运行lldb-server">在手机端运行lldb-server</h4><p>如果你的调试设备是root的，那么相对来说比较简单；毕竟我们的调试进程lldb-server要attach到被调试的进程是需要一定权限的，如果是root权限那么没有限制；如果没有root，那么我们只能借助<code>run-as</code>命令来调试自己的进程；另外，被调试的进程必须是debuggable，不赘述。以下以root的设备为例（比如模拟器）</p>
+<ol>
+<li><p>首先把lldb-server push到调试设备。lldb-sever这个文件可以在 `$ANDROID_SDK/lldb/&lt;版本号数字&gt;/android/ 目录下找到，确认你被调试设备的CPU构架之后选择你需要的那个文件，比如大多数是arm构架，那么执行：</p>
+<blockquote>
+<p>adb push lldb-server /data/local/tmp/</p>
+</blockquote>
+</li>
+<li><p>在调试设备上运行lldb-server。</p>
+<blockquote>
+<p>adb shell /data/local/tmp/lldb-server platform \<br>–server –listen unix-abstract:///data/local/tmp/debug.sock</p>
+</blockquote>
+<p>如果提示 /data/local/tmp/lldb-server: can’t execute: Permission denied，那么给这个文件加上可执行权限之后再执行上述命令：</p>
+<blockquote>
+<p>adb shell chmod 777 /data/local/tmp/lldb-server</p>
+</blockquote>
+<p>这样，调试server就在设备上运行起来了，注意要这么做需要设备拥有root权限，不然后面无法attach进程进行调试；没有root权限另有办法。另外，这个命令执行之后所在终端会进入阻塞状态，不要管它，如下进行的所有操作需要重新打开一个新的终端。</p>
+</li>
+</ol>
+<h4 id="连接到lldb-server开始调试">连接到lldb-server开始调试</h4><p>首先打开终端执行lldb（Mac开发者工具自带这个，Windows不支持）,会进入一个交互式的环境，如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484282196260.png" width="462"></p>
+<ol>
+<li><p>选择使用Android调试插件。执行如下命令：</p>
+<blockquote>
+<p>platform select remote-android</p>
+</blockquote>
+<p>如果提示没有Android，那么你可能需要升级一下你的XCode；只有新版本的lldb才支持Android插件。</p>
+</li>
+<li><p>连接到lldb-server</p>
+<p>这一步比较简单，但是没有任何官方文档有说明；使用办法是我查阅Android Studio的源码学习到的。如下：</p>
+<blockquote>
+<p>platform connect unix-abstract-connect:///data/local/tmp/debug.sock</p>
+</blockquote>
+<p>正常情况下你执行lldb-server的那个终端应该有了输出：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484282509260.png" width="430"></p>
+</li>
+<li><p>attach到调试进程。首先你需要查出你要调试的那个进程的pid，直接用ps即可；打开一个新的终端执行：</p>
+<blockquote>
+<p>~ adb shell ps | grep lldbtest<br>u0_a53    2242  724   787496 33084 ffffffff b6e0c474 S com.example.weishu.lldbtest</p>
+</blockquote>
+<p>我要调试的那个进程pid是 <code>2242</code>，接下来回到lldb的那个交互式窗口执行：</p>
+<blockquote>
+<p>process attach -p 2242</p>
+</blockquote>
+<p>如果你的设备没有root，那么这一步就会失败——没有权限去调试一个别的进程；非root设备的调试方法见下文。</p>
+<p>至此，调试环境就建立起来了。不需要像gdb那样设置端口转发，lldb的Android调试插件自动帮我们处理好了这些问题。虽然说了这么多，但是你熟练之后真正的步骤只有两步，灰常简单。</p>
+</li>
+<li><p>断点调试</p>
+<p> 调试环境建立之后自然就可以进行调试了，如果进行需要学习lldb的使用方法；我这里先演示一下，不关心的可以略过。</p>
+<ol>
+<li><p>首先下一个断点：</p>
+<blockquote>
+<p>(lldb) br s -n CollectGarbageInternal<br>  Breakpoint 1: where = libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, bool), address = 0xb4648c20</p>
+</blockquote>
+</li>
+<li><p>触发断点之后，查看当前堆栈：</p>
+ <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(lldb) bt</span><br><span class="line">* thread #<span class="number">8</span>: tid = <span class="number">2254</span>, <span class="number">0xb4648c20</span> libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, <span class="keyword">bool</span>), name = <span class="string">'GCDaemon</span>', stop reason = breakpoint <span class="number">1.1</span></span><br><span class="line">* frame #<span class="number">0</span>: <span class="number">0xb4648c20</span> libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, <span class="keyword">bool</span>)</span><br><span class="line">frame #<span class="number">1</span>: <span class="number">0xb464a550</span> libart.so`art::gc::Heap::ConcurrentGC(art::Thread*) + <span class="number">52</span></span><br><span class="line">frame #<span class="number">2</span>: <span class="number">0x72b17161</span> com.example.weishu.lldbtest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看寄存器的值</p>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">	(lldb) reg read</span><br><span class="line">General Purpose Registers:</span><br><span class="line">   r0 = <span class="number">0xb4889600</span></span><br><span class="line">   r1 = <span class="number">0x00000001</span></span><br><span class="line">   r2 = <span class="number">0x00000001</span></span><br><span class="line">   r3 = <span class="number">0x00000000</span></span><br><span class="line">   r4 = <span class="number">0xb4889600</span></span><br><span class="line">   r5 = <span class="number">0xb4835000</span></span><br><span class="line">   r6 = <span class="number">0xb47fcfe4</span>  libart.so`art::Runtime::instance_</span><br><span class="line">   r7 = <span class="number">0xa6714380</span></span><br><span class="line">   r8 = <span class="number">0xa6714398</span></span><br><span class="line">   r9 = <span class="number">0xb4835000</span></span><br><span class="line">   r10 = <span class="number">0x00000000</span></span><br><span class="line">   r11 = <span class="number">0xa6714360</span></span><br><span class="line">   r12 = <span class="number">0xb47fbb28</span>  libart.so`art::Locks::logging_lock_</span><br><span class="line">   sp = <span class="number">0xa6714310</span></span><br><span class="line">   lr = <span class="number">0xb464a551</span>  libart.so`art::gc::Heap::ConcurrentGC(art::Thread*) + <span class="number">53</span></span><br><span class="line">   pc = <span class="number">0xb4648c20</span>  libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, <span class="keyword">bool</span>)</span><br><span class="line"> 	cpsr = <span class="number">0x20000030</span></span><br></pre></td></tr></table></figure>
+<p> 我们可以看到寄存器 <code>r0</code>的值为 <code>0xb4889600</code>，这个值就是 `CollectGarbageInternal<br> 函数的第一个参数，this指针，也就是当前Heap对象的地址。在ARM下，r0~r4存放函数的参数，超过四个的参数放在栈上，具体如何利用这些寄存器的信息需要了解一些ARM汇编知识。</p>
+</li>
+<li><p>查看运行的汇编代码</p>
+ <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) di -p</span><br><span class="line">	libart.so`art::gc::Heap::CollectGarbageInternal:</span><br><span class="line">-&gt;  <span class="number">0xb4648c20</span> &lt;+<span class="number">0</span>&gt;:  <span class="keyword">push.w </span>&#123;<span class="literal">r4</span>, <span class="literal">r5</span>, <span class="literal">r6</span>, <span class="literal">r7</span>, <span class="literal">r8</span>, <span class="literal">r9</span>, <span class="literal">r10</span>, <span class="literal">r11</span>, <span class="literal">lr</span>&#125;</span><br><span class="line">	<span class="number">0xb4648c24</span> &lt;+<span class="number">4</span>&gt;:  <span class="keyword">subw </span>  <span class="literal">sp</span>, <span class="literal">sp</span>, <span class="number">#0x52c</span></span><br><span class="line">	<span class="number">0xb4648c28</span> &lt;+<span class="number">8</span>&gt;:  <span class="keyword">ldr.w </span> <span class="literal">r9</span>, [<span class="literal">pc</span>, <span class="number">#0xa9c</span>]</span><br><span class="line">	<span class="number">0xb4648c2c</span> &lt;+<span class="number">12</span>&gt;: <span class="keyword">add </span>   <span class="literal">r4</span>, <span class="literal">sp</span>, <span class="number">#0x84</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="没有root设备的调试办法">没有root设备的调试办法</h4><p>如果没有root权限，那么我可以借助run-as命令。run-as可以让我们以某一个app的身份执行命令——如果我们以被调试的那个app的身份进行attach，自然是可以成功的。</p>
+<p>假设被调试的app包名为 <code>com.example.lldb</code>，那么首先想办法把 <code>lldb-server</code>这个文件推送到这个app自身的目录：</p>
+<ol>
+<li><p><code>adb push</code>直接这么做不太方便（还需要知道userid)，我们先push到 /data/local/tmp/</p>
+<blockquote>
+<p>adb push lldb-server /data/local/tmp/</p>
+</blockquote>
+</li>
+<li><p>然后执行adb shell，连接到Android shell，执行</p>
+<blockquote>
+<p>run-as com.example.lldb`</p>
+</blockquote>
+</li>
+<li><p>拷贝这个文件到本App的目录，并修改权限；（由于有的手机没有cp命令，改用cat)</p>
+<blockquote>
+<p>cat /data/local/tmp/lldb-server &gt; lldb-server<br>chmod 777 lldb-server</p>
+</blockquote>
+</li>
+<li><p>运行lldb-server</p>
+<blockquote>
+<p>lldb-server platform –listen unix-abstract:///data/local/tmp/debug.sock</p>
+</blockquote>
+</li>
+</ol>
+<p>接下来的步骤就与上面root设备的调试过程完全一样了 :)</p>
+<h2 id="后记">后记</h2><p>终于完成了Android调试这一系列的文章，时间跨度长达一年；从Java到C/C++再到汇编级别的调试，从有源码到无源码，从Application层到Framework层，任何代码都可以进行调试。借助强大的IDE以及调试器，我们不仅可以快速定位和解决问题，还可以深入学习任何一个复杂的模块。尤记得用探索用lldb进行native调试的过程，网上没有任何android方面的教程，唯一的学习资料就是Android Studio调试模块的源码以及LLDB Android插件的源码；这其中碰的壁和踩过的坑不计其数。好在最后终于一一解决，可以睡个安稳觉了 ~_~</p>
+<ol>
+<li><a href="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/">Android Studio你不知道的调试技巧</a></li>
+<li><a href="http://weishu.me/2016/05/30/how-to-debug-android-framework/">如何调试Android Framework</a></li>
+<li><a href="#">如何调试Android Framework Native</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>半年前写了一篇文章，介绍 <a href="http://weishu.me/2016/05/30/how-to-debug-android-framework/">如何调试Android Framework</a>，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。</p>
+<p>Android Studio 2.2版本带来了全新的对Android Native代码的开发以及调试支持，另外LLDB的Android调试插件也日渐成熟，我终于可以把这篇文章继续下去了！本文将带来Android Framework中native代码的调试方法。</p>
+<p>在正式介绍如何调试之前，必须先说明一些基本的概念。调试器在调试一个可执行文件的时候，必须知道一些调试信息才能进行调试，这个调试信息可多可少（也可以没有）。最直观的比如行号信息，如果调试器知道行号信息，那么在进行调试的时候就能知道当前执行到了源代码的哪一行，如果调试器还知道对应代码的源文件在哪，那么现代IDE的调试器一般就能顺着源码带你飞了，这就是所谓的源码调试。相反，如果没有行号和源码信息，那么只能进行更低级别的调试了，调试器只能告诉你一些寄存器的值；而当前运行的代码也只是PC寄存器所指向的二进制数据，这些数据要么是虚拟机指令，要么是汇编指令；这就是所谓的无源码调试。显然无源码调试相比源码级别的调试要麻烦的多；接下来将围绕这两个方面分别介绍。</p>]]>
+    
+    </summary>
+    
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
+    
+      <category term="debug" scheme="http://weishu.me/tags/debug/"/>
+    
+      <category term="framework" scheme="http://weishu.me/tags/framework/"/>
+    
+      <category term="native" scheme="http://weishu.me/tags/native/"/>
+    
+      <category term="source" scheme="http://weishu.me/tags/source/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[史上最简单Android源码编译环境搭建方法]]></title>
     <link href="http://weishu.me/2016/12/30/simple-way-to-compile-android-source/"/>
     <id>http://weishu.me/2016/12/30/simple-way-to-compile-android-source/</id>
     <published>2016-12-29T17:08:41.000Z</published>
-    <updated>2016-12-29T17:10:46.000Z</updated>
+    <updated>2016-12-29T17:11:36.000Z</updated>
     <content type="html"><![CDATA[<p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p>
 <p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p>
 <p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p>
@@ -1779,76 +1963,6 @@
     </summary>
     
       <category term="android" scheme="http://weishu.me/tags/android/"/>
-    
-      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Android Studio你不知道的快捷键(三)]]></title>
-    <link href="http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/"/>
-    <id>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</id>
-    <published>2015-12-17T02:49:19.000Z</published>
-    <updated>2015-12-18T06:12:05.000Z</updated>
-    <content type="html"><![CDATA[<p>本文将继续介绍一些非常实用的但是你可能不知道的快捷键；没看过前两篇的可以移步：</p>
-<ol>
-<li><a href="http://www.tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/" target="_blank" rel="external">Android Studio你不知道的快捷键(一)</a></li>
-<li><a href="http://www.tianweishu.com/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/" target="_blank" rel="external">Android Studio你不知道的快捷键(二)</a></li>
-</ol>
-<h1 id="Select_In-">Select In..</h1><p>说实话，想不出一个比较好的翻译 :P 干脆使用英文吧。</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-1.gif" alt="Select In.." width="449"></p>
-<p>有没有这样的场景：你在Android Studio打开了一个图片文件（或者别的文件），想在资源浏览器里面查看这图片；在Eclipse里面我想大部分的人是<code>Alt + Enter</code>进入文件属性复制地址，然后在系统资源管理器里面打开；或者装一个EasyExplore插件。在Android Studio里面，这是内建支持的！而且还不止如此！比如你想看看某个文件在包的哪个目录，通常是不是点击Project View上面的那个小圆坐标；用这个快捷键鼠标就能搞定。<br><a id="more"></a><br>快捷键: <code>Alt + F1</code></p>
-<p>弹出的菜单有一系列的选项；按对应的数字就可以选择；其他的菜单有什么功能可以自己尝试一下。</p>
-<h1 id="拓展选择">拓展选择</h1><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-2.gif" alt="拓展选择" width="357"></p>
-<p>这个功能应该很多人都知道；但还是说明一下，因为跟下面两个功能跟这个结合起来才有威力。这个功能太强大了，自己去按几遍就能想到很多使用场景了；我相信有了这个功能，你使用鼠标的机会会少很多。</p>
-<ul>
-<li>Mac: <code>Alt + up/down</code></li>
-<li>Win/Linux: <code>ctrl + w / ctrl + shift + w</code></li>
-</ul>
-<h1 id="Surround_With-">Surround With..</h1><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-3.gif" alt="Surround With" width="299"></p>
-<p>如果你想把一段代码使用<code>if</code>语句包起来；又或者使用<code>try</code>包围一段可能有运行时异常的代码，你会怎么干？</p>
-<p>首先用光标定位到代码块开头，写上 <code>try {</code>然后，光标代码块末尾加上<code>} catch (XXXRuntimeException e) {// todo}</code>？可以试试这个快捷键。</p>
-<ul>
-<li>Mac: <code>cmd + alt + t</code></li>
-<li>Win/Linux: <code>ctrl + alt + t</code></li>
-</ul>
-<p>可以使用上面的拓展选择选择你需要的代码块，然后使用这个功能<em>Surround With</em>；如果你什么都不选择的话，那么默认选择的是光标所在行。</p>
-<h1 id="Unwrap/Remove">Unwrap/Remove</h1><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-4.gif" alt="Unwrap" width="546"></p>
-<p>这个功能跟上面提到的是一对，有了<em>Surround With</em>自然就有<em>Unsurround With</em>;使用情况没有上面那个那么多，但是好歹一对，一起介绍吧。</p>
-<h1 id="高亮某东西">高亮某东西</h1><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-5.gif" alt="highlight something" width="198"></p>
-<p>有时候看代码的时候，看到某个变量想知道哪里使用了它；你还在用肉眼查找吗？或者你杀鸡用牛刀<code>Find Usgae</code>？其实你的需求就是把这个变量全部给我打个标签，我想直观的知道它在哪。</p>
-<ul>
-<li>Mac: <code>cmd + shift + F7</code></li>
-<li>Win/Linux: <code>ctrl + shift + F7</code></li>
-</ul>
-<p>这个键功能远不止这个！</p>
-<ol>
-<li>如果你高亮<code>return</code>或者<code>throw</code>，那么会把这个方法所有的返回点高亮出来！</li>
-<li>高亮某个类的<code>extends</code>或者<code>implements</code>会把这个类Override的方法高亮出来</li>
-<li>高亮<code>import</code>会把使用的地方显示出来</li>
-</ol>
-<p>如果不想要高亮了，按下Esc就行。</p>
-<h1 id="显示方法调用树">显示方法调用树</h1><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-6.gif" alt="方法调用树" width="451"></p>
-<p>在看源码的时候，你还是使用<code>alt + F7</code>和<code>ctrl + B</code>在各个类之间来回穿梭吗？其实好多时候你就是想知道这个调用结构是怎么样的而已；谁是怎么一步一步滴调用谁的；这个快捷键会给你一个调用树。有了这个大菊观，继续探讨就很容易了。</p>
-<p>快捷键: <code>ctrl + alt + h</code></p>
-<h1 id="万能快捷键">万能快捷键</h1><p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-7.gif" alt="万能快捷键" width="500"></p>
-<p>记得之前提到过一个<em>万能重构键</em>, 有关重构的一切操作都可通过它完成。那么Android Studio这么快捷键，这么多功能，臣妾怎么可能都记住！要是有万能钥匙就好了！That’s it!</p>
-<p>使用这个快捷键，你想到什么功能，打开它搜索就可以了；打个比方，我想看看Java的<code>for each</code>循环和普通的<code>for</code>循环底层是不是同一个实现;那么我就需要看虚拟机字节码了；我记得有这个功能但是不知道快捷键是啥；OK，<code>Cmd + shift + A</code>，输入<code>bytecode</code>:</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450323104893.png" width="423"></p>
-<p>PS:(我用的Intellij IDEA，Android Studio没有集成bytecode功能，可能搜索不到）</p>
-<p>好了，其实所有的快捷键的功能都可以用这个搜索到～～实在记不起来也就用万能键吧！</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>本文将继续介绍一些非常实用的但是你可能不知道的快捷键；没看过前两篇的可以移步：</p>
-<ol>
-<li><a href="http://www.tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a></li>
-<li><a href="http://www.tianweishu.com/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/">Android Studio你不知道的快捷键(二)</a></li>
-</ol>
-<h1 id="Select_In-">Select In..</h1><p>说实话，想不出一个比较好的翻译 :P 干脆使用英文吧。</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-1.gif" alt="Select In.." width="449"/></p>
-<p>有没有这样的场景：你在Android Studio打开了一个图片文件（或者别的文件），想在资源浏览器里面查看这图片；在Eclipse里面我想大部分的人是<code>Alt + Enter</code>进入文件属性复制地址，然后在系统资源管理器里面打开；或者装一个EasyExplore插件。在Android Studio里面，这是内建支持的！而且还不止如此！比如你想看看某个文件在包的哪个目录，通常是不是点击Project View上面的那个小圆坐标；用这个快捷键鼠标就能搞定。<br>]]>
-    
-    </summary>
     
       <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     

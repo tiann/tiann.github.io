@@ -178,6 +178,84 @@
           
           
             
+              <a class="post-title-link" href="/2017/01/14/how-to-debug-android-native-framework-source/" itemprop="url">
+                如何调试Android Native Framework
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-01-14T17:02:03+08:00" content="2017-01-14">
+            2017-01-14
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/01/14/how-to-debug-android-native-framework-source/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/14/how-to-debug-android-native-framework-source/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>半年前写了一篇文章，介绍 <a href="http://weishu.me/2016/05/30/how-to-debug-android-framework/">如何调试Android Framework</a>，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。</p>
+<p>Android Studio 2.2版本带来了全新的对Android Native代码的开发以及调试支持，另外LLDB的Android调试插件也日渐成熟，我终于可以把这篇文章继续下去了！本文将带来Android Framework中native代码的调试方法。</p>
+<p>在正式介绍如何调试之前，必须先说明一些基本的概念。调试器在调试一个可执行文件的时候，必须知道一些调试信息才能进行调试，这个调试信息可多可少（也可以没有）。最直观的比如行号信息，如果调试器知道行号信息，那么在进行调试的时候就能知道当前执行到了源代码的哪一行，如果调试器还知道对应代码的源文件在哪，那么现代IDE的调试器一般就能顺着源码带你飞了，这就是所谓的源码调试。相反，如果没有行号和源码信息，那么只能进行更低级别的调试了，调试器只能告诉你一些寄存器的值；而当前运行的代码也只是PC寄存器所指向的二进制数据，这些数据要么是虚拟机指令，要么是汇编指令；这就是所谓的无源码调试。显然无源码调试相比源码级别的调试要麻烦的多；接下来将围绕这两个方面分别介绍。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/01/14/how-to-debug-android-native-framework-source/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/12/30/simple-way-to-compile-android-source/" itemprop="url">
                 史上最简单Android源码编译环境搭建方法
               </a>
@@ -889,91 +967,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" itemprop="url">
-                Android 插件化原理解析——Hook机制之AMS&PMS
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-03-07T16:35:46+08:00" content="2016-03-07">
-            2016-03-07
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/03/07/understand-plugin-framework-ams-pms-hook/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/07/understand-plugin-framework-ams-pms-hook/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是<strong>代理方式</strong>和<strong>Binder Hook</strong>；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。</p>
-<p>ActivityManagerService对于FrameWork层的重要性不言而喻，Android的四大组件无一不与它打交道：</p>
-<ol>
-<li><code>startActivity</code>最终调用了AMS的<code>startActivity</code>系列方法，实现了Activity的启动；Activity的生命周期回调，也在AMS中完成；</li>
-<li><code>startService,bindService</code>最终调用到AMS的startService和bindService方法；</li>
-<li>动态广播的注册和接收在<code>AMS</code>中完成（静态广播在<code>PMS</code>中完成）</li>
-<li><code>getContentResolver</code>最终从<code>AMS</code>的<code>getContentProvider</code>获取到ContentProvider</li>
-</ol>
-<p>而<code>PMS</code>则完成了诸如权限校捡(<code>checkPermission,checkUidPermission</code>)，Apk meta信息获取(<code>getApplicationInfo</code>等)，四大组件信息获取(<code>query</code>系列方法)等重要功能。</p>
-<p>在上文<a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Android插件化原理解析——Hook机制之Binder Hook</a>中讲述了DroidPlugin的Binder Hook机制；我们知道<code>AMS</code>和<code>PMS</code>就是以Binder方式提供给应用程序使用的系统服务，理论上我们也可以采用这种方式Hook掉它们。但是由于这两者使用得如此频繁，Framework给他们了一些“特别优待”，这也给了我们相对于Binder Hook更加稳定可靠的hook方式。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1012,7 +1005,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1026,7 +1019,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">标签</span>
               
           </div>
@@ -1073,7 +1066,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp;  2015 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
