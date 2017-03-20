@@ -178,6 +178,84 @@
           
           
             
+              <a class="post-title-link" href="/2016/03/21/understand-plugin-framework-activity-management/" itemprop="url">
+                Android 插件化原理解析——Activity生命周期管理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-21T19:43:32+08:00" content="2016-03-21">
+            2016-03-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/03/21/understand-plugin-framework-activity-management/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/21/understand-plugin-framework-activity-management/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>之前的 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？</p>
+<p>在Java平台要做到动态运行模块、热插拔可以使用<code>ClassLoader</code>技术进行动态类加载，比如广泛使用的<code>OSGi</code>技术。在Android上当然也可以使用动态加载技术，但是仅仅把类加载进来就足够了吗？<code>Activity</code>，<code>Service</code>等组件是有生命周期的，它们统一由系统服务<code>AMS</code>管理；使用<code>ClassLoader</code>可以从插件中创建Activity对象，但是，一个没有生命周期的Activity对象有什么用？所以在Android系统上，仅仅完成动态类加载是不够的；我们需要想办法把我们加载进来的Activity等组件交给系统管理，让<code>AMS</code>赋予组件生命周期；这样才算是一个有血有肉的完善的插件化方案。</p>
+<p>接下来的系列文章会讲述 DroidPlugin对于Android四大组件的处理方式，我们且看它如何采用Hook技术坑蒙拐骗把系统玩弄于股掌之中，最终赋予Activity，Service等组件生命周期，完成借尸还魂的。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/21/understand-plugin-framework-activity-management/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" itemprop="url">
                 Android 插件化原理解析——Hook机制之AMS&PMS
               </a>
@@ -902,99 +980,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/21/android-studio-debug-tips-you-may-not-know/" itemprop="url">
-                Android Studio你不知道的调试技巧
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-21T20:39:03+08:00" content="2015-12-21">
-            2015-12-21
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/实用技巧/" itemprop="url" rel="index">
-                  <span itemprop="name">实用技巧</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/21/android-studio-debug-tips-you-may-not-know/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/android-studio-debug-tips-you-may-not-know/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"/></p>
-<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/21/android-studio-debug-tips-you-may-not-know/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1033,7 +1018,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1047,7 +1032,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">标签</span>
               
           </div>

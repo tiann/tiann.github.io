@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2017-01-14T09:34:36.000Z</updated>
+  <updated>2017-03-20T15:38:48.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -13,6 +13,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ART深度探索开篇：从Method Hook谈起]]></title>
+    <link href="http://weishu.me/2017/03/20/dive-into-art-hello-world/"/>
+    <id>http://weishu.me/2017/03/20/dive-into-art-hello-world/</id>
+    <published>2017-03-20T15:37:08.000Z</published>
+    <updated>2017-03-20T15:38:48.000Z</updated>
+    <content type="html"><![CDATA[<p>Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 <a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a>。</p>
+<p>为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一个系列的开篇，本文不打算展开讲虚拟机原理等内容，首先给大家一道开胃菜；后续我们再深入探索ART。</p>
+<p>众所周知，AndFix是一种 native 的hotfix方案，它的替换过程是用 c 在 native层完成的，但其实，我们也可以用纯Java实现它！而且，代码还非常精简，且看——</p>
+<a id="more"></a>
+<h2 id="方法替换原理">方法替换原理</h2><p>既然我们知道 AndFix 的原理是方法替换，那么为什么直接替换Java里面的 <code>java.lang.reflect.Method</code> 有什么问题吗？直接这样貌似很难下结论，那我们换个思路。我们实现方法替换的结果，就是调用原方法的时候最终是调用被替换的方法。因此，我们可以看看 <code>java.lang.reflect.Method</code>类的 <code>invoke</code> 方法。（这里有个疑问，Foo.bar()这种直接调用与反射调用Foo.class.getDeclaredMethod(“bar”).invoke(null) 有什么区别吗？这个问题后续再谈）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">native</span> Object <span class="title">invoke</span><span class="params">(Object receiver, Object[] args, <span class="keyword">boolean</span> accessible)</span></span><br><span class="line">        <span class="keyword">throws</span> IllegalAccessException, IllegalArgumentException, InvocationTargetException</span>;</span><br></pre></td></tr></table></figure>
+<p>这个invoke是一个native方法，它的native实现在 <code>art/runtime/native/java_lang_reflect_Method.cc</code> 里面，这个jni方法最终调用了 <code>art/runtime/reflection.cc</code> 的 <code>InvokeMethod</code>方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">object <span class="title">InvokeMethod</span><span class="params">(<span class="keyword">const</span> ScopedObjectAccessAlreadyRunnable&amp; soa, jobject javaMethod,</span><br><span class="line">                     jobject javaReceiver, jobject javaArgs, <span class="keyword">bool</span> accessible)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 略...</span></span><br><span class="line"></span><br><span class="line">  mirror::ArtMethod* m = mirror::ArtMethod::FromReflectedMethod(soa, javaMethod);</span><br><span class="line"></span><br><span class="line">  mirror::Class* declaring_class = m-&gt;GetDeclaringClass();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 按需初始化类，略。。</span></span><br><span class="line"></span><br><span class="line">  mirror::Object* receiver = <span class="literal">nullptr</span>;</span><br><span class="line">  <span class="keyword">if</span> (!m-&gt;IsStatic()) &#123;</span><br><span class="line">    <span class="comment">// Check that the receiver is non-null and an instance of the field's declaring class.</span></span><br><span class="line">    receiver = soa.Decode&lt;mirror::Object*&gt;(javaReceiver);</span><br><span class="line">    <span class="keyword">if</span> (!VerifyObjectIsClass(receiver, declaring_class)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find the actual implementation of the virtual method.</span></span><br><span class="line">    m = receiver-&gt;GetClass()-&gt;FindVirtualMethodForVirtualOrInterface(m);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 略..</span></span><br><span class="line">  InvokeWithArgArray(soa, m, &amp;arg_array, &amp;result, shorty);</span><br><span class="line">  <span class="comment">// 略 。。</span></span><br><span class="line">  <span class="comment">// Box if necessary and return.</span></span><br><span class="line">  <span class="keyword">return</span> soa.AddLocalReference&lt;jobject&gt;(BoxPrimitive(mh.GetReturnType()-&gt;GetPrimitiveType(),</span><br><span class="line">                                                     result));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面函数 InvokeMethod 的第二个参数 <code>javaMethod</code> 就是Java层我们进行反射调用的那个Method对象，在jni层反映为一个jobject；InvokeMethod这个native方法首先通过 <code>mirror::ArtMethod::FromReflectedMethod</code> 获取了Java对象的在native层的 ArtMethod指针，我们跟进去看看是怎么实现的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ArtMethod* ArtMethod::FromReflectedMethod(<span class="keyword">const</span> ScopedObjectAccessAlreadyRunnable&amp; soa,</span><br><span class="line">                                          jobject jlr_method) &#123;</span><br><span class="line">  mirror::ArtField* f =</span><br><span class="line">      soa.DecodeField(WellKnownClasses::java_lang_reflect_AbstractMethod_artMethod);</span><br><span class="line">  mirror::ArtMethod* method = f-&gt;GetObject(soa.Decode&lt;mirror::Object*&gt;(jlr_method))-&gt;AsArtMethod();</span><br><span class="line">  DCHECK(method != <span class="literal">nullptr</span>);</span><br><span class="line">  <span class="keyword">return</span> method;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在这里看到了一点端倪，获取到了Java层那个Method对象的一个叫做 <code>artMethod</code>的字段，然后强转成了ArtMethod指针（这里的说法不是很准确，但是要搞明白这里面的细节一两篇文章讲不清楚 ~_~，我们暂且这么认为吧。）</p>
+<p>AndFix的实现里面，也正是使用这个 <code>FromReflectedMethod</code> 方法拿到Java层Method对应native层的ArtMethod指针，然后执行替换的。</p>
+<p>上面我们也看到了，我们在native层替换的那个 ArtMethod 不是在 Java 层也有对应的东西么？我们直接替换掉 Java 层的这个artMethod 字段不就OK了？但是我们要注意的是，在Java里面除了基本类型，其他东西都是引用。要实现类似C++里面那种替换引用所指向内容的机智，需要一些黑科技。</p>
+<h2 id="Unsafe_和_Memory">Unsafe 和 Memory</h2><p>要在Java层操作内容，也不是没有办法做到；JDK给我们留了一个后门：<code>sun.misc.Unsafe</code> 类；在OpenJDK里面这个类灰常强大，从内存操作到CAS到锁机制，无所不能（可惜的是据说JDK8要去掉？）但是在Android 平台还有一点点不一样，在 Android N之前，Android的JDK实现是 Apache Harmony，这个实现里面的Unsafe就有点鸡肋了，没法写内存；好在Android 又开了一个后门：<code>Memory</code> 类。</p>
+<p>有了这两个类，我们就能在Java层进行简单的内存操作了！！由于这两个类是隐藏类，我写了一个wrapper，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Memory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// libcode.io.Memory#peekByte</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">byte</span> <span class="title">peekByte</span><span class="params">(<span class="keyword">long</span> address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Byte) Reflection.call(<span class="keyword">null</span>, <span class="string">"libcore.io.Memory"</span>, <span class="string">"peekByte"</span>, <span class="keyword">null</span>, <span class="keyword">new</span> Class[]&#123;<span class="keyword">long</span>.class&#125;, <span class="keyword">new</span> Object[]&#123;address&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pokeByte</span><span class="params">(<span class="keyword">long</span> address, <span class="keyword">byte</span> value)</span> </span>&#123;</span><br><span class="line">        Reflection.call(<span class="keyword">null</span>, <span class="string">"libcore.io.Memory"</span>, <span class="string">"pokeByte"</span>, <span class="keyword">null</span>, <span class="keyword">new</span> Class[]&#123;<span class="keyword">long</span>.class, <span class="keyword">byte</span>.class&#125;, <span class="keyword">new</span> Object[]&#123;address, value&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">memcpy</span><span class="params">(<span class="keyword">long</span> dst, <span class="keyword">long</span> src, <span class="keyword">long</span> length)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            pokeByte(dst, peekByte(src));</span><br><span class="line">            dst++;</span><br><span class="line">            src++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Unsafe</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String UNSAFE_CLASS = <span class="string">"sun.misc.Unsafe"</span>;</span><br><span class="line">    <span class="keyword">static</span> Object THE_UNSAFE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> is64Bit;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        THE_UNSAFE = Reflection.get(<span class="keyword">null</span>, UNSAFE_CLASS, <span class="string">"THE_ONE"</span>, <span class="keyword">null</span>);</span><br><span class="line">        Object runtime = Reflection.call(<span class="keyword">null</span>, <span class="string">"dalvik.system.VMRuntime"</span>, <span class="string">"getRuntime"</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        is64Bit = (Boolean) Reflection.call(<span class="keyword">null</span>, <span class="string">"dalvik.system.VMRuntime"</span>, <span class="string">"is64Bit"</span>, runtime, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getObjectAddress</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        Object[] objects = &#123;o&#125;;</span><br><span class="line">        Integer baseOffset = (Integer) Reflection.call(<span class="keyword">null</span>, UNSAFE_CLASS,</span><br><span class="line">                <span class="string">"arrayBaseOffset"</span>, THE_UNSAFE, <span class="keyword">new</span> Class[]&#123;Class.class&#125;, <span class="keyword">new</span> Object[]&#123;Object[].class&#125;);</span><br><span class="line">        <span class="keyword">return</span> ((Number) Reflection.call(<span class="keyword">null</span>, UNSAFE_CLASS, is64Bit ? <span class="string">"getLong"</span> : <span class="string">"getInt"</span>, THE_UNSAFE,</span><br><span class="line">                <span class="keyword">new</span> Class[]&#123;Object.class, <span class="keyword">long</span>.class&#125;, <span class="keyword">new</span> Object[]&#123;objects, baseOffset.longValue()&#125;)).longValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体实现">具体实现</h2><p>接下来思路就很简单了呀，用伪代码表示就是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">memcopy(originArtMethod, replaceArtMethod);</span><br></pre></td></tr></table></figure>
+<p>但是还有一个问题，我们要整个把 originMethod 的 artMethod 所在的内存直接替换为 replaceMethod 的artMethod 所在的内存（上面我们已经知道，Java层Method类的artMethod实际上就是native层的指针表示，在Android N上更明显，这玩意儿直接就是一个long），现在我们已经知道这两个地址是什么，那么我们把 replaceArtMethod 代表的内存复制到 originArtMethod 的区域，应该还需要知道一个 artMethod 有多大。</p>
+<p>但是事情没有一个 sizeof 那么简单。你看AndFix的实现是在每个Android版本把ArtMethod这个结构体复制一份的；要想用sizeof还得把这个类所有的引用复制过来，及其麻烦。更何况在Java里面 sizeof都没有。不过也不是没有办法，既然我们已经能在Java层拿到对象的地址，只需要创建一个数组，丢两个ArtMethod，把两个数组元素的起始地址相减不就得到一个 artMethod的大小了吗？</p>
+<p>不过，既然我们实现了方法替换；还有最后一个问题，如果我们需要在替换后的方法里面调用原函数呢？这个也很简单，我们只需要把原函数copy一份保存起来，需要调用原函数的时候调用那个copy的函数不就行了？不过在具体实现的时候，会遇到一个问题，就是 Java的非static 非private的方法默认是虚方法，在调用这个方法的时候会有一个类似查找虚函数表的过程，这个在上面的代码 <code>InvokeMethod</code> 里面可以看到：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mirror::Object* receiver = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="keyword">if</span> (!m-&gt;IsStatic()) &#123;</span><br><span class="line">  <span class="comment">// Check that the receiver is non-null and an instance of the field's declaring class.</span></span><br><span class="line">  receiver = soa.Decode&lt;mirror::Object*&gt;(javaReceiver);</span><br><span class="line">  <span class="keyword">if</span> (!VerifyObjectIsClass(receiver, declaring_class)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Find the actual implementation of the virtual method.</span></span><br><span class="line">  m = receiver-&gt;GetClass()-&gt;FindVirtualMethodForVirtualOrInterface(m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在调用的时候，如果不是static的方法，会去查找这个方法的真正实现；我们直接把原方法做了备份之后，去调用备份的那个方法，如果此方法是public的，则会查找到原来的那个函数，于是就无限循环了；我们只需要阻止这个过程，查看 FindVirtualMethodForVirtualOrInterface 这个方法的实现就知道，只要方法是 invoke-direct 进行调用的，就会直接返回原方法，这些方法包括：构造函数，private的方法( 见 <a href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html" target="_blank" rel="external">https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html</a>) 因此，我们手动把这个备份的方法属性修改为private即可解决这个问题。</p>
+<p>详细代码见：<a href="https://github.com/tiann/epic" target="_blank" rel="external">github/epic</a></p>
+<p>至此，我们就用纯Java实现了一个 AndFix，代码只有200行不到！！是不是很神奇？当然，这里面包含了很多黑科技，接下来我们将以这个为引子，深入探索Android ART的方方面面，揭开虚拟机底层的神秘面纱，敬请期待～～</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 <a href="https://github.com/alibaba/AndFix">AndFix</a>。</p>
+<p>为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一个系列的开篇，本文不打算展开讲虚拟机原理等内容，首先给大家一道开胃菜；后续我们再深入探索ART。</p>
+<p>众所周知，AndFix是一种 native 的hotfix方案，它的替换过程是用 c 在 native层完成的，但其实，我们也可以用纯Java实现它！而且，代码还非常精简，且看——</p>]]>
+    
+    </summary>
+    
+      <category term="-android -art" scheme="http://weishu.me/tags/android-art/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[如何调试Android Native Framework]]></title>
@@ -1907,64 +1950,6 @@
       <category term="mac" scheme="http://weishu.me/tags/mac/"/>
     
       <category term="sublime" scheme="http://weishu.me/tags/sublime/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Android Studio你不知道的调试技巧]]></title>
-    <link href="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/"/>
-    <id>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</id>
-    <published>2015-12-21T12:39:03.000Z</published>
-    <updated>2015-12-23T03:03:55.000Z</updated>
-    <content type="html"><![CDATA[<p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"></p>
-<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br><a id="more"></a></p>
-<h2 id="调试基础">调试基础</h2><p>一般来说我们有两种办法调试一个debuggable的apk；其一是下好断点，然后用debug模式编译安装这个app；其二是 <code>attach process</code>，在Android Studio里面就是这么一个对话框：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png" width="273" alt="Attach Process"></p>
-<p>第二种方法比较常用，我们可以在启动apk之后，直接下断点，然后attach process到制定进程，条件触发之后就可以直接进入调试模式。</p>
-<p>其他的一些单步执行，<code>step into</code>, <code>step out</code>, <code>force step into</code> 等就不提了；基本的跟踪手段。</p>
-<p>还是提一下，下断点最简单的办法，是在代码编辑器的左侧，行号右边鼠标点击一下即可。</p>
-<h2 id="Evaluate_Expression">Evaluate Expression</h2><p>这个功能非常实用，可以在断点处直接进入一个求值环境，在这里你可以执行任何你感兴趣的表达式；如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698259155.png" width="524" alt="Evaluate Expression"></p>
-<p>比如在断点处有一个对象<code>object</code>，如果你要查看它的某个属性很简单，在Debug窗口就能看到，但是如果你想要执行它的某个方法看看结果是什么呢？借助这个可以实现。当然它的功能远不止这么多，相当于直接进入了一个 <code>REPL</code>环境，非常实用。忘了说了，快捷键 <code>Alt + F8</code> :P</p>
-<h2 id="条件断点">条件断点</h2><p>假设你的断点在一个列表的循环里面，可是你只对这个列表的某一个元素感兴趣，只想在遇到这个元素的时候才断下来；你是一直人肉 <code>F9</code> 直到满足条件吗？条件断点就是满足这种需求的，顾名思义，在特定条件下的断点。使用起来也非常简单，在你的断点上鼠标右键会出现一个小窗口，写上条件即可。</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698641184.png" width="465" alt="条件断点"></p>
-<h2 id="日志断点">日志断点</h2><p>很多时候我们调试的时候更多的是打印日志定位异常代码，缩小范围之后再使用断点解决问题；所以经常做的事情就是在代码里面添加日志信息，输出函数参数，返回信息，输出我们感兴趣的变量信息等。</p>
-<p>但是这么做一个问题就是，我们添加了日志代码需要重新编译；在没有 <code>Instant Run</code> 之前的黑暗时代这么做是非常痛苦的，每次编译少则几十秒，多则几分钟；这样无意义的等待简直就是折磨；其实，除了热部署工具，我们还可以使用日志断点解决这个问题。</p>
-<p>首先我们在想要输出信息的地方下一个断点；然后右键这个断点，在出现的设置框里面把这个断点的 <code>suspend</code> 属性设置为 <code>False</code> ，这样虽然叫做“断点”，但是并不会真正断下来；然后，我们在 <code>log message</code> 里面填上我们想要输出的日志信息。如下图(注意标红位置）：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699187057.png" width="591" alt="日志断点"></p>
-<p>这样，每次代码执行到这个断点的位置，这个可爱的断点并不会使我们的程序停下来，而是输出我们告诉它的日志信息，然后继续执行；非常方便。</p>
-<h2 id="方法断点">方法断点</h2><p>传统的调试方式是以行为单位的，所谓单步调试；但是很多时候我们关心的是某个函数的参数，返回值；（回想一下我们使用日志的时候打印的最多的信息难道不是函数的参数和返回值吗？）使用方法断点，我们可以在函数级别进行调试；如果经常跳进跳出函数或者只对某个函数的参数感兴趣，这种类型的断点非常实用。具体使用方法有两种方式；最简单的是在你感兴趣的方法头那一行打上断点，这时候你会发现断点图标有点不一样，这就是方法断点了，如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699584560.png" width="503" alt="方法断点"></p>
-<p>另外一种方式是通过<em>断点设置窗口</em>, 后面介绍。</p>
-<h2 id="异常断点">异常断点</h2><p>在有些情况下，我们只对某些特定的异常感兴趣，或者我们只对异常感兴趣；我们希望只要程序发生异常程序就能断下来；这好像保存现场一样，只要发生命案了（异常），第一时间保存现场，这样什么指纹之类的线索就会清晰很多，坏蛋就算想逃也是插翅难飞啊。</p>
-<p>Android Studio给了我们这个能力！那就是<strong>异常断点</strong>!可以在特定异常发生的时候，直接让整个程序断下来；如果你对所有异常感兴趣，直接 <code>Throwable</code> 即可。</p>
-<p>具体做法是，进入 <code>Run -&gt; View BreakPoints</code> 或者使用快捷键打开断点设置窗口；如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700136670.png" width="273" alt="断点设置窗口"></p>
-<p>点击左上角的 ➕ ，会出现一个选择框；选择<code>Exception Breakpoint</code>；然后会出现一个对话框，选择你感兴趣的异常：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png" width="526" alt="异常断点"></p>
-<h2 id="Field_WatchPoint">Field WatchPoint</h2><p>在上面我们添加异常断点的时候，点击加号的时候，有四个选项；第一个就是我们前面所说的第二种方法断点的添加方式，第三个是异常断点，那么第二个 <strong>Field WatchPoint</strong> 是干什么的呢？</p>
-<p>有没有这样一种场景：你发现某个值莫名其妙滴不知道什么时候被谁给修改了，罪魁祸首是谁？Java虽然是值传递，但是引用也可以是值；对象全部存放在堆上面，而堆是被所有线程共享的，因此在非常复杂的场景下，你根本不知道这些共享变量被谁修改了，这样非常危险；在多线程环境下，不变性是一个很重要的特性，我们看到高并发的语言诸如 <code>Erlang</code>, <code>Scala</code> 对于这种不变性都有着某种程度的支持。</p>
-<p>好吧，扯远了；那么我们怎么揪出这个修改我们值的捣蛋鬼呢？那就是这个 <strong>Field WatchPoint</strong>的功能了；使用它我们可以在某个<strong>Field</strong>被访问或者修改的时候让程序断下来；完美解决这个问题。</p>
-<p>下断点的方式和方法断点类似，也有两种；第一种是直接在某个字段的声明处下断点，这时候断点图标会改变，如下图：</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png" width="354" alt="Field WatchPoint"></p>
-<p>右键这个断点我们可以进行一些设置，比如默认是被修改的时候断下来，你也可以改为每次访问这个字段就断下来。</p>
-<p>另外一种方式是 <code>Run -&gt; View BreakPoint</code> 打开设置，与异常断点类似。</p>
-<h2 id="远不止这么多">远不止这么多</h2><p>上面介绍了这么多给力的功能，其实还有很多细节；打开断点设置窗口（Run -&gt; View Breakpoint`):</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png" width="873"></p>
-<p>我们可以对<strong>感兴趣的类，感兴趣的某个特定对象</strong>下断点，也可以设置断点的次数，还能使断点在特定的线程才断下来；这些细节就不详细介绍了，大家自己去发掘！</p>
-<p>Have Fun!!</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
-<p><img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"/></p>
-<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br>]]>
-    
-    </summary>
-    
-      <category term="android" scheme="http://weishu.me/tags/android/"/>
-    
-      <category term="实用技巧" scheme="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
