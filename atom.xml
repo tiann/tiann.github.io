@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2017-03-20T15:38:48.000Z</updated>
+  <updated>2017-03-20T15:41:41.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2017/03/20/dive-into-art-hello-world/"/>
     <id>http://weishu.me/2017/03/20/dive-into-art-hello-world/</id>
     <published>2017-03-20T15:37:08.000Z</published>
-    <updated>2017-03-20T15:38:48.000Z</updated>
+    <updated>2017-03-20T15:41:41.000Z</updated>
     <content type="html"><![CDATA[<p>Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 <a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a>。</p>
 <p>为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一个系列的开篇，本文不打算展开讲虚拟机原理等内容，首先给大家一道开胃菜；后续我们再深入探索ART。</p>
 <p>众所周知，AndFix是一种 native 的hotfix方案，它的替换过程是用 c 在 native层完成的，但其实，我们也可以用纯Java实现它！而且，代码还非常精简，且看——</p>
@@ -53,7 +53,9 @@
     
     </summary>
     
-      <category term="-android -art" scheme="http://weishu.me/tags/android-art/"/>
+      <category term="android" scheme="http://weishu.me/tags/android/"/>
+    
+      <category term="art" scheme="http://weishu.me/tags/art/"/>
     
   </entry>
   
