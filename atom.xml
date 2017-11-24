@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2017-11-22T17:38:47.000Z</updated>
+  <updated>2017-11-22T17:38:48.000Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2017/11/23/dexposed-on-art/"/>
     <id>http://weishu.me/2017/11/23/dexposed-on-art/</id>
     <published>2017-11-22T17:30:10.000Z</published>
-    <updated>2017-11-22T17:38:47.000Z</updated>
+    <updated>2017-11-22T17:38:48.000Z</updated>
     <content type="html"><![CDATA[<p>两年前阿里开源了<a href="https://github.com/alibaba/dexposed" target="_blank" rel="external">Dexposed</a> 项目，它能够在Dalvik上无侵入地实现运行时方法拦截，正如其介绍「enable ‘god’ mode for single android application」所言，能在非root情况下掌控自己进程空间内的任意Java方法调用，给我们带来了很大的想象空间。比如能实现运行时AOP，在线热修复，做性能分析工具（拦截线程、IO等资源的创建和销毁）等等。然而，随着ART取代Dalvik成为Android的运行时，一切都似乎戛然而止。</p>
 <p>今天，我在ART上重新实现了Dexposed，在它能支持的平台（Android 5.0 ~ 7.1 Thumb2/ARM64)上，有着与Dexposed完全相同的能力和API；项目地址在这里 <a href="https://github.com/tiann/epic" target="_blank" rel="external">epic</a>，感兴趣的可以先试用下:) 然后我们聊一聊ART上运行时Method AOP的故事。</p>
 <a id="more"></a>
