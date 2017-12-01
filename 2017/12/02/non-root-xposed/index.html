@@ -1,0 +1,701 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android,epic,root,xposed," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
+我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无需Root也能使用Xposed！">
+<meta property="og:url" content="http://weishu.me/2017/12/02/non-root-xposed/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
+我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158544505.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158469933.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158377339.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158575155.png">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158598212.png">
+<meta property="og:updated_time" content="2017-12-01T20:17:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="无需Root也能使用Xposed！">
+<meta name="twitter:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
+我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 无需Root也能使用Xposed！ | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              无需Root也能使用Xposed！
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-12-02T04:12:59+08:00" content="2017-12-02">
+            2017-12-02
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，<strong>能不能不用Root就可以享用Xposed的功能呢？</strong></p>
+<p>我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xposed需要修改系统文件，而这些文件只有root权限才能修改；但是这只是当前实现的特性（修改系统分区文件），而非根本原因。Xposed要实现的最终目的是在任意App进程启动之前能任意加载 <strong>特定Xposed模块</strong> 的代码；这些特定的Xposed模块中能在App进程启动之前有机会执行特定代码，从而控制任意进程的行为。归根结底，Xposed需要控制别的进程，而没有高级权限（Root），越俎代庖是不行的。</p>
+<p>有没有别的实现方式？</p>
+<a id="more"></a>
+<p>虽然没有办法控制别的进程，但是在本进程内，几乎是可以为所欲为的；如果换个方式，<strong>把别的App放在自己的进程里面运行，然后Hook自己</strong> 不就打到目的了嘛？「把别的App放在自己的进程里面运行」这种机制是容器，或者通俗点叫双开；「Hook自己」这是典型的Dexposed的思路，不过Dexposed不支持ART——但前不久 epic 的出现完成了这最后一块拼图。（关于epic在ART上实现AOP Hook可以参考 <a href="http://weishu.me/2017/11/23/dexposed-on-art/">我为Dexposed续一秒——论ART上运行时 Method AOP实现</a></p>
+<p>双开的典型实现是lody的 <a href="https://github.com/asLody/VirtualApp" target="_blank" rel="external">VirtualApp</a>，那么我们来一看 <code>VirtualApp</code> 与 <code>epic</code> 结合会产生什么样奇妙的化学反应。</p>
+<p>我们的思路很清晰：用 VirtualApp 去启动别的App，在启动过程中通过 epic Hook本进程，从而控制被启动的App。同时，由于Xposed模块已经比较成熟，而且有成千上万的插件生态，最好能够直接复用Xposed 的模块，使得在双开环境下，Xposed模块就跟运行在Root手机中的Xposed环境中一样。为此，我写了一个 双开环境下的Xposed兼容层：<a href="https://github.com/android-hacker/exposed" target="_blank" rel="external">Exposed</a>；同时，修改了 VirtualApp 的部分实现，使得它能够在进程的启动的时候加载 Exposed 这个兼容层，代码在这：<a href="https://github.com/android-hacker/VAExposed" target="_blank" rel="external">VAExposed</a>。这样，在双开环境中，可以直接加载已有的Xposed模块进而实现非Root模式下的Xposed的功能。更有趣的是，你还可以直接使用 XposedInstaller 安装和管理任意的Xposed模块，就跟你使用真正的Xposed一样！</p>
+<p>具体的代码就不详细讲了，可以直接去看源码<a href="https://github.com/android-hacker/exposed" target="_blank" rel="external">Exposed</a>，<a href="https://github.com/android-hacker/VAExposed" target="_blank" rel="external">VAExposed</a> 我们以微信防撤回为例，看看具体的效果：</p>
+<p>首先安装VAExposed这个修改版的双开APK，你可以clone源码直接build，也可以使用我编译好的版本 <a href="https://raw.githubusercontent.com/android-hacker/VAExposed/master/VirtualApp/VAExposed_0.1.4.apk" target="_blank" rel="external">Github下载</a> 百度网盘: <a href="https://pan.baidu.com/s/1o8mRlUi" target="_blank" rel="external">https://pan.baidu.com/s/1o8mRlUi</a> 密码: sanf</p>
+<p>然后安装微信防撤回模块：微信巫师，发布的主页在这：<a href="http://xposed.appkg.com/2558.html" target="_blank" rel="external">WeChat Magician（微信巫师）</a>；直接下载 <a href="http://dl-xda.xposed.info/modules/com.gh0u1l5.wechatmagician_v30_1387ce.apk" target="_blank" rel="external">链接</a></p>
+<p>接下来需要确保你手机上的微信是微信巫师所支持的，目前支持微信的版本为 6.5.8~6.5.16；如果不是的话需要去下载一个支持的版本，比如 <a href="https://down.shouji.com.cn/wap/wdown/softversion?id=188561&amp;package=com.tencent.mm" target="_blank" rel="external">微信_6.5.8.apk</a>。</p>
+<p>最后，你需要打开VAExposed这个双开软件，添加微信和微信巫师为双开模块，如下图：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158544505.png" width="180px"></p>
+<p>这样，使用双开中的微信，就能享受Xposed模块的防撤回功能了！</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158469933.png" width="180px"></p>
+<p>另外，你还可以直接在双开中使用 XposedInstaller，然后就可以方便滴下载和管理Xposed模块了：</p>
+<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158377339.png" width="180px"><br><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158575155.png" width="180px"><br><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158598212.png" width="180px"></p>
+<p>就这样，我们在非Root手机下，就能享用Xposed模块的功能，Have Fun ：）</p>
+<p>不过，在实现完这个功能之后，我不寒而栗：千万不要在Root环境或者双开环境下运行关键App，不然你的微信登录密码，支付宝支付密码，银行卡账号，很有可能被尽收眼底。</p>
+<p>PS：目前 Exposed 层的实现处于初级阶段，个人精力非常有限（一般都是凌晨写代码）；如果你对 <strong>实现非Root模式下的Xposed</strong> 感兴趣，非常欢迎跟我一起组队 :) 项目地址在这：<a href="https://github.com/android-hacker/exposed。" target="_blank" rel="external">https://github.com/android-hacker/exposed。</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/epic/" rel="tag">#epic</a>
+          
+            <a href="/tags/root/" rel="tag">#root</a>
+          
+            <a href="/tags/xposed/" rel="tag">#xposed</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/23/dexposed-on-art/" rel="next">我为Dexposed续一秒——论ART上运行时 Method AOP实现</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+    
+
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="http://43.245.220.89:8080" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="http://43.245.220.89:8080/js/embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

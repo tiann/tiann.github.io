@@ -178,6 +178,77 @@
           
           
             
+              <a class="post-title-link" href="/2017/12/02/non-root-xposed/" itemprop="url">
+                无需Root也能使用Xposed！
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-12-02T04:12:59+08:00" content="2017-12-02">
+            2017-12-02
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，<strong>能不能不用Root就可以享用Xposed的功能呢？</strong></p>
+<p>我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xposed需要修改系统文件，而这些文件只有root权限才能修改；但是这只是当前实现的特性（修改系统分区文件），而非根本原因。Xposed要实现的最终目的是在任意App进程启动之前能任意加载 <strong>特定Xposed模块</strong> 的代码；这些特定的Xposed模块中能在App进程启动之前有机会执行特定代码，从而控制任意进程的行为。归根结底，Xposed需要控制别的进程，而没有高级权限（Root），越俎代庖是不行的。</p>
+<p>有没有别的实现方式？</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/12/02/non-root-xposed/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/11/23/dexposed-on-art/" itemprop="url">
                 我为Dexposed续一秒——论ART上运行时 Method AOP实现
               </a>
@@ -820,78 +891,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/12/understand-plugin-framework-receiver/" itemprop="url">
-                Android插件化原理解析——广播的管理
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-04-12T19:08:16+08:00" content="2016-04-12">
-            2016-04-12
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>在<a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 以及 <a href="http://weishu.me/2016/04/05/understand-plugin-framework-classloader/">插件加载机制</a> 中我们详细讲述了插件化过程中对于Activity组件的处理方式，为了实现Activity的插件化我们付出了相当多的努力；那么Android系统的其他组件，比如BroadcastReceiver，Service还有ContentProvider，它们又该如何处理呢？</p>
-<p>相比Activity，BroadcastReceiver要简单很多——广播的生命周期相当简单；如果希望插件能够支持广播，这意味着什么？</p>
-<p>回想一下我们日常开发的时候是如何使用BroadcastReceiver的：<strong>注册</strong>, <strong>发送</strong>和<strong>接收</strong>；因此，要实现BroadcastReceiver的插件化就这三种操作提供支持；接下来我们将一步步完成这个过程。</p>
-<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的<code>receiver-management</code> 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/12/understand-plugin-framework-receiver/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -930,7 +929,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -944,7 +943,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">38</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">标签</span>
               
           </div>
