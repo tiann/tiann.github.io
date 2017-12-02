@@ -54,7 +54,7 @@
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158377339.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158575155.png">
 <meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158598212.png">
-<meta property="og:updated_time" content="2017-12-01T20:17:19.000Z">
+<meta property="og:updated_time" content="2017-12-02T01:06:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无需Root也能使用Xposed！">
 <meta name="twitter:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
@@ -228,7 +228,7 @@
 <p>双开的典型实现是lody的 <a href="https://github.com/asLody/VirtualApp" target="_blank" rel="external">VirtualApp</a>，那么我们来一看 <code>VirtualApp</code> 与 <code>epic</code> 结合会产生什么样奇妙的化学反应。</p>
 <p>我们的思路很清晰：用 VirtualApp 去启动别的App，在启动过程中通过 epic Hook本进程，从而控制被启动的App。同时，由于Xposed模块已经比较成熟，而且有成千上万的插件生态，最好能够直接复用Xposed 的模块，使得在双开环境下，Xposed模块就跟运行在Root手机中的Xposed环境中一样。为此，我写了一个 双开环境下的Xposed兼容层：<a href="https://github.com/android-hacker/exposed" target="_blank" rel="external">Exposed</a>；同时，修改了 VirtualApp 的部分实现，使得它能够在进程的启动的时候加载 Exposed 这个兼容层，代码在这：<a href="https://github.com/android-hacker/VAExposed" target="_blank" rel="external">VAExposed</a>。这样，在双开环境中，可以直接加载已有的Xposed模块进而实现非Root模式下的Xposed的功能。更有趣的是，你还可以直接使用 XposedInstaller 安装和管理任意的Xposed模块，就跟你使用真正的Xposed一样！</p>
 <p>具体的代码就不详细讲了，可以直接去看源码<a href="https://github.com/android-hacker/exposed" target="_blank" rel="external">Exposed</a>，<a href="https://github.com/android-hacker/VAExposed" target="_blank" rel="external">VAExposed</a> 我们以微信防撤回为例，看看具体的效果：</p>
-<p>首先安装VAExposed这个修改版的双开APK，你可以clone源码直接build，也可以使用我编译好的版本 <a href="https://raw.githubusercontent.com/android-hacker/VAExposed/master/VirtualApp/VAExposed_0.1.4.apk" target="_blank" rel="external">Github下载</a> 百度网盘: <a href="https://pan.baidu.com/s/1o8mRlUi" target="_blank" rel="external">https://pan.baidu.com/s/1o8mRlUi</a> 密码: sanf</p>
+<p>首先安装VAExposed这个修改版的双开APK，你可以clone源码直接build，也可以使用我编译好的版本 <a href="https://raw.githubusercontent.com/android-hacker/VAExposed/master/VirtualApp/VAExposed_0.1.5.apk" target="_blank" rel="external">Github下载</a> 百度网盘: <a href="https://pan.baidu.com/s/1qXB9qtY" target="_blank" rel="external">https://pan.baidu.com/s/1qXB9qtY</a> 密码: i45e</p>
 <p>然后安装微信防撤回模块：微信巫师，发布的主页在这：<a href="http://xposed.appkg.com/2558.html" target="_blank" rel="external">WeChat Magician（微信巫师）</a>；直接下载 <a href="http://dl-xda.xposed.info/modules/com.gh0u1l5.wechatmagician_v30_1387ce.apk" target="_blank" rel="external">链接</a></p>
 <p>接下来需要确保你手机上的微信是微信巫师所支持的，目前支持微信的版本为 6.5.8~6.5.16；如果不是的话需要去下载一个支持的版本，比如 <a href="https://down.shouji.com.cn/wap/wdown/softversion?id=188561&amp;package=com.tencent.mm" target="_blank" rel="external">微信_6.5.8.apk</a>。</p>
 <p>最后，你需要打开VAExposed这个双开软件，添加微信和微信巫师为双开模块，如下图：</p>
