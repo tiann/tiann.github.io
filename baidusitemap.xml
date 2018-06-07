@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://weishu.me/2018/06/07/free-reflection-above-android-p/</loc>
+    <lastmod>2018-06-07T13:18:52.083Z</lastmod>
+    <data>
+        <display>
+        <title>一种绕过Android P对非SDK接口限制的简单方法</title>
+        <pubTime>2018-06-07T13:14:29.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>hook</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2017/12/02/non-root-xposed/</loc>
     <lastmod>2017-12-02T01:06:58.000Z</lastmod>
     <data>
