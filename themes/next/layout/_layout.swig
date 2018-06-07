@@ -37,6 +37,8 @@
               <div id="disqus_thread">
                 <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
               </div>
+            {% elseif theme.isso_ip %}
+              <section id="isso-thread"></section>
             {% endif %}
           </div>
         {% endif %}
@@ -59,6 +61,8 @@
   {% block comment_system %}
     {% include '_scripts/comments/duoshuo.swig' %}
     {% include '_scripts/comments/disqus.swig' %}
+    {% include '_scripts/comments/isso.swig' %}
+
   {% endblock %}
   {% include '_scripts/fancy-box.swig' %}
   {% include '_scripts/helpers.swig' %}

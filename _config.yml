@@ -75,7 +75,7 @@ deploy:
     gitcafe: git@git.coding.net:weishu/weishu.git,gitcafe-pages
 
 # duoshuo 
-duoshuo_shortname: duoshuo-zygote
+# duoshuo_shortname: duoshuo-zygote
 
 # baidu analytics
 baidu_analytics: 5ba59f635a6de43d516b52632af83325
