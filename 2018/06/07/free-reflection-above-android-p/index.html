@@ -47,7 +47,7 @@
 <meta property="og:url" content="http://weishu.me/2018/06/07/free-reflection-above-android-p/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="众所周知，Android P 引入了针对非 SDK 接口（俗称为隐藏API）的使用限制。这是继 Android N上针对 NDK 中私有库的链接限制之后的又一次重大调整。从今以后，不论是native层的NDK还是 Java层的SDK，我们只能使用Google提供的、公开的标准接口。这对开发者以及用户乃至整个Android生态，当然是一件好事。但这也同时意味着Android上的各种黑科技有可能会逐渐">
-<meta property="og:updated_time" content="2018-06-07T13:18:52.083Z">
+<meta property="og:updated_time" content="2018-08-24T06:57:31.616Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种绕过Android P对非SDK接口限制的简单方法">
 <meta name="twitter:description" content="众所周知，Android P 引入了针对非 SDK 接口（俗称为隐藏API）的使用限制。这是继 Android N上针对 NDK 中私有库的链接限制之后的又一次重大调整。从今以后，不论是native层的NDK还是 Java层的SDK，我们只能使用Google提供的、公开的标准接口。这对开发者以及用户乃至整个Android生态，当然是一件好事。但这也同时意味着Android上的各种黑科技有可能会逐渐">
@@ -268,6 +268,7 @@
 <h3 id="剑走偏锋">剑走偏锋</h3><p>上面我们分析了系统的源代码，结合各种条件来实现绕过对非SDK API调用的检测；但实际上所有这些方式我们的目的都是一样的—— <strong>通过某种方式修改函数的执行流程</strong>；而达到这个目标最直接的方法就是 <strong>inline hook</strong>！！由于inline hook太强大，你只需要找到一个关键的执行流程，hook其中的某个函数，修改他的返回值就OK了；这里我也没啥好分析的，只能给大家推荐一个 inline hook 库了，名字叫 <a href="https://github.com/jmpews/HookZz" target="_blank" rel="external">HookZz</a>，代码非常优秀，值得一看。</p>
 <h2 id="后记">后记</h2><p>本来真的只是打算介绍那个简单方法的，结果一不小心全写完啦 ：）</p>
 <p>文章可能有疏漏，也可能有更优秀的办法；欢迎交流讨论～</p>
+<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同<a href="https://cloud.tencent.com/developer/support-plan?invite_code=32crgvp98ucks" target="_blank" rel="external">入驻</a></p>
 </span>
       
     </div>
