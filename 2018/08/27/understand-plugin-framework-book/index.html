@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="android,epic,root,xposed," />
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
 
 
 
@@ -41,24 +41,17 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
-我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
+<meta name="description" content="从我写下 Android插件化原理解析 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="无需Root也能使用Xposed！">
-<meta property="og:url" content="http://weishu.me/2017/12/02/non-root-xposed/index.html">
+<meta property="og:title" content="Android插件化原理解析——剧终">
+<meta property="og:url" content="http://weishu.me/2018/08/27/understand-plugin-framework-book/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
-我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
-<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158544505.png">
-<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158469933.png">
-<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158377339.png">
-<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158575155.png">
-<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158598212.png">
-<meta property="og:updated_time" content="2017-12-02T01:06:58.000Z">
+<meta property="og:description" content="从我写下 Android插件化原理解析 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.">
+<meta property="og:image" content="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1535348090511.png">
+<meta property="og:updated_time" content="2018-08-27T05:44:03.833Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无需Root也能使用Xposed！">
-<meta name="twitter:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
-我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
+<meta name="twitter:title" content="Android插件化原理解析——剧终">
+<meta name="twitter:description" content="从我写下 Android插件化原理解析 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -68,7 +61,7 @@
   };
 </script>
 
-  <title> 无需Root也能使用Xposed！ | Weishu's Notes </title>
+  <title> Android插件化原理解析——剧终 | Weishu's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -185,7 +178,7 @@
           
           
             
-              无需Root也能使用Xposed！
+              Android插件化原理解析——剧终
             
           
         </h1>
@@ -194,8 +187,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2017-12-02T04:12:59+08:00" content="2017-12-02">
-            2017-12-02
+          <time itemprop="dateCreated" datetime="2018-08-27T12:59:21+08:00" content="2018-08-27">
+            2018-08-27
           </time>
         </span>
 
@@ -220,56 +213,27 @@
       
 
       
-        <span itemprop="articleBody"><p>Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，<strong>能不能不用Root就可以享用Xposed的功能呢？</strong></p>
-<p>我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xposed需要修改系统文件，而这些文件只有root权限才能修改；但是这只是当前实现的特性（修改系统分区文件），而非根本原因。Xposed要实现的最终目的是在任意App进程启动之前能任意加载 <strong>特定Xposed模块</strong> 的代码；这些特定的Xposed模块中能在App进程启动之前有机会执行特定代码，从而控制任意进程的行为。归根结底，Xposed需要控制别的进程，而没有高级权限（Root），越俎代庖是不行的。</p>
-<p>有没有别的实现方式？</p>
+        <span itemprop="articleBody"><p>从我写下 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.0上私有API的限制几乎称得上是盖棺定论了——曾经波澜壮阔的插件化进程必将要退出历史主流。如今的插件化技术朝两个方向发展：其一，插件化的工程特性：模块化/解耦被抽离，逐渐演进为稳定、务实的的组件化方案；其二，插件化的黑科技特性被进一步发掘，inline hook/method hook大行其道，走向双开，虚拟环境等等。</p>
+<p>虽然插件化终将落幕，但是它背后的技术原理包罗万象，值得每一个希望深入Android的小伙伴们学习。</p>
+<p>很遗憾曾经的系列文章没有写完，现在已经没机会甚至可以说不可能去把它完结了；不过幸运的是，我的良师益友包老师（我习惯称呼他为包哥）写了一本关于插件化的书——《Android插件化开发指南》，书中讲述了过去数年浩浩荡荡的插件化历程以及插件技术的方方面面；有兴趣的小伙伴可以买一本看看。</p>
 <a id="more"></a>
-<p>虽然没有办法控制别的进程，但是在本进程内，几乎是可以为所欲为的；如果换个方式，<strong>把别的App放在自己的进程里面运行，然后Hook自己</strong> 不就打到目的了嘛？「把别的App放在自己的进程里面运行」这种机制是容器，或者通俗点叫双开；「Hook自己」这是典型的Dexposed的思路，不过Dexposed不支持ART——但前不久 epic 的出现完成了这最后一块拼图。（关于epic在ART上实现AOP Hook可以参考 <a href="http://weishu.me/2017/11/23/dexposed-on-art/">我为Dexposed续一秒——论ART上运行时 Method AOP实现</a></p>
-<p>双开的典型实现是lody的 <a href="https://github.com/asLody/VirtualApp" target="_blank" rel="external">VirtualApp</a>，那么我们来一看 <code>VirtualApp</code> 与 <code>epic</code> 结合会产生什么样奇妙的化学反应。</p>
-<p>我们的思路很清晰：用 VirtualApp 去启动别的App，在启动过程中通过 epic Hook本进程，从而控制被启动的App。同时，由于Xposed模块已经比较成熟，而且有成千上万的插件生态，最好能够直接复用Xposed 的模块，使得在双开环境下，Xposed模块就跟运行在Root手机中的Xposed环境中一样。为此，我写了一个 双开环境下的Xposed兼容层：<a href="https://github.com/android-hacker/exposed" target="_blank" rel="external">Exposed</a>；同时，修改了 VirtualApp 的部分实现，使得它能够在进程的启动的时候加载 Exposed 这个兼容层，代码在这：<a href="https://github.com/android-hacker/VAExposed" target="_blank" rel="external">VAExposed</a>。这样，在双开环境中，可以直接加载已有的Xposed模块进而实现非Root模式下的Xposed的功能。更有趣的是，你还可以直接使用 XposedInstaller 安装和管理任意的Xposed模块，就跟你使用真正的Xposed一样！</p>
-<p>具体的代码就不详细讲了，可以直接去看源码<a href="https://github.com/android-hacker/exposed" target="_blank" rel="external">Exposed</a>，<a href="https://github.com/android-hacker/VAExposed" target="_blank" rel="external">VAExposed</a> 我们以微信防撤回为例，看看具体的效果：</p>
-<p>首先安装VAExposed这个修改版的双开APK，你可以clone源码直接build，也可以使用我编译好的版本 <a href="https://raw.githubusercontent.com/android-hacker/VAExposed/master/VirtualApp/VAExposed_0.1.5.apk" target="_blank" rel="external">Github下载</a> 百度网盘: <a href="https://pan.baidu.com/s/1qXB9qtY" target="_blank" rel="external">https://pan.baidu.com/s/1qXB9qtY</a> 密码: i45e</p>
-<p>然后安装微信防撤回模块：微信巫师，发布的主页在这：<a href="http://xposed.appkg.com/2558.html" target="_blank" rel="external">WeChat Magician（微信巫师）</a>；直接下载 <a href="http://dl-xda.xposed.info/modules/com.gh0u1l5.wechatmagician_v30_1387ce.apk" target="_blank" rel="external">链接</a></p>
-<p>接下来需要确保你手机上的微信是微信巫师所支持的，目前支持微信的版本为 6.5.8~6.5.16；如果不是的话需要去下载一个支持的版本，比如 <a href="https://down.shouji.com.cn/wap/wdown/softversion?id=188561&amp;package=com.tencent.mm" target="_blank" rel="external">微信_6.5.8.apk</a>。</p>
-<p>最后，你需要打开VAExposed这个双开软件，添加微信和微信巫师为双开模块，如下图：</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158544505.png" width="180px"></p>
-<p>这样，使用双开中的微信，就能享受Xposed模块的防撤回功能了！</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158469933.png" width="180px"></p>
-<p>另外，你还可以直接在双开中使用 XposedInstaller，然后就可以方便滴下载和管理Xposed模块了：</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158377339.png" width="180px"><br><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158575155.png" width="180px"><br><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1512158598212.png" width="180px"></p>
-<p>就这样，我们在非Root手机下，就能享用Xposed模块的功能，Have Fun ：）</p>
-<p>不过，在实现完这个功能之后，我不寒而栗：千万不要在Root环境或者双开环境下运行关键App，不然你的微信登录密码，支付宝支付密码，银行卡账号，很有可能被尽收眼底。</p>
-<p>PS：目前 Exposed 层的实现处于初级阶段，个人精力非常有限（一般都是凌晨写代码）；如果你对 <strong>实现非Root模式下的Xposed</strong> 感兴趣，非常欢迎跟我一起组队 :) 项目地址在这：<a href="https://github.com/android-hacker/exposed。" target="_blank" rel="external">https://github.com/android-hacker/exposed。</a></p>
+<p><a href="https://item.m.jd.com/product/31188356430.html?utm_source=iosapp&amp;utm_medium=appshare&amp;utm_campaign=t_335139774&amp;utm_term=Wxfriends" target="_blank" rel="external"><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1535348090511.png" alt="点击购买"></a></p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/android/" rel="tag">#android</a>
-          
-            <a href="/tags/epic/" rel="tag">#epic</a>
-          
-            <a href="/tags/root/" rel="tag">#root</a>
-          
-            <a href="/tags/xposed/" rel="tag">#xposed</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/07/free-reflection-above-android-p/" rel="prev">一种绕过Android P对非SDK接口限制的简单方法</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/23/dexposed-on-art/" rel="next">我为Dexposed续一秒——论ART上运行时 Method AOP实现</a>
+              <a href="/2018/06/07/free-reflection-above-android-p/" rel="next">一种绕过Android P对非SDK接口限制的简单方法</a>
             
           </div>
         </div>

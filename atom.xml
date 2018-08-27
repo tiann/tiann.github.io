@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2018-08-24T06:59:08.780Z</updated>
+  <updated>2018-08-27T05:44:03.833Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,11 +15,32 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Android插件化原理解析——剧终]]></title>
+    <link href="http://weishu.me/2018/08/27/understand-plugin-framework-book/"/>
+    <id>http://weishu.me/2018/08/27/understand-plugin-framework-book/</id>
+    <published>2018-08-27T04:59:21.000Z</published>
+    <updated>2018-08-27T05:44:03.833Z</updated>
+    <content type="html"><![CDATA[<p>从我写下 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.0上私有API的限制几乎称得上是盖棺定论了——曾经波澜壮阔的插件化进程必将要退出历史主流。如今的插件化技术朝两个方向发展：其一，插件化的工程特性：模块化/解耦被抽离，逐渐演进为稳定、务实的的组件化方案；其二，插件化的黑科技特性被进一步发掘，inline hook/method hook大行其道，走向双开，虚拟环境等等。</p>
+<p>虽然插件化终将落幕，但是它背后的技术原理包罗万象，值得每一个希望深入Android的小伙伴们学习。</p>
+<p>很遗憾曾经的系列文章没有写完，现在已经没机会甚至可以说不可能去把它完结了；不过幸运的是，我的良师益友包老师（我习惯称呼他为包哥）写了一本关于插件化的书——《Android插件化开发指南》，书中讲述了过去数年浩浩荡荡的插件化历程以及插件技术的方方面面；有兴趣的小伙伴可以买一本看看。</p>
+<a id="more"></a>
+<p><a href="https://item.m.jd.com/product/31188356430.html?utm_source=iosapp&amp;utm_medium=appshare&amp;utm_campaign=t_335139774&amp;utm_term=Wxfriends" target="_blank" rel="external"><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201605/1535348090511.png" alt="点击购买"></a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>从我写下 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.0上私有API的限制几乎称得上是盖棺定论了——曾经波澜壮阔的插件化进程必将要退出历史主流。如今的插件化技术朝两个方向发展：其一，插件化的工程特性：模块化/解耦被抽离，逐渐演进为稳定、务实的的组件化方案；其二，插件化的黑科技特性被进一步发掘，inline hook/method hook大行其道，走向双开，虚拟环境等等。</p>
+<p>虽然插件化终将落幕，但是它背后的技术原理包罗万象，值得每一个希望深入Android的小伙伴们学习。</p>
+<p>很遗憾曾经的系列文章没有写完，现在已经没机会甚至可以说不可能去把它完结了；不过幸运的是，我的良师益友包老师（我习惯称呼他为包哥）写了一本关于插件化的书——《Android插件化开发指南》，书中讲述了过去数年浩浩荡荡的插件化历程以及插件技术的方方面面；有兴趣的小伙伴可以买一本看看。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[一种绕过Android P对非SDK接口限制的简单方法]]></title>
     <link href="http://weishu.me/2018/06/07/free-reflection-above-android-p/"/>
     <id>http://weishu.me/2018/06/07/free-reflection-above-android-p/</id>
     <published>2018-06-07T13:14:29.000Z</published>
-    <updated>2018-08-24T06:59:08.780Z</updated>
+    <updated>2018-08-27T05:42:10.351Z</updated>
     <content type="html"><![CDATA[<p>众所周知，Android P 引入了<a href="https://developer.android.com/preview/restrictions-non-sdk-interfaces?hl=zh-cn" target="_blank" rel="external">针对非 SDK 接口（俗称为隐藏API）的使用限制</a>。这是继 Android N上<a href="https://developer.android.com/about/versions/nougat/android-7.0-changes?hl=zh-cn" target="_blank" rel="external">针对 NDK 中私有库的链接限制</a>之后的又一次重大调整。从今以后，不论是native层的NDK还是 Java层的SDK，我们只能使用Google提供的、公开的标准接口。这对开发者以及用户乃至整个Android生态，当然是一件好事。但这也同时意味着Android上的各种黑科技有可能会逐渐走向消亡。</p>
 <p>作为一个有追求的开发者，我们既要尊重并遵守规则，也要有能力在必要的时候突破规则的束缚，带着镣铐跳舞。恰好最近有人反馈 <a href="https://github.com/android-hacker/VirtualXposed/issues/115" target="_blank" rel="external">VirtualXposed 在 Android P上无法运行</a>，那么今天就来探讨一下，如何突破Android P上针对非SDK接口调用的限制。</p>
 <a id="more"></a>
@@ -76,7 +97,6 @@
 <h3 id="剑走偏锋">剑走偏锋</h3><p>上面我们分析了系统的源代码，结合各种条件来实现绕过对非SDK API调用的检测；但实际上所有这些方式我们的目的都是一样的—— <strong>通过某种方式修改函数的执行流程</strong>；而达到这个目标最直接的方法就是 <strong>inline hook</strong>！！由于inline hook太强大，你只需要找到一个关键的执行流程，hook其中的某个函数，修改他的返回值就OK了；这里我也没啥好分析的，只能给大家推荐一个 inline hook 库了，名字叫 <a href="https://github.com/jmpews/HookZz" target="_blank" rel="external">HookZz</a>，代码非常优秀，值得一看。</p>
 <h2 id="后记">后记</h2><p>本来真的只是打算介绍那个简单方法的，结果一不小心全写完啦 ：）</p>
 <p>文章可能有疏漏，也可能有更优秀的办法；欢迎交流讨论～</p>
-<p><strong>我的博客即将搬运同步至腾讯云+社区，邀请大家一同<a href="https://cloud.tencent.com/developer/support-plan?invite_code=32crgvp98ucks" target="_blank" rel="external">入驻</a></strong></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>众所周知，Android P 引入了<a href="https://developer.android.com/preview/restrictions-non-sdk-interfaces?hl=zh-cn">针对非 SDK 接口（俗称为隐藏API）的使用限制</a>。这是继 Android N上<a href="https://developer.android.com/about/versions/nougat/android-7.0-changes?hl=zh-cn">针对 NDK 中私有库的链接限制</a>之后的又一次重大调整。从今以后，不论是native层的NDK还是 Java层的SDK，我们只能使用Google提供的、公开的标准接口。这对开发者以及用户乃至整个Android生态，当然是一件好事。但这也同时意味着Android上的各种黑科技有可能会逐渐走向消亡。</p>
@@ -1847,95 +1867,6 @@
       <category term="droidplugin" scheme="http://weishu.me/tags/droidplugin/"/>
     
       <category term="plugin framework" scheme="http://weishu.me/tags/plugin-framework/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[你真的了解AsyncTask？]]></title>
-    <link href="http://weishu.me/2016/01/18/dive-into-asynctask/"/>
-    <id>http://weishu.me/2016/01/18/dive-into-asynctask/</id>
-    <published>2016-01-18T07:41:08.000Z</published>
-    <updated>2016-01-18T07:47:21.000Z</updated>
-    <content type="html"><![CDATA[<p>虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？</p>
-<p>AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将带你了解AsyncTask背后的原理，并给出一个久经考验的AsyncTask修改版。</p>
-<a id="more"></a>
-<h2 id="AsyncTask是什么？">AsyncTask是什么？</h2><p>AsyncTask到底是什么呢？很简单，<strong>它不过是对线程池和Handler的封装</strong>；用线程池来处理后台任务，用Handler来处理与UI的交互。线程池使用的是<code>Executor</code>接口，我们先了解一下线程池的特性。</p>
-<h2 id="线程池ThreadPoolExecutor">线程池ThreadPoolExecutor</h2><p>JDK5带来的一大改进就是Java的并发能力，它提供了三种并发武器：并发框架Executor，并发集合类型如ConcurrentHashMap，并发控制类如CountDownLatch等；圣经《Effective Java》也说，尽量使用Exector而不是直接用Thread类进行并发编程。</p>
-<p>AsyncTask内部也使用了线程池处理并发；线程池通过<code>ThreadPoolExector</code>类构造，这个构造函数参数比较多，它允许开发者对线程池进行定制，我们先看看这每个参数是什么意思，然后看看Android是以何种方式定制的。</p>
-<p>ThreadPoolExecutor的其他构造函数最终都会调用如下的构造函数完成对象创建工作：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span><br><span class="line">                          <span class="keyword">int</span> maximumPoolSize,</span><br><span class="line">                          <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">                          TimeUnit unit,</span><br><span class="line">                          BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">                          ThreadFactory threadFactory,</span><br><span class="line">                          RejectedExecutionHandler handler)</span></span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>corePoolSize: 核心线程数目，即使线程池没有任务，核心线程也不会终止（除非设置了allowCoreThreadTimeOut参数）可以理解为“常驻线程”</li>
-<li>maximumPoolSize: 线程池中允许的最大线程数目；一般来说，线程越多，线程调度开销越大；因此一般都有这个限制。</li>
-<li>keepAliveTime: 当线程池中的线程数目比核心线程多的时候，如果超过这个keepAliveTime的时间，多余的线程会被回收；这些与核心线程相对的线程通常被称为<em>缓存线程</em></li>
-<li>unit: keepAliveTime的时间单位</li>
-<li>workQueue: 任务执行前保存任务的队列；这个队列仅保存由execute提交的Runnable任务</li>
-<li>threadFactory: 用来构造线程池的工厂；一般都是使用默认的；</li>
-<li>handler: 当线程池由于线程数目和队列限制而导致后续任务阻塞的时候，线程池的处理方式。</li>
-</ul>
-<p>那么，当一个新的任务到达的时候，线程池中的线程是如何调度的呢？（别慌，讲这么一大段线程池的知识，是为了理解AsyncTask；Be Patient）</p>
-<ol>
-<li>如果线程池中线程的数目少于corePoolSize，就算线程池中有其他的没事做的核心线程，线程池还是会重新创建一个核心线程；直到核心线程数目到达corePoolSize（常驻线程就位）</li>
-<li>如果线程池中线程的数目大于或者等于corePoolSize，但是工作队列workQueue没有满，那么新的任务会放在队列workQueue中，按照FIFO的原则依次等待执行；（当有核心线程处理完任务空闲出来后，会检查这个工作队列然后取出任务默默执行去）</li>
-<li>如果线程池中线程数目大于等于corePoolSize，并且工作队列workQueue满了，但是总线程数目小于maximumPoolSize，那么直接创建一个线程处理被添加的任务。</li>
-<li>如果工作队列满了，并且线程池中线程的数目到达了最大数目maximumPoolSize，那么就会用最后一个构造参数<code>handler</code>处理；**默认的处理方式是直接丢掉任务，然后抛出一个异常。</li>
-</ol>
-<p>总结起来，也即是说，当有新的任务要处理时，<strong>先看线程池中的线程数量是否大于 corePoolSize，再看缓冲队列 workQueue 是否满，最后看线程池中的线程数量是否大于 maximumPoolSize</strong>。另外，当线程池中的线程数量大于 corePoolSize 时，如果里面有线程的空闲时间超过了 keepAliveTime，就将其移除线程池，这样，可以动态地调整线程池中线程的数量。</p>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/20161-18.jpg" alt="风景"></p>
-<p>我们以API 22为例，看一看AsyncTask里面的线程池是以什么参数构造的；AsyncTask里面有“两个”线程池；一个<code>THREAD_POOL_EXECUTOR</code>一个<code>SERIAL_EXECUTOR</code>；之所以打引号，是因为其实<code>SERIAL_EXECUTOR</code>也使用<code>THREAD_POOL_EXECUTOR</code>实现的，只不过加了一个队列弄成了串行而已，那么这个<code>THREAD_POOL_EXECUTOR</code>是如何构造的呢？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = CPU_COUNT + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = CPU_COUNT * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">            <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">128</span>);</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor THREAD_POOL_EXECUTOR</span><br><span class="line">            = <span class="keyword">new</span> ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,</span><br><span class="line">                    TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);</span><br></pre></td></tr></table></figure>
-<p>可以看到，AsyncTask里面线程池是一个核心线程数为<code>CPU + 1</code>，最大线程数为<code>CPU * 2 + 1</code>，工作队列长度为<strong>128</strong>的线程池；并且没有传递<code>handler</code>参数，那么使用的就是默认的Handler（拒绝执行).</p>
-<p>那么问题来了：</p>
-<ol>
-<li><p>如果任务过多，那么超过了工作队列以及线程数目的限制导致这个线程池发生阻塞，那么悲剧发生，默认的处理方式会直接抛出一个异常导致进程挂掉。假设你自己写一个异步图片加载的框架，然后用AsyncTask实现的话，当你快速滑动ListView的时候很容易发生这种异常；这也是为什么各大ImageLoader都是自己写线程池和Handlder的原因。</p>
-</li>
-<li><p>这个线程池是一个静态变量；那么在同一个进程之内，所有地方使用到的AsyncTask默认构造函数构造出来的AsyncTask都使用的是同一个线程池，如果App模块比较多并且不加控制的话，很容易满足第一条的崩溃条件；如果你不幸在不同的AsyncTask的doInBackgroud里面访问了共享资源，那么就会发生各种并发编程问题。</p>
-</li>
-<li><p>在AsyncTask全部执行完毕之后，进程中还是会常驻corePoolSize个线程；在Android 4.4 （API 19）以下，这个corePoolSize是hardcode的，数值是5；API 19改成了<code>cpu + 1</code>；也就是说，在Android 4.4以前；如果你执行了超过五个AsyncTask；然后啥也不干了，进程中还是会有5个AsyncTask线程；不信，你看：</p>
-</li>
-</ol>
-<p><img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1453101991064.png" width="277"></p>
-<h3 id="Handler">Handler</h3><p>AsyncTask里面的handler很简单，如下（API 22代码）：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> InternalHandler sHandler = <span class="keyword">new</span> InternalHandler();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">InternalHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(Looper.getMainLooper());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意，这里直接用的主线程的Looper；如果去看API 22以下的代码，会发现它没有这个构造函数，而是使用默认的；默认情况下，Handler会使用当前线程的Looper，如果你的AsyncTask是在子线程创建的，那么很不幸，你的<code>onPreExecute</code>和<code>onPostExecute</code>并非在UI线程执行，而是被Handler post到创建它的那个线程执行；如果你在这两个线程更新了UI，那么直接导致崩溃。这也是大家口口相传的<strong>AsyncTask必须在主线程创建</strong>的原因。</p>
-<p>另外，AsyncTask里面的这个Handler是一个静态变量，也就是说它是在类加载的时候创建的；如果在你的APP进程里面，以前从来没有使用过AsyncTask，然后在子线程使用AsyncTask的相关变量，那么导致静态Handler初始化，如果在API 16以下，那么会出现上面同样的问题；这就是<strong>AsyncTask必须在主线程初始化</strong> 的原因。</p>
-<p>事实上，在Android 4.1(API 16)以后，在APP主线程ActivityThread的main函数里面，直接调用了<code>AscynTask.init</code>函数确保这个类是在主线程初始化的；另外，init这个函数里面获取了<code>InternalHandler</code>的Looper，由于是在主线程执行的，因此，AsyncTask的Handler用的也是主线程的Looper。这个问题从而得到彻底的解决。</p>
-<h2 id="AsyncTask是并行执行的吗？">AsyncTask是并行执行的吗？</h2><p>现在知道AsyncTask内部有一个线程池，那么派发给AsyncTask的任务是并行执行的吗？</p>
-<p>答案是不确定。在Android 1.5刚引入的时候，AsyncTask的<code>execute</code>是串行执行的；到了Android 1.6直到Android 2.3.2，又被修改为并行执行了，这个执行任务的线程池就是<code>THREAD_POOL_EXECUTOR</code>，因此在一个进程内，所有的AsyncTask都是并行执行的；但是在Android 3.0以后，如果你使用<code>execute</code>函数直接执行AsyncTask，那么<strong>这些任务是串行执行的</strong>；（你说蛋疼不）源代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) &#123;</span><br><span class="line">    <span class="keyword">return</span> executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个<code>sDefaultExecutor</code>就是用来执行任务的线程池，那么它的值是什么呢？继续看代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Executor sDefaultExecutor = SERIAL_EXECUTOR;</span><br></pre></td></tr></table></figure>
-<p>因此结论就来了：<strong>Android 3.0以上，AsyncTask默认并不是并行执行的</strong>；</p>
-<h3 id="为什么默认不并行执行？">为什么默认不并行执行？</h3><p>也许你不理解，为什么AsyncTask默认把它设计为串行执行的呢？</p>
-<p>由于一个进程内所有的AsyncTask都是使用的同一个线程池执行任务；如果同时有几个AsyncTask一起并行执行的话，恰好AysncTask的使用者在<code>doInbackgroud</code>里面访问了相同的资源，但是自己没有处理同步问题；那么就有可能导致灾难性的后果！</p>
-<p>由于开发者通常不会意识到需要对他们创建的所有的AsyncTask对象里面的<code>doInbackgroud</code>做同步处理，因此，API的设计者为了避免这种无意中访问并发资源的问题，干脆把这个API设置为默认所有串行执行的了。如果你明确知道自己需要并行处理任务，那么你需要使用<code>executeOnExecutor(Executor exec,Params... params)</code>这个函数来指定你用来执行任务的线程池，同时为自己的行为负责。（处理同步问题）</p>
-<p>实际上《Effective Java》里面有一条原则说的就是这种情况：不要在同步块里面调用不可信的外来函数。这里明显违背了这个原则：AsyncTask这个类并不知道使用者会在<code>doInBackgroud</code>这个函数里面做什么，但是对它的行为做了某种假设。</p>
-<h3 id="如何让AsyncTask并行执行？">如何让AsyncTask并行执行？</h3><p>正如上面所说，如果你确定自己做好了同步处理，或者你没有在不同的AsyncTask里面访问共享资源，需要AsyncTask能够并行处理任务的话，你可以用带有两个参数的<code>executeOnExecutor</code>执行任务：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> AsyncTask&lt;Void, Void, Vo</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(Void... params)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);</span><br></pre></td></tr></table></figure>
-<h2 id="更好的AsyncTask">更好的AsyncTask</h2><p>从上面的分析得知，AsyncTask有如下问题：</p>
-<ol>
-<li>默认的AsyncTask如果处理的任务过多，会导致程序直接崩溃；</li>
-<li>AsyncTask类必须在主线程初始化，必须在主线程创建，不然在API 16以下很大概率崩溃。</li>
-<li>如果你曾经使用过AsyncTask，以后不用了；在Android 4.4以下，进程内也默认有5个AsyncTask线程；在Android 4.4以上，默认有<code>CPU + 1</code>个线程。</li>
-<li>Android 3.0以上的AsyncTask默认是串行执行任务的；如果要并行执行需要调用低版本没有的API，处理麻烦。</li>
-</ol>
-<p>因此我们对系统的AsyncTask做了一些修改，在不同Android版本提供一致的行为，并且提高了使用此类的安全性，主要改动如下：</p>
-<ol>
-<li>添加对于任务过多导致崩溃的异常保护；在这里进行必要的数据统计上报工作；如果出现这个问题，说明AsyncTask不适合这种场景了，需要考虑重构；</li>
-<li>移植API 22对于Handler的处理；这样就算在线程创建异步任务，也不会有任何问题；</li>
-<li>提供串行执行和并行执行的<code>execute</code>方法；默认串行执行，如果明确知道自己在干什么，可以使用<code>executeParallel</code>并行执行。</li>
-<li>在<code>doInbackgroud</code>里面频繁崩溃的地方加上<code>try..catch</code>；自己处理数据上报工作。</li>
-</ol>
-<p>完整代码见gist，<a href="https://gist.github.com/tiann/8860bcc514f067ab4291" target="_blank" rel="external">BetterAsyncTask</a></p>
-<p>原文地址：<a href="http://weishu.me/2016/01/18/dive-into-asynctask/">http://weishu.me/2016/01/18/dive-into-asynctask/</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？</p>
-<p>AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将带你了解AsyncTask背后的原理，并给出一个久经考验的AsyncTask修改版。</p>]]>
-    
-    </summary>
-    
-      <category term="android" scheme="http://weishu.me/tags/android/"/>
     
   </entry>
   
