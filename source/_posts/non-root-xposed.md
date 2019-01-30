@@ -32,19 +32,19 @@ Xposed是Android系统上久负盛名的一个框架，它给了普通用户任�
 
 最后，你需要打开VAExposed这个双开软件，添加微信和微信巫师为双开模块，如下图：
 
-<img src="http://http://weishu.dimensionalzone.com/201605/1512158544505.png" width="180px"/>
+<img src="http://weishu.dimensionalzone.com/201605/1512158544505.png" width="180px"/>
 
 
 这样，使用双开中的微信，就能享受Xposed模块的防撤回功能了！
 
-<img src="http://http://weishu.dimensionalzone.com/201605/1512158469933.png" width="180px"/>
+<img src="http://weishu.dimensionalzone.com/201605/1512158469933.png" width="180px"/>
 
 
 另外，你还可以直接在双开中使用 XposedInstaller，然后就可以方便滴下载和管理Xposed模块了：
 
-<img src="http://http://weishu.dimensionalzone.com/201605/1512158377339.png" width="180px"/>
-<img src="http://http://weishu.dimensionalzone.com/201605/1512158575155.png" width="180px"/>
-<img src="http://http://weishu.dimensionalzone.com/201605/1512158598212.png" width="180px"/>
+<img src="http://weishu.dimensionalzone.com/201605/1512158377339.png" width="180px"/>
+<img src="http://weishu.dimensionalzone.com/201605/1512158575155.png" width="180px"/>
+<img src="http://weishu.dimensionalzone.com/201605/1512158598212.png" width="180px"/>
 
 就这样，我们在非Root手机下，就能享用Xposed模块的功能，Have Fun ：）
 

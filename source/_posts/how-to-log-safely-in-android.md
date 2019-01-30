@@ -25,7 +25,7 @@ public class LogUtil {
 }
 ```
 接下来看一个真实的例子，国外的一个apk，名字叫做powerclean；包名：com.lionmobi.powerclean;我们安装这个包；发现很正常，没有任何日志输出；然后我们逆向这个apk；随便翻看几个类，发现很多地方有类似日志输出：
-<img src="http://http://weishu1.dimensionalzone.com/markdown/1445243591752.png" width="552" alt="日志输出图片"/>
+<img src="http://weishu1.dimensionalzone.com/markdown/1445243591752.png" width="552" alt="日志输出图片"/>
 我们打开这个叫做x的类，虽然被混淆过了，但是意思很明白，跟我们上面的思路一样：
 ```java
 package com.lionmobi.util;
@@ -126,7 +126,7 @@ public class x {
 
 ```
 很明白，那个叫做`a`的静态变量就是我们的开关， 它的初始化在哪个静态代码块里面；新建了一个局部变量0x0然后赋值给了`a`；因此，我们**把这个0x0修改为0x1**就打开了这个开关。很简单吧，接下来我们把修改好的smali打包回去，然后签名得到一个新的可以运行的apk；运行一下看看结果。果然，一大堆的日志输出了出来，你的程序每一步在干什么都自己告诉别人了，都不需要去猜；我就随便截个图，感受下：
-<img src="http://http://weishu1.dimensionalzone.com/markdown/1445245047558.png" width="1235" alt="泄漏的日志信息"/>
+<img src="http://weishu1.dimensionalzone.com/markdown/1445245047558.png" width="1235" alt="泄漏的日志信息"/>
 
 ##  让release版本里面不包含日志代码
 从上面的分析我们得到一个结论：**如果需要程序是“日志安全的”，那么release版本里面不应该存在输出日志的代码**。
@@ -183,7 +183,7 @@ public class LogUtil {
 }
 ```
 我们看到，if代码块已经没有了，确实不会输出任何日志；但是，我们看看调用这个类的地方！
-<img src="http://http://weishu1.dimensionalzone.com/markdown/1445247504072.png" width="575" alt="掩耳盗铃的日志"/>
+<img src="http://weishu1.dimensionalzone.com/markdown/1445247504072.png" width="575" alt="掩耳盗铃的日志"/>
 
 这个`LogUtil.d`的调用，无异于掩耳盗铃；虽然破解者没办法让`android.util.Log`这个类输出任何日志，但是你这里的这个调用还是告诉了别人你在干什么；所以，要屏蔽日志的输出，必须使用if代码块直接包含要被剔除的日志。上面的那个日志类，要被优化掉，那就是：
 ```java
@@ -198,7 +198,7 @@ if (DEBUG) {
 
 #### IDEA/Android Studio
 可以使用live template的功能；比如我的做法是，写一个`ifd`的template，每次我输入`ifd`然后自动展开成if语句，光标停在最中间：
-<img src="http://http://weishu1.dimensionalzone.com/markdown1445258458.gif"  width="402" alt="使用live template简化输入"/>
+<img src="http://weishu1.dimensionalzone.com/markdown1445258458.gif"  width="402" alt="使用live template简化输入"/>
 
 #### vim/emacs
 可以使用宏录制的功能，实现上面的live template。

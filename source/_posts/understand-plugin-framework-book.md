@@ -11,7 +11,7 @@ tags:
 
 <!--more-->
 
-[![点击购买](http://http://weishu.dimensionalzone.com/201605/1535348090511.png)][1]
+[![点击购买](http://weishu.dimensionalzone.com/201605/1535348090511.png)][1]
 
 
 [1]: https://item.m.jd.com/product/31188356430.html?utm_source=iosapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=Wxfriends

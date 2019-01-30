@@ -193,7 +193,7 @@ public final LoadedApk getPackageInfoNoCheck(ApplicationInfo ai,
 
 那么，系统是如何获取这个信息的呢？其实Framework就有一个这样的parser，也即PackageParser；理论上，我们也可以借用系统的parser来解析AndroidMAnifest.xml从而得到ApplicationInfo的信息。但遗憾的是，**这个类的兼容性很差**；Google几乎在每一个Android版本都对这个类动刀子，如果坚持使用系统的解析方式，必须写一系列兼容行代码！！DroidPlugin就选择了这种方式，相关类如下：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1459829051777.png" width="283" alt="DroidPlugin的PackageParser"/>
+<img src="http://weishu.dimensionalzone.com/201601/1459829051777.png" width="283" alt="DroidPlugin的PackageParser"/>
 
 看到这里我就问你怕不怕！！！这也是我们之前提到的**私有或者隐藏的API可以使用，但必须处理好兼容性问题**；如果Android 7.0发布，这里估计得添加一个新的类PackageParseApi24。
 
@@ -201,7 +201,7 @@ public final LoadedApk getPackageInfoNoCheck(ApplicationInfo ai,
 
 OK回到正题，我们决定使用PackageParser类来提取ApplicationInfo信息。下图是API 23上，PackageParser的部分类结构图：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1459829674687.png" width="481"/>
+<img src="http://weishu.dimensionalzone.com/201601/1459829674687.png" width="481"/>
 
 看起来有我们需要的方法 generateApplication；确实如此，依靠这个方法我们可以成功地拿到ApplicationInfo。
 由于PackageParser是@hide的，因此我们需要通过反射进行调用。我们根据这个generateApplicationInfo方法的签名：

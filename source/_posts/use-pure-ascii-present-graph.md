@@ -7,7 +7,7 @@ tags:
 
 另外，你是否见到过这样的注释：
 
-<img src="http://http://weishu.dimensionalzone.com/201512/1451834573842.png" alt="ASCII art图像" width="463"/>
+<img src="http://weishu.dimensionalzone.com/201512/1451834573842.png" alt="ASCII art图像" width="463"/>
 
 没错，这种逼格极高的ASCII图片注释方式就是我们要讨论的话题。
 

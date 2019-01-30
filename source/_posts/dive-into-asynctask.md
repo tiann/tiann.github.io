@@ -48,7 +48,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 总结起来，也即是说，当有新的任务要处理时，**先看线程池中的线程数量是否大于 corePoolSize，再看缓冲队列 workQueue 是否满，最后看线程池中的线程数量是否大于 maximumPoolSize**。另外，当线程池中的线程数量大于 corePoolSize 时，如果里面有线程的空闲时间超过了 keepAliveTime，就将其移除线程池，这样，可以动态地调整线程池中线程的数量。
 
-![风景](http://http://weishu.dimensionalzone.com/20161-18.jpg)
+![风景](http://weishu.dimensionalzone.com/20161-18.jpg)
 
 我们以API 22为例，看一看AsyncTask里面的线程池是以什么参数构造的；AsyncTask里面有“两个”线程池；一个`THREAD_POOL_EXECUTOR`一个`SERIAL_EXECUTOR`；之所以打引号，是因为其实`SERIAL_EXECUTOR`也使用`THREAD_POOL_EXECUTOR`实现的，只不过加了一个队列弄成了串行而已，那么这个`THREAD_POOL_EXECUTOR`是如何构造的呢？
 
@@ -73,7 +73,7 @@ public static final Executor THREAD_POOL_EXECUTOR
 
 3. 在AsyncTask全部执行完毕之后，进程中还是会常驻corePoolSize个线程；在Android 4.4 （API 19）以下，这个corePoolSize是hardcode的，数值是5；API 19改成了`cpu + 1`；也就是说，在Android 4.4以前；如果你执行了超过五个AsyncTask；然后啥也不干了，进程中还是会有5个AsyncTask线程；不信，你看：
 
-<img src="http://http://weishu.dimensionalzone.com/201512/1453101991064.png" width="277"/>
+<img src="http://weishu.dimensionalzone.com/201512/1453101991064.png" width="277"/>
 
 ### Handler
 

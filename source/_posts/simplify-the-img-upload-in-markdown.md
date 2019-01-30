@@ -18,7 +18,7 @@ markdown写作的时候，图片插入是一件比较麻烦的事情。常见的
 
 ## 效果预览
 首先看看最终达到的效果：
-<img alt="效果预览" src="http://http://weishu1.dimensionalzone.com/markdownmarkdownimg.gif" width="660" />
+<img alt="效果预览" src="http://weishu1.dimensionalzone.com/markdownmarkdownimg.gif" width="660" />
 
 第一步，截图；第二步，粘贴；done!
 
@@ -29,7 +29,7 @@ markdown写作的时候，图片插入是一件比较麻烦的事情。常见的
 
 这里选择七牛的图床，各种语言的SDK都有，还有免费10G空间，每个月10G流量，业界良心！注册点[这里][1]
 
-然后新建一个空间，比如我的叫做booluimg，然后点击空间设置里面的域名设置，看看域名是什么，那么以后我的图片就会上传到 http://http://weishu1.dimensionalzone.com/
+然后新建一个空间，比如我的叫做booluimg，然后点击空间设置里面的域名设置，看看域名是什么，那么以后我的图片就会上传到 http://weishu1.dimensionalzone.com/
 
 ### 用SDK上传图片
 使用七牛提供的python SDK，下面的代码可以将一个文件上传到七牛的空间：
@@ -110,7 +110,7 @@ from clipboard import get_paste_img_file
 from upload import upload_qiniu
 import os
 
-url = "http://http://weishu1.dimensionalzone.com/markdown"
+url = "http://weishu1.dimensionalzone.com/markdown"
 
 img_file = get_paste_img_file()
 if img_file:

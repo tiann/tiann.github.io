@@ -10,7 +10,7 @@ Markdown这种格式的出现大大提升了写作的效率，但是它对于非
 
 首先，切换输入法(就算是按`shift`键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：
 
-![效果图](http://http://weishu.dimensionalzone.com/201602markdown_keymap_remapping.gif)
+![效果图](http://weishu.dimensionalzone.com/201602markdown_keymap_remapping.gif)
 
 <!--more-->
 避免输入法切换最简单的办法就是把markdown使用的那些特定字符`!-[]#*()`，直接使用半角符号代替全角符号；完成这个功能最好的角色是输入法；但目前除了可以定制的鼠须管等能完成，其他的国产输入以及系统输入法都不支持；在第三方输入法支持这个功能之前，我这里给出一个简单的方案。
@@ -31,17 +31,17 @@ Markdown这种格式的出现大大提升了写作的效率，但是它对于非
 
 首先，打开Karabiner软件，选择`Misc&Uninstall`选项卡，如下图：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1454310098796.png" width="740"/>
+<img src="http://weishu.dimensionalzone.com/201601/1454310098796.png" width="740"/>
 
 然后，点击上图标识的`open private.xml`那个按钮，用文本编辑器打开这个文件：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1454310263101.png" width="574"/>
+<img src="http://weishu.dimensionalzone.com/201601/1454310263101.png" width="574"/>
 
 接着去 [gist][3]上把`markdown_keyboard_remapping.xml`里面的代码copy到这个文件里面，全部替换即可(代码有点长，我就不贴了，自行[下载][3])：
 
 最后，打开Karabiner软件的第一个选项卡，重新加载配置就完成了，如下图：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1454310388700.png" width="771"/>
+<img src="http://weishu.dimensionalzone.com/201601/1454310388700.png" width="771"/>
 
 ### 如果你使用Windows
 

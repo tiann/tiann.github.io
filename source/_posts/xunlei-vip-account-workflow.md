@@ -9,7 +9,7 @@ mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只�
 想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。**如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除**
 
 先看看效果：
-<img src="http://http://weishu1.dimensionalzone.com/markdownxunleivip.gif" alt='效果图' width="721" />
+<img src="http://weishu1.dimensionalzone.com/markdownxunleivip.gif" alt='效果图' width="721" />
 
 <!--more -->
 ## 获取免费迅雷账号的地址
@@ -48,7 +48,7 @@ def _get_from_web():
 使用python的alfred workflow sdk的话非常简单，文档在[这里](http://alfredworkflow.readthedocs.org/en/develop/index.html)
 
 这里要处理的一个问题是，账号和密码如何简单滴传递出来；一起放在剪切版肯定不太合适。幸好alfred自带剪切版历史的功能，我们分别两次把账号和密码复制到剪切版，要使用的时候，激活`cmd + option + c`然后从剪切版历史里面选择账号密码即可：效果如下：
-<img src="http://http://weishu1.dimensionalzone.com/test/1447827801109.png" width="514" alt="alfred历史剪切版功能"/>
+<img src="http://weishu1.dimensionalzone.com/test/1447827801109.png" width="514" alt="alfred历史剪切版功能"/>
 然后，按下`cmd + 2`得到账号，`cmd + 3`得到密码！具体代码比较简单：
 ```
 import subprocess,time

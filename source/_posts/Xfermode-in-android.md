@@ -135,26 +135,26 @@ canvas.restoreLayer()
 ```
 
 注意到，每一个图都有半透明和全透明的两周状态，画出来，肉眼看到效果如下：
-![Src](http://http://weishu1.dimensionalzone.com/markdown/bdea3ba636d6818d213404e2b8715141.png?imageMogr2/thumbnail/!50p)![DST](http://http://weishu1.dimensionalzone.com/markdown/b1b7ff836a928e412a92425cfbac872d.png?imageMogr2/thumbnail/!50p)
+![Src](http://weishu1.dimensionalzone.com/markdown/bdea3ba636d6818d213404e2b8715141.png?imageMogr2/thumbnail/!50p)![DST](http://weishu1.dimensionalzone.com/markdown/b1b7ff836a928e412a92425cfbac872d.png?imageMogr2/thumbnail/!50p)
 
 #### SRC和DST
 这个就不是解释了，SRC - [Sa, Sc]只有源图像的alpha和颜色，因此只保留源图像；DST也是一样。
 
 ####SRC_OVER 
  [ Sa +(1-Sa) * Da , Rc = Sc +( 1- Sa ) * Dc ]。从名字上看，从DST上面绘制SRC图像（透明度的叠加）：
-![SRC_OVER](http://http://weishu1.dimensionalzone.com/markdown/44464b24373b955088f469bc0123348e.png?imageMogr2/thumbnail/!50p)
+![SRC_OVER](http://weishu1.dimensionalzone.com/markdown/44464b24373b955088f469bc0123348e.png?imageMogr2/thumbnail/!50p)
 
 ####DST_OVER 
 [Sa + ( 1 - Sa ) * Da ,Rc = Dc + ( 1 - Da ) * Sc ]。与上面情况差不多，看看效果：
-![DST_OVER](http://http://weishu1.dimensionalzone.com/markdown/d48a3385baf33b1e1eda1e68d65a6be5.png?imageMogr2/thumbnail/!50p)
+![DST_OVER](http://weishu1.dimensionalzone.com/markdown/d48a3385baf33b1e1eda1e68d65a6be5.png?imageMogr2/thumbnail/!50p)
 
 #### SRC_IN
 [ Sa * Da , Sc * Da ]。注意，alpha通道是SRC和DSTalpha的乘法叠加；颜色是SRC颜色与DSTalpha通道的叠加；考虑一下，我们的图像应该是个什么样子；首先确定图像范围。什么时候才会有图像呢，rgb应该有分量，alpha不能为0；所以rgb分量里面只有SRC，说明图像里面区域里面只有源图像；alpha通道只有DST，当DSTalpha为0的地方没有图像（这句话有两个意思，在DST完全透明的地方不存在源图像）简而言之，就是在相交的地方绘制源图像；但是绘制的alpha通道受DST影响：
-![SRC_IN](http://http://weishu1.dimensionalzone.com/markdown/ae37f07bc86754f334dc4f509cf6acc6.png?imageMogr2/thumbnail/!50p)
+![SRC_IN](http://weishu1.dimensionalzone.com/markdown/ae37f07bc86754f334dc4f509cf6acc6.png?imageMogr2/thumbnail/!50p)
 
 #### DST_IN
 [ Sa * Da , Sa * Dc ]。按照上面的理解。在相交的地方绘制DST，但是alpha受SRC影响：
-![DST_IN](http://http://weishu1.dimensionalzone.com/markdown/323dbf2cb54e951a4a9d307ee4d53eb4.png?imageMogr2/thumbnail/!50p)
+![DST_IN](http://weishu1.dimensionalzone.com/markdown/323dbf2cb54e951a4a9d307ee4d53eb4.png?imageMogr2/thumbnail/!50p)
 
 #### SRC_OUT
 很多地方解释说：
@@ -162,7 +162,7 @@ canvas.restoreLayer()
 >在不相交的地方绘制 源图像。
 
 我们看看是不是这样：
-![SRC_OUT](http://http://weishu1.dimensionalzone.com/markdown/a98043e9bdb9c64ce845dffc27bea020.png?imageMogr2/thumbnail/!50p)
+![SRC_OUT](http://weishu1.dimensionalzone.com/markdown/a98043e9bdb9c64ce845dffc27bea020.png?imageMogr2/thumbnail/!50p)
 说好的在不相交的地方绘制源图像呢？如果是这个意思，因为DST包含SRC，那么应该整个应该是什么都没有（待商榷，下面说）。为什么相交的地方还是有源图像？
 
 看看这个porterduff公式：[ Sa * ( 1 - Da ) , Sc * ( 1 - Da ) ]
@@ -175,32 +175,32 @@ canvas.restoreLayer()
 
 #### DST_OUT
  [ Da * ( 1 - Sa ) , Dc * ( 1 - Sa ) ] 与上面解释类似，不赘述。
- ![DST_OUT](http://http://weishu1.dimensionalzone.com/markdown/ce26aec4b49f6acfe068b34b01624816.png?imageMogr2/thumbnail/!50p)
+ ![DST_OUT](http://weishu1.dimensionalzone.com/markdown/ce26aec4b49f6acfe068b34b01624816.png?imageMogr2/thumbnail/!50p)
 
 #### SRC_ATOP
  [ Da , Sc * Da + ( 1 - Sa ) * Dc ]。与上面两种模式解释差不多，有一点不同。
  **源图像和目标图像相交处绘制源图像，不相交的地方绘制目标图像，并且相交处的效果会受到源图像和目标图像alpha的影响；**
- ![SRC_ATOP](http://http://weishu1.dimensionalzone.com/markdown/615a9819236eff103e67f66a5eeec253.png?imageMogr2/thumbnail/!50p)
+ ![SRC_ATOP](http://weishu1.dimensionalzone.com/markdown/615a9819236eff103e67f66a5eeec253.png?imageMogr2/thumbnail/!50p)
 
 #### DST_ATOP
 [ Sa , Sa * Dc + Sc * ( 1 - Da ) ]，直接上解释。
 **源图像和目标图像相交处绘制目标图像，不相交的地方绘制源图像，并且相交处的效果会受到源图像和目标图像alpha的影响；**
-![DST_ATOP](http://http://weishu1.dimensionalzone.com/markdown/8f684c7abec84b009050626104a60047.png?imageMogr2/thumbnail/!50p)
+![DST_ATOP](http://weishu1.dimensionalzone.com/markdown/8f684c7abec84b009050626104a60047.png?imageMogr2/thumbnail/!50p)
 
 #### XOR 
 [ Sa + Da - 2 * Sa * Da, Sc * ( 1 - Da ) + ( 1 - Sa ) * Dc ]
 **在不相交的地方按原样绘制源图像和目标图像，相交的地方受到对应alpha和色值影响。**按上面公式进行计算，如果都完全不透明则相交处完全不绘制；
-![XOR](http://http://weishu1.dimensionalzone.com/markdown/6c6f1660106e7b28493e1b0d133fb65c.png?imageMogr2/thumbnail/!50p)
+![XOR](http://weishu1.dimensionalzone.com/markdown/6c6f1660106e7b28493e1b0d133fb65c.png?imageMogr2/thumbnail/!50p)
 
 #### DARKEN 
 [ Sa + Da - Sa * Da , Sc * ( 1 - Da ) + Dc * ( 1 - Sa ) + min(Sc , Dc) ]
 从算法上看，alpha值变大，色值上如果都不透明则取较暗值，非完全不透明情况下使用上面算法进行计算，受到源图和目标图对应色值和alpha值影响；正如名字所说，会感觉效果变暗，即进行对应像素的比较，取较暗值，如果色值相同则进行混合；
-![DSARKEN](http://http://weishu1.dimensionalzone.com/markdown/9f5083ff696b21876730d751ba59cd9b.png?imageMogr2/thumbnail/!50p)
+![DSARKEN](http://weishu1.dimensionalzone.com/markdown/9f5083ff696b21876730d751ba59cd9b.png?imageMogr2/thumbnail/!50p)
 
 ####LIGHTEN
  [ Sa + Da - Sa * Da , Sc * ( 1 -Da ) + Dc * ( 1 - Sa ) + max ( Sc , Dc ) ]
  与DARKEN相反，LIGHTEN 的目的则是变亮，如果在均完全不透明的情况下 ，色值取源色值和目标色值中的较大值，否则按上面算法进行计算；
- ![LIGHTEN](http://http://weishu1.dimensionalzone.com/markdown/32bf36e760b74332bb1e901df98e8334.png?imageMogr2/thumbnail/!50p)
+ ![LIGHTEN](http://weishu1.dimensionalzone.com/markdown/32bf36e760b74332bb1e901df98e8334.png?imageMogr2/thumbnail/!50p)
 
 接下来四种 **MULTIFY**，**SCREEN**，**ADD**，**OVERLAY**就不说了，产生的结果不太确定。自己查阅文档吧。
 emphasized text

@@ -432,7 +432,7 @@ Service组件与Activity组件另外一个不同点在于，对同一个Service�
 
 上文指出，我们不能套用Activity的方案实现Service组件的插件化，可以通过手动控制Service组件的生命周期实现；我们先来看一下Service的生命周期：
 
-![Service生命周期](http://http://weishu.dimensionalzone.com/201601/1462949033406.png)
+![Service生命周期](http://weishu.dimensionalzone.com/201601/1462949033406.png)
 
 从图中可以看出，Service的生命周期相当简单：整个生命周期从调用 onCreate() 开始起，到 onDestroy() 返回时结束。对于非绑定服务，就是从startService调用到stopService或者stopSelf调用。对于绑定服务，就是bindService调用到unbindService调用；
 

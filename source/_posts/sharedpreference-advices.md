@@ -10,7 +10,7 @@ SharedPreference是Android上一种非常易用的轻量级存储方式，由于
 
 第一次看到下面这个sp的时候，我的内心是崩溃的：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1476286071563.png" width="664"/>
+<img src="http://weishu.dimensionalzone.com/201601/1476286071563.png" width="664"/>
 
 一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？
 
@@ -98,7 +98,7 @@ JSON或者HTML格式存放在sp里面的时候，需要转义，这样会带来�
 
 下面这个sp是某个app的换肤配置：
 
-<img src="http://http://weishu.dimensionalzone.com/201601/1476282570956.png" width="696"/>
+<img src="http://weishu.dimensionalzone.com/201601/1476282570956.png" width="696"/>
 
 我们先用sp进行读取，然后用直接把它丢json文件，直接读取并且解析；json使用的代码如下：
 

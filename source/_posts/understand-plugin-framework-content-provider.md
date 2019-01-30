@@ -303,7 +303,7 @@ synchronized (cpr) {
 
 我们接着看ActivityThread的main函数，顺便寻找我们上面那个问题的答案；这个分析实际上就是Android App的启动过程，更详细的过程可以参阅老罗的文章 [Android应用程序启动过程源代码分析][4]，这里只给出简要调用流程：
 
-![App启动简要流程](http://http://weishu.dimensionalzone.com/201605/1468313182087.png)
+![App启动简要流程](http://weishu.dimensionalzone.com/201605/1468313182087.png)
 
 最终，DemoB进程启动之后会执行ActivityThread类的handleBindApplication方法，这个方法相当之长，基本完成了App进程启动之后所有必要的操作；这里我们只关心ContentProvider相关的初始化操作，代码如下：
 

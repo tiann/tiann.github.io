@@ -33,7 +33,7 @@ Mac的文件系统默认不区分大小写，这不满足Android源码编译系�
 1. 打开Mac的系统软件：**磁盘工具**
 2. CMD + N，创建新的磁盘映像，参数设置如下图：
 
-    <img src="http://http://weishu.dimensionalzone.com/201601/1483019239159.png" width="430"/>
+    <img src="http://weishu.dimensionalzone.com/201601/1483019239159.png" width="430"/>
     
     其中磁盘大小设置为 50~100G合适，**格式一定要选择带区分大小写标志的。**
  
