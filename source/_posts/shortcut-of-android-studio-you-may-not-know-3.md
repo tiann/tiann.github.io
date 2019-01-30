@@ -12,7 +12,7 @@ categories:
 # Select In..
 说实话，想不出一个比较好的翻译 :P 干脆使用英文吧。
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-1.gif" alt="Select In.." width="449"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-1.gif" alt="Select In.." width="449"/>
 
 有没有这样的场景：你在Android Studio打开了一个图片文件（或者别的文件），想在资源浏览器里面查看这图片；在Eclipse里面我想大部分的人是`Alt + Enter`进入文件属性复制地址，然后在系统资源管理器里面打开；或者装一个EasyExplore插件。在Android Studio里面，这是内建支持的！而且还不止如此！比如你想看看某个文件在包的哪个目录，通常是不是点击Project View上面的那个小圆坐标；用这个快捷键鼠标就能搞定。
 <!--more-->
@@ -22,7 +22,7 @@ categories:
 
 # 拓展选择
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-2.gif" alt="拓展选择" width="357"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-2.gif" alt="拓展选择" width="357"/>
 
 这个功能应该很多人都知道；但还是说明一下，因为跟下面两个功能跟这个结合起来才有威力。这个功能太强大了，自己去按几遍就能想到很多使用场景了；我相信有了这个功能，你使用鼠标的机会会少很多。
 
@@ -31,7 +31,7 @@ categories:
 
 # Surround With..
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-3.gif" alt="Surround With" width="299"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-3.gif" alt="Surround With" width="299"/>
 
 如果你想把一段代码使用`if`语句包起来；又或者使用`try`包围一段可能有运行时异常的代码，你会怎么干？
 
@@ -44,13 +44,13 @@ categories:
 
 # Unwrap/Remove
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-4.gif" alt="Unwrap" width="546"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-4.gif" alt="Unwrap" width="546"/>
 
 这个功能跟上面提到的是一对，有了*Surround With*自然就有*Unsurround With*;使用情况没有上面那个那么多，但是好歹一对，一起介绍吧。
 
 # 高亮某东西
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-5.gif" alt="highlight something" width="198"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-5.gif" alt="highlight something" width="198"/>
 
 有时候看代码的时候，看到某个变量想知道哪里使用了它；你还在用肉眼查找吗？或者你杀鸡用牛刀`Find Usgae`？其实你的需求就是把这个变量全部给我打个标签，我想直观的知道它在哪。
 
@@ -67,7 +67,7 @@ categories:
 
 # 显示方法调用树
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-6.gif" alt="方法调用树" width="451"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-6.gif" alt="方法调用树" width="451"/>
 
 在看源码的时候，你还是使用`alt + F7`和`ctrl + B`在各个类之间来回穿梭吗？其实好多时候你就是想知道这个调用结构是怎么样的而已；谁是怎么一步一步滴调用谁的；这个快捷键会给你一个调用树。有了这个大菊观，继续探讨就很容易了。
 
@@ -75,7 +75,7 @@ categories:
 
 # 万能快捷键
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512-17-7.gif" alt="万能快捷键" width="500"/>
+<img src="http://http://weishu.dimensionalzone.com/201512-17-7.gif" alt="万能快捷键" width="500"/>
 
 记得之前提到过一个*万能重构键*, 有关重构的一切操作都可通过它完成。那么Android Studio这么快捷键，这么多功能，臣妾怎么可能都记住！要是有万能钥匙就好了！That's it!
 

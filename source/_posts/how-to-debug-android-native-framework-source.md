@@ -51,25 +51,25 @@ Android源码编译是个麻烦事儿，我写过一篇文章介绍 [如何使�
 
 首先我们对调试的宿主工程设置一下，选择native调试功能。点击运行下面的按钮 `Edit Configuration`：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484287940736.png" width="232"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484287940736.png" width="232"/>
 
 然后在debugger栏选择Native：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288018710.png" width="400"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484288018710.png" width="400"/>
 
 然后我们点击旁边的 `Debug`小按钮运行调试程序：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288078862.png" width="183"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484288078862.png" width="183"/>
 
 #### 设置调试符号以及关联源码
 
 在运行程序之后，我们可以在Android Studio的状态栏看到，LLDB调试插件自动帮我们完成了so查找路径的过程，这一点比gdb方便多了！在Android Studio的Debug窗口会自动弹出来，如下：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288380978.png" width="474"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484288380978.png" width="474"/>
 
 我们点击那个 `pause program` 按钮，可以让程序暂停运行：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484288440156.png" width="615"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484288440156.png" width="615"/>
 
 上图左边是正在运行的线程的堆栈信息，右边有两个tab，一个用来显示变量的值；一个是lldb交互式调试窗口！我们先切换到lldb窗口，输入如下命令设置一个断点：
 
@@ -101,11 +101,11 @@ Lines found in module `libart.so
 
 在继续介绍之前我们需要了解一些关于「调试符号」的知识；我们拿到的调试符号文件其实是一个DWARF文件，只不过这个文件被嵌入到了ELF文件格式之中，而其中的调试符号则在一些名为 `.debug_*` 的段之中，我们可以用 `readelf -S libart.so` 查看一下：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484289374465.png" width="616"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484289374465.png" width="616"/>
 
 编译器在编译libart.so的时候，记录下了**编译时候**源代码与代码偏移之间的对应关系，因此调试器可以从调试符号文件中获取到源码行号信息；如下：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484289826696.png" width="486"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484289826696.png" width="486"/>
 
 这下我们明白了上面那个莫名其妙的目录是什么了；原来是在编译`libart.so`的那个机器上存在源码。那么问题来了，我们绝大多数情况下是使用另外一台机器上的源码进行调试的——比如我提供的那个 [Demo工程][2] 包含的带符号libart.so里面保存的源文件信息的目录实际上是我编译的电脑上的目录，而你调试的时候需要使用自己电脑上的目录。知道了问题所在，解决就很简单了，我们需要映射一下；在Android Studio的Debug 窗口的lldb 那个tab执行如下命令：
 
@@ -115,7 +115,7 @@ Lines found in module `libart.so
 
 这时候，我们再触发断点（点击demo项目的Debug按钮），看看发生了什么？！
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484290490320.png" width="1191"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484290490320.png" width="1191"/>
 
 至此，我们已经成功滴完成了在Android Studio中Native代码的源码调试。你可以像调试Java代码一样调试Native代码，step/in/out/over，条件断点，watch point任你飞。你可以借助这个工具去探究Android底层运行原理，比如垃圾回收机制，对象分配机制，Binder通信等等，完全不在话下！
 
@@ -127,7 +127,7 @@ Lines found in module `libart.so
 
 要使用lldb进行调试，首先需要在调试设备上运行一个lldb-server，这个lldb-server attach到我们需要调试的进程，然后我们的开发机与这个server进行通信，就可以进行调试了。熟悉gdb调试的同学应该很清楚这一点。我们可以用Android Studio直接下载这个工具，打开SDK Manager：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484280931189.png" width="720"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484280931189.png" width="720"/>
 
 如上图，勾选这个即可；下载的内容会存放到你的 $ANDROID_SDK/lldb 目录下。
 
@@ -158,7 +158,7 @@ Lines found in module `libart.so
 
 首先打开终端执行lldb（Mac开发者工具自带这个，Windows不支持）,会进入一个交互式的环境，如下图：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484282196260.png" width="462"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1484282196260.png" width="462"/>
 
 1. 选择使用Android调试插件。执行如下命令：
 
@@ -174,7 +174,7 @@ Lines found in module `libart.so
     
    正常情况下你执行lldb-server的那个终端应该有了输出：
     
-   <img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1484282509260.png" width="430"/>
+   <img src="http://http://weishu.dimensionalzone.com/201601/1484282509260.png" width="430"/>
 
 3. attach到调试进程。首先你需要查出你要调试的那个进程的pid，直接用ps即可；打开一个新的终端执行：
 

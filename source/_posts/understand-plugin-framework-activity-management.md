@@ -102,7 +102,7 @@ case ActivityManager.START_CLASS_NOT_FOUND:
 
 OK，我们继续跟踪源码；在startActivityLocked之后处理的都是Activity任务栈相关内容，这一系列ActivityStack和ActivityStackSupervisor纠缠不清的调用看下图就明白了；不明白也没关系: D 目前用处不大。
 
-![调用流程图](http://7xp3xc.com1.z0.glb.clouddn.com/201601/1458296458099.png)
+![调用流程图](http://http://weishu.dimensionalzone.com/201601/1458296458099.png)
 
 这一系列调用最终到达了ActivityStackSupervisor的realStartActivityLocked方法；人如其名，这个方法开始了真正的“启动Activity”：它调用了ApplicationThread的scheduleLaunchActivity方法，开始了真正的Activity对象创建以及启动过程。
 
@@ -115,7 +115,7 @@ OK，我们继续跟踪源码；在startActivityLocked之后处理的都是Activ
 
 App进程与AMS进程的通信过程如图所示：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1458300329231.png" width="500"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1458300329231.png" width="500"/>
 
 App进程内部的ApplicationThread server端内部有自己的Binder线程池，它与App主线程的通信通过Handler完成，这个Handler存在于ActivityThread类，它的名字很简单就叫`H`，这一点我们接下来就会讲到。
 
@@ -185,7 +185,7 @@ Activity启动过程中很多重要的操作（正如上文分析的『必须在
 
 这时候Activity启动过程的知识就派上用场了；虽然整个启动过程非常复杂，但其实一张图就能总结：
 
-![简要启动过程](http://7xp3xc.com1.z0.glb.clouddn.com/201601/1458532084072.png)
+![简要启动过程](http://http://weishu.dimensionalzone.com/201601/1458532084072.png)
 
 先从App进程调用`startActivity`；然后通过IPC调用进入系统进程system_server，完成Activity管理以及一些校检工作，最后又回到了APP进程完成真正的Activioty对象创建。
 

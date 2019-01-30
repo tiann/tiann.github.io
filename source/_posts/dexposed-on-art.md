@@ -35,7 +35,7 @@ tags:
 1. 想办法拿到这个Java方法所代表的ArtMethod对象
 2. 取出其entrypoint，然后跳转到此处开始执行
 
-![](http://7xp3xc.com1.z0.glb.clouddn.com/201605/1511369316918.png)
+![](http://http://weishu.dimensionalzone.com/201605/1511369316918.png)
 
 
 ### entrypoint replacement
@@ -163,7 +163,7 @@ new MyThread().start();// Thread 3
 
 除了传统的类inline hook 的 dynamic callee-side rewriting 的Hook方式，也有基于虚拟机特定实现的Hook技术，比如vtable hook。ART中的这种Hook方式首先是在论文 [ARTDroid: A Virtual-Method Hooking Framework on Android ART Runtime](http://ceur-ws.org/Vol-1575/paper_10.pdf) 中提出的，作者的实现代码也在github上 [art-hooking-vtable](https://github.com/tdr130/art-hooking-vtable)。
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1511342723016.png" width="340"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1511342723016.png" width="340"/>
 
 这种Hook方式是基于invoke-virtual调用原理的；简单来讲，ART中调用一个virtual method的时候，会查相应Class类里面的一张表，如果修改这张表对应项的指向，就能达到Hook的目的。更详细的实现原理，作者的论文以及他的[博客](http://roptors.me/art/art-part-iii-arthook-framework/)讲的很详细，感兴趣的可以自行围观。
 
@@ -181,7 +181,7 @@ new MyThread().start();// Thread 3
 
 了解到已有项目的一些实现原理以及当前的现状，我们可以知道，要实现一个较为通用的Hook技术，几乎只有一条路———基于dynamic dispatch的dynamic callee-side rewriting。epic正是使用这种方式实现的，它的基本原理如下图：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201601/1511354138004.png" width="765"/>
+<img src="http://http://weishu.dimensionalzone.com/201601/1511354138004.png" width="765"/>
 
 在讲解这张图之前，有必要说明一下ART中的函数的调用约定。以Thumb2为例，子函数调用的参数传递是通过寄存器r0~r3 以及sp寄存器完成的。r0 ~ r3 依次传递第一个至第4个参数，同时 *sp, *(sp + 4), *(sp + 8), *(sp + 12) 也存放着r0~r3上对应的值；多余的参数通过 sp传递，比如 *(sp + 16)放第四个参数，以此类推。同时，函数的返回值放在r0寄存器。如果一个参数不能在一个寄存器中放下，那么会占用2个或多个寄存器。
 

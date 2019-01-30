@@ -194,7 +194,7 @@ public static void attachContext() throws Exception{
 
 好了，我们启动一个Activity测试一下，结果如下：
 
-<img src="http://7xp3xc.com1.z0.glb.clouddn.com/201512/1453981415720.png" width="866"/>
+<img src="http://http://weishu.dimensionalzone.com/201512/1453981415720.png" width="866"/>
 
 可见，Hook确实成功了！这就是使用代理进行Hook的原理——偷梁换柱。整个Hook过程简要总结如下：
 

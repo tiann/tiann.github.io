@@ -104,7 +104,7 @@ C -> 12334354
 
 OK，Binder的通信模型就是这么简单，如下图：
 
-![](http://7xp3xc.com1.z0.glb.clouddn.com/binder-model.png)
+![](http://http://weishu.dimensionalzone.com/binder-model.png)
 
 整个通信步骤如下：
 
