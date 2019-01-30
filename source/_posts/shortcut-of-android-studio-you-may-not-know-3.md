@@ -81,7 +81,7 @@ categories:
 
 使用这个快捷键，你想到什么功能，打开它搜索就可以了；打个比方，我想看看Java的`for each`循环和普通的`for`循环底层是不是同一个实现;那么我就需要看虚拟机字节码了；我记得有这个功能但是不知道快捷键是啥；OK，`Cmd + shift + A`，输入`bytecode`:
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450323104893.png" width="423"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450323104893.png" width="423"/>
 
 PS:(我用的Intellij IDEA，Android Studio没有集成bytecode功能，可能搜索不到）
 

@@ -7,7 +7,7 @@ tags:
 
 Alfred是个好东西，不过检索程序的时候不支持拼音搜索；我在论坛看到有人给作者反馈过，无奈作者说支持中文，他不知道拼音是什么，于是就不了了之了。举个例子：我想打开`网易云音乐`,可是当我输入`wangyiyunyinyue`的时候却是这样的结果:
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1449431593204.png" width="536" alt="不支持拼音的搜索结果"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1449431593204.png" width="536" alt="不支持拼音的搜索结果"/>
 
 要么我知道这个App的名字叫做`NeteaseMusic`，要么我就需要用中文输入`网易云音乐`打开了；如果恰巧输入法是英文输入状态，那么就会遇到上图的情况；这时候再把已经输入的删除然后切换输入法打开，效率无疑大大折扣。
 
@@ -109,6 +109,6 @@ def main():
 
 最后看效果：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/markdownalfredpinyin.gif" width="1104" alt="支持拼音搜索效果图"/>
+<img src="http://http://weishu1.dimensionalzone.com/markdownalfredpinyin.gif" width="1104" alt="支持拼音搜索效果图"/>
 [1]: https://github.com/mozillazg/python-pinyin
 [2]: https://gist.github.com/tiann/35fb758c18036d7f8640

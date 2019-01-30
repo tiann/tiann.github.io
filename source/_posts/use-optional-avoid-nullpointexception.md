@@ -279,12 +279,12 @@ Raoul-Gabriel Urma (@raoulUK) is currently completing a PhD in computer science 
 
 **原文**：http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html
 
-[1]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-1.gif
-[2]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-2.gif
+[1]: http://http://weishu1.dimensionalzone.com/blog2015-12-9-1.gif
+[2]: http://http://weishu1.dimensionalzone.com/blog2015-12-9-2.gif
 [3]: http://www.oracle.com/technetwork/articles/java/architect-lambdas-part1-2080972.html
 [4]: http://www.oraclejavamagazine-digital.com/javamagazine_open/20140304#pg51
-[5]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-3.gif
-[6]: http://7sbqce.com1.z0.glb.clouddn.com/blog2015-12-9-4.gif
+[5]: http://http://weishu1.dimensionalzone.com/blog2015-12-9-3.gif
+[6]: http://http://weishu1.dimensionalzone.com/blog2015-12-9-4.gif
 [7]: http://www.manning.com/urma/
 [8]: http://www.slideshare.net/mariofusco/monadic-java
 [9]: http://www.oraclejavamagazine-digital.com/javamagazine_open/20140304#pg51

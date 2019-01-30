@@ -8,7 +8,7 @@ categories:
 
 写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 `Evaluate Expression`, 知道条件断点；可是你听说过日志断点吗，`Method Breakpoint`, ```Exception Breakpoint``` 呢？还有高大上的 ```Field Watchpoint``` ?
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701212799.png" width="338" alt="几种不同的断点"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450701212799.png" width="338" alt="几种不同的断点"/>
 
 你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。
 <!--more -->
@@ -17,7 +17,7 @@ categories:
 
 一般来说我们有两种办法调试一个debuggable的apk；其一是下好断点，然后用debug模式编译安装这个app；其二是 `attach process`，在Android Studio里面就是这么一个对话框：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450697931900.png" width="273" alt="Attach Process"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450697931900.png" width="273" alt="Attach Process"/>
 
 第二种方法比较常用，我们可以在启动apk之后，直接下断点，然后attach process到制定进程，条件触发之后就可以直接进入调试模式。
 
@@ -28,14 +28,14 @@ categories:
 ## Evaluate Expression
 这个功能非常实用，可以在断点处直接进入一个求值环境，在这里你可以执行任何你感兴趣的表达式；如下图：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698259155.png" width="524" alt="Evaluate Expression"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450698259155.png" width="524" alt="Evaluate Expression"/>
 
 比如在断点处有一个对象`object`，如果你要查看它的某个属性很简单，在Debug窗口就能看到，但是如果你想要执行它的某个方法看看结果是什么呢？借助这个可以实现。当然它的功能远不止这么多，相当于直接进入了一个 `REPL`环境，非常实用。忘了说了，快捷键 `Alt + F8` :P
 
 ## 条件断点
 假设你的断点在一个列表的循环里面，可是你只对这个列表的某一个元素感兴趣，只想在遇到这个元素的时候才断下来；你是一直人肉 `F9` 直到满足条件吗？条件断点就是满足这种需求的，顾名思义，在特定条件下的断点。使用起来也非常简单，在你的断点上鼠标右键会出现一个小窗口，写上条件即可。
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450698641184.png" width="465" alt="条件断点"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450698641184.png" width="465" alt="条件断点"/>
 
 ## 日志断点
 很多时候我们调试的时候更多的是打印日志定位异常代码，缩小范围之后再使用断点解决问题；所以经常做的事情就是在代码里面添加日志信息，输出函数参数，返回信息，输出我们感兴趣的变量信息等。
@@ -44,7 +44,7 @@ categories:
 
 首先我们在想要输出信息的地方下一个断点；然后右键这个断点，在出现的设置框里面把这个断点的 `suspend` 属性设置为 `False` ，这样虽然叫做“断点”，但是并不会真正断下来；然后，我们在 `log message` 里面填上我们想要输出的日志信息。如下图(注意标红位置）：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699187057.png" width="591" alt="日志断点"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450699187057.png" width="591" alt="日志断点"/>
 
 这样，每次代码执行到这个断点的位置，这个可爱的断点并不会使我们的程序停下来，而是输出我们告诉它的日志信息，然后继续执行；非常方便。
 
@@ -52,7 +52,7 @@ categories:
 
 传统的调试方式是以行为单位的，所谓单步调试；但是很多时候我们关心的是某个函数的参数，返回值；（回想一下我们使用日志的时候打印的最多的信息难道不是函数的参数和返回值吗？）使用方法断点，我们可以在函数级别进行调试；如果经常跳进跳出函数或者只对某个函数的参数感兴趣，这种类型的断点非常实用。具体使用方法有两种方式；最简单的是在你感兴趣的方法头那一行打上断点，这时候你会发现断点图标有点不一样，这就是方法断点了，如下图：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450699584560.png" width="503" alt="方法断点"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450699584560.png" width="503" alt="方法断点"/>
 
 另外一种方式是通过*断点设置窗口*, 后面介绍。
 
@@ -63,11 +63,11 @@ Android Studio给了我们这个能力！那就是**异常断点**!可以在特�
 
 具体做法是，进入 `Run -> View BreakPoints` 或者使用快捷键打开断点设置窗口；如下图：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700136670.png" width="273" alt="断点设置窗口" />
+<img src="http://http://weishu1.dimensionalzone.com/test/1450700136670.png" width="273" alt="断点设置窗口" />
 
 点击左上角的 ➕ ，会出现一个选择框；选择`Exception Breakpoint`；然后会出现一个对话框，选择你感兴趣的异常：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700226518.png" width="526" alt="异常断点" />
+<img src="http://http://weishu1.dimensionalzone.com/test/1450700226518.png" width="526" alt="异常断点" />
 
 ## Field WatchPoint
 在上面我们添加异常断点的时候，点击加号的时候，有四个选项；第一个就是我们前面所说的第二种方法断点的添加方式，第三个是异常断点，那么第二个 **Field WatchPoint** 是干什么的呢？
@@ -78,7 +78,7 @@ Android Studio给了我们这个能力！那就是**异常断点**!可以在特�
 
 下断点的方式和方法断点类似，也有两种；第一种是直接在某个字段的声明处下断点，这时候断点图标会改变，如下图：
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450700886216.png" width="354" alt="Field WatchPoint" />
+<img src="http://http://weishu1.dimensionalzone.com/test/1450700886216.png" width="354" alt="Field WatchPoint" />
 
 右键这个断点我们可以进行一些设置，比如默认是被修改的时候断下来，你也可以改为每次访问这个字段就断下来。
 
@@ -88,7 +88,7 @@ Android Studio给了我们这个能力！那就是**异常断点**!可以在特�
 
 上面介绍了这么多给力的功能，其实还有很多细节；打开断点设置窗口（Run -> View Breakpoint`):
 
-<img src="http://7sbqce.com1.z0.glb.clouddn.com/test/1450701055366.png" width="873"/>
+<img src="http://http://weishu1.dimensionalzone.com/test/1450701055366.png" width="873"/>
 
 我们可以对**感兴趣的类，感兴趣的某个特定对象**下断点，也可以设置断点的次数，还能使断点在特定的线程才断下来；这些细节就不详细介绍了，大家自己去发掘！
 
