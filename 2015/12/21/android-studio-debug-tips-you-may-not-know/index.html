@@ -1,0 +1,738 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
+
+你有关注过Android Studi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Studio你不知道的调试技巧">
+<meta property="og:url" content="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
+
+你有关注过Android Studi">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450701212799.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450697931900.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450698259155.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450698641184.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450699187057.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450699584560.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450700136670.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450700226518.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450700886216.png">
+<meta property="og:image" content="http://weishu1.dimensionalzone.com/test/1450701055366.png">
+<meta property="og:updated_time" content="2019-01-30T04:06:02.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Studio你不知道的调试技巧">
+<meta name="twitter:description" content="写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 Evaluate Expression, 知道条件断点；可是你听说过日志断点吗，Method Breakpoint, Exception Breakpoint 呢？还有高大上的 Field Watchpoint ?
+
+你有关注过Android Studi">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> Android Studio你不知道的调试技巧 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Android Studio你不知道的调试技巧
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-21T20:39:03+08:00" content="2015-12-21">
+            2015-12-21
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/实用技巧/" itemprop="url" rel="index">
+                  <span itemprop="name">实用技巧</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450701212799.png" width="338" alt="几种不同的断点"></p>
+<p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br><a id="more"></a></p>
+<h2 id="调试基础">调试基础</h2><p>一般来说我们有两种办法调试一个debuggable的apk；其一是下好断点，然后用debug模式编译安装这个app；其二是 <code>attach process</code>，在Android Studio里面就是这么一个对话框：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450697931900.png" width="273" alt="Attach Process"></p>
+<p>第二种方法比较常用，我们可以在启动apk之后，直接下断点，然后attach process到制定进程，条件触发之后就可以直接进入调试模式。</p>
+<p>其他的一些单步执行，<code>step into</code>, <code>step out</code>, <code>force step into</code> 等就不提了；基本的跟踪手段。</p>
+<p>还是提一下，下断点最简单的办法，是在代码编辑器的左侧，行号右边鼠标点击一下即可。</p>
+<h2 id="Evaluate_Expression">Evaluate Expression</h2><p>这个功能非常实用，可以在断点处直接进入一个求值环境，在这里你可以执行任何你感兴趣的表达式；如下图：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450698259155.png" width="524" alt="Evaluate Expression"></p>
+<p>比如在断点处有一个对象<code>object</code>，如果你要查看它的某个属性很简单，在Debug窗口就能看到，但是如果你想要执行它的某个方法看看结果是什么呢？借助这个可以实现。当然它的功能远不止这么多，相当于直接进入了一个 <code>REPL</code>环境，非常实用。忘了说了，快捷键 <code>Alt + F8</code> :P</p>
+<h2 id="条件断点">条件断点</h2><p>假设你的断点在一个列表的循环里面，可是你只对这个列表的某一个元素感兴趣，只想在遇到这个元素的时候才断下来；你是一直人肉 <code>F9</code> 直到满足条件吗？条件断点就是满足这种需求的，顾名思义，在特定条件下的断点。使用起来也非常简单，在你的断点上鼠标右键会出现一个小窗口，写上条件即可。</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450698641184.png" width="465" alt="条件断点"></p>
+<h2 id="日志断点">日志断点</h2><p>很多时候我们调试的时候更多的是打印日志定位异常代码，缩小范围之后再使用断点解决问题；所以经常做的事情就是在代码里面添加日志信息，输出函数参数，返回信息，输出我们感兴趣的变量信息等。</p>
+<p>但是这么做一个问题就是，我们添加了日志代码需要重新编译；在没有 <code>Instant Run</code> 之前的黑暗时代这么做是非常痛苦的，每次编译少则几十秒，多则几分钟；这样无意义的等待简直就是折磨；其实，除了热部署工具，我们还可以使用日志断点解决这个问题。</p>
+<p>首先我们在想要输出信息的地方下一个断点；然后右键这个断点，在出现的设置框里面把这个断点的 <code>suspend</code> 属性设置为 <code>False</code> ，这样虽然叫做“断点”，但是并不会真正断下来；然后，我们在 <code>log message</code> 里面填上我们想要输出的日志信息。如下图(注意标红位置）：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450699187057.png" width="591" alt="日志断点"></p>
+<p>这样，每次代码执行到这个断点的位置，这个可爱的断点并不会使我们的程序停下来，而是输出我们告诉它的日志信息，然后继续执行；非常方便。</p>
+<h2 id="方法断点">方法断点</h2><p>传统的调试方式是以行为单位的，所谓单步调试；但是很多时候我们关心的是某个函数的参数，返回值；（回想一下我们使用日志的时候打印的最多的信息难道不是函数的参数和返回值吗？）使用方法断点，我们可以在函数级别进行调试；如果经常跳进跳出函数或者只对某个函数的参数感兴趣，这种类型的断点非常实用。具体使用方法有两种方式；最简单的是在你感兴趣的方法头那一行打上断点，这时候你会发现断点图标有点不一样，这就是方法断点了，如下图：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450699584560.png" width="503" alt="方法断点"></p>
+<p>另外一种方式是通过<em>断点设置窗口</em>, 后面介绍。</p>
+<h2 id="异常断点">异常断点</h2><p>在有些情况下，我们只对某些特定的异常感兴趣，或者我们只对异常感兴趣；我们希望只要程序发生异常程序就能断下来；这好像保存现场一样，只要发生命案了（异常），第一时间保存现场，这样什么指纹之类的线索就会清晰很多，坏蛋就算想逃也是插翅难飞啊。</p>
+<p>Android Studio给了我们这个能力！那就是<strong>异常断点</strong>!可以在特定异常发生的时候，直接让整个程序断下来；如果你对所有异常感兴趣，直接 <code>Throwable</code> 即可。</p>
+<p>具体做法是，进入 <code>Run -&gt; View BreakPoints</code> 或者使用快捷键打开断点设置窗口；如下图：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450700136670.png" width="273" alt="断点设置窗口"></p>
+<p>点击左上角的 ➕ ，会出现一个选择框；选择<code>Exception Breakpoint</code>；然后会出现一个对话框，选择你感兴趣的异常：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450700226518.png" width="526" alt="异常断点"></p>
+<h2 id="Field_WatchPoint">Field WatchPoint</h2><p>在上面我们添加异常断点的时候，点击加号的时候，有四个选项；第一个就是我们前面所说的第二种方法断点的添加方式，第三个是异常断点，那么第二个 <strong>Field WatchPoint</strong> 是干什么的呢？</p>
+<p>有没有这样一种场景：你发现某个值莫名其妙滴不知道什么时候被谁给修改了，罪魁祸首是谁？Java虽然是值传递，但是引用也可以是值；对象全部存放在堆上面，而堆是被所有线程共享的，因此在非常复杂的场景下，你根本不知道这些共享变量被谁修改了，这样非常危险；在多线程环境下，不变性是一个很重要的特性，我们看到高并发的语言诸如 <code>Erlang</code>, <code>Scala</code> 对于这种不变性都有着某种程度的支持。</p>
+<p>好吧，扯远了；那么我们怎么揪出这个修改我们值的捣蛋鬼呢？那就是这个 <strong>Field WatchPoint</strong>的功能了；使用它我们可以在某个<strong>Field</strong>被访问或者修改的时候让程序断下来；完美解决这个问题。</p>
+<p>下断点的方式和方法断点类似，也有两种；第一种是直接在某个字段的声明处下断点，这时候断点图标会改变，如下图：</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450700886216.png" width="354" alt="Field WatchPoint"></p>
+<p>右键这个断点我们可以进行一些设置，比如默认是被修改的时候断下来，你也可以改为每次访问这个字段就断下来。</p>
+<p>另外一种方式是 <code>Run -&gt; View BreakPoint</code> 打开设置，与异常断点类似。</p>
+<h2 id="远不止这么多">远不止这么多</h2><p>上面介绍了这么多给力的功能，其实还有很多细节；打开断点设置窗口（Run -&gt; View Breakpoint`):</p>
+<p><img src="http://weishu1.dimensionalzone.com/test/1450701055366.png" width="873"></p>
+<p>我们可以对<strong>感兴趣的类，感兴趣的某个特定对象</strong>下断点，也可以设置断点的次数，还能使断点在特定的线程才断下来；这些细节就不详细介绍了，大家自己去发掘！</p>
+<p>Have Fun!!</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/31/add-sublime-editor-to-finder-context-menu/" rel="prev">把Sublime添加到Mac右键菜单</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" rel="next">Android Studio你不知道的快捷键(三)</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">38</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#调试基础"><span class="nav-number">1.</span> <span class="nav-text">调试基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluate_Expression"><span class="nav-number">2.</span> <span class="nav-text">Evaluate Expression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件断点"><span class="nav-number">3.</span> <span class="nav-text">条件断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志断点"><span class="nav-number">4.</span> <span class="nav-text">日志断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法断点"><span class="nav-number">5.</span> <span class="nav-text">方法断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常断点"><span class="nav-number">6.</span> <span class="nav-text">异常断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Field_WatchPoint"><span class="nav-number">7.</span> <span class="nav-text">Field WatchPoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远不止这么多"><span class="nav-number">8.</span> <span class="nav-text">远不止这么多</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+    
+
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="http://43.245.220.89:8080" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="http://43.245.220.89:8080/js/embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
