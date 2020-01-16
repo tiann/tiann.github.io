@@ -178,6 +178,97 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/08/use-optional-avoid-nullpointexception/" itemprop="url">
+                [译]厌倦了NullPointException？Optional拯救你！
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-08T20:49:40+08:00" content="2015-12-08">
+            2015-12-08
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/java/" itemprop="url" rel="index">
+                  <span itemprop="name">java</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
+</blockquote>
+<p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
+<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://weishu1.dimensionalzone.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
+<p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
+<p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
+<p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/08/use-optional-avoid-nullpointexception/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/07/make-alfred-support-pinyinyin-search/" itemprop="url">
                 让Alfred支持拼音搜索
               </a>
@@ -898,7 +989,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">39</span>
+              <span class="site-state-item-count">40</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -959,7 +1050,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp;  2015 - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>

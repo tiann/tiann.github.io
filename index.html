@@ -178,6 +178,77 @@
           
           
             
+              <a class="post-title-link" href="/2020/01/16/a-keep-alive-method-on-android/" itemprop="url">
+                Android 黑科技保活实现原理揭秘
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2020-01-16T18:05:54+08:00" content="2020-01-16">
+            2020-01-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>一直以来，App 进程保活都是各大厂商，特别是头部应用开发商永恒的追求。毕竟<strong>App 进程死了，就什么也干不了了</strong>；一旦 App 进程死亡，那就再也无法在用户的手机上开展任何业务，所有的商业模型在用户侧都没有立足之地了。</p>
+<p>早期的 Android 系统不完善，导致 App 侧有很多空子可以钻，因此它们有着有着各种各样的姿势进行保活。譬如说在 Android 5.0 以前，App 内部通过 native 方式 fork 出来的进程是不受系统管控的，系统在杀 App 进程的时候，只会去杀 App 启动的 Java 进程；因此诞生了一大批“毒瘤”，他们通过 fork native 进程，在 App 的 Java 进程被杀死的时候通过 <code>am</code>命令拉起自己从而实现永生。那时候的 Android 可谓是魑魅横行，群魔乱舞；系统根本管不住应用，因此长期以来被人诟病耗电、卡顿。同时，系统的软弱导致了 Xposed 框架、阻止运行、绿色守护、黑域、冰箱等一系列管制系统后台进程的框架和 App 出现。</p>
+<p>不过，随着 Android 系统的发展，这一切都在往好的方向演变。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2020/01/16/a-keep-alive-method-on-android/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2019/03/16/another-free-reflection-above-android-p/" itemprop="url">
                 另一种绕过 Android P以上非公开API限制的办法
               </a>
@@ -808,85 +879,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/10/13/sharedpreference-advices/" itemprop="url">
-                请不要滥用SharedPreference
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-10-13T00:31:19+08:00" content="2016-10-13">
-            2016-10-13
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
-<h2 id="存储超大的value">存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1476286071563.png" width="664"/></p>
-<p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
-<p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
-<p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>
-<ol>
-<li>第一次从sp中获取值的时候，有可能阻塞主线程，使界面卡顿、掉帧。</li>
-<li>解析sp的时候会产生大量的临时对象，导致频繁GC，引起界面卡顿。</li>
-<li>这些key和value会永远存在于内存之中，占用大量内存。</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/13/sharedpreference-advices/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -925,7 +917,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">39</span>
+              <span class="site-state-item-count">40</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -986,7 +978,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp;  2015 - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>

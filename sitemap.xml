@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://weishu.me/2020/01/16/a-keep-alive-method-on-android/</loc>
+    <lastmod>2020-01-16T10:13:36.485Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://weishu.me/2019/03/16/another-free-reflection-above-android-p/</loc>
     <lastmod>2019-03-16T08:37:54.776Z</lastmod>
   </url>
@@ -127,12 +132,12 @@
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
+    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
   </url>
   
@@ -157,12 +162,12 @@
   </url>
   
   <url>
-    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <loc>http://weishu.me/2017/03/20/dive-into-art-hello-world/</loc>
     <lastmod>2019-01-30T04:06:02.838Z</lastmod>
   </url>
   
   <url>
-    <loc>http://weishu.me/2017/03/20/dive-into-art-hello-world/</loc>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
     <lastmod>2019-01-30T04:06:02.838Z</lastmod>
   </url>
   
@@ -177,12 +182,12 @@
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
     <lastmod>2019-01-30T04:06:02.834Z</lastmod>
   </url>
   
   <url>
-    <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
+    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
     <lastmod>2019-01-30T04:06:02.834Z</lastmod>
   </url>
   
@@ -192,22 +197,22 @@
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
-    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
-  </url>
-  
-  <url>
     <loc>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</loc>
     <lastmod>2019-01-30T04:06:02.831Z</lastmod>
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/09/23/Xfermode-in-android/</loc>
-    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
+    <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
+    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
   </url>
   
   <url>
     <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
+    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://weishu.me/2015/09/23/Xfermode-in-android/</loc>
     <lastmod>2019-01-30T04:06:02.829Z</lastmod>
   </url>
   

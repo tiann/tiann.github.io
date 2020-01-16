@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://weishu.me/2020/01/16/a-keep-alive-method-on-android/</loc>
+    <lastmod>2020-01-16T10:13:36.485Z</lastmod>
+    <data>
+        <display>
+        <title>Android 黑科技保活实现原理揭秘</title>
+        <pubTime>2020-01-16T10:05:54.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2019/03/16/another-free-reflection-above-android-p/</loc>
     <lastmod>2019-03-16T08:37:54.776Z</lastmod>
     <data>
@@ -449,25 +466,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
-    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
-    <data>
-        <display>
-        <title>让Alfred支持拼音搜索</title>
-        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
-        
-        <tag>alfred</tag>
-         
-        <tag>python</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
     <data>
@@ -478,6 +476,25 @@
         <tag>android</tag>
          
         <tag>log</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
+    <data>
+        <display>
+        <title>让Alfred支持拼音搜索</title>
+        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
+        
+        <tag>alfred</tag>
+         
+        <tag>python</tag>
          
          
            
@@ -569,23 +586,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
-    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
-    <data>
-        <display>
-        <title>你真的了解AsyncTask？</title>
-        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2017/03/20/dive-into-art-hello-world/</loc>
     <lastmod>2019-01-30T04:06:02.838Z</lastmod>
     <data>
@@ -596,6 +596,23 @@
         <tag>android</tag>
          
         <tag>art</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
+    <data>
+        <display>
+        <title>你真的了解AsyncTask？</title>
+        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
+        
+        <tag>android</tag>
          
          
            
@@ -651,23 +668,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
-    <lastmod>2019-01-30T04:06:02.834Z</lastmod>
-    <data>
-        <display>
-        <title>mac下Android studio快捷键配置</title>
-        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
-        
-        <tag>ideavim</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
     <lastmod>2019-01-30T04:06:02.834Z</lastmod>
     <data>
@@ -678,6 +678,23 @@
         <tag>android</tag>
          
         <tag>binder</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <lastmod>2019-01-30T04:06:02.834Z</lastmod>
+    <data>
+        <display>
+        <title>mac下Android studio快捷键配置</title>
+        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
+        
+        <tag>ideavim</tag>
          
          
            
@@ -707,6 +724,23 @@
 
     
   <url>
+    <loc>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</loc>
+    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
+    <data>
+        <display>
+        <title>mac下自动切换输入法</title>
+        <pubTime>2015-12-01T02:17:29.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
     <lastmod>2019-01-30T04:06:02.831Z</lastmod>
     <data>
@@ -727,14 +761,16 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</loc>
-    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
+    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
+    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
     <data>
         <display>
-        <title>mac下自动切换输入法</title>
-        <pubTime>2015-12-01T02:17:29.000Z</pubTime>
+        <title>把Sublime添加到Mac右键菜单</title>
+        <pubTime>2015-12-31T06:53:20.000Z</pubTime>
         
         <tag>mac</tag>
+         
+        <tag>sublime</tag>
          
          
            
@@ -763,25 +799,6 @@
              
               <breadCrumb title="UI" url="http://weishu.me/categories/Android/UI/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
-    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
-    <data>
-        <display>
-        <title>把Sublime添加到Mac右键菜单</title>
-        <pubTime>2015-12-31T06:53:20.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-        <tag>sublime</tag>
-         
-         
-           
         </display>
     </data>
     </url>
