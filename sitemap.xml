@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://weishu.me/2020/10/30/logcat-lose-message/</loc>
+    <lastmod>2020-10-30T03:33:59.722Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://weishu.me/2020/01/16/a-keep-alive-method-on-android/</loc>
     <lastmod>2020-01-16T10:13:36.485Z</lastmod>
   </url>
@@ -27,12 +32,12 @@
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
+    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
     <lastmod>2019-01-30T04:06:02.863Z</lastmod>
   </url>
   
   <url>
-    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
+    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
     <lastmod>2019-01-30T04:06:02.863Z</lastmod>
   </url>
   
@@ -132,12 +137,12 @@
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
+    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
   </url>
   
   <url>
-    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
   </url>
   

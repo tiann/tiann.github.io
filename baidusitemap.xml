@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://weishu.me/2020/10/30/logcat-lose-message/</loc>
+    <lastmod>2020-10-30T03:33:59.722Z</lastmod>
+    <data>
+        <display>
+        <title>从一次日志丢失所想到的</title>
+        <pubTime>2020-10-30T02:29:07.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2020/01/16/a-keep-alive-method-on-android/</loc>
     <lastmod>2020-01-16T10:13:36.485Z</lastmod>
     <data>
@@ -43,6 +58,21 @@
     
     
   <url>
+    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
+    <lastmod>2019-01-30T04:06:02.863Z</lastmod>
+    <data>
+        <display>
+        <title>ASCII Art：使用纯文本流程图</title>
+        <pubTime>2016-01-03T15:17:24.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
     <lastmod>2019-01-30T04:06:02.863Z</lastmod>
     <data>
@@ -52,21 +82,6 @@
         
         <tag>alfred workflow</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
-    <lastmod>2019-01-30T04:06:02.863Z</lastmod>
-    <data>
-        <display>
-        <title>ASCII Art：使用纯文本流程图</title>
-        <pubTime>2016-01-03T15:17:24.000Z</pubTime>
-        
          
            
         </display>
@@ -466,25 +481,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
-    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
-    <data>
-        <display>
-        <title>如何安全地打印日志</title>
-        <pubTime>2015-10-19T12:28:02.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>log</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
     <data>
@@ -495,6 +491,25 @@
         <tag>alfred</tag>
          
         <tag>python</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
+    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
+    <data>
+        <display>
+        <title>如何安全地打印日志</title>
+        <pubTime>2015-10-19T12:28:02.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>log</tag>
          
          
            
