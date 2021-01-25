@@ -178,6 +178,76 @@
           
           
             
+              <a class="post-title-link" href="/2021/01/25/another-keep-alive-method/" itemprop="url">
+                另一种黑科技保活方法
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-01-25T11:34:46+08:00" content="2021-01-25">
+            2021-01-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>几个月前，我写了一篇<a href="http://weishu.me/2020/01/16/a-keep-alive-method-on-android/">Android 黑科技保活实现原理揭秘</a>，当时我们提到，现在的进程保活基本上分为两类，一种是想尽办法提升进程的优先级，保证进程不会轻易被系统杀死；另一种是确保进程被杀死之后能通过各种方式复活。</p>
+<p><a href="http://weishu.me/2020/01/16/a-keep-alive-method-on-android/">Android 黑科技保活实现原理揭秘</a> 中的进程永生术是第二种，它通过钻 Android 杀进程的空子实现了涅槃永生；不了解的同学可以参考一下 <a href="https://github.com/tiann/Leoric">PoC</a>。归根结底，所谓的黑科技就是利用系统漏洞。那么，既然我们可以利用漏洞逃过追杀，那何不更进一步，利用系统漏洞提权？</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2021/01/25/another-keep-alive-method/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2020/10/30/logcat-lose-message/" itemprop="url">
                 从一次日志丢失所想到的
               </a>
@@ -803,78 +873,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/12/30/simple-way-to-compile-android-source/" itemprop="url">
-                史上最简单Android源码编译环境搭建方法
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-12-30T01:08:41+08:00" content="2016-12-30">
-            2016-12-30
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p>
-<p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p>
-<p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p>
-<p>然后就是编译环境问题。由于Android源码庞大，依赖复杂；一旦使用的编译工具链有细微的不同就可能引发编译失败。<a href="https://source.android.com/source/initializing.html">官方文档</a> 推荐使用Ubuntu 14.04进行编译。如果我们用Windows或者Mac系统，传统方式是使用虚拟机；但是在今天，我们完全可以使用 <strong>Docker</strong> 替代！！借助Docker，我们可以不用担心编译环境问题；不论我们的开发机是什么系统，可以使用Docker创建Ubuntu Image，并且直接在这个Ubuntu系统环境中创建编译所需要的工具链（JDK，ubuntu系统的依赖库等等）；而且，Docker运行的Ubuntu的系统开销比虚拟机低得多，这样下载以及编译速度就有了质的提升。更重要的是，这个环境可以作为一个Image打包发布！这样，你在不同的开发机，还有你与你的同事之间有了同一套编译环境，这会省去很多不必要的麻烦。关于Docker的更多内容，见 <a href="http://www.docker.com/">Docker官网</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/30/simple-way-to-compile-android-source/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -913,7 +911,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">42</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -974,7 +972,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp;  2015 - 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>

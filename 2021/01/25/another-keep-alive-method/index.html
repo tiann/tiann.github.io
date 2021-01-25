@@ -1,0 +1,695 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="几个月前，我写了一篇Android 黑科技保活实现原理揭秘，当时我们提到，现在的进程保活基本上分为两类，一种是想尽办法提升进程的优先级，保证进程不会轻易被系统杀死；另一种是确保进程被杀死之后能通过各种方式复活。
+Android 黑科技保活实现原理揭秘 中的进程永生术是第二种，它通过钻 Android 杀进程的空子实现了涅槃永生；不了解的同学可以参考一下 PoC。归根结底，所谓的黑科技就是利用系统漏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="另一种黑科技保活方法">
+<meta property="og:url" content="http://weishu.me/2021/01/25/another-keep-alive-method/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="几个月前，我写了一篇Android 黑科技保活实现原理揭秘，当时我们提到，现在的进程保活基本上分为两类，一种是想尽办法提升进程的优先级，保证进程不会轻易被系统杀死；另一种是确保进程被杀死之后能通过各种方式复活。
+Android 黑科技保活实现原理揭秘 中的进程永生术是第二种，它通过钻 Android 杀进程的空子实现了涅槃永生；不了解的同学可以参考一下 PoC。归根结底，所谓的黑科技就是利用系统漏">
+<meta property="og:updated_time" content="2021-01-25T03:35:53.166Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="另一种黑科技保活方法">
+<meta name="twitter:description" content="几个月前，我写了一篇Android 黑科技保活实现原理揭秘，当时我们提到，现在的进程保活基本上分为两类，一种是想尽办法提升进程的优先级，保证进程不会轻易被系统杀死；另一种是确保进程被杀死之后能通过各种方式复活。
+Android 黑科技保活实现原理揭秘 中的进程永生术是第二种，它通过钻 Android 杀进程的空子实现了涅槃永生；不了解的同学可以参考一下 PoC。归根结底，所谓的黑科技就是利用系统漏">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 另一种黑科技保活方法 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              另一种黑科技保活方法
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-01-25T11:34:46+08:00" content="2021-01-25">
+            2021-01-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>几个月前，我写了一篇<a href="http://weishu.me/2020/01/16/a-keep-alive-method-on-android/">Android 黑科技保活实现原理揭秘</a>，当时我们提到，现在的进程保活基本上分为两类，一种是想尽办法提升进程的优先级，保证进程不会轻易被系统杀死；另一种是确保进程被杀死之后能通过各种方式复活。</p>
+<p><a href="http://weishu.me/2020/01/16/a-keep-alive-method-on-android/">Android 黑科技保活实现原理揭秘</a> 中的进程永生术是第二种，它通过钻 Android 杀进程的空子实现了涅槃永生；不了解的同学可以参考一下 <a href="https://github.com/tiann/Leoric" target="_blank" rel="external">PoC</a>。归根结底，所谓的黑科技就是利用系统漏洞。那么，既然我们可以利用漏洞逃过追杀，那何不更进一步，利用系统漏洞提权？</p>
+<a id="more"></a>
+<p>实际上，在 Android 系统中，这样的漏洞广泛地存在着。Google 会在每个月初公布其更新的安全漏洞，这些漏洞各种各样。通常情况下，更受人关注的是那些 RCE 或者 EoP 类型的漏洞，它们要么可以远程控制系统，要么可以直接获取操作系统最高权限（Root）。不过，这种类型的漏洞利用起来往往比较困难，要稳定地运行不是一件容易事，而且由于他们危害大，往往很快就会被修复。</p>
+<blockquote>
+<p>太极的少阳模式实际上就是使用这种方法，通过利用 1 Day 漏洞（如水滴，CVE-2020-0423等）直接获取系统最高权限，然后进行注入和拦截，这种方式不需要解锁和刷机就能实现太极阳的完整功能。</p>
+</blockquote>
+<p>但是，如果想要实现保活，可以大大降低这个要求：只需要提权到 system 就可以为所欲为了。当然，我们也不一定要提权，比如说想办法让系统帮忙启动一个服务，比如骗系统帮我们提升进程优先级都是可以的。</p>
+<p>接下来，我们介绍一下最近公布的有关 Android 前台服务的漏洞。他们的编号分别是 <a href="https://android.googlesource.com/platform/frameworks/base/+/45a53e6cb8d3276126cfe0e717ad7ed486d39b24" target="_blank" rel="external">CVE-2020-0108</a>，<a href="https://cs.android.com/android/_/android/platform/frameworks/base/+/b740ed72b93e4671ced674456b2eaac26fda5ab9:services/core/java/com/android/server/notification/NotificationManagerService.java;dlc=95dbff5e7817b1b7e36c7d518b4818be5c23dc32" target="_blank" rel="external">CVE-2020-0313</a>。</p>
+<p>如果小伙伴们有印象的话，Android 上存在一个广为流传的灰色保活方法：创建两个 Service 来启动通知，最后可以创建一个没有通知栏的前台服务，从而提升进程的优先级。接下来要介绍的这个漏洞与此类似，实际上还有一个 CVE-2020-0313也是前台服务相关。。这块代码实在是写的稀烂，漏洞百出。好了回到正题，我们先介绍一下前台服务：</p>
+<blockquote>
+<p>前台服务执行一些用户能注意到的操作。例如，音频应用会使用前台服务来播放音频曲目。前台服务必须显示通知。即使用户停止与应用的交互，前台服务仍会继续运行。</p>
+</blockquote>
+<p>前台服务所在的进程优先级非常高，一般不会被系统轻易杀死；因此如果有条件创建一个前台服务，就可以实现保活。不过，Android 有一个很强的限制，那就是前台服务必须要显示一个通知；对那些既想要在后台偷偷地跑，又不想被人发现的 App 来说，这个限制实在是让人头大。有没有办法让系统既能启动一个前台服务，又不显示通知呢？</p>
+<p>如果我们创建通知的时候，故意出错，系统会有什么反应？</p>
+<p>以下是我们创建前台服务的样例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">String CHANNEL_ID = <span class="string">"demo_channel"</span>;</span><br><span class="line">NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);</span><br><span class="line">NotificationChannel Channel = <span class="keyword">new</span> NotificationChannel(CHANNEL_ID, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);</span><br><span class="line">Channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC); <span class="comment">//设置锁屏可见 VISIBILITY_PUBLIC=可见</span></span><br><span class="line"><span class="keyword">if</span> (manager != <span class="keyword">null</span>) &#123;</span><br><span class="line">    manager.createNotificationChannel(Channel);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Notification notification = <span class="keyword">new</span> Notification.Builder(<span class="keyword">this</span>, CHANNEL_ID)</span><br><span class="line">        .setAutoCancel(<span class="keyword">false</span>)</span><br><span class="line">        .setContentTitle(getString(R.string.app_name))</span><br><span class="line">        .setContentText(<span class="string">"运行中..."</span>)</span><br><span class="line">        .setWhen(System.currentTimeMillis())</span><br><span class="line">        .setSmallIcon(R.mipmap.ic_launcher_round)</span><br><span class="line">        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))</span><br><span class="line">        .build();</span><br><span class="line">startForeground(<span class="number">1</span>, notification);</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们创建前台服务的时候需要创建一个 NotificationChannel，如果我随便搞一个channel 或者干脆传递一个错误的或者压根不存在的 channel 给系统会咋样？我们简单跟踪一下系统的前台服务启动流程，在真正要创建通知的时候，是在 <a href="http://androidxref.com/9.0.0_r3/xref/frameworks/base/services/core/java/com/android/server/am/ServiceRecord.java#687" target="_blank" rel="external">ServiceRecord.postNotification</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 忽略..</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (nm.getNotificationChannel(localPackageName, appUid,</span><br><span class="line">            localForegroundNoti.getChannelId()) == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> targetSdkVersion = Build.VERSION_CODES.O_MR1;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> ApplicationInfo applicationInfo =</span><br><span class="line">                    ams.mContext.getPackageManager().getApplicationInfoAsUser(</span><br><span class="line">                            appInfo.packageName, <span class="number">0</span>, userId);</span><br><span class="line">            targetSdkVersion = applicationInfo.targetSdkVersion;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (targetSdkVersion &gt;= Build.VERSION_CODES.O_MR1) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</span><br><span class="line">                    <span class="string">"invalid channel for service notification: "</span></span><br><span class="line">                            + foregroundNoti);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 忽略..</span></span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</span><br><span class="line">    ams.setServiceForeground(name, ServiceRecord.<span class="keyword">this</span>,</span><br><span class="line">            <span class="number">0</span>, <span class="keyword">null</span>, <span class="number">0</span>);</span><br><span class="line">    ams.crashApplication(appUid, appPid, localPackageName, -<span class="number">1</span>,</span><br><span class="line">            <span class="string">"Bad notification for startForeground: "</span> + e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到这里其实就知道，我们传递了一个不存在的 channel，系统<code>getNotificationChannel</code>会发现不对劲，然后直接抛出一个异常<code>invalid channel for service notification</code>，捕获了异常之后，系统会调用 <code>ams.crashApplication</code>，我们看一下这个 <code>ams.crashApplicaiton</code>，一路跟踪，我们会发现代码调用到了这里：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scheduleCrash</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Checking killedbyAm should keep it from showing the crash dialog if the process</span></span><br><span class="line">    <span class="comment">// was already dead for a good / normal reason.</span></span><br><span class="line">    <span class="keyword">if</span> (!killedByAm) &#123;</span><br><span class="line">        <span class="keyword">if</span> (thread != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (pid == Process.myPid()) &#123;</span><br><span class="line">                Slog.w(TAG, <span class="string">"scheduleCrash: trying to crash system process!"</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">long</span> ident = Binder.clearCallingIdentity();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                thread.scheduleCrash(message);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">                <span class="comment">// If it's already dead our work is done. If it's wedged just kill it.</span></span><br><span class="line">                <span class="comment">// We won't get the crash dialog or the error reporting.</span></span><br><span class="line">                kill(<span class="string">"scheduleCrash for '"</span> + message + <span class="string">"' failed"</span>, <span class="keyword">true</span>);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                Binder.restoreCallingIdentity(ident);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>哇，我们的系统真的是太温柔了！系统要让咱们进程去死的时候，不是直接提刀把咱砍了，而是赐了一杯毒酒就不管了：爱卿，你自己去死吧。不过，要是咱们进程不听话，把毒就扔了不就逍遥法外了吗！！</p>
+<p>这个过程就是 CVE-2020-0108 的原理：创建一个前台服务，但是在他需要前台通知的时候给它一个子虚乌有的 channel，这样前台服务实际上创建好了，不过系统发现不对劲会让咱去死，咱厚着脸皮不死，最终就拥有了一个<strong>没有通知的前台服务</strong>。</p>
+<p>你以为到这就完了？No！这个前台服务代码 Bug 一堆，咱还有个别的姿势同样能达到目的。</p>
+<p>我们的总体思路是创建前台服务的时候，给它传递非法的参数让系统创建失败；上面我们给了它一个不合法的 channel，我们实际上还可以在别的地方动手脚：创建通知的时候是可以自定义布局的，如果我们给系统一个错误的布局会咋样？废话不多说我们直接跟踪代码，最终会到这里:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNotificationError</span><span class="params">(<span class="keyword">int</span> callingUid, <span class="keyword">int</span> callingPid, String pkg, String tag, <span class="keyword">int</span> id,</span><br><span class="line">        <span class="keyword">int</span> uid, <span class="keyword">int</span> initialPid, String message, <span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line">    cancelNotification(callingUid, callingPid, pkg, tag, id, <span class="number">0</span>, <span class="number">0</span>, <span class="keyword">false</span>, userId,</span><br><span class="line">            REASON_ERROR, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就更搞笑了，通知创建失败了，系统就是单纯把通知取消了；后面服务该咋运行还是咋运行，系统压根就不管！</p>
+<p>好了写到这里，有关前台服务的漏洞我们已经介绍完了。Google 已经在 8 月份的安全更新中修复了这个漏洞；简单看一下修复办法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">scheduleAppCrashLocked</span><span class="params">(<span class="keyword">int</span> uid, <span class="keyword">int</span> initialPid, String packageName, <span class="keyword">int</span> userId,</span><br><span class="line">-            String message)</span> </span>&#123;</span><br><span class="line">+            String message, <span class="keyword">boolean</span> force) &#123;</span><br><span class="line">         ProcessRecord proc = <span class="keyword">null</span>;</span><br><span class="line"> </span><br><span class="line">         <span class="comment">// Figure out which process to kill.  We don't trust that initialPid</span></span><br><span class="line">@@ -<span class="number">374</span>,<span class="number">6</span> +<span class="number">378</span>,<span class="number">14</span> @@</span><br><span class="line">         &#125;</span><br><span class="line"> </span><br><span class="line">         proc.scheduleCrash(message);</span><br><span class="line">+        <span class="keyword">if</span> (force) &#123;</span><br><span class="line">+            <span class="comment">// If the app is responsive, the scheduled crash will happen as expected</span></span><br><span class="line">+            <span class="comment">// and then the delayed summary kill will be a no-op.</span></span><br><span class="line">+            <span class="keyword">final</span> ProcessRecord p = proc;</span><br><span class="line">+            mService.mHandler.postDelayed(</span><br><span class="line">+                    () -&gt; killAppImmediateLocked(p, <span class="string">"forced"</span>, <span class="string">"killed for invalid state"</span>),</span><br><span class="line">+                    <span class="number">5000L</span>);</span><br><span class="line">+        &#125;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure>
+<p>很好，系统现在在赐死之后，过了五秒钟回来看一下是不是真的死了，如果没有死了再自己动手砍一刀；这才是正常的赐死逻辑嘛，哈哈。</p>
+<p>如果你是一个普通用户，很可能会觉得奇怪，使用这么广泛的 Android 系统竟然存在着这么多低级漏洞？是的，任何软件系统都不可能没有 BUG，这是没法避免的客观事实。我们唯一能做到的是：<strong>如果手机有安全性更新，一定要及时更新!!</strong>千万不要觉得旧系统不是挺好的嘛，越升级越难用；否则，如果这些公开的漏洞被人利用，后果不敢设想。另外， <strong>千万不要选择那些万年不更新安全补丁的辣鸡手机！！</strong></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/30/logcat-lose-message/" rel="next">从一次日志丢失所想到的</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+    
+
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="http://43.245.220.89:8080" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="http://43.245.220.89:8080/js/embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

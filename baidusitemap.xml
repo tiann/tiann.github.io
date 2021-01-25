@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://weishu.me/2021/01/25/another-keep-alive-method/</loc>
+    <lastmod>2021-01-25T03:35:53.166Z</lastmod>
+    <data>
+        <display>
+        <title>另一种黑科技保活方法</title>
+        <pubTime>2021-01-25T03:34:46.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2020/10/30/logcat-lose-message/</loc>
     <lastmod>2020-10-30T03:33:59.722Z</lastmod>
     <data>
@@ -366,13 +381,15 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</loc>
+    <loc>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</loc>
     <lastmod>2019-01-30T04:06:02.848Z</lastmod>
     <data>
         <display>
-        <title>Android Studio你不知道的快捷键(三)</title>
-        <pubTime>2015-12-17T02:49:19.000Z</pubTime>
+        <title>Android Studio你不知道的快捷键(一)</title>
+        <pubTime>2015-12-11T05:42:33.000Z</pubTime>
         
+        <tag>android</tag>
+         
          
            
              
@@ -384,15 +401,13 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</loc>
+    <loc>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</loc>
     <lastmod>2019-01-30T04:06:02.848Z</lastmod>
     <data>
         <display>
-        <title>Android Studio你不知道的快捷键(一)</title>
-        <pubTime>2015-12-11T05:42:33.000Z</pubTime>
+        <title>Android Studio你不知道的快捷键(三)</title>
+        <pubTime>2015-12-17T02:49:19.000Z</pubTime>
         
-        <tag>android</tag>
-         
          
            
              
@@ -481,25 +496,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
-    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
-    <data>
-        <display>
-        <title>让Alfred支持拼音搜索</title>
-        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
-        
-        <tag>alfred</tag>
-         
-        <tag>python</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
     <lastmod>2019-01-30T04:06:02.843Z</lastmod>
     <data>
@@ -510,6 +506,25 @@
         <tag>android</tag>
          
         <tag>log</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
+    <data>
+        <display>
+        <title>让Alfred支持拼音搜索</title>
+        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
+        
+        <tag>alfred</tag>
+         
+        <tag>python</tag>
          
          
            
@@ -601,6 +616,23 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
+    <data>
+        <display>
+        <title>你真的了解AsyncTask？</title>
+        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2017/03/20/dive-into-art-hello-world/</loc>
     <lastmod>2019-01-30T04:06:02.838Z</lastmod>
     <data>
@@ -611,23 +643,6 @@
         <tag>android</tag>
          
         <tag>art</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
-    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
-    <data>
-        <display>
-        <title>你真的了解AsyncTask？</title>
-        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
-        
-        <tag>android</tag>
          
          
            
