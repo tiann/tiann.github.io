@@ -8,11 +8,11 @@ date: 2016-01-05 13:53:09
 曾就职于支付宝，做客户端性能优化
 现创业中
 
-骨灰级Android开发，曾混迹于Donut史前时代
-后陆续入坑J2EE, python, rails, C++, node, Haskell...
+骨灰级 Android 开发，曾混迹于 Donut 史前时代
+后陆续入坑 J2EE, Python, Rails, C++, node, Haskell, Rust
 然一事无成，终悟：
 **不忘初心，方得始终**
-现专攻Android，业余Haskell
+现专攻 Android，业余 Rust
 
 # 关于博客
 
@@ -20,7 +20,7 @@ date: 2016-01-05 13:53:09
 
 内容包括不限于：
 
-- Android开发核心技术
+- Android 开发核心技术
 - 各种提高工作效率的工具
 - 程序语言设计理论思考
 
@@ -35,8 +35,7 @@ date: 2016-01-05 13:53:09
 
 # 联系我
 
+微信公众号: **虚拟框架**
 知乎：[weishu](https://www.zhihu.com/people/tian-weishu)
 github：[tiann](https://github.com/tiann)
 邮箱：twsxtd#gmail.com
-简书：[weishu](http://www.jianshu.com/users/e347b97e2f0c/latest_articles)
-
