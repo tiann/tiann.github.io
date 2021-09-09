@@ -3,8 +3,8 @@
   <!-- <script type="text/javascript" src="{{ url_for(theme.vendors) }}/velocity/velocity.min.js"></script> -->
   <!-- <script type="text/javascript" src="{{ url_for(theme.vendors) }}/velocity/velocity.ui.min.js"></script> -->
 
-  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
-  <script type="text/javascript" src="http://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
 
   <script type="text/javascript" src="{{ url_for(theme.js) }}/motion_global.js?v={{ theme.version }}" id="motion.global"></script>
 
