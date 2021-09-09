@@ -16,7 +16,7 @@
         data-isso-require-email="true"
         data-isso-vote="false"
         data-isso-avatar="true"
-        src="http://{{ip}}/js/embed.min.js"></script>
+        src="http://weishu.dimensionalzone.com/isso.embed.min.js"></script>
         <!-- UY END -->
     {% endif %}
 {% endif %}
