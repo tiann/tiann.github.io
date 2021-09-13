@@ -47,11 +47,11 @@
 <meta property="og:url" content="http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.—Tony H">
-<meta property="og:image" content="http://weishu1.dimensionalzone.com/blog2015-12-9-1.gif">
-<meta property="og:image" content="http://weishu1.dimensionalzone.com/blog2015-12-9-2.gif">
-<meta property="og:image" content="http://weishu1.dimensionalzone.com/blog2015-12-9-3.gif">
-<meta property="og:image" content="http://weishu1.dimensionalzone.com/blog2015-12-9-4.gif">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.862Z">
+<meta property="og:image" content="http://weishu1.dimenspace.com/blog2015-12-9-1.gif">
+<meta property="og:image" content="http://weishu1.dimenspace.com/blog2015-12-9-2.gif">
+<meta property="og:image" content="http://weishu1.dimenspace.com/blog2015-12-9-3.gif">
+<meta property="og:image" content="http://weishu1.dimenspace.com/blog2015-12-9-4.gif">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译]厌倦了NullPointException？Optional拯救你！">
 <meta name="twitter:description" content="I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.—Tony H">
@@ -235,7 +235,7 @@
 <p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
 </blockquote>
 <p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
-<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://weishu1.dimensionalzone.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
+<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://weishu1.dimenspace.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
 <p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
 <p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
 <p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br><a id="more"></a></p>
@@ -249,7 +249,7 @@
 <p>其他的一些函数式编程语言，比如Haskell, Scala，使用了一种别的方式。Haskell有一个<code>Maybe</code>型态，这个型态代表了一种有可选值的类型。Maybe形态的值可能包含一个给定类型的值或者是Nothing(译者注：代表没有值)，完全没有空指针的概念。Scala有一种类似的叫做<strong>Option[T]</strong>的东西来代表类型T的某一个值存在或者没有。因此，你必须显式检测这个值是否存在，如果不存在就不能使用任何Option类型的操作符；这样由于Scala的类型系统，你永远也不会忘记对于空指针的检测。</p>
 <p>貌似有点扯远了，那么，Java8给我们提供了什么呢？</p>
 <h2 id="果壳里的Optional">果壳里的<code>Optional</code></h2><p>受到Haskell和Scala的启发，Java8引入了一个叫做<code>java.util.Optional&lt;T&gt;</code>的类，这一个包含一个可选值的类型，你可以把它当作包含单个值的容器——这个容器要么包含一个值要么什么都没有，如下图：</p>
-<p><img src="http://weishu1.dimensionalzone.com/blog2015-12-9-2.gif" alt="Optional表示"><br>我们在数据模型里面引入<code>Optional</code>：</p>
+<p><img src="http://weishu1.dimenspace.com/blog2015-12-9-2.gif" alt="Optional表示"><br>我们在数据模型里面引入<code>Optional</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Optional&lt;Soundcard&gt; soundcard;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Optional&lt;Soundcard&gt; <span class="title">getSoundcard</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Soundcard</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Optional&lt;USB&gt; usb;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Optional&lt;USB&gt; <span class="title">getUSB</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">USB</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getVersion</span><span class="params">()</span></span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用上面的代码，我们一眼就可以看出来一个computer有没有soundcard（他们是optioal，可选的），更进一步，一个声卡也有一个可选的USB端口；新的模型能清晰地反映出一个给定的值是有可能不存在的。这种做法在某些库里面也存在，比如<strong>Guava</strong>(译：Java5之后就可以使用，不过有局限)</p>
 <p>我们能用<em>Optional</em>对象干什么？Optional对象包含了一些方法来显式地处理某个值是存在还是缺失，Optional类强制你思考值不存在的情况，这样就能避免潜在的空指针异常。</p>
@@ -307,8 +307,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String version = computer.map(Computer::getSoundcard)</span><br><span class="line">                  .map(Soundcard::getUSB)</span><br><span class="line">                  .map(USB::getVersion)</span><br><span class="line">                  .orElse(<span class="string">"UNKNOWN"</span>);</span><br></pre></td></tr></table></figure>
 <p>但是，这段代码并不能通过编译。为什么？</p>
 <p><code>computer</code>变量类型是<code>Optional&lt;Computer&gt;</code>，因此它调用<code>map</code>方法没有任何问题；但是，<code>getSoundcard()</code>方法的返回类型是<code>Optional&lt;Soundcard&gt;</code>这意味着<code>map</code>操作结果的类型是<code>Optional&lt;Optional&lt;Soundcard&gt;&gt;</code>,因此<code>getUsb</code>这个调用是非法的：外面的那个Optional包含的值是另外一个Optional，自然就没有<code>getUsb</code>方法，下图是这个调用的结构：</p>
-<p><img src="http://weishu1.dimensionalzone.com/blog2015-12-9-3.gif" alt="two level Optional"><br>如何解决这个问题呢？Optional类提供了一个<code>flapMap</code>的方法。这个方法可以对一个Optional使用一个函数转换为一个Optional然后把结果（两个Optional)flatten为一个单个Optional，下图给出了<code>map</code>和<code>flatMap</code>的区别：</p>
-<p><img src="http://weishu1.dimensionalzone.com/blog2015-12-9-4.gif" alt="map and flatMap"><br>用<code>flatMap</code>重写我们的代码：</p>
+<p><img src="http://weishu1.dimenspace.com/blog2015-12-9-3.gif" alt="two level Optional"><br>如何解决这个问题呢？Optional类提供了一个<code>flapMap</code>的方法。这个方法可以对一个Optional使用一个函数转换为一个Optional然后把结果（两个Optional)flatten为一个单个Optional，下图给出了<code>map</code>和<code>flatMap</code>的区别：</p>
+<p><img src="http://weishu1.dimenspace.com/blog2015-12-9-4.gif" alt="map and flatMap"><br>用<code>flatMap</code>重写我们的代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String version = computer.flatMap(Computer::getSoundcard)</span><br><span class="line">                   .flatMap(Soundcard::getUSB)</span><br><span class="line">                   .map(USB::getVersion)</span><br><span class="line">                   .orElse(<span class="string">"UNKNOWN"</span>);</span><br></pre></td></tr></table></figure>
 <p>第一个<code>flatMap</code>确保返回一个<code>Optioan&lt;Soundcard&gt;</code>而不是<code>Optional&lt;&lt;Optional&lt;Soundcard&gt;&gt;</code>，第二个<code>flatMap</code>确保返回一个<code>Optional&lt;USB&gt;</code>；接着第三次调用着需要一个<code>map</code>即可，因为<code>getVersion</code>返回一个<code>String</code>而非<code>Optional</code>方法。</p>
 <p>Cool！现在我们可以抛弃痛苦的嵌套非空检测了，使用Optional可以写出声明式的，更可读的代码，并且永远不会有空指针异常！</p>

@@ -49,9 +49,9 @@
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="上文 Activity生命周期管理 中我们地完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的任务；通过Hook AMS和拦截ActivityThread中H类对于组件调度我们成功地绕过了AndroidMAnifest.xml的限制。
 但是我们启动的『没有在AndroidManifet.xml中显式声明』的Activity和宿主程序存在于同一个Apk中；通常情">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1459829051777.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1459829674687.png">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.855Z">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1459829051777.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1459829674687.png">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 插件化原理解析——插件加载机制">
 <meta name="twitter:description" content="上文 Activity生命周期管理 中我们地完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的任务；通过Hook AMS和拦截ActivityThread中H类对于组件调度我们成功地绕过了AndroidMAnifest.xml的限制。
@@ -280,11 +280,11 @@
 </blockquote>
 <p>也就是说，这个类就是AndroidManifest.xml里面的<application> 这个标签下面的信息；这个AndroidManifest.xml无疑是一个标准的xml文件，因此我们完全可以自己使用parse来解析这个信息。</application></p>
 <p>那么，系统是如何获取这个信息的呢？其实Framework就有一个这样的parser，也即PackageParser；理论上，我们也可以借用系统的parser来解析AndroidMAnifest.xml从而得到ApplicationInfo的信息。但遗憾的是，<strong>这个类的兼容性很差</strong>；Google几乎在每一个Android版本都对这个类动刀子，如果坚持使用系统的解析方式，必须写一系列兼容行代码！！DroidPlugin就选择了这种方式，相关类如下：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1459829051777.png" width="283" alt="DroidPlugin的PackageParser"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1459829051777.png" width="283" alt="DroidPlugin的PackageParser"></p>
 <p>看到这里我就问你怕不怕！！！这也是我们之前提到的<strong>私有或者隐藏的API可以使用，但必须处理好兼容性问题</strong>；如果Android 7.0发布，这里估计得添加一个新的类PackageParseApi24。</p>
 <p>我这里使用API 23作为演示，<strong>版本不同的可能无法运行</strong>请自行查阅 DroidPlugin 不同版本如何处理。</p>
 <p>OK回到正题，我们决定使用PackageParser类来提取ApplicationInfo信息。下图是API 23上，PackageParser的部分类结构图：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1459829674687.png" width="481"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1459829674687.png" width="481"></p>
 <p>看起来有我们需要的方法 generateApplication；确实如此，依靠这个方法我们可以成功地拿到ApplicationInfo。<br>由于PackageParser是@hide的，因此我们需要通过反射进行调用。我们根据这个generateApplicationInfo方法的签名：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ApplicationInfo <span class="title">generateApplicationInfo</span><span class="params">(Package p, <span class="keyword">int</span> flags,</span><br><span class="line">   PackageUserState state)</span></span></span><br></pre></td></tr></table></figure>
 <p>可以写出调用generateApplicationInfo的反射代码：</p>

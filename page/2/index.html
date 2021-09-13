@@ -502,7 +502,7 @@
         
           <p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
 <h2 id="存储超大的value">存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1476286071563.png" width="664"/></p>
+<p><img src="http://weishu.dimenspace.com/201601/1476286071563.png" width="664"/></p>
 <p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
 <p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
 <p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>

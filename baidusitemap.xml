@@ -4,8 +4,469 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/12/30/simple-way-to-compile-android-source/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>史上最简单Android源码编译环境搭建方法</title>
+        <pubTime>2016-12-29T17:08:41.000Z</pubTime>
+        
+        <tag>android source</tag>
+         
+        <tag>compile</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>获取迅雷会员工作流</title>
+        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
+        
+        <tag>alfred workflow</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>ASCII Art：使用纯文本流程图</title>
+        <pubTime>2016-01-03T15:17:24.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>[译]厌倦了NullPointException？Optional拯救你！</title>
+        <pubTime>2015-12-08T12:49:40.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>optional</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://weishu.me/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/05/11/understand-plugin-framework-service/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——Service的插件化</title>
+        <pubTime>2016-05-11T13:02:50.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+        <tag>service</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/09/23/Xfermode-in-android/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Xfermode in android</title>
+        <pubTime>2015-09-23T05:10:49.000Z</pubTime>
+        
+        <tag>2D graphics</tag>
+         
+        <tag>Xfermode</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://weishu.me/categories/Android/"/>
+          
+             
+              <breadCrumb title="UI" url="http://weishu.me/categories/Android/UI/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——Hook机制之动态代理</title>
+        <pubTime>2016-01-28T12:27:13.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>把Sublime添加到Mac右键菜单</title>
+        <pubTime>2015-12-31T06:53:20.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+        <tag>sublime</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——ContentProvider的插件化</title>
+        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
+        
+        <tag>ContentProvider</tag>
+         
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/04/05/understand-plugin-framework-classloader/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——插件加载机制</title>
+        <pubTime>2016-04-05T12:13:01.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>binder</tag>
+         
+        <tag>classloader</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2018/08/27/understand-plugin-framework-book/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——剧终</title>
+        <pubTime>2018-08-27T04:59:21.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android Studio你不知道的调试技巧</title>
+        <pubTime>2015-12-21T12:39:03.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——Hook机制之AMS&PMS</title>
+        <pubTime>2016-03-07T08:35:46.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——Activity生命周期管理</title>
+        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>简化markdown写作中的贴图流程</title>
+        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
+        
+        <tag>markdown</tag>
+         
+        <tag>workflow</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2021/07/24/what-is-bootloader-unlock/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>当我们谈论解锁 BootLoader 时，我们在谈论什么？</title>
+        <pubTime>2021-07-24T12:53:15.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>bootloader</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android Studio你不知道的快捷键(一)</title>
+        <pubTime>2015-12-11T05:42:33.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android Studio你不知道的快捷键(三)</title>
+        <pubTime>2015-12-17T02:49:19.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android Studio你不知道的快捷键(二)</title>
+        <pubTime>2015-12-12T01:51:53.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/10/13/sharedpreference-advices/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>请不要滥用SharedPreference</title>
+        <pubTime>2016-10-12T16:31:19.000Z</pubTime>
+        
+        <tag>-android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>提升markdown的中文输入效率</title>
+        <pubTime>2016-02-01T08:15:56.000Z</pubTime>
+        
+        <tag>markdown</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2017/12/02/non-root-xposed/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>无需Root也能使用Xposed！</title>
+        <pubTime>2017-12-01T20:12:59.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>epic</tag>
+         
+        <tag>root</tag>
+         
+        <tag>xposed</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>让Alfred支持拼音搜索</title>
+        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
+        
+        <tag>alfred</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2021/09/13/what-is-root/</loc>
-    <lastmod>2021-09-13T07:49:02.752Z</lastmod>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
     <data>
         <display>
         <title>何为 root？</title>
@@ -23,16 +484,144 @@
 
     
   <url>
-    <loc>http://weishu.me/2021/07/24/what-is-bootloader-unlock/</loc>
-    <lastmod>2021-09-13T07:48:49.903Z</lastmod>
+    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
     <data>
         <display>
-        <title>当我们谈论解锁 BootLoader 时，我们在谈论什么？</title>
-        <pubTime>2021-07-24T12:53:15.000Z</pubTime>
+        <title>如何安全地打印日志</title>
+        <pubTime>2015-10-19T12:28:02.000Z</pubTime>
         
         <tag>android</tag>
          
-        <tag>bootloader</tag>
+        <tag>log</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>如何调试Android Native Framework</title>
+        <pubTime>2017-01-14T09:02:03.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>debug</tag>
+         
+        <tag>framework</tag>
+         
+        <tag>native</tag>
+         
+        <tag>source</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/05/30/how-to-debug-android-framework/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>如何调试Android Framework？</title>
+        <pubTime>2016-05-30T09:26:05.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>debug</tag>
+         
+        <tag>framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Binder学习指南</title>
+        <pubTime>2016-01-12T13:26:09.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>binder</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>你真的了解AsyncTask？</title>
+        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/</loc>
+    <lastmod>2021-09-13T12:37:52.565Z</lastmod>
+    <data>
+        <display>
+        <title>Android性能优化之虚拟机调优</title>
+        <pubTime>2016-12-23T14:53:09.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>heap</tag>
+         
+        <tag>performance</tag>
+         
+        <tag>vm</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2017/11/23/dexposed-on-art/</loc>
+    <lastmod>2021-09-13T12:37:52.564Z</lastmod>
+    <data>
+        <display>
+        <title>我为Dexposed续一秒——论ART上运行时 Method AOP实现</title>
+        <pubTime>2017-11-22T17:30:10.000Z</pubTime>
+        
+        <tag>AOP</tag>
+         
+        <tag>ART</tag>
+         
+        <tag>Dexposed</tag>
+         
+        <tag>Hook</tag>
          
          
            
@@ -111,83 +700,6 @@
     
     
   <url>
-    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
-    <lastmod>2019-01-30T04:06:02.863Z</lastmod>
-    <data>
-        <display>
-        <title>获取迅雷会员工作流</title>
-        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
-        
-        <tag>alfred workflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
-    <lastmod>2019-01-30T04:06:02.863Z</lastmod>
-    <data>
-        <display>
-        <title>ASCII Art：使用纯文本流程图</title>
-        <pubTime>2016-01-03T15:17:24.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/</loc>
-    <lastmod>2019-01-30T04:06:02.862Z</lastmod>
-    <data>
-        <display>
-        <title>[译]厌倦了NullPointException？Optional拯救你！</title>
-        <pubTime>2015-12-08T12:49:40.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-        <tag>optional</tag>
-         
-         
-           
-             
-              <breadCrumb title="java" url="http://weishu.me/categories/java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/05/11/understand-plugin-framework-service/</loc>
-    <lastmod>2019-01-30T04:06:02.861Z</lastmod>
-    <data>
-        <display>
-        <title>Android 插件化原理解析——Service的插件化</title>
-        <pubTime>2016-05-11T13:02:50.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-        <tag>service</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2016/04/12/understand-plugin-framework-receiver/</loc>
     <lastmod>2019-01-30T04:06:02.859Z</lastmod>
     <data>
@@ -198,27 +710,6 @@
         <tag>android</tag>
          
         <tag>broadcastreceiver</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/</loc>
-    <lastmod>2019-01-30T04:06:02.858Z</lastmod>
-    <data>
-        <display>
-        <title>Android插件化原理解析——Hook机制之动态代理</title>
-        <pubTime>2016-01-28T12:27:13.000Z</pubTime>
-        
-        <tag>android</tag>
          
         <tag>droidplugin</tag>
          
@@ -253,69 +744,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
-    <lastmod>2019-01-30T04:06:02.856Z</lastmod>
-    <data>
-        <display>
-        <title>Android插件化原理解析——ContentProvider的插件化</title>
-        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
-        
-        <tag>ContentProvider</tag>
-         
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/04/05/understand-plugin-framework-classloader/</loc>
-    <lastmod>2019-01-30T04:06:02.855Z</lastmod>
-    <data>
-        <display>
-        <title>Android 插件化原理解析——插件加载机制</title>
-        <pubTime>2016-04-05T12:13:01.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>binder</tag>
-         
-        <tag>classloader</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2018/08/27/understand-plugin-framework-book/</loc>
-    <lastmod>2019-01-30T04:06:02.854Z</lastmod>
-    <data>
-        <display>
-        <title>Android插件化原理解析——剧终</title>
-        <pubTime>2018-08-27T04:59:21.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/</loc>
     <lastmod>2019-01-30T04:06:02.853Z</lastmod>
     <data>
@@ -339,161 +767,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</loc>
-    <lastmod>2019-01-30T04:06:02.852Z</lastmod>
-    <data>
-        <display>
-        <title>Android 插件化原理解析——Hook机制之AMS&PMS</title>
-        <pubTime>2016-03-07T08:35:46.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
-    <lastmod>2019-01-30T04:06:02.851Z</lastmod>
-    <data>
-        <display>
-        <title>Android 插件化原理解析——Activity生命周期管理</title>
-        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
-    <lastmod>2019-01-30T04:06:02.850Z</lastmod>
-    <data>
-        <display>
-        <title>简化markdown写作中的贴图流程</title>
-        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
-        
-        <tag>markdown</tag>
-         
-        <tag>workflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/12/30/simple-way-to-compile-android-source/</loc>
-    <lastmod>2019-01-30T04:06:02.849Z</lastmod>
-    <data>
-        <display>
-        <title>史上最简单Android源码编译环境搭建方法</title>
-        <pubTime>2016-12-29T17:08:41.000Z</pubTime>
-        
-        <tag>android source</tag>
-         
-        <tag>compile</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</loc>
-    <lastmod>2019-01-30T04:06:02.848Z</lastmod>
-    <data>
-        <display>
-        <title>Android Studio你不知道的快捷键(一)</title>
-        <pubTime>2015-12-11T05:42:33.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/</loc>
-    <lastmod>2019-01-30T04:06:02.848Z</lastmod>
-    <data>
-        <display>
-        <title>Android Studio你不知道的快捷键(三)</title>
-        <pubTime>2015-12-17T02:49:19.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</loc>
-    <lastmod>2019-01-30T04:06:02.847Z</lastmod>
-    <data>
-        <display>
-        <title>Android Studio你不知道的快捷键(二)</title>
-        <pubTime>2015-12-12T01:51:53.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/10/13/sharedpreference-advices/</loc>
-    <lastmod>2019-01-30T04:06:02.846Z</lastmod>
-    <data>
-        <display>
-        <title>请不要滥用SharedPreference</title>
-        <pubTime>2016-10-12T16:31:19.000Z</pubTime>
-        
-        <tag>-android</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/10/08/problems-when-config-react-native-env/</loc>
     <lastmod>2019-01-30T04:06:02.845Z</lastmod>
     <data>
@@ -502,113 +775,6 @@
         <pubTime>2015-10-08T09:20:14.000Z</pubTime>
         
         <tag>react-native</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2017/12/02/non-root-xposed/</loc>
-    <lastmod>2019-01-30T04:06:02.844Z</lastmod>
-    <data>
-        <display>
-        <title>无需Root也能使用Xposed！</title>
-        <pubTime>2017-12-01T20:12:59.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>epic</tag>
-         
-        <tag>root</tag>
-         
-        <tag>xposed</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
-    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
-    <data>
-        <display>
-        <title>如何安全地打印日志</title>
-        <pubTime>2015-10-19T12:28:02.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>log</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/07/make-alfred-support-pinyinyin-search/</loc>
-    <lastmod>2019-01-30T04:06:02.843Z</lastmod>
-    <data>
-        <display>
-        <title>让Alfred支持拼音搜索</title>
-        <pubTime>2015-12-06T20:39:49.000Z</pubTime>
-        
-        <tag>alfred</tag>
-         
-        <tag>python</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/</loc>
-    <lastmod>2019-01-30T04:06:02.842Z</lastmod>
-    <data>
-        <display>
-        <title>如何调试Android Native Framework</title>
-        <pubTime>2017-01-14T09:02:03.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>debug</tag>
-         
-        <tag>framework</tag>
-         
-        <tag>native</tag>
-         
-        <tag>source</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/05/30/how-to-debug-android-framework/</loc>
-    <lastmod>2019-01-30T04:06:02.841Z</lastmod>
-    <data>
-        <display>
-        <title>如何调试Android Framework？</title>
-        <pubTime>2016-05-30T09:26:05.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>debug</tag>
-         
-        <tag>framework</tag>
          
          
            
@@ -673,69 +839,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
-    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
-    <data>
-        <display>
-        <title>你真的了解AsyncTask？</title>
-        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/</loc>
-    <lastmod>2019-01-30T04:06:02.837Z</lastmod>
-    <data>
-        <display>
-        <title>Android性能优化之虚拟机调优</title>
-        <pubTime>2016-12-23T14:53:09.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>heap</tag>
-         
-        <tag>performance</tag>
-         
-        <tag>vm</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2017/11/23/dexposed-on-art/</loc>
-    <lastmod>2019-01-30T04:06:02.836Z</lastmod>
-    <data>
-        <display>
-        <title>我为Dexposed续一秒——论ART上运行时 Method AOP实现</title>
-        <pubTime>2017-11-22T17:30:10.000Z</pubTime>
-        
-        <tag>AOP</tag>
-         
-        <tag>ART</tag>
-         
-        <tag>Dexposed</tag>
-         
-        <tag>Hook</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
     <lastmod>2019-01-30T04:06:02.834Z</lastmod>
     <data>
@@ -753,65 +856,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
-    <lastmod>2019-01-30T04:06:02.834Z</lastmod>
-    <data>
-        <display>
-        <title>Binder学习指南</title>
-        <pubTime>2016-01-12T13:26:09.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>binder</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/</loc>
-    <lastmod>2019-01-30T04:06:02.832Z</lastmod>
-    <data>
-        <display>
-        <title>提升markdown的中文输入效率</title>
-        <pubTime>2016-02-01T08:15:56.000Z</pubTime>
-        
-        <tag>markdown</tag>
-         
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
-    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
-    <data>
-        <display>
-        <title>Android Studio你不知道的调试技巧</title>
-        <pubTime>2015-12-21T12:39:03.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</loc>
     <lastmod>2019-01-30T04:06:02.831Z</lastmod>
     <data>
@@ -820,50 +864,6 @@
         <pubTime>2015-12-01T02:17:29.000Z</pubTime>
         
         <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/09/23/Xfermode-in-android/</loc>
-    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
-    <data>
-        <display>
-        <title>Xfermode in android</title>
-        <pubTime>2015-09-23T05:10:49.000Z</pubTime>
-        
-        <tag>2D graphics</tag>
-         
-        <tag>Xfermode</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://weishu.me/categories/Android/"/>
-          
-             
-              <breadCrumb title="UI" url="http://weishu.me/categories/Android/UI/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
-    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
-    <data>
-        <display>
-        <title>把Sublime添加到Mac右键菜单</title>
-        <pubTime>2015-12-31T06:53:20.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-        <tag>sublime</tag>
          
          
            

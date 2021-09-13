@@ -49,18 +49,18 @@ Android Studio 2.2版本带来了全新的对Android Native">
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="半年前写了一篇文章，介绍 如何调试Android Framework，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。
 Android Studio 2.2版本带来了全新的对Android Native">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484287940736.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484288018710.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484288078862.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484288380978.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484288440156.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484289374465.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484289826696.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484290490320.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484280931189.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484282196260.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1484282509260.png">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.842Z">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484287940736.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484288018710.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484288078862.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484288380978.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484288440156.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484289374465.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484289826696.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484290490320.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484280931189.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484282196260.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1484282509260.png">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何调试Android Native Framework">
 <meta name="twitter:description" content="半年前写了一篇文章，介绍 如何调试Android Framework，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。
@@ -244,15 +244,15 @@ Android Studio 2.2版本带来了全新的对Android Native">
 </blockquote>
 <p>这个过程灰常灰常长！！我启动这个模拟器花了半个多小时，也是醉。现在是2017年，已经是Android创建的第十个年头，ARM模拟器还是烂的一塌糊涂，无力吐槽。一个能让它快一点的诀窍是创建一个小一点的SD card；我设置的是10M。</p>
 <h3 id="开始调试">开始调试</h3><h4 id="选择native调试模式">选择native调试模式</h4><p>首先我们对调试的宿主工程设置一下，选择native调试功能。点击运行下面的按钮 <code>Edit Configuration</code>：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484287940736.png" width="232"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484287940736.png" width="232"></p>
 <p>然后在debugger栏选择Native：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484288018710.png" width="400"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484288018710.png" width="400"></p>
 <p>然后我们点击旁边的 <code>Debug</code>小按钮运行调试程序：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484288078862.png" width="183"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484288078862.png" width="183"></p>
 <h4 id="设置调试符号以及关联源码">设置调试符号以及关联源码</h4><p>在运行程序之后，我们可以在Android Studio的状态栏看到，LLDB调试插件自动帮我们完成了so查找路径的过程，这一点比gdb方便多了！在Android Studio的Debug窗口会自动弹出来，如下：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484288380978.png" width="474"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484288380978.png" width="474"></p>
 <p>我们点击那个 <code>pause program</code> 按钮，可以让程序暂停运行：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484288440156.png" width="615"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484288440156.png" width="615"></p>
 <p>上图左边是正在运行的线程的堆栈信息，右边有两个tab，一个用来显示变量的值；一个是lldb交互式调试窗口！我们先切换到lldb窗口，输入如下命令设置一个断点：</p>
 <blockquote>
 <p>(lldb) br s -n CollectGarbageInternal<br>Breakpoint 2: where = libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, bool), address = 0xb4648c20</p>
@@ -270,20 +270,20 @@ Android Studio 2.2版本带来了全新的对Android Native">
 </blockquote>
 <p>纳尼？？这个目录是个什么鬼，根本没有这个目录好伐？难道是调试器搞错了？</p>
 <p>在继续介绍之前我们需要了解一些关于「调试符号」的知识；我们拿到的调试符号文件其实是一个DWARF文件，只不过这个文件被嵌入到了ELF文件格式之中，而其中的调试符号则在一些名为 <code>.debug_*</code> 的段之中，我们可以用 <code>readelf -S libart.so</code> 查看一下：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484289374465.png" width="616"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484289374465.png" width="616"></p>
 <p>编译器在编译libart.so的时候，记录下了<strong>编译时候</strong>源代码与代码偏移之间的对应关系，因此调试器可以从调试符号文件中获取到源码行号信息；如下：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484289826696.png" width="486"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484289826696.png" width="486"></p>
 <p>这下我们明白了上面那个莫名其妙的目录是什么了；原来是在编译<code>libart.so</code>的那个机器上存在源码。那么问题来了，我们绝大多数情况下是使用另外一台机器上的源码进行调试的——比如我提供的那个 <a href="https://github.com/tiann/android-native-debug" target="_blank" rel="external">Demo工程</a> 包含的带符号libart.so里面保存的源文件信息的目录实际上是我编译的电脑上的目录，而你调试的时候需要使用自己电脑上的目录。知道了问题所在，解决就很简单了，我们需要映射一下；在Android Studio的Debug 窗口的lldb 那个tab执行如下命令：</p>
 <blockquote>
 <p>(lldb) settings set target.source-map /Volumes/Android/android-5.1.1_r9/ /Users/weishu/dev/github/Android-native-debug/app/source/</p>
 </blockquote>
 <p>第一个参数的意思是编译时候的目录信息，第二个参数是你机器上的源码存放路径；设置成自己的即可。</p>
 <p>这时候，我们再触发断点（点击demo项目的Debug按钮），看看发生了什么？！</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484290490320.png" width="1191"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484290490320.png" width="1191"></p>
 <p>至此，我们已经成功滴完成了在Android Studio中Native代码的源码调试。你可以像调试Java代码一样调试Native代码，step/in/out/over，条件断点，watch point任你飞。你可以借助这个工具去探究Android底层运行原理，比如垃圾回收机制，对象分配机制，Binder通信等等，完全不在话下！</p>
 <h2 id="无源码调试">无源码调试</h2><p>接下来再介绍一下操作简单但是使用门槛高的「无源码调试」方式；本来打算继续使用Android Studio的，但是无奈现阶段还有BUG，给官方提了issue但是响应很慢：<a href="https://code.google.com/p/android/issues/detail?id=231116。因此我们直接使用" target="_blank" rel="external">https://code.google.com/p/android/issues/detail?id=231116。因此我们直接使用</a> LLDB 调试；当然，用gdb也能进行无源码调试，但是使用lldb比gdb的步骤要简单得多；不信你可以看下文。</p>
 <h3 id="安装Android_LLDB工具">安装Android LLDB工具</h3><p>要使用lldb进行调试，首先需要在调试设备上运行一个lldb-server，这个lldb-server attach到我们需要调试的进程，然后我们的开发机与这个server进行通信，就可以进行调试了。熟悉gdb调试的同学应该很清楚这一点。我们可以用Android Studio直接下载这个工具，打开SDK Manager：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484280931189.png" width="720"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484280931189.png" width="720"></p>
 <p>如上图，勾选这个即可；下载的内容会存放到你的 $ANDROID_SDK/lldb 目录下。</p>
 <h3 id="使用步骤">使用步骤</h3><p>安装好必要的工具之后，就可以开始调试了；整体步骤比较简单：把lldb-server推送到调试设备并运行这个server，在开发机上连上这个server即可；以下是详细步骤。</p>
 <h4 id="在手机端运行lldb-server">在手机端运行lldb-server</h4><p>如果你的调试设备是root的，那么相对来说比较简单；毕竟我们的调试进程lldb-server要attach到被调试的进程是需要一定权限的，如果是root权限那么没有限制；如果没有root，那么我们只能借助<code>run-as</code>命令来调试自己的进程；另外，被调试的进程必须是debuggable，不赘述。以下以root的设备为例（比如模拟器）</p>
@@ -305,7 +305,7 @@ Android Studio 2.2版本带来了全新的对Android Native">
 </li>
 </ol>
 <h4 id="连接到lldb-server开始调试">连接到lldb-server开始调试</h4><p>首先打开终端执行lldb（Mac开发者工具自带这个，Windows不支持）,会进入一个交互式的环境，如下图：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484282196260.png" width="462"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484282196260.png" width="462"></p>
 <ol>
 <li><p>选择使用Android调试插件。执行如下命令：</p>
 <blockquote>
@@ -319,7 +319,7 @@ Android Studio 2.2版本带来了全新的对Android Native">
 <p>platform connect unix-abstract-connect:///data/local/tmp/debug.sock</p>
 </blockquote>
 <p>正常情况下你执行lldb-server的那个终端应该有了输出：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1484282509260.png" width="430"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1484282509260.png" width="430"></p>
 </li>
 <li><p>attach到调试进程。首先你需要查出你要调试的那个进程的pid，直接用ps即可；打开一个新的终端执行：</p>
 <blockquote>

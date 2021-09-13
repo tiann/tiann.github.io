@@ -49,10 +49,10 @@
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="之前的 Android插件化原理解析 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？
 在Java平台要做到动态运行模块、热插拔可以使用ClassLoader技术进行动态类加载，比如广泛使用的OSGi技术。在Android上当然也可以使用动态加载技术，但是仅">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1458296458099.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1458300329231.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1458532084072.png">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.851Z">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1458296458099.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1458300329231.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1458532084072.png">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 插件化原理解析——Activity生命周期管理">
 <meta name="twitter:description" content="之前的 Android插件化原理解析 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？
@@ -252,7 +252,7 @@
 <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> ActivityManager.START_CLASS_NOT_FOUND:</span><br><span class="line">    <span class="keyword">if</span> (intent <span class="keyword">instanceof</span> Intent &amp;&amp; ((Intent)intent).getComponent() != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ActivityNotFoundException(</span><br><span class="line">                <span class="string">"Unable to find explicit activity class "</span></span><br><span class="line">                + ((Intent)intent).getComponent().toShortString()</span><br><span class="line">                + <span class="string">"; have you declared this activity in your AndroidManifest.xml?"</span>);</span><br></pre></td></tr></table></figure>
 <p>源码看到这里，我们已经确认了『必须在AndroidManifest.xml中显示声明使用的Activity』的原因；然而这个校检过程发生在<code>AMS</code>所在的进程<code>system_server</code>，我们没有办法篡改，只能另寻他路。</p>
 <p>OK，我们继续跟踪源码；在startActivityLocked之后处理的都是Activity任务栈相关内容，这一系列ActivityStack和ActivityStackSupervisor纠缠不清的调用看下图就明白了；不明白也没关系: D 目前用处不大。</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1458296458099.png" alt="调用流程图"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1458296458099.png" alt="调用流程图"></p>
 <p>这一系列调用最终到达了ActivityStackSupervisor的realStartActivityLocked方法；人如其名，这个方法开始了真正的“启动Activity”：它调用了ApplicationThread的scheduleLaunchActivity方法，开始了真正的Activity对象创建以及启动过程。</p>
 <p>这个ApplicationThread是什么，是一个线程吗？与ActivityThread有什么区别和联系？</p>
 <p>不要被名字迷惑了，这个ApplicationThread实际上是一个Binder对象，是App所在的进程与AMS所在进程system_server通信的桥梁；在Activity启动的过程中，App进程会频繁地与AMS进程进行通信：</p>
@@ -261,7 +261,7 @@
 <li>AMS进程完成生命周期管理以及任务栈管理后，会把控制权交给App进程，让App进程完成Activity类对象的创建，以及生命周期回调；这个通信过程也是通过Binder完成的，App所在server端的Binder对象存在于ActivityThread的内部类ApplicationThread；AMS所在client通过持有IApplicationThread的代理对象完成对于App进程的通信。</li>
 </ol>
 <p>App进程与AMS进程的通信过程如图所示：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1458300329231.png" width="500"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1458300329231.png" width="500"></p>
 <p>App进程内部的ApplicationThread server端内部有自己的Binder线程池，它与App主线程的通信通过Handler完成，这个Handler存在于ActivityThread类，它的名字很简单就叫<code>H</code>，这一点我们接下来就会讲到。</p>
 <p>现在我们明白了这个ApplicationThread到底是个什么东西，接上文继续跟踪Activity的启动过程；我们查看ApplicationThread的<code>scheduleLaunchActivity</code>方法，这个方法很简单，就是包装了参数最终使用Handler发了一个消息。</p>
 <p>正如刚刚所说，ApplicationThread所在的Binder服务端使用Handler与主线程进行通信，这里的scheduleLaunchActivity方法直接把启动Activity的任务通过一个消息转发给了主线程；我们查看Handler类对于这个消息的处理：</p>
@@ -288,7 +288,7 @@
 <p>那么问题来了，『合适的时候』到底是什么时候？在前文<a href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/">Hook机制之动态代理</a>中我们提到过Hook过程最重要的一步是<strong>寻找Hook点</strong>；如果是在同一个进程，<code>startActivity</code>到Activity真正启动起来这么长的调用链，我们随便找个地方Hook掉就完事儿了；但是问题木有这么简单。</p>
 <p>Activity启动过程中很多重要的操作（正如上文分析的『必须在AndroidManifest.xml中显式声明要启动的Activity』)都不是在App进程里面执行的，而是在AMS所在的系统进程system_server完成，由于<strong>进程隔离</strong>的存在，我们对别的进程无能为力；所以这个Hook点就需要花点心思了。</p>
 <p>这时候Activity启动过程的知识就派上用场了；虽然整个启动过程非常复杂，但其实一张图就能总结：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1458532084072.png" alt="简要启动过程"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1458532084072.png" alt="简要启动过程"></p>
 <p>先从App进程调用<code>startActivity</code>；然后通过IPC调用进入系统进程system_server，完成Activity管理以及一些校检工作，最后又回到了APP进程完成真正的Activioty对象创建。</p>
 <p>由于这个检验过程是在AMS进程完成的，我们对system_server进程里面的操作无能为力，只有在我们APP进程里面执行的过程才是有可能被Hook掉的，也就是第一步和第三步；具体应该怎么办呢？</p>
 <p>既然需要一个显式声明的Activity，那就声明一个！<strong>可以在第一步假装启动一个已经在AndroidManifest.xml里面声明过的替身Activity，让这个Activity进入AMS进程接受检验；最后在第三步的时候换成我们真正需要启动的Activity</strong>；这样就成功欺骗了AMS进程，瞒天过海！</p>

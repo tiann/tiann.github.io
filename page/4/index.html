@@ -228,7 +228,7 @@
       
         
           <p>写代码不可避免有Bug，通常情况下除了日志最直接的调试手段就是debug；那么你的调试技术停留在哪一阶段呢？仅仅是下个断点单步执行吗？或者你知道 <code>Evaluate Expression</code>, 知道条件断点；可是你听说过日志断点吗，<code>Method Breakpoint</code>, <code>Exception Breakpoint</code> 呢？还有高大上的 <code>Field Watchpoint</code> ?</p>
-<p><img src="http://weishu1.dimensionalzone.com/test/1450701212799.png" width="338" alt="几种不同的断点"/></p>
+<p><img src="http://weishu1.dimenspace.com/test/1450701212799.png" width="338" alt="几种不同的断点"/></p>
 <p>你有关注过Android Studio旁边断点的区别吗？比如上图三个断点有什么不同？且听我一一道来。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/21/android-studio-debug-tips-you-may-not-know/" rel="contents">
@@ -319,7 +319,7 @@
 <li><a href="http://www.tianweishu.com/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/">Android Studio你不知道的快捷键(二)</a></li>
 </ol>
 <h1 id="Select_In-">Select In..</h1><p>说实话，想不出一个比较好的翻译 :P 干脆使用英文吧。</p>
-<p><img src="http://weishu.dimensionalzone.com/201512-17-1.gif" alt="Select In.." width="449"/></p>
+<p><img src="http://weishu.dimenspace.com/201512-17-1.gif" alt="Select In.." width="449"/></p>
 <p>有没有这样的场景：你在Android Studio打开了一个图片文件（或者别的文件），想在资源浏览器里面查看这图片；在Eclipse里面我想大部分的人是<code>Alt + Enter</code>进入文件属性复制地址，然后在系统资源管理器里面打开；或者装一个EasyExplore插件。在Android Studio里面，这是内建支持的！而且还不止如此！比如你想看看某个文件在包的哪个目录，通常是不是点击Project View上面的那个小圆坐标；用这个快捷键鼠标就能搞定。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/17/shortcut-of-android-studio-you-may-not-know-3/" rel="contents">
@@ -405,7 +405,7 @@
       
         
           <p>在<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">Android Studio你不知道的快捷键(一)</a>里面，主要讲述了一些窗口操作的快捷键还有补全参数提示等，这一篇会分享一些代码代码编辑的快捷键。(<strong>默认Keymap</strong>如<a href="http://tianweishu.com/2015/12/11/shortcut-of-android-studio-you-may-not-know/">上文</a>)</p>
-<h2 id="自动生成变量">自动生成变量</h2><p><img src="http://weishu.dimensionalzone.com/201512-12-1.gif" alt="自动生成变量" /></p>
+<h2 id="自动生成变量">自动生成变量</h2><p><img src="http://weishu.dimenspace.com/201512-12-1.gif" alt="自动生成变量" /></p>
 <p>作为一门静态类型语言，Java是有一定的类型推导能力的；那么你是否经常书写:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String testStr = <span class="string">"testStr"</span>;</span><br><span class="line">List&lt;String&gt; testStrings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
 <p>其实大可不必写那些恼火的类型声明的，一看就知道<code>testStr, testStrings</code>就知道是什么类型，再这么干不就是废话么！好在IDEA给了我们这个能力。尝试一下这个快捷键吧，会给你惊喜。<br>
           <div class="post-more-link text-center">
@@ -495,7 +495,7 @@
 <blockquote>
 <p>下文所有快捷键基于如下keymap<br>Windows: Default<br>Linux: Default<br>OSX: Mac OSX 10.5+</p>
 </blockquote>
-<h2 id="自动补全的时候是Enter还是Tab？">自动补全的时候是Enter还是Tab？</h2><p><img src="http://weishu1.dimensionalzone.com/blog2015-12-11-1.gif" alt="自动补全enter和tab区别" width="252"/><br>在使用自动补全的时候<code>Enter</code>和<code>Tab</code>的行为还是有一些细微的区别的：<br>
+<h2 id="自动补全的时候是Enter还是Tab？">自动补全的时候是Enter还是Tab？</h2><p><img src="http://weishu1.dimenspace.com/blog2015-12-11-1.gif" alt="自动补全enter和tab区别" width="252"/><br>在使用自动补全的时候<code>Enter</code>和<code>Tab</code>的行为还是有一些细微的区别的：<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" rel="contents">
               阅读全文 &raquo;
@@ -583,7 +583,7 @@
 <p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
 </blockquote>
 <p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
-<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://weishu1.dimensionalzone.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
+<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://weishu1.dimenspace.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
 <p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
 <p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
 <p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br>
@@ -656,7 +656,7 @@
       
         
           <p>Alfred是个好东西，不过检索程序的时候不支持拼音搜索；我在论坛看到有人给作者反馈过，无奈作者说支持中文，他不知道拼音是什么，于是就不了了之了。举个例子：我想打开<code>网易云音乐</code>,可是当我输入<code>wangyiyunyinyue</code>的时候却是这样的结果:</p>
-<p><img src="http://weishu1.dimensionalzone.com/test/1449431593204.png" width="536" alt="不支持拼音的搜索结果"/></p>
+<p><img src="http://weishu1.dimenspace.com/test/1449431593204.png" width="536" alt="不支持拼音的搜索结果"/></p>
 <p>要么我知道这个App的名字叫做<code>NeteaseMusic</code>，要么我就需要用中文输入<code>网易云音乐</code>打开了；如果恰巧输入法是英文输入状态，那么就会遇到上图的情况；这时候再把已经输入的删除然后切换输入法打开，效率无疑大大折扣。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/07/make-alfred-support-pinyinyin-search/" rel="contents">
@@ -805,7 +805,7 @@
         
           <p>mac下的P2P下载工具目前只有迅雷了，可是大家都知道mac下只有“会员迅雷”才能下载，没会员就是个废物。对于冷门资源离线下载还是是非常非常有用的，高速下载对速度提升也是显而易见。</p>
 <p>想必都不会为了临时下载一个资源去开一个会员，肯定有过上网搜迅雷会员的经历；这里教大家如何把这个过程变成一个自动化的工作。<strong>如果长期使用迅雷的话，建议还是开会员去；本教程仅供学习使用，用完请于24小时之内删除</strong></p>
-<p>先看看效果：<br><img src="http://weishu1.dimensionalzone.com/markdownxunleivip.gif" alt='效果图' width="721" /></p>
+<p>先看看效果：<br><img src="http://weishu1.dimenspace.com/markdownxunleivip.gif" alt='效果图' width="721" /></p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/11/18/xunlei-vip-account-workflow/" rel="contents">
               阅读全文 &raquo;

@@ -49,9 +49,9 @@ AsyncTask的实现几经修改，因此在不同版本的Android系统上表现�
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？
 AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/20161-18.jpg">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201512/1453101991064.png">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.838Z">
+<meta property="og:image" content="http://weishu.dimenspace.com/20161-18.jpg">
+<meta property="og:image" content="http://weishu.dimenspace.com/201512/1453101991064.png">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你真的了解AsyncTask？">
 <meta name="twitter:description" content="虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？
@@ -242,7 +242,7 @@ AsyncTask的实现几经修改，因此在不同版本的Android系统上表现�
 <li>如果工作队列满了，并且线程池中线程的数目到达了最大数目maximumPoolSize，那么就会用最后一个构造参数<code>handler</code>处理；**默认的处理方式是直接丢掉任务，然后抛出一个异常。</li>
 </ol>
 <p>总结起来，也即是说，当有新的任务要处理时，<strong>先看线程池中的线程数量是否大于 corePoolSize，再看缓冲队列 workQueue 是否满，最后看线程池中的线程数量是否大于 maximumPoolSize</strong>。另外，当线程池中的线程数量大于 corePoolSize 时，如果里面有线程的空闲时间超过了 keepAliveTime，就将其移除线程池，这样，可以动态地调整线程池中线程的数量。</p>
-<p><img src="http://weishu.dimensionalzone.com/20161-18.jpg" alt="风景"></p>
+<p><img src="http://weishu.dimenspace.com/20161-18.jpg" alt="风景"></p>
 <p>我们以API 22为例，看一看AsyncTask里面的线程池是以什么参数构造的；AsyncTask里面有“两个”线程池；一个<code>THREAD_POOL_EXECUTOR</code>一个<code>SERIAL_EXECUTOR</code>；之所以打引号，是因为其实<code>SERIAL_EXECUTOR</code>也使用<code>THREAD_POOL_EXECUTOR</code>实现的，只不过加了一个队列弄成了串行而已，那么这个<code>THREAD_POOL_EXECUTOR</code>是如何构造的呢？</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = CPU_COUNT + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = CPU_COUNT * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">            <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">128</span>);</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor THREAD_POOL_EXECUTOR</span><br><span class="line">            = <span class="keyword">new</span> ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,</span><br><span class="line">                    TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);</span><br></pre></td></tr></table></figure>
 <p>可以看到，AsyncTask里面线程池是一个核心线程数为<code>CPU + 1</code>，最大线程数为<code>CPU * 2 + 1</code>，工作队列长度为<strong>128</strong>的线程池；并且没有传递<code>handler</code>参数，那么使用的就是默认的Handler（拒绝执行).</p>
@@ -255,7 +255,7 @@ AsyncTask的实现几经修改，因此在不同版本的Android系统上表现�
 <li><p>在AsyncTask全部执行完毕之后，进程中还是会常驻corePoolSize个线程；在Android 4.4 （API 19）以下，这个corePoolSize是hardcode的，数值是5；API 19改成了<code>cpu + 1</code>；也就是说，在Android 4.4以前；如果你执行了超过五个AsyncTask；然后啥也不干了，进程中还是会有5个AsyncTask线程；不信，你看：</p>
 </li>
 </ol>
-<p><img src="http://weishu.dimensionalzone.com/201512/1453101991064.png" width="277"></p>
+<p><img src="http://weishu.dimenspace.com/201512/1453101991064.png" width="277"></p>
 <h3 id="Handler">Handler</h3><p>AsyncTask里面的handler很简单，如下（API 22代码）：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> InternalHandler sHandler = <span class="keyword">new</span> InternalHandler();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">InternalHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(Looper.getMainLooper());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意，这里直接用的主线程的Looper；如果去看API 22以下的代码，会发现它没有这个构造函数，而是使用默认的；默认情况下，Handler会使用当前线程的Looper，如果你的AsyncTask是在子线程创建的，那么很不幸，你的<code>onPreExecute</code>和<code>onPostExecute</code>并非在UI线程执行，而是被Handler post到创建它的那个线程执行；如果你在这两个线程更新了UI，那么直接导致崩溃。这也是大家口口相传的<strong>AsyncTask必须在主线程创建</strong>的原因。</p>

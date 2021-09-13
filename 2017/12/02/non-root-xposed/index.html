@@ -49,12 +49,12 @@
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
 我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xp">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201605/1512158544505.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201605/1512158469933.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201605/1512158377339.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201605/1512158575155.png">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201605/1512158598212.png">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.844Z">
+<meta property="og:image" content="http://weishu.dimenspace.com/201605/1512158544505.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201605/1512158469933.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201605/1512158377339.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201605/1512158575155.png">
+<meta property="og:image" content="http://weishu.dimenspace.com/201605/1512158598212.png">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无需Root也能使用Xposed！">
 <meta name="twitter:description" content="Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，能不能不用Root就可以享用Xposed的功能呢？
@@ -232,11 +232,11 @@
 <p>然后安装微信防撤回模块：微信巫师，发布的主页在这：<a href="http://xposed.appkg.com/2558.html" target="_blank" rel="external">WeChat Magician（微信巫师）</a>；直接下载 <a href="http://dl-xda.xposed.info/modules/com.gh0u1l5.wechatmagician_v30_1387ce.apk" target="_blank" rel="external">链接</a></p>
 <p>接下来需要确保你手机上的微信是微信巫师所支持的，目前支持微信的版本为 6.5.8~6.5.16；如果不是的话需要去下载一个支持的版本，比如 <a href="https://down.shouji.com.cn/wap/wdown/softversion?id=188561&amp;package=com.tencent.mm" target="_blank" rel="external">微信_6.5.8.apk</a>。</p>
 <p>最后，你需要打开VAExposed这个双开软件，添加微信和微信巫师为双开模块，如下图：</p>
-<p><img src="http://weishu.dimensionalzone.com/201605/1512158544505.png" width="180px"></p>
+<p><img src="http://weishu.dimenspace.com/201605/1512158544505.png" width="180px"></p>
 <p>这样，使用双开中的微信，就能享受Xposed模块的防撤回功能了！</p>
-<p><img src="http://weishu.dimensionalzone.com/201605/1512158469933.png" width="180px"></p>
+<p><img src="http://weishu.dimenspace.com/201605/1512158469933.png" width="180px"></p>
 <p>另外，你还可以直接在双开中使用 XposedInstaller，然后就可以方便滴下载和管理Xposed模块了：</p>
-<p><img src="http://weishu.dimensionalzone.com/201605/1512158377339.png" width="180px"><br><img src="http://weishu.dimensionalzone.com/201605/1512158575155.png" width="180px"><br><img src="http://weishu.dimensionalzone.com/201605/1512158598212.png" width="180px"></p>
+<p><img src="http://weishu.dimenspace.com/201605/1512158377339.png" width="180px"><br><img src="http://weishu.dimenspace.com/201605/1512158575155.png" width="180px"><br><img src="http://weishu.dimenspace.com/201605/1512158598212.png" width="180px"></p>
 <p>就这样，我们在非Root手机下，就能享用Xposed模块的功能，Have Fun ：）</p>
 <p>不过，在实现完这个功能之后，我不寒而栗：千万不要在Root环境或者双开环境下运行关键App，不然你的微信登录密码，支付宝支付密码，银行卡账号，很有可能被尽收眼底。</p>
 <p>PS：目前 Exposed 层的实现处于初级阶段，个人精力非常有限（一般都是凌晨写代码）；如果你对 <strong>实现非Root模式下的Xposed</strong> 感兴趣，非常欢迎跟我一起组队 :) 项目地址在这：<a href="https://github.com/android-hacker/exposed。" target="_blank" rel="external">https://github.com/android-hacker/exposed。</a></p>

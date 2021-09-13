@@ -49,8 +49,8 @@ ActivityManagerServ">
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是代理方式和Binder Hook；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。
 ActivityManagerServ">
-<meta property="og:image" content="http://weishu.dimensionalzone.com/201601/1457322345547.png">
-<meta property="og:updated_time" content="2019-01-30T04:06:02.852Z">
+<meta property="og:image" content="http://weishu.dimenspace.com/201601/1457322345547.png">
+<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 插件化原理解析——Hook机制之AMS&PMS">
 <meta name="twitter:description" content="在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是代理方式和Binder Hook；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。
@@ -235,7 +235,7 @@ ActivityManagerServ">
 <li>调用被<code>Activity</code>类重载过的<code>startActivity</code>方法，通常在我们的Activity中直接调用这个方法就是这种形式；</li>
 </ol>
 <h3 id="Context-startActivity">Context.startActivity</h3><p>我们查看<code>Context</code>类的<code>startActivity</code>方法，发现这竟然是一个抽象类；查看<code>Context</code>的类继承关系图如下：</p>
-<p><img src="http://weishu.dimensionalzone.com/201601/1457322345547.png" width="329"></p>
+<p><img src="http://weishu.dimenspace.com/201601/1457322345547.png" width="329"></p>
 <p>我们看到诸如<code>Activity</code>，<code>Service</code>等并没有直接继承<code>Context</code>，而是继承了<code>ContextWrapper</code>；继续查看<code>ContextWrapper</code>的实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    mBase.startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>WTF!! 果然人如其名，只是一个wrapper而已；这个<code>mBase</code>是什么呢？这里我先直接告诉你，它的真正实现是<code>ContextImpl</code>类；至于为什么，有一条思路：<em>mBase是在ContextWrapper构造的时候传递进来的，那么在ContextWrapper构造的时候可以找到答案</em><br>什么时候会构造ContextWrapper呢？它的子类<code>Application</code>，<code>Service</code>等被创建的时候。</p>
