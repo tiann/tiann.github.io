@@ -178,6 +178,82 @@
           
           
             
+              <a class="post-title-link" href="/2021/09/13/what-is-bootloader-unlock/" itemprop="url">
+                当我们谈论解锁 BootLoader 时，我们在谈论什么？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-09-13T15:44:15+08:00" content="2021-09-13">
+            2021-09-13
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>有过刷机经验或者曾经尝试过刷机的童鞋，一定听说过「解锁」这个词。这里的「解锁」全称应该是「解锁 BootLoader」或者简称为「解 BL 锁」。与通过人脸识别或者指纹、数字图案解锁手机屏幕的那种「屏幕解锁」不同，这里的「解锁」完全是另外一个概念。直观来说，<strong>解 BL 锁是刷机的前提条件</strong>。通常情况下，一旦某个设备无法解锁 BL，基本上就无法在这个设备进行刷机了。</p>
+<p>那么，一定会有童鞋关心，解锁 BootLoader 到底意味着什么？为什么它会有限制？我们能绕过限制强制解锁吗？今天，我就尝试来回答一下这几个问题。</p>
+<p>在搞清楚解锁 BootLoader 之前，我们必须先搞清楚什么是 BootLoader：</p>
+<blockquote>
+<p>A bootloader is software that is responsible for booting a computer.</p>
+</blockquote>
+<p>维基百科上的介绍言简意赅：<strong>Bootloader 是负责启动计算机的软件</strong>。计算机开机的时候，会执行一个相对较小的程序来初始化内存、外设等启动后续操作系统必备的资源，并最终启动用户所使用的操作系统（如 Windows, Android 等）；这个程序就是 BootLoader。</p>
+<p>我们知道，操作系统负责管理设备的硬件资源；而 BootLoader 是用来启动操作系统的，如果有人通过 BootLoader 来启动一个恶意的操作系统，那我们设备的安全性就无法得到保障了。因此，BootLoader 一个核心的功能就是，确保启动一个可信的操作系统。另外，当设备的操作系统出现问题时，BootLoader 还可以引导启动另外一个正常的可信系统来执行恢复；所以，BootLoader 另外一个功能重要功能就是恢复系统。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2021/09/13/what-is-bootloader-unlock/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2021/01/25/another-keep-alive-method/" itemprop="url">
                 另一种黑科技保活方法
               </a>
@@ -802,77 +878,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/01/14/how-to-debug-android-native-framework-source/" itemprop="url">
-                如何调试Android Native Framework
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-01-14T17:02:03+08:00" content="2017-01-14">
-            2017-01-14
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>半年前写了一篇文章，介绍 <a href="http://weishu.me/2016/05/30/how-to-debug-android-framework/">如何调试Android Framework</a>，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。</p>
-<p>Android Studio 2.2版本带来了全新的对Android Native代码的开发以及调试支持，另外LLDB的Android调试插件也日渐成熟，我终于可以把这篇文章继续下去了！本文将带来Android Framework中native代码的调试方法。</p>
-<p>在正式介绍如何调试之前，必须先说明一些基本的概念。调试器在调试一个可执行文件的时候，必须知道一些调试信息才能进行调试，这个调试信息可多可少（也可以没有）。最直观的比如行号信息，如果调试器知道行号信息，那么在进行调试的时候就能知道当前执行到了源代码的哪一行，如果调试器还知道对应代码的源文件在哪，那么现代IDE的调试器一般就能顺着源码带你飞了，这就是所谓的源码调试。相反，如果没有行号和源码信息，那么只能进行更低级别的调试了，调试器只能告诉你一些寄存器的值；而当前运行的代码也只是PC寄存器所指向的二进制数据，这些数据要么是虚拟机指令，要么是汇编指令；这就是所谓的无源码调试。显然无源码调试相比源码级别的调试要麻烦的多；接下来将围绕这两个方面分别介绍。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/01/14/how-to-debug-android-native-framework-source/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -911,7 +916,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
