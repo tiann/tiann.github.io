@@ -178,7 +178,81 @@
           
           
             
-              <a class="post-title-link" href="/2021/09/13/what-is-bootloader-unlock/" itemprop="url">
+              <a class="post-title-link" href="/2021/09/13/what-is-root/" itemprop="url">
+                何为 root？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-09-13T15:46:01+08:00" content="2021-09-13">
+            2021-09-13
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>对于搞机党或者开发人员来说，root 一定是一个不陌生的名词。在 [当我们谈论解锁 BootLoader 时，我们在谈论什么？] 一文中我们了解到，解锁 Bootloader 实际上能做到的是<strong>让手机可以运行第三方的操作系统</strong>，而通常来说，我们给手机解锁 Bootloader 就是为了获取 Root 权限。那么，<strong>何为 root?</strong>，解锁 Bootloader 和 root 到底有什么联系和区别？</p>
+<blockquote>
+<p>In Unix-like computer OSes (such as Linux), root is the conventional name of the user who has all rights or permissions (to all files and programs) in all modes (single- or multi-user).</p>
+</blockquote>
+<p>维基百科说，在类 Unix 系统中，root 是在<strong>所有模式</strong>（单用户或多用户）下对<strong>所有文件和程序</strong>拥有<strong>所有权利或许可</strong>的用户的名称。</p>
+<p>现代操作系统（本文主要讨论 Android 系统，下同）一般都是多用户的，那个名为 root 的用户所拥有的权限就是 root 权限；而 root 权限中有三个「所有」，可以简单这么理解：<strong>root 意味着最高权限</strong>；不过，这么描述不够具象，接下来就带大家了解一下 root 的方方面面。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2021/09/13/what-is-root/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2021/07/24/what-is-bootloader-unlock/" itemprop="url">
                 当我们谈论解锁 BootLoader 时，我们在谈论什么？
               </a>
             
@@ -189,8 +263,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2021-09-13T15:44:15+08:00" content="2021-09-13">
-            2021-09-13
+          <time itemprop="dateCreated" datetime="2021-07-24T20:53:15+08:00" content="2021-07-24">
+            2021-07-24
           </time>
         </span>
 
@@ -221,7 +295,7 @@
 <p>维基百科上的介绍言简意赅：<strong>Bootloader 是负责启动计算机的软件</strong>。计算机开机的时候，会执行一个相对较小的程序来初始化内存、外设等启动后续操作系统必备的资源，并最终启动用户所使用的操作系统（如 Windows, Android 等）；这个程序就是 BootLoader。</p>
 <p>我们知道，操作系统负责管理设备的硬件资源；而 BootLoader 是用来启动操作系统的，如果有人通过 BootLoader 来启动一个恶意的操作系统，那我们设备的安全性就无法得到保障了。因此，BootLoader 一个核心的功能就是，确保启动一个可信的操作系统。另外，当设备的操作系统出现问题时，BootLoader 还可以引导启动另外一个正常的可信系统来执行恢复；所以，BootLoader 另外一个功能重要功能就是恢复系统。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2021/09/13/what-is-bootloader-unlock/" rel="contents">
+            <a class="btn" href="/2021/07/24/what-is-bootloader-unlock/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -807,77 +881,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/03/20/dive-into-art-hello-world/" itemprop="url">
-                ART深度探索开篇：从Method Hook谈起
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-03-20T23:37:08+08:00" content="2017-03-20">
-            2017-03-20
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 <a href="https://github.com/alibaba/AndFix">AndFix</a>。</p>
-<p>为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一个系列的开篇，本文不打算展开讲虚拟机原理等内容，首先给大家一道开胃菜；后续我们再深入探索ART。</p>
-<p>众所周知，AndFix是一种 native 的hotfix方案，它的替换过程是用 c 在 native层完成的，但其实，我们也可以用纯Java实现它！而且，代码还非常精简，且看——</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/03/20/dive-into-art-hello-world/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -916,7 +919,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-count">44</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -930,7 +933,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">标签</span>
               
           </div>

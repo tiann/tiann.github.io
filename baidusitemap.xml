@@ -4,13 +4,36 @@
 
     
   <url>
-    <loc>http://weishu.me/2021/09/13/what-is-bootloader-unlock/</loc>
-    <lastmod>2021-09-13T07:45:04.183Z</lastmod>
+    <loc>http://weishu.me/2021/09/13/what-is-root/</loc>
+    <lastmod>2021-09-13T07:49:02.752Z</lastmod>
+    <data>
+        <display>
+        <title>何为 root？</title>
+        <pubTime>2021-09-13T07:46:01.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>root</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2021/07/24/what-is-bootloader-unlock/</loc>
+    <lastmod>2021-09-13T07:48:49.903Z</lastmod>
     <data>
         <display>
         <title>当我们谈论解锁 BootLoader 时，我们在谈论什么？</title>
-        <pubTime>2021-09-13T07:44:15.000Z</pubTime>
+        <pubTime>2021-07-24T12:53:15.000Z</pubTime>
         
+        <tag>android</tag>
+         
+        <tag>bootloader</tag>
+         
          
            
         </display>
@@ -88,21 +111,6 @@
     
     
   <url>
-    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
-    <lastmod>2019-01-30T04:06:02.863Z</lastmod>
-    <data>
-        <display>
-        <title>ASCII Art：使用纯文本流程图</title>
-        <pubTime>2016-01-03T15:17:24.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
     <lastmod>2019-01-30T04:06:02.863Z</lastmod>
     <data>
@@ -112,6 +120,21 @@
         
         <tag>alfred workflow</tag>
          
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
+    <lastmod>2019-01-30T04:06:02.863Z</lastmod>
+    <data>
+        <display>
+        <title>ASCII Art：使用纯文本流程图</title>
+        <pubTime>2016-01-03T15:17:24.000Z</pubTime>
+        
          
            
         </display>
@@ -631,23 +654,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
-    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
-    <data>
-        <display>
-        <title>你真的了解AsyncTask？</title>
-        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2017/03/20/dive-into-art-hello-world/</loc>
     <lastmod>2019-01-30T04:06:02.838Z</lastmod>
     <data>
@@ -658,6 +664,23 @@
         <tag>android</tag>
          
         <tag>art</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <lastmod>2019-01-30T04:06:02.838Z</lastmod>
+    <data>
+        <display>
+        <title>你真的了解AsyncTask？</title>
+        <pubTime>2016-01-18T07:41:08.000Z</pubTime>
+        
+        <tag>android</tag>
          
          
            
@@ -713,6 +736,23 @@
 
     
   <url>
+    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
+    <lastmod>2019-01-30T04:06:02.834Z</lastmod>
+    <data>
+        <display>
+        <title>mac下Android studio快捷键配置</title>
+        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
+        
+        <tag>ideavim</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/01/12/binder-index-for-newer/</loc>
     <lastmod>2019-01-30T04:06:02.834Z</lastmod>
     <data>
@@ -723,23 +763,6 @@
         <tag>android</tag>
          
         <tag>binder</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/10/02/configuration-of-idea-android-studio-in-mac/</loc>
-    <lastmod>2019-01-30T04:06:02.834Z</lastmod>
-    <data>
-        <display>
-        <title>mac下Android studio快捷键配置</title>
-        <pubTime>2015-10-02T06:17:47.000Z</pubTime>
-        
-        <tag>ideavim</tag>
          
          
            
@@ -769,23 +792,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</loc>
-    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
-    <data>
-        <display>
-        <title>mac下自动切换输入法</title>
-        <pubTime>2015-12-01T02:17:29.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
     <lastmod>2019-01-30T04:06:02.831Z</lastmod>
     <data>
@@ -806,16 +812,14 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
-    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
+    <loc>http://weishu.me/2015/12/01/autoswitch-keyboard-in-mac/</loc>
+    <lastmod>2019-01-30T04:06:02.831Z</lastmod>
     <data>
         <display>
-        <title>把Sublime添加到Mac右键菜单</title>
-        <pubTime>2015-12-31T06:53:20.000Z</pubTime>
+        <title>mac下自动切换输入法</title>
+        <pubTime>2015-12-01T02:17:29.000Z</pubTime>
         
         <tag>mac</tag>
-         
-        <tag>sublime</tag>
          
          
            
@@ -844,6 +848,25 @@
              
               <breadCrumb title="UI" url="http://weishu.me/categories/Android/UI/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
+    <lastmod>2019-01-30T04:06:02.829Z</lastmod>
+    <data>
+        <display>
+        <title>把Sublime添加到Mac右键菜单</title>
+        <pubTime>2015-12-31T06:53:20.000Z</pubTime>
+        
+        <tag>mac</tag>
+         
+        <tag>sublime</tag>
+         
+         
+           
         </display>
     </data>
     </url>
