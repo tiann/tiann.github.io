@@ -47,10 +47,10 @@
 <meta property="og:url" content="http://weishu.me/2017/11/23/dexposed-on-art/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="两年前阿里开源了Dexposed 项目，它能够在Dalvik上无侵入地实现运行时方法拦截，正如其介绍「enable ‘god’ mode for single android application」所言，能在非root情况下掌控自己进程空间内的任意Java方法调用，给我们带来了很大的想象空间。比如能实现运行时AOP，在线热修复，做性能分析工具（拦截线程、IO等资源的创建和销毁）等等。然而，随着A">
-<meta property="og:image" content="http://weishu.dimenspace.com/201605/1511369316918.png">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1511342723016.png">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1511354138004.png">
-<meta property="og:updated_time" content="2021-09-13T12:37:52.564Z">
+<meta property="og:image" content="http://blog.dimenspace.com/201605/1511369316918.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1511342723016.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1511354138004.png">
+<meta property="og:updated_time" content="2021-09-13T12:51:34.928Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我为Dexposed续一秒——论ART上运行时 Method AOP实现">
 <meta name="twitter:description" content="两年前阿里开源了Dexposed 项目，它能够在Dalvik上无侵入地实现运行时方法拦截，正如其介绍「enable ‘god’ mode for single android application」所言，能在非root情况下掌控自己进程空间内的任意Java方法调用，给我们带来了很大的想象空间。比如能实现运行时AOP，在线热修复，做性能分析工具（拦截线程、IO等资源的创建和销毁）等等。然而，随着A">
@@ -233,7 +233,7 @@
 <li>想办法拿到这个Java方法所代表的ArtMethod对象</li>
 <li>取出其entrypoint，然后跳转到此处开始执行</li>
 </ol>
-<p><img src="http://weishu.dimenspace.com/201605/1511369316918.png" alt=""></p>
+<p><img src="http://blog.dimenspace.com/201605/1511369316918.png" alt=""></p>
 <h3 id="entrypoint_replacement">entrypoint replacement</h3><p>从上面讲述的ART方法调用原理可以得到一种很自然的Hook办法————直接替换entrypoint。通过把原方法对应的ArtMethod对象的entrypoint替换为目标方法的entrypoint，可以使得原方法被调用过程中取entrypoint的时候拿到的是目标方法的entry，进而直接跳转到目标方法的code段；从而达到Hook的目的。</p>
 <p>AndFix就是基于这个原理来做热修复的，<a href="https://yq.aliyun.com/articles/74598?t=t1#" target="_blank" rel="external">Sophix</a> 对这个方案做了一些改进，也即整体替换，不过原理上都一样。二者在替换方法之后把原方法直接丢弃，因此无法实现AOP。<a href="https://github.com/panhongwei/AndroidMethodHook" target="_blank" rel="external">AndroidMethodHook</a> 基于Sophix的原理，用dexmaker动态生成类，将原方法保存下来，从而实现了AOP。</p>
 <p>不过这种方案能够生效有一个前提：方法调用必须是先拿到ArtMethod，再去取entrypoint然后跳转实现调用。但是很多情况下，第一步是不必要的；系统知道你要调用的这个方法的entrypoint是什么，直接写死在汇编代码里，这样方法调用的时候就不会有取ArtMethod这个动作，从而不会去拿被替换的entrypoint，导致Hook失效。这种调用很典型的例子就是系统函数，我们看一下Android 5.0上 调用<code>TextView.setText(Charsequence)</code> 这个函数的汇编代码：</p>
@@ -263,7 +263,7 @@
 <p>第二种方式：用一个函数来处理hook的分发逻辑，这是典型的xposed/dexposed 实现方式。不过Xposed支持Android N过程中直接修改了 libart.so，这种方式对进程内Hook是行不通的。dexposed的 <a href="https://github.com/alibaba/dexposed/tree/dev_art" target="_blank" rel="external">dev_art</a> 分支有尝试过实现，但是几乎不可用。</p>
 <p>有趣地是，还有另外一个项目 <a href="https://github.com/rk700/YAHFA" target="_blank" rel="external">YAHFA</a> 也提出了一种Hook方案；不过他这种方案看起来是entrypoint replacement和dynamic callee-side rewriting的结合体：把entrypoint替换为自己的trampoline函数的地址，然后在trampoline继续处理跳转逻辑。作者的<a href="http://rk700.github.io/2017/06/30/hook-on-android-n/" target="_blank" rel="external">博客</a>值得一看。</p>
 <h3 id="vtable_replacement">vtable replacement</h3><p>除了传统的类inline hook 的 dynamic callee-side rewriting 的Hook方式，也有基于虚拟机特定实现的Hook技术，比如vtable hook。ART中的这种Hook方式首先是在论文 <a href="http://ceur-ws.org/Vol-1575/paper_10.pdf" target="_blank" rel="external">ARTDroid: A Virtual-Method Hooking Framework on Android ART Runtime</a> 中提出的，作者的实现代码也在github上 <a href="https://github.com/tdr130/art-hooking-vtable" target="_blank" rel="external">art-hooking-vtable</a>。</p>
-<p><img src="http://weishu.dimenspace.com/201601/1511342723016.png" width="340"></p>
+<p><img src="http://blog.dimenspace.com/201601/1511342723016.png" width="340"></p>
 <p>这种Hook方式是基于invoke-virtual调用原理的；简单来讲，ART中调用一个virtual method的时候，会查相应Class类里面的一张表，如果修改这张表对应项的指向，就能达到Hook的目的。更详细的实现原理，作者的论文以及他的<a href="http://roptors.me/art/art-part-iii-arthook-framework/" target="_blank" rel="external">博客</a>讲的很详细，感兴趣的可以自行围观。</p>
 <p>这种方式最大的缺点是只能Hook virtual方法，虽然根据作者提供的数据：</p>
 <blockquote>
@@ -271,7 +271,7 @@
 </blockquote>
 <p>高达99%的方法都能被hook住，不管你信不信，反正我是不信。所以，这种Hook方式无法Hook所有的调用过程，只能作为一种补充手段使用。</p>
 <h2 id="epic的实现">epic的实现</h2><h3 id="基本原理">基本原理</h3><p>了解到已有项目的一些实现原理以及当前的现状，我们可以知道，要实现一个较为通用的Hook技术，几乎只有一条路———基于dynamic dispatch的dynamic callee-side rewriting。epic正是使用这种方式实现的，它的基本原理如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1511354138004.png" width="765"></p>
+<p><img src="http://blog.dimenspace.com/201601/1511354138004.png" width="765"></p>
 <p>在讲解这张图之前，有必要说明一下ART中的函数的调用约定。以Thumb2为例，子函数调用的参数传递是通过寄存器r0~r3 以及sp寄存器完成的。r0 ~ r3 依次传递第一个至第4个参数，同时 <em>sp, </em>(sp + 4), <em>(sp + 8), </em>(sp + 12) 也存放着r0~r3上对应的值；多余的参数通过 sp传递，比如 *(sp + 16)放第四个参数，以此类推。同时，函数的返回值放在r0寄存器。如果一个参数不能在一个寄存器中放下，那么会占用2个或多个寄存器。</p>
 <p>在ART中，r0寄存器固定存放被调用方法的ArtMethod指针，如果是non-static 方法，r1寄存器存放方法的this对象；另外，只有long/double 占用8bytes，其余所有基本类型和对象类型都占用4bytes。不过这只是基本情形，不同的ART版本对这个调用约定有不同的处理，甚至不完全遵循。</p>
 <p>好了我们回到epic。如上图所述，如果我们要Hook <code>android.util.Log.i</code> 这个方法，那么首先需要找到这个方法的entrypoint，可以通过这个方法的ArtMethod对象得到；然后我们直接修改内存，把这个函数的前8个字节：</p>

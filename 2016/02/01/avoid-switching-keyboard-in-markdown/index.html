@@ -49,11 +49,11 @@
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="Markdown这种格式的出现大大提升了写作的效率，但是它对于非英文的用户其实并不友好：每当我们需要使用#[-等标志符的时候，需要不断地切换输入法。
 首先，切换输入法(就算是按shift键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：">
-<meta property="og:image" content="http://weishu.dimenspace.com/201602markdown_keymap_remapping.gif">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1454310098796.png">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1454310263101.png">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1454310388700.png">
-<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
+<meta property="og:image" content="http://blog.dimenspace.com/201602markdown_keymap_remapping.gif">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1454310098796.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1454310263101.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1454310388700.png">
+<meta property="og:updated_time" content="2021-09-13T12:51:35.086Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="提升markdown的中文输入效率">
 <meta name="twitter:description" content="Markdown这种格式的出现大大提升了写作的效率，但是它对于非英文的用户其实并不友好：每当我们需要使用#[-等标志符的时候，需要不断地切换输入法。
@@ -236,19 +236,19 @@
       
         <span itemprop="articleBody"><p>Markdown这种格式的出现大大提升了写作的效率，但是它对于非英文的用户其实并不友好：每当我们需要使用<code>#[-</code>等标志符的时候，需要不断地切换输入法。</p>
 <p>首先，切换输入法(就算是按<code>shift</code>键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：</p>
-<p><img src="http://weishu.dimenspace.com/201602markdown_keymap_remapping.gif" alt="效果图"></p>
+<p><img src="http://blog.dimenspace.com/201602markdown_keymap_remapping.gif" alt="效果图"></p>
 <a id="more"></a>
 <p>避免输入法切换最简单的办法就是把markdown使用的那些特定字符<code>!-[]#*()</code>，直接使用半角符号代替全角符号；完成这个功能最好的角色是输入法；但目前除了可以定制的鼠须管等能完成，其他的国产输入以及系统输入法都不支持；在第三方输入法支持这个功能之前，我这里给出一个简单的方案。</p>
 <h3 id="如果你使用鼠须管">如果你使用鼠须管</h3><p>鼠须管/小狼嚎 输入法是可以定制的，如果你是这种输入法的用户，那么恭喜你，实现方式非常简单；修改一下配置即可，具体做法见<a href="http://irising.me/2013/07/17627/" target="_blank" rel="external">调整「鼠须管」实现高效的Markdown输入</a></p>
 <h3 id="如果你使用Mac">如果你使用Mac</h3><p>如果你使用第三方输入法或者mac的系统输入法，那么我们可以通过修改键盘映射来解决这个问题：把全角的markdown映射为半角符号。具体做法如下：</p>
 <h5 id="安装Karabiner软件">安装Karabiner软件</h5><p>下载地址点<a href="https://pqrs.org/osx/karabiner/" target="_blank" rel="external">这里</a>；按照步骤安装，注意开启之后需要在系统设置里面给它使用辅助功能权限</p>
 <h5 id="设置键盘映射">设置键盘映射</h5><p>首先，打开Karabiner软件，选择<code>Misc&amp;Uninstall</code>选项卡，如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1454310098796.png" width="740"></p>
+<p><img src="http://blog.dimenspace.com/201601/1454310098796.png" width="740"></p>
 <p>然后，点击上图标识的<code>open private.xml</code>那个按钮，用文本编辑器打开这个文件：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1454310263101.png" width="574"></p>
+<p><img src="http://blog.dimenspace.com/201601/1454310263101.png" width="574"></p>
 <p>接着去 <a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">gist</a>上把<code>markdown_keyboard_remapping.xml</code>里面的代码copy到这个文件里面，全部替换即可(代码有点长，我就不贴了，自行<a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">下载</a>)：</p>
 <p>最后，打开Karabiner软件的第一个选项卡，重新加载配置就完成了，如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1454310388700.png" width="771"></p>
+<p><img src="http://blog.dimenspace.com/201601/1454310388700.png" width="771"></p>
 <h3 id="如果你使用Windows">如果你使用Windows</h3><p>Windows下面有神器<code>AutoHotKey</code>，解决这个完全不在话下；与Mac下面简单粗暴地直接把全角符号替换为半角符号不同，AHK可以保留原来的方案，用<code>alt ＋ 符号</code>来输入需要的半角符号；这样两种可以共存。</p>
 <ol>
 <li>首先，安装AHK软件，下载点<a href="https://gist.github.com/tiann/9068fd34f44337e8dcfb" target="_blank" rel="external">这里</a></li>

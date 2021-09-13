@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2021-09-13T12:37:52.565Z</updated>
+  <updated>2021-09-13T12:51:35.282Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://weishu.me/2021/09/13/what-is-root/"/>
     <id>http://weishu.me/2021/09/13/what-is-root/</id>
     <published>2021-09-13T07:46:01.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.282Z</updated>
     <content type="html"><![CDATA[<p>对于搞机党或者开发人员来说，root 一定是一个不陌生的名词。在 [当我们谈论解锁 BootLoader 时，我们在谈论什么？] 一文中我们了解到，解锁 Bootloader 实际上能做到的是<strong>让手机可以运行第三方的操作系统</strong>，而通常来说，我们给手机解锁 Bootloader 就是为了获取 Root 权限。那么，<strong>何为 root?</strong>，解锁 Bootloader 和 root 到底有什么联系和区别？</p>
 <blockquote>
 <p>In Unix-like computer OSes (such as Linux), root is the conventional name of the user who has all rights or permissions (to all files and programs) in all modes (single- or multi-user).</p>
@@ -32,7 +32,7 @@
 <h2 id="最高权限具体指的哪些？">最高权限具体指的哪些？</h2><p>我们一直在说，「最高权限」，那么最高权限到底是哪些呢？</p>
 <p>直白点来说，手机是由多个零部件组成的，比如说，CPU、内存、闪存、各种硬件设备（如相机，屏幕、传感器等），所谓最高权限，就是对所有这些设备的控制权。</p>
 <p>对于 CPU 来说，现在的 CPU 芯片一般都有不同的特权等级，这些不同的等级可以执行不同的指令。就拿 AArch64 构架来说，CPU 有四个特权等级，EL0 ~ EL3：</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16315184085155.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16315184085155.jpg" alt=""></p>
 <p>在不考虑 Secure World 的情况下（感兴趣的可以 google TrustZone)，EL0 就是通常所谓的用户空间，应用程序一般运行在 EL0 级别，操作系统（Linux 内核及驱动）运行在 EL1，EL2 上运行的则是虚拟化相关程序，EL3 则运行管理 Secure World 和 Normal Wrold 的 Secure Monitor。</p>
 <p>从严格意义上来说，既然 root 权限意味着最高权限，这应该代表着它可以在 EL0 ~ EL3 中的任意 level 上执行任意的 CPU 指令。然而，当前的各种 root 实现并非如此，它们一般能在 EL0 上执行任意指令，在某些情况下可以在 EL1 上执行任意指令；更高的特权等级就不行了。因为 root 用户是操作系统的概念，因此 root 权限顶多是操作系统中的最高权限；在我们的类 Unix 系统中，它仅能触及 EL1 也就不算奇怪了。</p>
 <p>对于内存、闪存以及各种外设来说，它们一般由操作系统内核和驱动来管理，而内核和驱动运行的指令通常位于 EL1，因此，root 权限意味着对所有的硬件（不包括 TEE 相关硬件）和外设拥有完全的控制权。</p>
@@ -42,18 +42,18 @@
 <h3 id="SELinux">SELinux</h3><p>SELinux 可能是最常见的一种权限控制手段。很多童鞋在刷机或者用框架的时候，会听到诸如「关闭 SELinux」，「开启宽容模式」，实际上就是对 SELinux 的控制。</p>
 <p>传统的权限控制是通过<strong>自主访问控制</strong>实现的，所谓「自主」指的是，这个文件的所有者主动决定哪些其他的用户可以访问它所拥有的文件。一般通过<strong>文件权限码</strong>和<strong>访问控制表</strong>来实现。我们通常所说的，文件可读可写可执行，就是文件权限码，除了 rwx 以外，SUID/SGID 也是常见的权限码，它代表某个程序在被 execve 之后会自动切换其 EUID。而访问控制表（ACL）是一种补充手段，它可以实施更加精细的自主访问控制，感兴趣的可以参考<a href="https://documentation.suse.com/zh-cn/sled/15-SP2/html/SLED-all/cha-security-acls.html" target="_blank" rel="external">Linux 中的访问控制列表</a>。</p>
 <p>由于自主访问控制是「自主的」，如果某个用户无意中实施了错误操作（如 <code>rm -rf /</code>)，那么整个系统就不受控了，因此<strong>强制访问控制</strong>(MAC)应运而生，而 SELinux 则是 MAC 的一种具体实现。</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16313779604614.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16313779604614.jpg" alt=""></p>
 <p>所谓<strong>强制访问控制</strong>，就是每当主体(通常是进程）尝试访问对象（文件）时，都会由操作系统内核强制施行授权规则，由这些特殊的规则来决定是否授予权限；这些规则是独立于文件权限码之外的，因此，即使某个用户（如 root）是某个文件的所有者，通过这些额外的规则，可以让这个用户无法对这个文件执行某些操作。</p>
 <p>通常情况下，root 用户也有权限关闭 SELinux 的部分功能（如开启宽容模式），这种情况下 SELinux 的大部分机制会失效，使得 root 用户可以避开 SELinux 的限制。而我们所使用的一些 root 技术实现（如 Supersu, Magisk 等），会给 SELinux 系统添加一些特殊的规则，可以在不关闭 SELinux 的条件下，让我们的 root 用户绕过 SELinux 的限制，进而拥有传统意义上的超级权限。 </p>
 <p>在现代的 Android 系统中，如果 root 用户不幸运行在 SELinux Enforcing 状态下，而系统又没有为其开绿灯（定义特殊规则），那么它所能做的操作相当有限，某种程度上甚至连普通用户都不如，表现起来就像是个「残废」。</p>
 <h3 id="capabilities">capabilities</h3><p>除了强制访问控制以外，实际上 Linux 系统中还有一些其他的机制来限制超级权限。</p>
 <p>在传统的权限控制中，系统一刀切地把权限分为超级权限(privileged)和普通权限(unprivileged)，特权用户可以绕过所有的系统限制，而普通用户则受限于其权限位；这种方式有着明显的缺陷：如果普通用户想要执行某一个特殊操作，那它只能切换到特权用户，然而一旦切换到特权用户，它就拥有了所有的特殊权限；那么恶意用户就可以挂羊头卖狗肉，表面上说我只是想读个文件，结果切换到特权用户之后直接把你其他重要东西删了。</p>
 <p>因此，Linux 系统引入了 capabilities 机制，这种机制把超级权限划分为若干种权限，按照需要给普通用户分配，很好地解决了一刀切的问题。比如说 <code>CAP_NET_ADMIN</code> 定义了与各种网络操作相关的权限，<code>CAP_SETUID</code> 定义了用户是否可以任意改变自己的 uid；这些不同的 capabilities 可以组合起来形成某个权限范围，从而实现权限的细分。更多的 capabilities 可以参考 <a href="https://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank" rel="external">Linux man page</a>和 <a href="https://k3a.me/linux-capabilities-in-a-nutshell/" target="_blank" rel="external">linux-capabilities-in-a-nutshell</a>。</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16313780804940.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16313780804940.jpg" alt=""></p>
 <p>我们在实现某些 root 机制的时候，如果没有处理好 capabilities 的问题，就会出现各种类似残废 root 的情况，比如 root 用户无法访问网络等。</p>
 <h3 id="seccomp">seccomp</h3><p>严格来讲，seccomp 并不算是一种安全策略，不过这种机制也能对我们的 root 用户实施某些限制；这里也简单滴介绍一下。</p>
 <p>seccomp 是 <a href="https://en.wikipedia.org/wiki/Seccomp" target="_blank" rel="external">secure computing mode</a> 的缩写，它是内核的一种安全计算机制，这种机制可以对进程能执行的系统调用（与内核打交道的机制）做出一些限制。</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16313781319286.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16313781319286.jpg" alt=""></p>
 <p>在传统的 seccomp 中，某个进程可以通过这种机制进入一种不可逆转的状态，在这种状态下，它只能执行 <code>exit</code>, <code>sigreturn</code>, <code>read</code>, <code>write</code> 这几个系统调用；后来人们发现对进程的系统调用添加限制还挺有用，于是拓展了 seccomp，让它可以通过某种自定义的策略来限制特定的系统调用（而不是写死的 exit,read 那几个），也就是 seccomp-bpf。</p>
 <p>与 capabilities 类似，如果某种 root 机制没有处理好 seccomp 的问题，同样会出现「残废 root 的情况。</p>
 <h3 id="内核模块加载验证">内核模块加载验证</h3><p>我们前面提到，在 AArch64 中，操作系统内核运行在 CPU 的 EL1 特权模式中；然而，我们通常所使用的 root 机制并不能让我们任意地在 EL1 中执行指令，也就是说，我们现在用到的 root 机制，实际上是 EL0 root。</p>
@@ -114,7 +114,7 @@
     <link href="http://weishu.me/2021/07/24/what-is-bootloader-unlock/"/>
     <id>http://weishu.me/2021/07/24/what-is-bootloader-unlock/</id>
     <published>2021-07-24T12:53:15.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.193Z</updated>
     <content type="html"><![CDATA[<p>有过刷机经验或者曾经尝试过刷机的童鞋，一定听说过「解锁」这个词。这里的「解锁」全称应该是「解锁 BootLoader」或者简称为「解 BL 锁」。与通过人脸识别或者指纹、数字图案解锁手机屏幕的那种「屏幕解锁」不同，这里的「解锁」完全是另外一个概念。直观来说，<strong>解 BL 锁是刷机的前提条件</strong>。通常情况下，一旦某个设备无法解锁 BL，基本上就无法在这个设备进行刷机了。</p>
 <p>那么，一定会有童鞋关心，解锁 BootLoader 到底意味着什么？为什么它会有限制？我们能绕过限制强制解锁吗？今天，我就尝试来回答一下这几个问题。</p>
 <p>在搞清楚解锁 BootLoader 之前，我们必须先搞清楚什么是 BootLoader：</p>
@@ -125,12 +125,12 @@
 <p>我们知道，操作系统负责管理设备的硬件资源；而 BootLoader 是用来启动操作系统的，如果有人通过 BootLoader 来启动一个恶意的操作系统，那我们设备的安全性就无法得到保障了。因此，BootLoader 一个核心的功能就是，确保启动一个可信的操作系统。另外，当设备的操作系统出现问题时，BootLoader 还可以引导启动另外一个正常的可信系统来执行恢复；所以，BootLoader 另外一个功能重要功能就是恢复系统。</p>
 <a id="more"></a>
 <p>具体来说，BootLoader 是如何实现这两大功能的呢？以高通设备为例，我们看一下 BootLoader 的启动流程：</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16271211531184.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16271211531184.jpg" alt=""></p>
 <p>当我们按下电源键启动手机的时候，CPU 上电之后开始运行；它最开始运行的代码是 CPU 芯片厂商提供的，写死在某个只读存储上，这段代码一旦出厂便不可更改，我们通常称之为 BootROM 或者 PBL (Primary Boot Loader)；PBL 的主要功能是上电自检并启动下一个组件 SBL(Secondary Boot Loader），现在被叫做 XBL (eXtended Boot Loader)。这个 SBL 主要是初始化一些硬件环境(如DDR, clocks 和 USB 等）和代码安全环境 (TrustZone)，当然，最重要的还是<strong>验证并加载</strong>下一个组件——ABL(Android Boot Loader，也叫 aboot)。与 PBL 不同，SBL 程序一般存放在 eMMC 上，这个地方是可以被修改的，因此它可以被刷写和升级。正因如此，SBL 还承载着最底层的恢复设备的重任；我们常说的高通 9008 模式（全称 Emergency Download Mode）就运行在这里。9008 模式，本质上就是强制刷写设备的 eMMC 存储，因此不论你上层操作系统或者应用软件被破坏成什么样，除非硬件损坏，基本上都可以救回来。</p>
 <p>有童鞋会问，为啥要整个 SBL，直接 PBL 一把干完不行吗？实际上，PBL 是芯片相关的，芯片无法预知到它用什么外设，因此这两个阶段被解耦了。</p>
 <p>话说回来，SBL 执行完之后会验证并加载 ABL，ABL 的主要功能是从设备<strong>验证并加载</strong> bootimg 然后启动 Linux Kernel 进而启动用户操作系统，根据选择的不同，可能会进入到 Android 系统或者 Recovery 模式。ABL 还有一个很重要的功能，它提供了一个 fastboot 协议，用户可以用 PC 通过 USB 连接设备，通过这个 fastboot 协议控制设备；我们通常所说的「线刷」，小米的兔子界面以及我们通过命令行工具 fastboot 刷机实际上就是运行在 ABL 下。正因 ABL 功能比较复杂，它内部其实运行着一个 mini 的操作系统，这个操作系统就是 <a href="https://github.com/littlekernel/lk" target="_blank" rel="external">lk(Little Kernel)</a>，顺带一提，Trusty TEE 可信执行环境下的操作系统以及 Google 新的 Fuchsia 的微内核 <a href="https://fuchsia.googlesource.com/fuchsia/+/master/zircon/README.md" target="_blank" rel="external">Zircon</a> 也是基于 lk 的。</p>
 <p>ABL 启动 Linux Kernel 之后，内核最终会进入用户态执行 init，init 进而启动 ueventd, watchdogd, surfaceflinger 以及 zygote 等；zygote 启动之后 fork system_server 并启动各种 binder 服务，系统核心 binder 服务启动之后会启动 Launcher 桌面，这样整个系统就启动完毕了。联发科的设备 BootLoader 启动过程类似：</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16271298905127.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16271298905127.jpg" alt=""></p>
 <p>从上述 BootLoader 启动过程，我们可以很清楚地知道，BootLoader 的恢复功能体现在 SBL 阶段的恢复模式以及 ABL 阶段的 fastboot 线刷模式。实际上，在我们手机底层软件出现问题之后，不论是自己救砖还是去售后，基本都是用的这两种模式。在搞清楚了 BootLoader 的恢复功能之后，那在安全性方面，它又是如何保障的呢？</p>
 <p>细心的童鞋可能会注意到，上面我们多次提到了<strong>验证并加载</strong>。BootLoader 的各个启动过程串起来就是一个启动链，这个启动链的各个阶段在进行过渡和跳转的时候是需要进行验证的。也就是说，上一阶段在启动下一阶段的时候，会验证下一阶段的代码是否可信；只有在验证通过的情况下，整个启动过程才会继续进行。这就好比接力赛跑，在上一个选手把接力棒传递到下一个选手之前，他得先搞清楚是不是把接力棒交到了正确的伙伴手里；在现实世界中，这是通过五官和记忆来判断的；在计算里面，这个验证的过程实际上就是比对<strong>数字签名</strong>。不熟悉数字签名的童鞋，可以参阅一下我<a href="https://mp.weixin.qq.com/s?__biz=MjM5Njg5ODU2NA==&amp;mid=2257498195&amp;idx=1&amp;sn=bf6fdeaa9b01902d6e25a7fc13f3e9cbe7c02fc6914adf4607b872a192&amp;token=1832840139&amp;lang=zh_CN#rd" target="_blank" rel="external">之前的文章</a>。</p>
 <p>如果 BootLoader 的每一个阶段都严格验证数字签名，在代码逻辑都正确的情况下，用户是无法通过 BootLoader 去加载一个修改过的第三方系统的（也就是无法刷机）。那么什么是解锁 BootLoader？</p>
@@ -389,12 +389,12 @@
     <link href="http://weishu.me/2018/08/27/understand-plugin-framework-book/"/>
     <id>http://weishu.me/2018/08/27/understand-plugin-framework-book/</id>
     <published>2018-08-27T04:59:21.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:34.977Z</updated>
     <content type="html"><![CDATA[<p>从我写下 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.0上私有API的限制几乎称得上是盖棺定论了——曾经波澜壮阔的插件化进程必将要退出历史主流。如今的插件化技术朝两个方向发展：其一，插件化的工程特性：模块化/解耦被抽离，逐渐演进为稳定、务实的的组件化方案；其二，插件化的黑科技特性被进一步发掘，inline hook/method hook大行其道，走向双开，虚拟环境等等。</p>
 <p>虽然插件化终将落幕，但是它背后的技术原理包罗万象，值得每一个希望深入Android的小伙伴们学习。</p>
 <p>很遗憾曾经的系列文章没有写完，现在已经没机会甚至可以说不可能去把它完结了；不过幸运的是，我的良师益友包老师（我习惯称呼他为包哥）写了一本关于插件化的书——《Android插件化开发指南》，书中讲述了过去数年浩浩荡荡的插件化历程以及插件技术的方方面面；有兴趣的小伙伴可以买一本看看。</p>
 <a id="more"></a>
-<p><a href="https://item.m.jd.com/product/31188356430.html?utm_source=iosapp&amp;utm_medium=appshare&amp;utm_campaign=t_335139774&amp;utm_term=Wxfriends" target="_blank" rel="external"><img src="http://weishu.dimenspace.com/201605/1535348090511.png" alt="点击购买"></a></p>
+<p><a href="https://item.m.jd.com/product/31188356430.html?utm_source=iosapp&amp;utm_medium=appshare&amp;utm_campaign=t_335139774&amp;utm_term=Wxfriends" target="_blank" rel="external"><img src="http://blog.dimenspace.com/201605/1535348090511.png" alt="点击购买"></a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>从我写下 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列第一篇文章至今，已经过去了两年时间。这期间，插件化技术也得到了长足的发展；与此同时，React Native，PWA，App Bundle，以及最近的Flutter也如火如荼。由于实现插件化需要太多的黑科技，它给项目的维护成本和稳定性增加了诸多不确定性；我个人认为，2017年手淘Atlas插件化项目的开源标志着插件化的落幕，2018年Android 9.0上私有API的限制几乎称得上是盖棺定论了——曾经波澜壮阔的插件化进程必将要退出历史主流。如今的插件化技术朝两个方向发展：其一，插件化的工程特性：模块化/解耦被抽离，逐渐演进为稳定、务实的的组件化方案；其二，插件化的黑科技特性被进一步发掘，inline hook/method hook大行其道，走向双开，虚拟环境等等。</p>
@@ -485,7 +485,7 @@
     <link href="http://weishu.me/2017/12/02/non-root-xposed/"/>
     <id>http://weishu.me/2017/12/02/non-root-xposed/</id>
     <published>2017-12-01T20:12:59.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.197Z</updated>
     <content type="html"><![CDATA[<p>Xposed是Android系统上久负盛名的一个框架，它给了普通用户任意 DIY 系统的能力；比如典型的微信防撤回、自动抢红包、修改主题字体，以及模拟位置等等等等。不过，使用Xposed的前提条件之一就是需要Root。随着Android系统的演进，这一条件达成越来越难了；那么，<strong>能不能不用Root就可以享用Xposed的功能呢？</strong></p>
 <p>我们想一下，Xposed为什么需要Root？从现在的实现来看，因为Xposed需要修改系统文件，而这些文件只有root权限才能修改；但是这只是当前实现的特性（修改系统分区文件），而非根本原因。Xposed要实现的最终目的是在任意App进程启动之前能任意加载 <strong>特定Xposed模块</strong> 的代码；这些特定的Xposed模块中能在App进程启动之前有机会执行特定代码，从而控制任意进程的行为。归根结底，Xposed需要控制别的进程，而没有高级权限（Root），越俎代庖是不行的。</p>
 <p>有没有别的实现方式？</p>
@@ -498,11 +498,11 @@
 <p>然后安装微信防撤回模块：微信巫师，发布的主页在这：<a href="http://xposed.appkg.com/2558.html" target="_blank" rel="external">WeChat Magician（微信巫师）</a>；直接下载 <a href="http://dl-xda.xposed.info/modules/com.gh0u1l5.wechatmagician_v30_1387ce.apk" target="_blank" rel="external">链接</a></p>
 <p>接下来需要确保你手机上的微信是微信巫师所支持的，目前支持微信的版本为 6.5.8~6.5.16；如果不是的话需要去下载一个支持的版本，比如 <a href="https://down.shouji.com.cn/wap/wdown/softversion?id=188561&amp;package=com.tencent.mm" target="_blank" rel="external">微信_6.5.8.apk</a>。</p>
 <p>最后，你需要打开VAExposed这个双开软件，添加微信和微信巫师为双开模块，如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1512158544505.png" width="180px"></p>
+<p><img src="http://blog.dimenspace.com/201605/1512158544505.png" width="180px"></p>
 <p>这样，使用双开中的微信，就能享受Xposed模块的防撤回功能了！</p>
-<p><img src="http://weishu.dimenspace.com/201605/1512158469933.png" width="180px"></p>
+<p><img src="http://blog.dimenspace.com/201605/1512158469933.png" width="180px"></p>
 <p>另外，你还可以直接在双开中使用 XposedInstaller，然后就可以方便滴下载和管理Xposed模块了：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1512158377339.png" width="180px"><br><img src="http://weishu.dimenspace.com/201605/1512158575155.png" width="180px"><br><img src="http://weishu.dimenspace.com/201605/1512158598212.png" width="180px"></p>
+<p><img src="http://blog.dimenspace.com/201605/1512158377339.png" width="180px"><br><img src="http://blog.dimenspace.com/201605/1512158575155.png" width="180px"><br><img src="http://blog.dimenspace.com/201605/1512158598212.png" width="180px"></p>
 <p>就这样，我们在非Root手机下，就能享用Xposed模块的功能，Have Fun ：）</p>
 <p>不过，在实现完这个功能之后，我不寒而栗：千万不要在Root环境或者双开环境下运行关键App，不然你的微信登录密码，支付宝支付密码，银行卡账号，很有可能被尽收眼底。</p>
 <p>PS：目前 Exposed 层的实现处于初级阶段，个人精力非常有限（一般都是凌晨写代码）；如果你对 <strong>实现非Root模式下的Xposed</strong> 感兴趣，非常欢迎跟我一起组队 :) 项目地址在这：<a href="https://github.com/android-hacker/exposed。" target="_blank" rel="external">https://github.com/android-hacker/exposed。</a></p>
@@ -529,7 +529,7 @@
     <link href="http://weishu.me/2017/11/23/dexposed-on-art/"/>
     <id>http://weishu.me/2017/11/23/dexposed-on-art/</id>
     <published>2017-11-22T17:30:10.000Z</published>
-    <updated>2021-09-13T12:37:52.564Z</updated>
+    <updated>2021-09-13T12:51:34.928Z</updated>
     <content type="html"><![CDATA[<p>两年前阿里开源了<a href="https://github.com/alibaba/dexposed" target="_blank" rel="external">Dexposed</a> 项目，它能够在Dalvik上无侵入地实现运行时方法拦截，正如其介绍「enable ‘god’ mode for single android application」所言，能在非root情况下掌控自己进程空间内的任意Java方法调用，给我们带来了很大的想象空间。比如能实现运行时AOP，在线热修复，做性能分析工具（拦截线程、IO等资源的创建和销毁）等等。然而，随着ART取代Dalvik成为Android的运行时，一切都似乎戛然而止。</p>
 <p>今天，我在ART上重新实现了Dexposed，在它能支持的平台（Android 5.0 ~ 7.1 Thumb2/ARM64)上，有着与Dexposed完全相同的能力和API；项目地址在这里 <a href="https://github.com/tiann/epic" target="_blank" rel="external">epic</a>，感兴趣的可以先试用下:) 然后我们聊一聊ART上运行时Method AOP的故事。</p>
 <a id="more"></a>
@@ -548,7 +548,7 @@
 <li>想办法拿到这个Java方法所代表的ArtMethod对象</li>
 <li>取出其entrypoint，然后跳转到此处开始执行</li>
 </ol>
-<p><img src="http://weishu.dimenspace.com/201605/1511369316918.png" alt=""></p>
+<p><img src="http://blog.dimenspace.com/201605/1511369316918.png" alt=""></p>
 <h3 id="entrypoint_replacement">entrypoint replacement</h3><p>从上面讲述的ART方法调用原理可以得到一种很自然的Hook办法————直接替换entrypoint。通过把原方法对应的ArtMethod对象的entrypoint替换为目标方法的entrypoint，可以使得原方法被调用过程中取entrypoint的时候拿到的是目标方法的entry，进而直接跳转到目标方法的code段；从而达到Hook的目的。</p>
 <p>AndFix就是基于这个原理来做热修复的，<a href="https://yq.aliyun.com/articles/74598?t=t1#" target="_blank" rel="external">Sophix</a> 对这个方案做了一些改进，也即整体替换，不过原理上都一样。二者在替换方法之后把原方法直接丢弃，因此无法实现AOP。<a href="https://github.com/panhongwei/AndroidMethodHook" target="_blank" rel="external">AndroidMethodHook</a> 基于Sophix的原理，用dexmaker动态生成类，将原方法保存下来，从而实现了AOP。</p>
 <p>不过这种方案能够生效有一个前提：方法调用必须是先拿到ArtMethod，再去取entrypoint然后跳转实现调用。但是很多情况下，第一步是不必要的；系统知道你要调用的这个方法的entrypoint是什么，直接写死在汇编代码里，这样方法调用的时候就不会有取ArtMethod这个动作，从而不会去拿被替换的entrypoint，导致Hook失效。这种调用很典型的例子就是系统函数，我们看一下Android 5.0上 调用<code>TextView.setText(Charsequence)</code> 这个函数的汇编代码：</p>
@@ -578,7 +578,7 @@
 <p>第二种方式：用一个函数来处理hook的分发逻辑，这是典型的xposed/dexposed 实现方式。不过Xposed支持Android N过程中直接修改了 libart.so，这种方式对进程内Hook是行不通的。dexposed的 <a href="https://github.com/alibaba/dexposed/tree/dev_art" target="_blank" rel="external">dev_art</a> 分支有尝试过实现，但是几乎不可用。</p>
 <p>有趣地是，还有另外一个项目 <a href="https://github.com/rk700/YAHFA" target="_blank" rel="external">YAHFA</a> 也提出了一种Hook方案；不过他这种方案看起来是entrypoint replacement和dynamic callee-side rewriting的结合体：把entrypoint替换为自己的trampoline函数的地址，然后在trampoline继续处理跳转逻辑。作者的<a href="http://rk700.github.io/2017/06/30/hook-on-android-n/" target="_blank" rel="external">博客</a>值得一看。</p>
 <h3 id="vtable_replacement">vtable replacement</h3><p>除了传统的类inline hook 的 dynamic callee-side rewriting 的Hook方式，也有基于虚拟机特定实现的Hook技术，比如vtable hook。ART中的这种Hook方式首先是在论文 <a href="http://ceur-ws.org/Vol-1575/paper_10.pdf" target="_blank" rel="external">ARTDroid: A Virtual-Method Hooking Framework on Android ART Runtime</a> 中提出的，作者的实现代码也在github上 <a href="https://github.com/tdr130/art-hooking-vtable" target="_blank" rel="external">art-hooking-vtable</a>。</p>
-<p><img src="http://weishu.dimenspace.com/201601/1511342723016.png" width="340"></p>
+<p><img src="http://blog.dimenspace.com/201601/1511342723016.png" width="340"></p>
 <p>这种Hook方式是基于invoke-virtual调用原理的；简单来讲，ART中调用一个virtual method的时候，会查相应Class类里面的一张表，如果修改这张表对应项的指向，就能达到Hook的目的。更详细的实现原理，作者的论文以及他的<a href="http://roptors.me/art/art-part-iii-arthook-framework/" target="_blank" rel="external">博客</a>讲的很详细，感兴趣的可以自行围观。</p>
 <p>这种方式最大的缺点是只能Hook virtual方法，虽然根据作者提供的数据：</p>
 <blockquote>
@@ -586,7 +586,7 @@
 </blockquote>
 <p>高达99%的方法都能被hook住，不管你信不信，反正我是不信。所以，这种Hook方式无法Hook所有的调用过程，只能作为一种补充手段使用。</p>
 <h2 id="epic的实现">epic的实现</h2><h3 id="基本原理">基本原理</h3><p>了解到已有项目的一些实现原理以及当前的现状，我们可以知道，要实现一个较为通用的Hook技术，几乎只有一条路———基于dynamic dispatch的dynamic callee-side rewriting。epic正是使用这种方式实现的，它的基本原理如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1511354138004.png" width="765"></p>
+<p><img src="http://blog.dimenspace.com/201601/1511354138004.png" width="765"></p>
 <p>在讲解这张图之前，有必要说明一下ART中的函数的调用约定。以Thumb2为例，子函数调用的参数传递是通过寄存器r0~r3 以及sp寄存器完成的。r0 ~ r3 依次传递第一个至第4个参数，同时 <em>sp, </em>(sp + 4), <em>(sp + 8), </em>(sp + 12) 也存放着r0~r3上对应的值；多余的参数通过 sp传递，比如 *(sp + 16)放第四个参数，以此类推。同时，函数的返回值放在r0寄存器。如果一个参数不能在一个寄存器中放下，那么会占用2个或多个寄存器。</p>
 <p>在ART中，r0寄存器固定存放被调用方法的ArtMethod指针，如果是non-static 方法，r1寄存器存放方法的this对象；另外，只有long/double 占用8bytes，其余所有基本类型和对象类型都占用4bytes。不过这只是基本情形，不同的ART版本对这个调用约定有不同的处理，甚至不完全遵循。</p>
 <p>好了我们回到epic。如上图所述，如果我们要Hook <code>android.util.Log.i</code> 这个方法，那么首先需要找到这个方法的entrypoint，可以通过这个方法的ArtMethod对象得到；然后我们直接修改内存，把这个函数的前8个字节：</p>
@@ -732,7 +732,7 @@
     <link href="http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/"/>
     <id>http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/</id>
     <published>2017-01-14T09:02:03.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.193Z</updated>
     <content type="html"><![CDATA[<p>半年前写了一篇文章，介绍 <a href="http://weishu.me/2016/05/30/how-to-debug-android-framework/">如何调试Android Framework</a>，但是只提到了Framework中Java代码的调试办法，但实际上有很多代码都是用C++实现的；无奈当时并并没有趁手的native调试工具，无法做到像Java调试那样简单直观（gdb+eclipse/ida之流虽然可以但是不完美），于是就搁置下了。</p>
 <p>Android Studio 2.2版本带来了全新的对Android Native代码的开发以及调试支持，另外LLDB的Android调试插件也日渐成熟，我终于可以把这篇文章继续下去了！本文将带来Android Framework中native代码的调试方法。</p>
 <p>在正式介绍如何调试之前，必须先说明一些基本的概念。调试器在调试一个可执行文件的时候，必须知道一些调试信息才能进行调试，这个调试信息可多可少（也可以没有）。最直观的比如行号信息，如果调试器知道行号信息，那么在进行调试的时候就能知道当前执行到了源代码的哪一行，如果调试器还知道对应代码的源文件在哪，那么现代IDE的调试器一般就能顺着源码带你飞了，这就是所谓的源码调试。相反，如果没有行号和源码信息，那么只能进行更低级别的调试了，调试器只能告诉你一些寄存器的值；而当前运行的代码也只是PC寄存器所指向的二进制数据，这些数据要么是虚拟机指令，要么是汇编指令；这就是所谓的无源码调试。显然无源码调试相比源码级别的调试要麻烦的多；接下来将围绕这两个方面分别介绍。</p>
@@ -751,15 +751,15 @@
 </blockquote>
 <p>这个过程灰常灰常长！！我启动这个模拟器花了半个多小时，也是醉。现在是2017年，已经是Android创建的第十个年头，ARM模拟器还是烂的一塌糊涂，无力吐槽。一个能让它快一点的诀窍是创建一个小一点的SD card；我设置的是10M。</p>
 <h3 id="开始调试">开始调试</h3><h4 id="选择native调试模式">选择native调试模式</h4><p>首先我们对调试的宿主工程设置一下，选择native调试功能。点击运行下面的按钮 <code>Edit Configuration</code>：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484287940736.png" width="232"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484287940736.png" width="232"></p>
 <p>然后在debugger栏选择Native：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484288018710.png" width="400"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484288018710.png" width="400"></p>
 <p>然后我们点击旁边的 <code>Debug</code>小按钮运行调试程序：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484288078862.png" width="183"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484288078862.png" width="183"></p>
 <h4 id="设置调试符号以及关联源码">设置调试符号以及关联源码</h4><p>在运行程序之后，我们可以在Android Studio的状态栏看到，LLDB调试插件自动帮我们完成了so查找路径的过程，这一点比gdb方便多了！在Android Studio的Debug窗口会自动弹出来，如下：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484288380978.png" width="474"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484288380978.png" width="474"></p>
 <p>我们点击那个 <code>pause program</code> 按钮，可以让程序暂停运行：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484288440156.png" width="615"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484288440156.png" width="615"></p>
 <p>上图左边是正在运行的线程的堆栈信息，右边有两个tab，一个用来显示变量的值；一个是lldb交互式调试窗口！我们先切换到lldb窗口，输入如下命令设置一个断点：</p>
 <blockquote>
 <p>(lldb) br s -n CollectGarbageInternal<br>Breakpoint 2: where = libart.so`art::gc::Heap::CollectGarbageInternal(art::gc::collector::GcType, art::gc::GcCause, bool), address = 0xb4648c20</p>
@@ -777,20 +777,20 @@
 </blockquote>
 <p>纳尼？？这个目录是个什么鬼，根本没有这个目录好伐？难道是调试器搞错了？</p>
 <p>在继续介绍之前我们需要了解一些关于「调试符号」的知识；我们拿到的调试符号文件其实是一个DWARF文件，只不过这个文件被嵌入到了ELF文件格式之中，而其中的调试符号则在一些名为 <code>.debug_*</code> 的段之中，我们可以用 <code>readelf -S libart.so</code> 查看一下：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484289374465.png" width="616"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484289374465.png" width="616"></p>
 <p>编译器在编译libart.so的时候，记录下了<strong>编译时候</strong>源代码与代码偏移之间的对应关系，因此调试器可以从调试符号文件中获取到源码行号信息；如下：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484289826696.png" width="486"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484289826696.png" width="486"></p>
 <p>这下我们明白了上面那个莫名其妙的目录是什么了；原来是在编译<code>libart.so</code>的那个机器上存在源码。那么问题来了，我们绝大多数情况下是使用另外一台机器上的源码进行调试的——比如我提供的那个 <a href="https://github.com/tiann/android-native-debug" target="_blank" rel="external">Demo工程</a> 包含的带符号libart.so里面保存的源文件信息的目录实际上是我编译的电脑上的目录，而你调试的时候需要使用自己电脑上的目录。知道了问题所在，解决就很简单了，我们需要映射一下；在Android Studio的Debug 窗口的lldb 那个tab执行如下命令：</p>
 <blockquote>
 <p>(lldb) settings set target.source-map /Volumes/Android/android-5.1.1_r9/ /Users/weishu/dev/github/Android-native-debug/app/source/</p>
 </blockquote>
 <p>第一个参数的意思是编译时候的目录信息，第二个参数是你机器上的源码存放路径；设置成自己的即可。</p>
 <p>这时候，我们再触发断点（点击demo项目的Debug按钮），看看发生了什么？！</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484290490320.png" width="1191"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484290490320.png" width="1191"></p>
 <p>至此，我们已经成功滴完成了在Android Studio中Native代码的源码调试。你可以像调试Java代码一样调试Native代码，step/in/out/over，条件断点，watch point任你飞。你可以借助这个工具去探究Android底层运行原理，比如垃圾回收机制，对象分配机制，Binder通信等等，完全不在话下！</p>
 <h2 id="无源码调试">无源码调试</h2><p>接下来再介绍一下操作简单但是使用门槛高的「无源码调试」方式；本来打算继续使用Android Studio的，但是无奈现阶段还有BUG，给官方提了issue但是响应很慢：<a href="https://code.google.com/p/android/issues/detail?id=231116。因此我们直接使用" target="_blank" rel="external">https://code.google.com/p/android/issues/detail?id=231116。因此我们直接使用</a> LLDB 调试；当然，用gdb也能进行无源码调试，但是使用lldb比gdb的步骤要简单得多；不信你可以看下文。</p>
 <h3 id="安装Android_LLDB工具">安装Android LLDB工具</h3><p>要使用lldb进行调试，首先需要在调试设备上运行一个lldb-server，这个lldb-server attach到我们需要调试的进程，然后我们的开发机与这个server进行通信，就可以进行调试了。熟悉gdb调试的同学应该很清楚这一点。我们可以用Android Studio直接下载这个工具，打开SDK Manager：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484280931189.png" width="720"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484280931189.png" width="720"></p>
 <p>如上图，勾选这个即可；下载的内容会存放到你的 $ANDROID_SDK/lldb 目录下。</p>
 <h3 id="使用步骤">使用步骤</h3><p>安装好必要的工具之后，就可以开始调试了；整体步骤比较简单：把lldb-server推送到调试设备并运行这个server，在开发机上连上这个server即可；以下是详细步骤。</p>
 <h4 id="在手机端运行lldb-server">在手机端运行lldb-server</h4><p>如果你的调试设备是root的，那么相对来说比较简单；毕竟我们的调试进程lldb-server要attach到被调试的进程是需要一定权限的，如果是root权限那么没有限制；如果没有root，那么我们只能借助<code>run-as</code>命令来调试自己的进程；另外，被调试的进程必须是debuggable，不赘述。以下以root的设备为例（比如模拟器）</p>
@@ -812,7 +812,7 @@
 </li>
 </ol>
 <h4 id="连接到lldb-server开始调试">连接到lldb-server开始调试</h4><p>首先打开终端执行lldb（Mac开发者工具自带这个，Windows不支持）,会进入一个交互式的环境，如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484282196260.png" width="462"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484282196260.png" width="462"></p>
 <ol>
 <li><p>选择使用Android调试插件。执行如下命令：</p>
 <blockquote>
@@ -826,7 +826,7 @@
 <p>platform connect unix-abstract-connect:///data/local/tmp/debug.sock</p>
 </blockquote>
 <p>正常情况下你执行lldb-server的那个终端应该有了输出：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1484282509260.png" width="430"></p>
+<p><img src="http://blog.dimenspace.com/201601/1484282509260.png" width="430"></p>
 </li>
 <li><p>attach到调试进程。首先你需要查出你要调试的那个进程的pid，直接用ps即可；打开一个新的终端执行：</p>
 <blockquote>
@@ -916,7 +916,7 @@
     <link href="http://weishu.me/2016/12/30/simple-way-to-compile-android-source/"/>
     <id>http://weishu.me/2016/12/30/simple-way-to-compile-android-source/</id>
     <published>2016-12-29T17:08:41.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.001Z</updated>
     <content type="html"><![CDATA[<p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p>
 <p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p>
 <p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p>
@@ -930,7 +930,7 @@
 <ol>
 <li>打开Mac的系统软件：<strong>磁盘工具</strong></li>
 <li><p>CMD + N，创建新的磁盘映像，参数设置如下图：</p>
-<p> <img src="http://weishu.dimenspace.com/201601/1483019239159.png" width="430"></p>
+<p> <img src="http://blog.dimenspace.com/201601/1483019239159.png" width="430"></p>
 <p> 其中磁盘大小设置为 50~100G合适，<strong>格式一定要选择带区分大小写标志的。</strong></p>
 </li>
 </ol>
@@ -968,7 +968,7 @@
     <link href="http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/"/>
     <id>http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/</id>
     <published>2016-12-23T14:53:09.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.002Z</updated>
     <content type="html"><![CDATA[<p>介绍完 <a href="https://zhuanlan.zhihu.com/p/24414378" target="_blank" rel="external">深入学习Android：虚拟机&amp;运行时</a> 之后，很多小伙伴问我，你描述的这些知识结构看起来艰深晦涩高大上，实际工作中能有多大用途呢？今天我就简单举个例子。</p>
 <p>众所周知，我们的Android App运行在Java虚拟机之上，而Java是一门带GC的语言。在虚拟机进行垃圾回收的时候，要做一件很形象的事叫做STW（stop the world）；也就是说，为了回收那些不再使用的对象，虚拟机必须要停止所有的线程来进行必要的工作。虽说这一点在ART运行时上得到了很大的改善，但是GC的存在对App运行时的性能始终有着微妙的影响。如果你观察过手机输入的日志，一定会看到类似如下的内容：</p>
 <blockquote>
@@ -994,7 +994,7 @@
 <p>其中 heap_initial<em>size</em> 是堆的初始大小，heap_growth<em>limit</em>是堆增长的最大限制，heap_min<em>free</em>以及heap_max<em>free</em> 是什么呢？详细的用途见 <a href="http://hello2mao.github.io/2015/12/16/Android_ART_GC_GrowForUtilization.html" target="_blank" rel="external">Android ART GC之GrowForUtilization的分析</a> 简单来说就是，Android系统为了保证堆的利用效率，减少堆中的内存碎片；每次执行GC回收到一些内存之后，会对堆大小进行调整。比如说你进入了一个图片非常多的页面，这时候申请了100M内存，当你退出这个页面的时候，这100M自然就被回收了，成为了空闲内存；但是系统为了防止浪费，并不会把这100M的空闲内存全部留给你，而是做一个调整。而具体调整到多大，则与   <code>heap_min_free_</code>, <code>heap_max_free_</code> 以及 <code>heap_target_utilization_</code> 相关。</p>
 <p>说到这里，原理性的部分已经解释完了；除了流程稍微复杂，也没有什么难点。那么这个堆，跟我们的启动性能优化有什么关系呢？</p>
 <p>在Android App的启动过程中，进程占用的内存在一段时间内是持续上涨的；假设堆的初始大小为8M，启动过程中的占用内存峰值30M；启动过程的进行中，伴随着大量临时对象的创建，它们朝生夕死，不久就被回收掉：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1482494040946.png" width="446"></p>
+<p><img src="http://blog.dimenspace.com/201601/1482494040946.png" width="446"></p>
 <p>如上图，这是某次启动过程中某App的内存占用情况；我们看到了有很多小折线，专业术语叫做内存抖动；原因呢，也很明显——有大量的临时对象被创建。怎么解决？有人说，不要创建大量的临时对象。道理我都懂，可是做不到。对于很多大型App来说，启动的过程是相当复杂的，而很多操作也不能简单滴去掉。那么问题来了，30M并不是一个很大的数字，为什么系统如此恐慌，还需要不停滴回收内存呢？</p>
 <p>有一种冷，叫做你妈妈觉得你冷。垃圾回收并不是说有垃圾了才去回收，而是只要系统觉得你需要回收垃圾就会进行。</p>
 <p>那么，能不能在启动过程中让堆保持持续增长而不进行GC呢？毕竟，30M并不会造成什么OOM。是什么原因导致系统没有这么做？答案是空闲内存。比如说一开始堆有8M，随着启动过程的进行，堆增长到了24M；这时候执行了一次GC，回收掉了8M内存，也是堆回到了16M；我们还有8M的空闲内存。系统就会说，小伙子，你占这么多空闲内存干嘛呀？来妈妈帮你保管，于是你就只剩下2M的空闲内存了。但显然App使用的堆内存很快就会超过18M，于是又引发一系列GC以及堆大小调整，周而复始直至启动完成内存平稳。至此，我们的结论已经很明显：</p>
@@ -1002,7 +1002,7 @@
 <p>如何调整这两个参数的大小呢？<em>拿到Heap对象的指针，找到这两个参数的偏移量，直接修改内存即可</em> 这里稍微需要一点C++内存布局的知识；至于如何拿到Heap对象的指针，只有去源码里面寻找答案了。这里我给出最终的实现代码：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modifyHeap</span><span class="params">(<span class="keyword">unsigned</span> size)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// JavaVMExt指针 可以从JNI_OnLoad中拿到 </span></span><br><span class="line">	JavaVMExt * vmExt = (JavaVMExt *)g_javaVM;</span><br><span class="line">	<span class="keyword">if</span> (vmExt-&gt;runtime == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">char</span>* runtime_ptr = (<span class="keyword">char</span>*) vmExt-&gt;runtime;</span><br><span class="line">    <span class="keyword">void</span>** heap_pp = (<span class="keyword">void</span>**)(runtime_ptr + <span class="number">188</span>);</span><br><span class="line">    <span class="keyword">char</span>* c_heap = (<span class="keyword">char</span>*) (*heap_pp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>* min_free_offset = c_heap + <span class="number">532</span>;</span><br><span class="line">    <span class="keyword">char</span>* max_free_offset = min_free_offset + <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">char</span>* target_utilization_offset = max_free_offset + <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span>* min_free_ = (<span class="keyword">size_t</span>*) min_free_offset;</span><br><span class="line">    <span class="keyword">size_t</span>* max_free_ = (<span class="keyword">size_t</span>*) max_free_offset;</span><br><span class="line">    </span><br><span class="line">    *min_free_ = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">2</span>;</span><br><span class="line">    *max_free_ = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">8</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>修改之后启动过程中内存占用如下，可以看到我们的目的已经达到：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1482496070927.png" width="452"></p>
+<p><img src="http://blog.dimenspace.com/201601/1482496070927.png" width="452"></p>
 <p>顺便说明一下，上面的代码没有考虑任何的可移植性和适配性，只起演示作用。真正投入使用是一个体力活：其一，我们依赖了某特定Android版本某个类的内存布局，其中的成员变量的偏移量可能不同版本不同；其二，这个 min<em>free</em> 以及 max<em>free</em> 具体调整为多大，跟手机的物理内存，App使用的内存，手机配置的初始堆大小等等因素密切相关；调整一个合适的参数需要花费一些时间，Android机型如此之多，这里需要一些小技巧。</p>
 <p>不知道上面这个例子有木有让你感受到深入系统底层，那种呼风唤雨无所不能的快感？可能很多人觉得我们都是写写if else而已，调节面改动画写业务已经够了；但我想说明的是，深入学习系统原理是非常有好处的，它可以赋予你在应用层永远无法拥有的能力。</p>
 <p>另外留个作业，我们上面提到观察GC的次数，除了使用debug模式下用工具观察，能不能用代码监听到呢？本文主要说明了虚拟机运行时等native层的重要性，而这个答案可以在Java Framework中找到 ^_^</p>
@@ -1032,10 +1032,10 @@
     <link href="http://weishu.me/2016/10/13/sharedpreference-advices/"/>
     <id>http://weishu.me/2016/10/13/sharedpreference-advices/</id>
     <published>2016-10-12T16:31:19.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.128Z</updated>
     <content type="html"><![CDATA[<p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
 <h2 id="存储超大的value">存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1476286071563.png" width="664"></p>
+<p><img src="http://blog.dimenspace.com/201601/1476286071563.png" width="664"></p>
 <p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
 <p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
 <p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>
@@ -1060,7 +1060,7 @@
 <h2 id="存储JSON等特殊符号很多的value">存储JSON等特殊符号很多的value</h2><p>还有一些童鞋，他在sp里面存json或者HTML；这么做不是不可以，但是，如果这个json相对较大，那么也会引起sp读取速度的急剧下降。</p>
 <p>JSON或者HTML格式存放在sp里面的时候，需要转义，这样会带来很多<code>&amp;</code>这种特殊符号，sp在解析碰到这个特殊符号的时候会进行特殊的处理，引发额外的字符串拼接以及函数调用开销。而JSON本来就是可以用来做配置文件的，你干嘛又把它放在sp里面呢？多此一举。下面我写个demo验证一下。</p>
 <p>下面这个sp是某个app的换肤配置：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1476282570956.png" width="696"></p>
+<p><img src="http://blog.dimenspace.com/201601/1476282570956.png" width="696"></p>
 <p>我们先用sp进行读取，然后用直接把它丢json文件，直接读取并且解析；json使用的代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValueByJson</span><span class="params">(Context context, String key)</span> </span>&#123;</span><br><span class="line">    File jsonFile = <span class="keyword">new</span> File(context.getFilesDir().getParent() + File.separator + SP_DIR_NAME, <span class="string">"skin_beta2.json"</span>);</span><br><span class="line">    FileInputStream fis = <span class="keyword">null</span>;</span><br><span class="line">    ByteArrayOutputStream bao = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fis = <span class="keyword">new</span> FileInputStream(jsonFile);</span><br><span class="line">        FileChannel channel = fis.getChannel();</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1</span> &lt;&lt; <span class="number">13</span>); <span class="comment">// 8K</span></span><br><span class="line">        <span class="keyword">int</span> i1;</span><br><span class="line">        <span class="keyword">while</span> ((i1 = channel.read(buffer)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            buffer.flip();</span><br><span class="line">            bao.write(buffer.array(), <span class="number">0</span>, i1);</span><br><span class="line">            buffer.clear();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String content = bao.toString();</span><br><span class="line">        JSONObject jsonObject = <span class="keyword">new</span> JSONObject(content);</span><br><span class="line">        <span class="keyword">return</span> jsonObject.getInt(key);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"not a json file"</span>);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        close(fis);</span><br><span class="line">        close(bao);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后我的测试结果是：直接解析JSON比在xml里面要快一倍！在小米1S上结果如下：</p>
@@ -1122,7 +1122,7 @@
     <summary type="html">
     <![CDATA[<p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
 <h2 id="存储超大的value">存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1476286071563.png" width="664"/></p>
+<p><img src="http://blog.dimenspace.com/201601/1476286071563.png" width="664"/></p>
 <p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
 <p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
 <p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>
@@ -1143,7 +1143,7 @@
     <link href="http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/"/>
     <id>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</id>
     <published>2016-07-12T11:18:07.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:34.928Z</updated>
     <content type="html"><![CDATA[<p>目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？</p>
 <p>与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要少得多；但是，ContentProvider这个组件对于Android系统有着特别重要的作用——作为一种极其方便的<strong>数据共享</strong>的手段，ContentProvider使得广大第三方App能够在壁垒森严的系统中自由呼吸。</p>
 <p>在Android系统中，每一个应用程序都有自己的用户ID，而每一个应用程序所创建的文件的读写权限都是只赋予给自己所属的用户，这就限制了应用程序之间相互读写数据的操作。应用程序之间如果希望能够进行交互，只能采取跨进程通信的方式；Binder机制能够满足一般的IPC需求，但是如果应用程序之间需要共享大量数据，单纯使用Binder是很难办到的——我相信大家对于Binder 1M缓冲区以及TransactionTooLargeException一定不陌生；ContentProvider使用了匿名共享内存(Ashmem)机制完成数据共享，因此它可以很方便地完成大量数据的传输。Android系统的短信，联系人，相册，媒体库等等一系列的基础功能都依赖与ContentProvider，它的重要性可见一斑。</p>
@@ -1198,7 +1198,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Wait for the provider to be published...</span></span><br><span class="line"><span class="keyword">synchronized</span> (cpr) &#123;</span><br><span class="line">    <span class="keyword">while</span> (cpr.provider == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cpr.launchingApp == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">                conn.waiting = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            cpr.wait();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">                conn.waiting = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>你没看错，一个死循环就是糊在上面：AMS进程会通过一个死循环等到进程B完成ContentProvider的安装，等待完成之后会把ContentProvider的信息返回给进程A。那么，我们现在的疑惑是，<strong>进程B在启动之后，在哪个时间点会完成ContentProvider的安装呢？</strong> </p>
 <p>我们接着看ActivityThread的main函数，顺便寻找我们上面那个问题的答案；这个分析实际上就是Android App的启动过程，更详细的过程可以参阅老罗的文章 <a href="http://blog.csdn.net/luoshengyang/article/details/6689748" target="_blank" rel="external">Android应用程序启动过程源代码分析</a>，这里只给出简要调用流程：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1468313182087.png" alt="App启动简要流程"></p>
+<p><img src="http://blog.dimenspace.com/201605/1468313182087.png" alt="App启动简要流程"></p>
 <p>最终，DemoB进程启动之后会执行ActivityThread类的handleBindApplication方法，这个方法相当之长，基本完成了App进程启动之后所有必要的操作；这里我们只关心ContentProvider相关的初始化操作，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// If the app is being launched for full backup or restore, bring it up in</span></span><br><span class="line"><span class="comment">// a restricted environment with the base application class.</span></span><br><span class="line">Application app = data.info.makeApplication(data.restrictedBackupMode, <span class="keyword">null</span>);</span><br><span class="line">mInitialApplication = app;</span><br><span class="line"></span><br><span class="line"><span class="comment">// don't bring up providers in restricted mode; they may depend on the</span></span><br><span class="line"><span class="comment">// app's custom Application class</span></span><br><span class="line"><span class="keyword">if</span> (!data.restrictedBackupMode) &#123;</span><br><span class="line">    List&lt;ProviderInfo&gt; providers = data.providers;</span><br><span class="line">    <span class="keyword">if</span> (providers != <span class="keyword">null</span>) &#123;</span><br><span class="line">        installContentProviders(app, providers);</span><br><span class="line">        <span class="comment">// For process that contains content providers, we want to</span></span><br><span class="line">        <span class="comment">// ensure that the JIT is enabled "at some point".</span></span><br><span class="line">        mH.sendEmptyMessageDelayed(H.ENABLE_JIT, <span class="number">10</span>*<span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Do this after providers, since instrumentation tests generally start their</span></span><br><span class="line"><span class="comment">// test thread at this point, and we don't want that racing.</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mInstrumentation.onCreate(data.instrumentationArgs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mInstrumentation.callApplicationOnCreate(app);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>仔细观察以上代码，你会发现：<strong>ContentProvider的安装比Application的onCreate回调还要早！！</strong>因此，分析到这里我们已经明白了前面提出的那个问题，<strong>进程启动之后会在Applition类的onCreate 回调之前，在Application对象创建之后完成ContentProvider的安装</strong>。</p>
@@ -1272,7 +1272,7 @@
     <link href="http://weishu.me/2016/05/30/how-to-debug-android-framework/"/>
     <id>http://weishu.me/2016/05/30/how-to-debug-android-framework/</id>
     <published>2016-05-30T09:26:05.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.193Z</updated>
     <content type="html"><![CDATA[<p>Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：</p>
 <p><strong>Debug the fucking source code!!</strong></p>
 <p>之前分享过一个答案：<a href="https://www.zhihu.com/question/40300713/answer/86706105" target="_blank" rel="external">大家遇到过什么 Android 兼容性问题？</a>，这里面的有一些非常诡异的问题，我相信光靠看代码你是永远定位不出来的。还有我写的一系列<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件框架原理</a>的文章，这里面涉及到大量Android Framework层的知识，有小伙伴会问，这些Framework层的原理，你是如何学习的呢，有诀窍吗？有！那就是调试。</p>
@@ -1285,29 +1285,29 @@
 </ol>
 <p>在展开讲述这两方面之前，有必要先简单了解下调试的基础知识。Java平台的调试是有一个规范化的标准的，那就是JPDA（Java Platform Debugger Architecture）；通过 JPDA 提供的 API，开发人员可以方便灵活的搭建 Java 调试应用程序。 JPDA 主要由三个部分组成：Java 虚拟机工具接口（JVMTI），Java 调试线协议（JDWP），以及 Java 调试接口（JDI）。</p>
 <p>Java程序的调试无非就是通过一个调试器（debugger）获取对应Java虚拟机的信息，上文所述的JDWP就是调试器与虚拟机通信的桥梁。在dalvik虚拟机内部有一个专门的jdwp线程，Android系统的adbd进程通过socket与各个虚拟机的jdwp线程进行通信，外部调试器通过adb工具与adbd通信进而完成与jdwp的通信。我们通常所说的「attach debugger」指的就是这个意思——连接到指定的需要调试的进程。</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464599537380.png" alt="调试器工作原理"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464599537380.png" alt="调试器工作原理"></p>
 <h2 id="如何在正确的地方下断点">如何在正确的地方下断点</h2><p>「正确的地方」包含两个含义：首先，调试是以进程为单位进行的，如果你需要调试运行在进程A 中的代码，却把debugger attach到了B进程，那么这个断点压根儿就是牛头不对马嘴；另外呢，比如你想调试Android的多媒体框架，你得知道media相关的类在哪吧，也就是说需要在正确的函数里面下断点。</p>
 <h3 id="如何在合适的进程下断点？">如何在合适的进程下断点？</h3><p>如果是调试我们自己写的App，在Android Studio里面非常简单，在Run菜单de最后面有一个attach debugger to android process 的选项，点击之后会出现一个菜单，选择自己需要调试的进程即可；但是，如果需要调试Android Framework层的代码，这样做是达不到目的的——Framework层的代码通常运行在别的进程（比如ActivityManagerService运行在system_server进程），而这些进程通常情况下是不可调试的，也就是说在attach debugger to android process 的那个菜单里面不会有系统的进程，如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1464596347439.png" alt="普通的无法调试的Android设备"></p>
+<p><img src="http://blog.dimenspace.com/201601/1464596347439.png" alt="普通的无法调试的Android设备"></p>
 <p>为什么不可调试呢？上文我们简要讲述了调试器的工作原理，我们知道每一个虚拟机有一个jdwp线程，如果这个线程拒绝连接到调试器，你也就没办法对这个进程进行调试了。Android的所有App进程都是通过Zygote进程fork出来的，我们在<code>android.os.Process</code>这个类里面可以看到android进程的启动过程有这么一句：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((debugFlags &amp; Zygote.DEBUG_ENABLE_DEBUGGER) != <span class="number">0</span>) &#123;</span><br><span class="line">    argsForZygote.add(<span class="string">"--enable-debugger"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>也就是说，一个进程是否可以调试是由进程启动时候的参数决定的；普通的App进程如果是debug keystore默认是可以调试的，有或者你在AndroidManifest里面指定debuggable为true也是可以调试的。对系统进程，我们只有采取系统级别的手段：让整个系统可以调试——debug版或者编译参数debuggable为1的系统。</p>
 <p>解决这个办法很简单：使用模拟器（真机也行，限Nexus系列刷原生Android系统，把系统启动的debuggable参数修改为1），我的Nexus 5 可以调试的进程如下：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1464596367660.png" alt="可调试任意进程的设备"></p>
+<p><img src="http://blog.dimenspace.com/201601/1464596367660.png" alt="可调试任意进程的设备"></p>
 <p>这样，系统中所有的Android进程都可以调试了；这一点很重要，比如你要分析Activity的启动流程，相当多一部分代码是在ActivityManagerService所在的进程system_server执行的，如果你把断点打在别的进程，就会产生跟丢了的情况。在比如，你要调试ActivityThread的main函数，在main函数里面执行了一句attach，最终调用AMS的attachApplication的时候，代码就通过Binder IPC调用到了AMS的system_server进程。</p>
 <p>明白你要执行的代码运行在哪一个进程相当重要，在Android中，由于Binder通信机制的存在，「进程迁移」使用的非常非常频繁，因此需要对binder机制有一定的了解；详细的话可以参考我的博客：<a href="http://weishu.me/2016/01/12/binder-index-for-newer/">Binder学习指南</a></p>
 <h3 id="如何在对应的代码处下断点？">如何在对应的代码处下断点？</h3><p>假设我们现在把debugger attach到了正确的进程，那么断点应该下在哪里呢？直观来讲，就是说我需要导入所有的Android源码吗？如果不是应该导入哪些代码，怎么导入？</p>
 <p>首先，如果你需要调试的类在sdk里面导出了，你压根儿就不需要再导入源码，Android Studio自动帮你关联了这部分代码（前提是你用SDK Manager下载了sdk的源码，如下图：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464596414635.png" alt="SDK manager下载源码"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464596414635.png" alt="SDK manager下载源码"></p>
 <p>比如你要调试ActivityManagerService类的attachApplication方法，那么很简单；创建一个空的Android项目，SDK版本选择与你要调试的模拟器/真机 的android相同（这很重要，下文会讲述）；然后attrach 到system_server进程（debugger显示的名字为system_process)，直接在attach_application上面打上断点；随便启动一个app，可以看到我们熟悉的调试界面：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464596428584.png" alt="调试attachApplication"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464596428584.png" alt="调试attachApplication"></p>
 <p>如果这部分类在sdk中没有导入（比如@hide)的，又或者压根儿不是SDK的类，（比如系统app的源码）那应该怎么办呢？直接导入这部分代码即可。不需要是Android项目，普通的Java项目即可；举个例子，假设你想调试原生Android系统的「系统设置」这个程序，该如何做呢？</p>
 <p>根据上面的分析，我们首先得知道「系统设置˜」运行在哪一个进程，通常情况下进程名字就是包名；我们查出设置的包名即可，而包名是在源码的AndroidManifeist中声明的，因此，我们找到「系统设置」这个程序的源码即可；源码在 <a href="https://android.googlesource.com/" target="_blank" rel="external">https://android.googlesource.com/</a> ，系统App的源码在/packages这个子目录下面，我们一个个找，最终可以确定「系统设置」的源码在 <a href="https://android.googlesource.com/platform/packages/apps/Settings/" target="_blank" rel="external">https://android.googlesource.com/platform/packages/apps/Settings/</a> ；然后我们把这部分代码git clone下来，导入Android Studio：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464596441461.png" alt="调试Settings"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464596441461.png" alt="调试Settings"></p>
 <p>我们去AndroidManifest中查到，「系统设置」的包名为：com.android.settings，这样我们attach到这个进程 ：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464596456242.png" alt="attach setting进程"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464596456242.png" alt="attach setting进程"></p>
 <p>然后，我们随便打个断点玩一玩，比如进入设置主界面的时候，断下来；我们在AndroidManifest中查到设置程序的入口界面为：Settings，我们在这个类的onCreate里面打一个断点，然后进入设置程序，发现完美滴断下来了：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464596476109.png" alt="在setting中断点成功"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464596476109.png" alt="在setting中断点成功"></p>
 <p>OK，到这里；应该学会如何在正确的位置打断点了：正确的进程，正确的位置。接下来，要完成调试，还需要一些技巧。</p>
 <h2 id="如何跟踪代码？">如何跟踪代码？</h2><p>或许你会说，跟踪代码不就是step in/out/over么，这有什么难的？但其实事情并没有你想象的那么简单，要优雅滴调试，还是需要一些姿势的。</p>
 <h3 id="行号对应">行号对应</h3><p>跟踪代码一个首要的问题是行号对应。如果你在正确位置下了断点，但是跟踪的时候，单步调试，发现运行的代码和Android Studio里面的代码对不上号，那么就很蛋疼；要使得调试器的行号能够对应，必须保证设备上的代码和调试器的代码是同一份；简单来说，需要使用Android的原生系统（模拟器，Nexus系列真机），然后调试器里面使用的SDK版本，必须和设备的系统版本一致。</p>
@@ -1317,7 +1317,7 @@
 <p>解决了如何下断点的问题，那么行号不对应，怎么知道执行到哪了，怎么查看局部变量？</p>
 <p><strong>观察栈桢</strong></p>
 <p>在Android Studio的调试器的左边，显示了每一个线程执行的栈桢，栈桢里面包含了当前线程丰富的信息：</p>
-<p><img src="http://weishu.dimenspace.com/201605/1464598434021.png" width="292"></p>
+<p><img src="http://blog.dimenspace.com/201605/1464598434021.png" width="292"></p>
 <p>看到没，真正运行的代码在哪一行，当前运行的是什么函数一目了然；接下来你在step into/out的时候，不能以源代码的行数为准，而应该以这个栈桢所显示的代码行数为准。</p>
 <h3 id="熟练使用断点">熟练使用断点</h3><p>OK，现在不论行号是否能对应，我们都能正确滴下断点调试了。断点有很多种类型，方法断点，watch point，条件断点都能够很好滴辅助我们调试；如果你连这几个名词都没有听说过，一定要恶补一下；可以参阅我的博客：<a href="http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/">Android Studio你不知道的调试技巧</a>；我就不再复述了。</p>
 <p>如果你仔细看完了本文和我给出的链接，那么应该对Debug技术不再陌生了；接下来你可以选择Framework层的代码，手动调试一下加深理解；在日后的工作过程中，不断滴加强debug技术的练习，让它称为你解决复杂问题的条件反射，一定会事半功倍！还有记住：</p>
@@ -1346,7 +1346,7 @@
     <link href="http://weishu.me/2016/05/11/understand-plugin-framework-service/"/>
     <id>http://weishu.me/2016/05/11/understand-plugin-framework-service/</id>
     <published>2016-05-11T13:02:50.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.240Z</updated>
     <content type="html"><![CDATA[<p>在 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 以及 <a href="http://weishu.me/2016/04/12/understand-plugin-framework-receiver/">广播的管理</a> 中我们详细探讨了Android系统中的Activity、BroadcastReceiver组件的工作原理以及它们的插件化方案，相信读者已经对Android Framework和插件化技术有了一定的了解；本文将探讨Android四大组件之一——Service组件的插件化方式。</p>
 <p>与Activity, BroadcastReceiver相比，Service组件的不同点在哪里呢？我们能否用与之相同的方式实现Service的插件化？如果不行，它们的差别在哪里，应该如何实现Service的插件化？</p>
 <p>我们接下来将围绕这几个问题展开，最终给出Service组件的插件化方式；阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的 service-management 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
@@ -1397,7 +1397,7 @@
 <h4 id="Service无法拥有多实例">Service无法拥有多实例</h4><p>Service组件与Activity组件另外一个不同点在于，对同一个Service调用多次startService并不会启动多个Service实例，而非特定Flag的Activity是可以允许这种情况存在的，因此如果用StubService的方式，为了实现Service的这种特性，必须建立一个StubService到插件Service的一个Map，Map的这种一一对应关系使得我们使用一个StubService对应多个插件Service的计划成为天方夜谭。</p>
 <p>至此，结论已经非常清晰——对于Service组件的插件化，我们不能简单地套用Activity的方案。</p>
 <h3 id="如何实现Service的插件化？">如何实现Service的插件化？</h3><p>上文指出，我们不能套用Activity的方案实现Service组件的插件化，可以通过手动控制Service组件的生命周期实现；我们先来看一下Service的生命周期：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1462949033406.png" alt="Service生命周期"></p>
+<p><img src="http://blog.dimenspace.com/201601/1462949033406.png" alt="Service生命周期"></p>
 <p>从图中可以看出，Service的生命周期相当简单：整个生命周期从调用 onCreate() 开始起，到 onDestroy() 返回时结束。对于非绑定服务，就是从startService调用到stopService或者stopSelf调用。对于绑定服务，就是bindService调用到unbindService调用；</p>
 <p>如果要手动控制Service组件的生命周期，我们只需要模拟出这个过程即可；而实现这一点并不复杂：</p>
 <ol>
@@ -1560,7 +1560,7 @@
     <link href="http://weishu.me/2016/04/05/understand-plugin-framework-classloader/"/>
     <id>http://weishu.me/2016/04/05/understand-plugin-framework-classloader/</id>
     <published>2016-04-05T12:13:01.000Z</published>
-    <updated>2021-09-13T12:37:52.565Z</updated>
+    <updated>2021-09-13T12:51:35.193Z</updated>
     <content type="html"><![CDATA[<p>上文 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 中我们地完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的任务；通过Hook <code>AMS</code>和拦截ActivityThread中<code>H</code>类对于组件调度我们成功地绕过了AndroidMAnifest.xml的限制。</p>
 <p>但是我们启动的『没有在AndroidManifet.xml中显式声明』的Activity和宿主程序存在于同一个Apk中；通常情况下，插件均以独立的文件存在甚至通过网络获取，这时候插件中的Activity能否成功启动呢？</p>
 <p>要启动Activity组件肯定先要创建对应的Activity类的对象，从上文 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 知道，创建Activity类对象的过程如下：</p>
@@ -1624,11 +1624,11 @@
 </blockquote>
 <p>也就是说，这个类就是AndroidManifest.xml里面的<application> 这个标签下面的信息；这个AndroidManifest.xml无疑是一个标准的xml文件，因此我们完全可以自己使用parse来解析这个信息。</application></p>
 <p>那么，系统是如何获取这个信息的呢？其实Framework就有一个这样的parser，也即PackageParser；理论上，我们也可以借用系统的parser来解析AndroidMAnifest.xml从而得到ApplicationInfo的信息。但遗憾的是，<strong>这个类的兼容性很差</strong>；Google几乎在每一个Android版本都对这个类动刀子，如果坚持使用系统的解析方式，必须写一系列兼容行代码！！DroidPlugin就选择了这种方式，相关类如下：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1459829051777.png" width="283" alt="DroidPlugin的PackageParser"></p>
+<p><img src="http://blog.dimenspace.com/201601/1459829051777.png" width="283" alt="DroidPlugin的PackageParser"></p>
 <p>看到这里我就问你怕不怕！！！这也是我们之前提到的<strong>私有或者隐藏的API可以使用，但必须处理好兼容性问题</strong>；如果Android 7.0发布，这里估计得添加一个新的类PackageParseApi24。</p>
 <p>我这里使用API 23作为演示，<strong>版本不同的可能无法运行</strong>请自行查阅 DroidPlugin 不同版本如何处理。</p>
 <p>OK回到正题，我们决定使用PackageParser类来提取ApplicationInfo信息。下图是API 23上，PackageParser的部分类结构图：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1459829674687.png" width="481"></p>
+<p><img src="http://blog.dimenspace.com/201601/1459829674687.png" width="481"></p>
 <p>看起来有我们需要的方法 generateApplication；确实如此，依靠这个方法我们可以成功地拿到ApplicationInfo。<br>由于PackageParser是@hide的，因此我们需要通过反射进行调用。我们根据这个generateApplicationInfo方法的签名：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ApplicationInfo <span class="title">generateApplicationInfo</span><span class="params">(Package p, <span class="keyword">int</span> flags,</span><br><span class="line">   PackageUserState state)</span></span></span><br></pre></td></tr></table></figure>
 <p>可以写出调用generateApplicationInfo的反射代码：</p>

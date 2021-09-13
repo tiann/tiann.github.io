@@ -49,9 +49,9 @@
 <meta property="og:site_name" content="Weishu's Notes">
 <meta property="og:description" content="有过刷机经验或者曾经尝试过刷机的童鞋，一定听说过「解锁」这个词。这里的「解锁」全称应该是「解锁 BootLoader」或者简称为「解 BL 锁」。与通过人脸识别或者指纹、数字图案解锁手机屏幕的那种「屏幕解锁」不同，这里的「解锁」完全是另外一个概念。直观来说，解 BL 锁是刷机的前提条件。通常情况下，一旦某个设备无法解锁 BL，基本上就无法在这个设备进行刷机了。
 那么，一定会有童鞋关心，解锁 Boo">
-<meta property="og:image" content="http://weishu.dimenspace.com/mweb/16271211531184.jpg">
-<meta property="og:image" content="http://weishu.dimenspace.com/mweb/16271298905127.jpg">
-<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
+<meta property="og:image" content="http://blog.dimenspace.com/mweb/16271211531184.jpg">
+<meta property="og:image" content="http://blog.dimenspace.com/mweb/16271298905127.jpg">
+<meta property="og:updated_time" content="2021-09-13T12:51:35.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="当我们谈论解锁 BootLoader 时，我们在谈论什么？">
 <meta name="twitter:description" content="有过刷机经验或者曾经尝试过刷机的童鞋，一定听说过「解锁」这个词。这里的「解锁」全称应该是「解锁 BootLoader」或者简称为「解 BL 锁」。与通过人脸识别或者指纹、数字图案解锁手机屏幕的那种「屏幕解锁」不同，这里的「解锁」完全是另外一个概念。直观来说，解 BL 锁是刷机的前提条件。通常情况下，一旦某个设备无法解锁 BL，基本上就无法在这个设备进行刷机了。
@@ -227,12 +227,12 @@
 <p>我们知道，操作系统负责管理设备的硬件资源；而 BootLoader 是用来启动操作系统的，如果有人通过 BootLoader 来启动一个恶意的操作系统，那我们设备的安全性就无法得到保障了。因此，BootLoader 一个核心的功能就是，确保启动一个可信的操作系统。另外，当设备的操作系统出现问题时，BootLoader 还可以引导启动另外一个正常的可信系统来执行恢复；所以，BootLoader 另外一个功能重要功能就是恢复系统。</p>
 <a id="more"></a>
 <p>具体来说，BootLoader 是如何实现这两大功能的呢？以高通设备为例，我们看一下 BootLoader 的启动流程：</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16271211531184.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16271211531184.jpg" alt=""></p>
 <p>当我们按下电源键启动手机的时候，CPU 上电之后开始运行；它最开始运行的代码是 CPU 芯片厂商提供的，写死在某个只读存储上，这段代码一旦出厂便不可更改，我们通常称之为 BootROM 或者 PBL (Primary Boot Loader)；PBL 的主要功能是上电自检并启动下一个组件 SBL(Secondary Boot Loader），现在被叫做 XBL (eXtended Boot Loader)。这个 SBL 主要是初始化一些硬件环境(如DDR, clocks 和 USB 等）和代码安全环境 (TrustZone)，当然，最重要的还是<strong>验证并加载</strong>下一个组件——ABL(Android Boot Loader，也叫 aboot)。与 PBL 不同，SBL 程序一般存放在 eMMC 上，这个地方是可以被修改的，因此它可以被刷写和升级。正因如此，SBL 还承载着最底层的恢复设备的重任；我们常说的高通 9008 模式（全称 Emergency Download Mode）就运行在这里。9008 模式，本质上就是强制刷写设备的 eMMC 存储，因此不论你上层操作系统或者应用软件被破坏成什么样，除非硬件损坏，基本上都可以救回来。</p>
 <p>有童鞋会问，为啥要整个 SBL，直接 PBL 一把干完不行吗？实际上，PBL 是芯片相关的，芯片无法预知到它用什么外设，因此这两个阶段被解耦了。</p>
 <p>话说回来，SBL 执行完之后会验证并加载 ABL，ABL 的主要功能是从设备<strong>验证并加载</strong> bootimg 然后启动 Linux Kernel 进而启动用户操作系统，根据选择的不同，可能会进入到 Android 系统或者 Recovery 模式。ABL 还有一个很重要的功能，它提供了一个 fastboot 协议，用户可以用 PC 通过 USB 连接设备，通过这个 fastboot 协议控制设备；我们通常所说的「线刷」，小米的兔子界面以及我们通过命令行工具 fastboot 刷机实际上就是运行在 ABL 下。正因 ABL 功能比较复杂，它内部其实运行着一个 mini 的操作系统，这个操作系统就是 <a href="https://github.com/littlekernel/lk" target="_blank" rel="external">lk(Little Kernel)</a>，顺带一提，Trusty TEE 可信执行环境下的操作系统以及 Google 新的 Fuchsia 的微内核 <a href="https://fuchsia.googlesource.com/fuchsia/+/master/zircon/README.md" target="_blank" rel="external">Zircon</a> 也是基于 lk 的。</p>
 <p>ABL 启动 Linux Kernel 之后，内核最终会进入用户态执行 init，init 进而启动 ueventd, watchdogd, surfaceflinger 以及 zygote 等；zygote 启动之后 fork system_server 并启动各种 binder 服务，系统核心 binder 服务启动之后会启动 Launcher 桌面，这样整个系统就启动完毕了。联发科的设备 BootLoader 启动过程类似：</p>
-<p><img src="http://weishu.dimenspace.com/mweb/16271298905127.jpg" alt=""></p>
+<p><img src="http://blog.dimenspace.com/mweb/16271298905127.jpg" alt=""></p>
 <p>从上述 BootLoader 启动过程，我们可以很清楚地知道，BootLoader 的恢复功能体现在 SBL 阶段的恢复模式以及 ABL 阶段的 fastboot 线刷模式。实际上，在我们手机底层软件出现问题之后，不论是自己救砖还是去售后，基本都是用的这两种模式。在搞清楚了 BootLoader 的恢复功能之后，那在安全性方面，它又是如何保障的呢？</p>
 <p>细心的童鞋可能会注意到，上面我们多次提到了<strong>验证并加载</strong>。BootLoader 的各个启动过程串起来就是一个启动链，这个启动链的各个阶段在进行过渡和跳转的时候是需要进行验证的。也就是说，上一阶段在启动下一阶段的时候，会验证下一阶段的代码是否可信；只有在验证通过的情况下，整个启动过程才会继续进行。这就好比接力赛跑，在上一个选手把接力棒传递到下一个选手之前，他得先搞清楚是不是把接力棒交到了正确的伙伴手里；在现实世界中，这是通过五官和记忆来判断的；在计算里面，这个验证的过程实际上就是比对<strong>数字签名</strong>。不熟悉数字签名的童鞋，可以参阅一下我<a href="https://mp.weixin.qq.com/s?__biz=MjM5Njg5ODU2NA==&amp;mid=2257498195&amp;idx=1&amp;sn=bf6fdeaa9b01902d6e25a7fc13f3e9cbe7c02fc6914adf4607b872a192&amp;token=1832840139&amp;lang=zh_CN#rd" target="_blank" rel="external">之前的文章</a>。</p>
 <p>如果 BootLoader 的每一个阶段都严格验证数字签名，在代码逻辑都正确的情况下，用户是无法通过 BootLoader 去加载一个修改过的第三方系统的（也就是无法刷机）。那么什么是解锁 BootLoader？</p>

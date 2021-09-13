@@ -53,9 +53,9 @@
 存储超大的value第一次看到下面这个sp的时候，我的内心是崩溃的：
 
 一个默认的sp有90K，当我打">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1476286071563.png">
-<meta property="og:image" content="http://weishu.dimenspace.com/201601/1476282570956.png">
-<meta property="og:updated_time" content="2021-09-13T12:37:52.565Z">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1476286071563.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1476282570956.png">
+<meta property="og:updated_time" content="2021-09-13T12:51:35.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="请不要滥用SharedPreference">
 <meta name="twitter:description" content="SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。
@@ -225,7 +225,7 @@
       
         <span itemprop="articleBody"><p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
 <h2 id="存储超大的value">存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1476286071563.png" width="664"></p>
+<p><img src="http://blog.dimenspace.com/201601/1476286071563.png" width="664"></p>
 <p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
 <p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
 <p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>
@@ -250,7 +250,7 @@
 <h2 id="存储JSON等特殊符号很多的value">存储JSON等特殊符号很多的value</h2><p>还有一些童鞋，他在sp里面存json或者HTML；这么做不是不可以，但是，如果这个json相对较大，那么也会引起sp读取速度的急剧下降。</p>
 <p>JSON或者HTML格式存放在sp里面的时候，需要转义，这样会带来很多<code>&amp;</code>这种特殊符号，sp在解析碰到这个特殊符号的时候会进行特殊的处理，引发额外的字符串拼接以及函数调用开销。而JSON本来就是可以用来做配置文件的，你干嘛又把它放在sp里面呢？多此一举。下面我写个demo验证一下。</p>
 <p>下面这个sp是某个app的换肤配置：</p>
-<p><img src="http://weishu.dimenspace.com/201601/1476282570956.png" width="696"></p>
+<p><img src="http://blog.dimenspace.com/201601/1476282570956.png" width="696"></p>
 <p>我们先用sp进行读取，然后用直接把它丢json文件，直接读取并且解析；json使用的代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValueByJson</span><span class="params">(Context context, String key)</span> </span>&#123;</span><br><span class="line">    File jsonFile = <span class="keyword">new</span> File(context.getFilesDir().getParent() + File.separator + SP_DIR_NAME, <span class="string">"skin_beta2.json"</span>);</span><br><span class="line">    FileInputStream fis = <span class="keyword">null</span>;</span><br><span class="line">    ByteArrayOutputStream bao = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fis = <span class="keyword">new</span> FileInputStream(jsonFile);</span><br><span class="line">        FileChannel channel = fis.getChannel();</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1</span> &lt;&lt; <span class="number">13</span>); <span class="comment">// 8K</span></span><br><span class="line">        <span class="keyword">int</span> i1;</span><br><span class="line">        <span class="keyword">while</span> ((i1 = channel.read(buffer)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            buffer.flip();</span><br><span class="line">            bao.write(buffer.array(), <span class="number">0</span>, i1);</span><br><span class="line">            buffer.clear();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String content = bao.toString();</span><br><span class="line">        JSONObject jsonObject = <span class="keyword">new</span> JSONObject(content);</span><br><span class="line">        <span class="keyword">return</span> jsonObject.getInt(key);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"not a json file"</span>);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        close(fis);</span><br><span class="line">        close(bao);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后我的测试结果是：直接解析JSON比在xml里面要快一倍！在小米1S上结果如下：</p>
