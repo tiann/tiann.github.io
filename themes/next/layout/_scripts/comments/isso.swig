@@ -11,12 +11,12 @@
    {% if page.comments %}
         <!-- UY BEGIN -->
         <script 
-        data-isso="http://{{ip}}" 
+        data-isso="{{ip}}" 
         data-isso-require-author="true"
         data-isso-require-email="true"
         data-isso-vote="false"
         data-isso-avatar="true"
-        src="http://weishu.dimensionalzone.com/isso.embed.min.js"></script>
+        src="/js/isso.embed.min.js"></script>
         <!-- UY END -->
     {% endif %}
 {% endif %}
