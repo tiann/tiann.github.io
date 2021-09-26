@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://weishu.me/2021/09/26/start-to-use-Rust/</loc>
+    <lastmod>2021-09-26T10:39:32.237Z</lastmod>
+    <data>
+        <display>
+        <title>开始学习和使用 Rust</title>
+        <pubTime>2021-09-26T10:37:53.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/</loc>
     <lastmod>2021-09-13T12:51:47.091Z</lastmod>
     <data>
@@ -45,25 +60,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
-    <lastmod>2021-09-13T12:51:47.090Z</lastmod>
-    <data>
-        <display>
-        <title>简化markdown写作中的贴图流程</title>
-        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
-        
-        <tag>markdown</tag>
-         
-        <tag>workflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</loc>
     <lastmod>2021-09-13T12:51:47.090Z</lastmod>
     <data>
@@ -78,6 +74,25 @@
              
               <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
+    <lastmod>2021-09-13T12:51:47.090Z</lastmod>
+    <data>
+        <display>
+        <title>简化markdown写作中的贴图流程</title>
+        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
+        
+        <tag>markdown</tag>
+         
+        <tag>workflow</tag>
+         
+         
+           
         </display>
     </data>
     </url>
@@ -122,23 +137,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
-    <lastmod>2021-09-13T12:51:47.024Z</lastmod>
-    <data>
-        <display>
-        <title>获取迅雷会员工作流</title>
-        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
-        
-        <tag>alfred workflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
     <lastmod>2021-09-13T12:51:47.024Z</lastmod>
     <data>
@@ -149,6 +147,23 @@
         <tag>android</tag>
          
         <tag>log</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
+    <lastmod>2021-09-13T12:51:47.024Z</lastmod>
+    <data>
+        <display>
+        <title>获取迅雷会员工作流</title>
+        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
+        
+        <tag>alfred workflow</tag>
          
          
            
@@ -323,27 +338,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/05/30/how-to-debug-android-framework/</loc>
-    <lastmod>2021-09-13T12:51:35.193Z</lastmod>
-    <data>
-        <display>
-        <title>如何调试Android Framework？</title>
-        <pubTime>2016-05-30T09:26:05.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>debug</tag>
-         
-        <tag>framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2016/04/05/understand-plugin-framework-classloader/</loc>
     <lastmod>2021-09-13T12:51:35.193Z</lastmod>
     <data>
@@ -360,6 +354,27 @@
         <tag>droidplugin</tag>
          
         <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/05/30/how-to-debug-android-framework/</loc>
+    <lastmod>2021-09-13T12:51:35.193Z</lastmod>
+    <data>
+        <display>
+        <title>如何调试Android Framework？</title>
+        <pubTime>2016-05-30T09:26:05.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>debug</tag>
+         
+        <tag>framework</tag>
          
          
            
@@ -492,6 +507,27 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
+    <lastmod>2021-09-13T12:51:35.002Z</lastmod>
+    <data>
+        <display>
+        <title>Android 插件化原理解析——Activity生命周期管理</title>
+        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/</loc>
     <lastmod>2021-09-13T12:51:35.002Z</lastmod>
     <data>
@@ -506,27 +542,6 @@
         <tag>performance</tag>
          
         <tag>vm</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/</loc>
-    <lastmod>2021-09-13T12:51:35.002Z</lastmod>
-    <data>
-        <display>
-        <title>Android 插件化原理解析——Activity生命周期管理</title>
-        <pubTime>2016-03-21T11:43:32.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
          
          
            

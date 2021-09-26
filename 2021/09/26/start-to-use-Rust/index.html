@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="android source,compile," />
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
 
 
 
@@ -41,17 +41,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时">
+<meta name="description" content="你如今的气质里，藏着你走过的路、读过的书、爱过的人，以及学习过的编程语言。
+
+如果把编程类比作武侠或者修仙里面的打怪升级，那我在入行的头几年，一直在痴迷于各种各样的招式；那时候我学习和体验了各种各样的语言：C/C++/Java/Javascript/Kotlin/Python/Ruby/Scala/Clojure/Scheme/Erlang/Haskell，不过自从我学习了 Haskell 之后，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="史上最简单Android源码编译环境搭建方法">
-<meta property="og:url" content="http://weishu.me/2016/12/30/simple-way-to-compile-android-source/index.html">
+<meta property="og:title" content="开始学习和使用 Rust">
+<meta property="og:url" content="http://weishu.me/2021/09/26/start-to-use-Rust/index.html">
 <meta property="og:site_name" content="Weishu's Notes">
-<meta property="og:description" content="有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时">
-<meta property="og:image" content="http://blog.dimenspace.com/201601/1483019239159.png">
-<meta property="og:updated_time" content="2021-09-13T12:51:35.001Z">
+<meta property="og:description" content="你如今的气质里，藏着你走过的路、读过的书、爱过的人，以及学习过的编程语言。
+
+如果把编程类比作武侠或者修仙里面的打怪升级，那我在入行的头几年，一直在痴迷于各种各样的招式；那时候我学习和体验了各种各样的语言：C/C++/Java/Javascript/Kotlin/Python/Ruby/Scala/Clojure/Scheme/Erlang/Haskell，不过自从我学习了 Haskell 之后，">
+<meta property="og:updated_time" content="2021-09-26T10:39:32.237Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="史上最简单Android源码编译环境搭建方法">
-<meta name="twitter:description" content="有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时">
+<meta name="twitter:title" content="开始学习和使用 Rust">
+<meta name="twitter:description" content="你如今的气质里，藏着你走过的路、读过的书、爱过的人，以及学习过的编程语言。
+
+如果把编程类比作武侠或者修仙里面的打怪升级，那我在入行的头几年，一直在痴迷于各种各样的招式；那时候我学习和体验了各种各样的语言：C/C++/Java/Javascript/Kotlin/Python/Ruby/Scala/Clojure/Scheme/Erlang/Haskell，不过自从我学习了 Haskell 之后，">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -61,7 +66,7 @@
   };
 </script>
 
-  <title> 史上最简单Android源码编译环境搭建方法 | Weishu's Notes </title>
+  <title> 开始学习和使用 Rust | Weishu's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -178,7 +183,7 @@
           
           
             
-              史上最简单Android源码编译环境搭建方法
+              开始学习和使用 Rust
             
           
         </h1>
@@ -187,8 +192,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2016-12-30T01:08:41+08:00" content="2016-12-30">
-            2016-12-30
+          <time itemprop="dateCreated" datetime="2021-09-26T18:37:53+08:00" content="2021-09-26">
+            2021-09-26
           </time>
         </span>
 
@@ -213,63 +218,46 @@
       
 
       
-        <span itemprop="articleBody"><p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p>
-<p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p>
-<p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p>
-<p>然后就是编译环境问题。由于Android源码庞大，依赖复杂；一旦使用的编译工具链有细微的不同就可能引发编译失败。<a href="https://source.android.com/source/initializing.html" target="_blank" rel="external">官方文档</a> 推荐使用Ubuntu 14.04进行编译。如果我们用Windows或者Mac系统，传统方式是使用虚拟机；但是在今天，我们完全可以使用 <strong>Docker</strong> 替代！！借助Docker，我们可以不用担心编译环境问题；不论我们的开发机是什么系统，可以使用Docker创建Ubuntu Image，并且直接在这个Ubuntu系统环境中创建编译所需要的工具链（JDK，ubuntu系统的依赖库等等）；而且，Docker运行的Ubuntu的系统开销比虚拟机低得多，这样下载以及编译速度就有了质的提升。更重要的是，这个环境可以作为一个Image打包发布！这样，你在不同的开发机，还有你与你的同事之间有了同一套编译环境，这会省去很多不必要的麻烦。关于Docker的更多内容，见 <a href="http://www.docker.com/" target="_blank" rel="external">Docker官网</a></p>
+        <span itemprop="articleBody"><blockquote>
+<p>你如今的气质里，藏着你走过的路、读过的书、爱过的人，以及学习过的编程语言。</p>
+</blockquote>
+<p>如果把编程类比作武侠或者修仙里面的打怪升级，那我在入行的头几年，一直在痴迷于各种各样的招式；那时候我学习和体验了各种各样的语言：C/C++/Java/Javascript/Kotlin/Python/Ruby/Scala/Clojure/Scheme/Erlang/Haskell，不过自从我学习了 Haskell 之后，这份列表就基本停止增长了；虽然后来也对 Elixer、Go 也有过简单的了解，但是也仅限于了解了。</p>
+<p>一方面随着从业时间的增长，要解决的问题逐渐变成了系统问题或者业务问题；另一方面也是体会到，语言只是工具，招式再花里胡哨也是徒劳，修炼内功才是王道。</p>
+<p>不过，在一次机缘巧合之下，我再一次接触到了 Rust。</p>
 <a id="more"></a>
-<p>当然，这个伟大的创举并不是我完成的，而是 <a href="https://github.com/kylemanna/docker-aosp" target="_blank" rel="external">kylemanna/docker-aosp</a>！我针对Docker以及天朝的网络环境做了一部分修改，fork了一份 <a href="https://github.com/tiann/docker-aosp" target="_blank" rel="external">tiann/docker-aosp</a>。</p>
-<p>废话不多说，我们看看具体如何使用，以及怎么个简单法。</p>
-<h2 id="使用步骤">使用步骤</h2><h3 id="安装Docker">安装Docker</h3><p>Docker的下载地址见 <a href="https://www.docker.com/products/overview" target="_blank" rel="external">Docker下载</a> ；下载完毕安装即可。</p>
-<h3 id="准备工作">准备工作</h3><p>如果你不是Mac系统，可以直接略过这一步。</p>
-<p>Mac的文件系统默认不区分大小写，这不满足Android源码编译系统的要求（编译的时候直接Error）；因此需要单独创建一个大小写敏感的磁盘映像。步骤如下：</p>
-<ol>
-<li>打开Mac的系统软件：<strong>磁盘工具</strong></li>
-<li><p>CMD + N，创建新的磁盘映像，参数设置如下图：</p>
-<p> <img src="http://blog.dimenspace.com/201601/1483019239159.png" width="430"></p>
-<p> 其中磁盘大小设置为 50~100G合适，<strong>格式一定要选择带区分大小写标志的。</strong></p>
-</li>
-</ol>
-<h3 id="开始下载编译">开始下载编译</h3><p>真正的下载编译过程相当简单，脚本会自动完成；步骤如下：</p>
-<ol>
-<li><p>设置Android源码下载存放的目录；如果是Mac系统，这一步必须设置为一个大小写敏感的目录；不然后面编译的时候会失败。如果不设置这一步，那么源码会下载到 <code>~/aosp-root</code> 目录；设置过程如下：</p>
-<p> <code>export AOSP_VOL=/Volume/Android/</code></p>
-</li>
-<li><p>下载wrapper脚本；如果需要下载其他系统版本，直接修改下载完毕后的build-nougat.sh文件的 android-4.4.4_r2.0.1改成你需要的分支即可，分支的信息见 <a href="https://source.android.com/source/build-numbers.html#source-code-tags-and-builds" target="_blank" rel="external">分支列表</a></p>
-<p> <code>curl -O https://raw.githubusercontent.com/kylemanna/docker-aosp/master/tests/build-nougat.sh</code></p>
-</li>
-<li><p>运行脚本，开始自动下载安装过程；Windows系统可以使用 <a href="https://msdn.microsoft.com/en-us/commandline/wsl/about" target="_blank" rel="external">Bash for Windows</a> 或者cygwin。</p>
-<p> <code>bash ./build-nougat.sh</code></p>
-</li>
-</ol>
-<p>这样，所有的工作就都做完了。只需静静等待即可；时间视下载速度而定，清华的镜像速度还可以，笔者使用不到2小时就完成了下载编译过程。</p>
-<p>三步完成，是不是灰常简单？赶紧下载编译安装属于你的Android系统吧 ^_^</p>
+<p>那是在某大型 5V5 手游上个赛季更新的时候，我制作的游戏体验增强工具就用不了。当时我就想，与其用一些第三方工具找基址，不如直接自己整一个？如果再配合上我自制的内核 rootkit，那岂不是所向无敌？</p>
+<p>一不做二不休，我就开始着手写一个内存修改器了。这种类型的工具，最出名的莫过于 <a href="https://github.com/cheat-engine/cheat-engine" target="_blank" rel="external">CE</a>，于是我就直接去看它的源码；这个项目是用古老的 Pascal 语言写的，我花了点时间了解语法就开始啃；啃着啃着就觉得浑身难受，这门语言语法其实很简单，但是它提供的抽象能力实在有限，语法又十分地啰嗦，写一行代码要吟唱半天；再加上其业务逻辑本身就比较复杂，文件动辄近万行，我估计除了作者本人，这玩意已经没人维护得动了，因此我果断放弃，开始寻找其他类似项目。在寻找的过程中，我发现了一个用 Rust 语言写的运行在 Windows 系统上的原型，其作者还详细地描述了其<a href="https://lonami.dev/blog/woce-1/" target="_blank" rel="external">制作过程</a>，于是我就又开始看起了它的 Rust 代码。</p>
+<p>其实在几年前 Rust 发布 2018 Edition 的时候，Rust 有过一波小热潮，那时候我简单地了解过这门语言，不过没有继续深入下去。这个世界上每 30 天就会诞生一门新的编程语言，没什么好稀奇的；并且语言只是一门工具，是工具就要讲究其实用性，如果学会了一门手艺却无用武之地，那这项技能只会慢慢被遗忘。我曾花了很大的力气去学习 Haskell，但是现在我可能连一个 Hello World 也写不出来。</p>
+<p>不过，在再一次接触 Rust 之后，我的看法有稍许改变。Rust 是一门充分吸收了现代语言优秀特性，同时提供了高阶的零开销抽象能力以及面向操作系统底层的接口，注重实用、性能，安全和编程体验的语言。它值得每一个已经拥有一定编程经验的工程师去深入学习。</p>
+<h2 id="实用性">实用性</h2><p>对我来说，一门语言最重要的就是实用性。如果一门工具没有了实用性，那就失去了掌握它的意义。编程语言的使用者，绝大部分都是为了解决实际问题的。我们不是理论研究者，语言的完备性、设计美感甚至一致性都不是我们关注的重点。Haskell 的纯函数式，Ruby 的一切皆对象，在我看来都是非常不实用的特性；这些纯粹的东西，除了理论上的美感，带给我们的还有什么？与之相反，Java、PHP 和 Go 就是非常务实的语言，因此它们在工程师群体内大受欢迎并且广为流行。Rust 也是一门蕴含这种设计哲学的语言。Rust 语言的 Unsafe 经常被人吐槽，很多人嘲讽说「Rust 不是宣称安全性吗，那还提供 Unsafe 干什么？」实际上，现实世界本就是 Unsafe 的，一只蝴蝶扇动翅膀都可能引发一场飓风，一只臭虫都可能引发电路板故障；与 Unsafe 世界打交道使用 Unsafe 是很自然的事。有人会说，Haskell 就没有 Unsafe 呀？不，我不是 PLT 理论家，我不需要学习「自函子范畴上的幺半群」，给我一个 unsafe，我能干翻整个世界[滑稽]</p>
+<h2 id="性能">性能</h2><p>在很多场景下，性能并不是至关重要的因素；“过早优化是万恶之源”。但在某些场合，性能问题是 0 和 1 的问题。我们经常听到人们对 <a href="https://www.zhihu.com/search?type=content&amp;q=Java%20%E6%80%A7%E8%83%BD" target="_blank" rel="external">Java 和 C++ 性能的比较</a>，很多人有一种错觉，在 Java 强大的 JIT 加持下，不说超越 C++，接近应该是没问题的；但很多场景并非如此。Android 平台上也使用 Java 系语言，其运行在专为移动设备设计的虚拟机 ART 上，在这种性能受限的场合，原生语言和托管语言之间有着不可逾越的鸿沟。太极 App 的核心现在是用 C++ 构建的（它曾经是 Java），在我<a href="https://mp.weixin.qq.com/s/YOvDb4SDRLk5H6fVq85Bog" target="_blank" rel="external">从 Java 切换到 C++ 之后</a>，其核心路径的性能最高提升了 10 倍有余！另外，epic 的早期实现使用 Java 提供的 dexmaker，切换到 C++ 之后，dex生成速度提升了将近 10 倍。这是什么概念呢？原本拦截一个函数需要 80 ~ 100ms，大型模块拦截几百个函数，你打开 App 就要黑几秒，现在只需要 6 ~ 15ms，同样的模块就只需要几百 ms，肉眼根本感知不到；这也是太极速度飞快的秘密。</p>
+<p>Rust 也是一门注重性能的语言，咱们使用的很多命令行工具就是用 Rust 写的，它们都有超越同类工具的卓越性能，这是它性能最好的佐证；比如 <a href="https://mp.weixin.qq.com/s/YOvDb4SDRLk5H6fVq85Bog" target="_blank" rel="external">fd</a>, <a href="https://github.com/sharkdp/fd" target="_blank" rel="external">ripgrep</a>, <a href="https://github.com/starship/starship" target="_blank" rel="external">starship</a> 等等。说到 startship，我曾经使用了 spaceship，我去那个龟速简直跟树懒一样；后来切换成了 powerlevel10k 体验好了很多，直到我切换到 starship，我的妈呀那叫一个 balzing fast!用起来简直就是一种享受。虽然我没有探究过 starship 快的原因，也可能是与语言无关的，但是我们可以知道，Rust 在性能方面，有着极高的上限，它完全可以胜任你对性能敏感的场合。</p>
+<h2 id="移动语义">移动语义</h2><p>右值和移动语义是 C++11 中最为重要的特性之一，可以说它深刻地改变了整个 C++。Rust 语言没有历史包袱，它默认就是移动语义，不需要你去考虑右值引用、引用折叠，完美转发这种问题，使用起来非常自然。</p>
+<p>最近我接触到一个程序，它从一个 socket 读数据，然后解析处理，最后通过 websocket 异步发送到远端。程序是用 Java 写的，它遇到了频繁 GC 导致 stop the world 的性能问题。其原因实际上很简单，读取数据的时候要频繁分配数组导致 GC 繁忙；解决的办法也很简单，那就是建立一个对象池，这个数组在读到 socket 数据的时候分配，在 websocket 异步发送完毕之后就可以重复利用了。然而在没有这种默认语义的语言中，这个方案可能没有那么容易实施；比如说 websocket 你用的是第三方库，它异步处理的时候并没有给你回调，你无法知道数组何时应该 recycle。如果在 Rust 中，处理这种问题就非常容易。</p>
+<h2 id="所有权、生命周期和_RAII">所有权、生命周期和 RAII</h2><p>大多数使用高级语言的程序员可能没有意识到，我们写代码本质上就是在与 CPU、内存和外设打交道。我们使用的很多语言并不直接提供对这些资源的访问方式，但是它并不意味着我们应该忽略这些资源。我们学习的任何一门技术，从上层到底层，自顶向下到最后，你一定会接触到 CPU、内存等底层资源。</p>
+<p>很久以前我也是一个页面仔，觉得指针简直反人类，GC 就是 yyds，我曾无比期待 Kotlin 1.0 的发布，觉得它就是未来。然而，随着时间的推移，我发现解决很多问题不与底层打交道根本不够；我们使用的上层业务系统，各种框架和库，实际上是另一部份人对底层的封装；而我们对这些框架的使用，不过是遵循某些人制定的游戏规则；我们自己不能成为规则的制定者吗？你们所看到的太极，它需要通过汇编控制寄存器，需要精准地控制 GC 和 JIT，还需要小心翼翼地处理各种内存布局；而我们即将实现的内存修改器，它需要直接操作内核控制内存物理页面，这些东西哪一个不需要关心底层？</p>
+<p>Rust 的所有权、生命周期对一些人可能比较新奇，但是，它本质上就是提供了一种对内存的控制方式，仅此而已。而这种访问方式，给了我们一种内存安全的可能，它需要我们编写程序的时候付出更多，但是这种 trade off 是有价值的。</p>
+<h2 id="后记">后记</h2><p>其实 Rust 还有很多东西值得一提，但是我这并不打算做一个 Rust 的全面介绍，感兴趣的话可以 Google 查阅相关资料<a href="https://doc.rust-lang.org/book/" target="_blank" rel="external">7</a>,<a href="https://www.youtube.com/playlist?list=PLlrxD0HtieHjbTjrchBwOVks_sr8EVW1x" target="_blank" rel="external">8</a>,<a href="https://www.oreilly.com/library/view/programming-rust/9781491927274/" target="_blank" rel="external">9</a>,<a href="https://doc.rust-lang.org/nomicon/" target="_blank" rel="external">10</a>,<a href="https://rust-unofficial.github.io/patterns/" target="_blank" rel="external">11</a>,<a href="https://www.rustinaction.com/" target="_blank" rel="external">12</a>。</p>
+<p>如果你是一个有一定经验的程序员，已经能对若干门语言熟练使用，那么我强烈建议你去学习一下 Rust，它的很多优秀特性博采众长，再不济你也可以从这里了解到很多其他语言的精华。当然，如果你是一门新手，那么 Python 和 Java 可能更适合你。</p>
+<p>传闻中 Rust 很难学，但我认为并非如此；我曾花费过很长的时间学习 Haskell，你甚至需要翻阅各种论文才能理解其设计，Rust 与其相比真的不算什么，顶多称得上是有门槛；然而，这个世界上没有门槛的事情大多没有核心竞争力。</p>
+<p>另外，本文可能提及了一些其他的语言并且赞扬了一波 Rust，但是并没有 diss 和吹捧的意思；<a href="http://mindhacks.cn/2008/10/29/methodology-for-programmers/" target="_blank" rel="external">如果你是一个语言技术 fans，那么几乎毫无疑问你会成为一个糟糕的决策者</a>；《失败的逻辑》忠告我们，不要为了工具而工具，忘记了工具的目的是什么。</p>
+<p>最后，欢迎你成为 Rustaceans 的一员！</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/android-source/" rel="tag">#android source</a>
-          
-            <a href="/tags/compile/" rel="tag">#compile</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/01/14/how-to-debug-android-native-framework-source/" rel="prev">如何调试Android Native Framework</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/23/dive-into-android-optimize-vm-heap/" rel="next">Android性能优化之虚拟机调优</a>
+              <a href="/2021/09/13/what-is-root/" rel="next">何为 root？</a>
             
           </div>
         </div>
@@ -416,7 +404,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用步骤"><span class="nav-number">1.</span> <span class="nav-text">使用步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Docker"><span class="nav-number">1.1.</span> <span class="nav-text">安装Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始下载编译"><span class="nav-number">1.3.</span> <span class="nav-text">开始下载编译</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实用性"><span class="nav-number">1.</span> <span class="nav-text">实用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能"><span class="nav-number">2.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动语义"><span class="nav-number">3.</span> <span class="nav-text">移动语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#所有权、生命周期和_RAII"><span class="nav-number">4.</span> <span class="nav-text">所有权、生命周期和 RAII</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">5.</span> <span class="nav-text">后记</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -178,6 +178,76 @@
           
           
             
+              <a class="post-title-link" href="/2017/11/23/dexposed-on-art/" itemprop="url">
+                我为Dexposed续一秒——论ART上运行时 Method AOP实现
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-11-23T01:30:10+08:00" content="2017-11-23">
+            2017-11-23
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>两年前阿里开源了<a href="https://github.com/alibaba/dexposed">Dexposed</a> 项目，它能够在Dalvik上无侵入地实现运行时方法拦截，正如其介绍「enable ‘god’ mode for single android application」所言，能在非root情况下掌控自己进程空间内的任意Java方法调用，给我们带来了很大的想象空间。比如能实现运行时AOP，在线热修复，做性能分析工具（拦截线程、IO等资源的创建和销毁）等等。然而，随着ART取代Dalvik成为Android的运行时，一切都似乎戛然而止。</p>
+<p>今天，我在ART上重新实现了Dexposed，在它能支持的平台（Android 5.0 ~ 7.1 Thumb2/ARM64)上，有着与Dexposed完全相同的能力和API；项目地址在这里 <a href="https://github.com/tiann/epic">epic</a>，感兴趣的可以先试用下:) 然后我们聊一聊ART上运行时Method AOP的故事。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/11/23/dexposed-on-art/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/03/20/dive-into-art-hello-world/" itemprop="url">
                 ART深度探索开篇：从Method Hook谈起
               </a>
@@ -822,81 +892,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/05/understand-plugin-framework-classloader/" itemprop="url">
-                Android 插件化原理解析——插件加载机制
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-04-05T20:13:01+08:00" content="2016-04-05">
-            2016-04-05
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>上文 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 中我们地完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的任务；通过Hook <code>AMS</code>和拦截ActivityThread中<code>H</code>类对于组件调度我们成功地绕过了AndroidMAnifest.xml的限制。</p>
-<p>但是我们启动的『没有在AndroidManifet.xml中显式声明』的Activity和宿主程序存在于同一个Apk中；通常情况下，插件均以独立的文件存在甚至通过网络获取，这时候插件中的Activity能否成功启动呢？</p>
-<p>要启动Activity组件肯定先要创建对应的Activity类的对象，从上文 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 知道，创建Activity类对象的过程如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ClassLoader cl = r.packageInfo.getClassLoader();</span><br><span class="line">activity = mInstrumentation.newActivity(</span><br><span class="line">        cl, component.getClassName(), r.intent);</span><br><span class="line">StrictMode.incrementExpectedActivityCount(activity.getClass());</span><br><span class="line">r.intent.setExtrasClassLoader(cl);</span><br></pre></td></tr></table></figure>
-<p>也就是说，系统通过<code>ClassLoader</code>加载了需要的Activity类并通过反射调用构造函数创建出了Activity对象。如果Activity组件存在于独立于宿主程序的文件之中，系统的ClassLoader怎么知道去哪里加载呢？因此，如果不做额外的处理，插件中的Activity对象甚至都没有办法创建出来，谈何启动？</p>
-<p>因此，要使存在于独立文件或者网络中的插件被成功启动，首先就需要解决这个<strong>插件类加载</strong>的问题。<br>下文将围绕此问题展开，完成『启动没有在AndroidManifest.xml中显示声明，并且存在于外部插件中的Activity』的任务。</p>
-<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的<code>classloader-hook</code> 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/05/understand-plugin-framework-classloader/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -935,7 +930,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
