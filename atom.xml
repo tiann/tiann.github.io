@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://weishu.me/"/>
-  <updated>2022-06-24T07:02:59.601Z</updated>
+  <updated>2022-06-24T07:06:35.558Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -16,10 +16,10 @@
   
   <entry>
     <title><![CDATA[在 Android 中使用 eBPF：开篇]]></title>
-    <link href="http://weishu.me/2022/06/24/eBPF-on-Android/"/>
-    <id>http://weishu.me/2022/06/24/eBPF-on-Android/</id>
-    <published>2022-06-24T06:57:10.000Z</published>
-    <updated>2022-06-24T07:02:59.601Z</updated>
+    <link href="http://weishu.me/2022/06/12/eBPF-on-Android/"/>
+    <id>http://weishu.me/2022/06/12/eBPF-on-Android/</id>
+    <published>2022-06-12T11:57:10.000Z</published>
+    <updated>2022-06-24T07:06:35.558Z</updated>
     <content type="html"><![CDATA[<p>若干年前，我还在做 Android 客户端性能优化的时候，读到了 OpenResty 作者章亦春老师的文章：<a href="https://blog.openresty.com.cn/cn/dynamic-tracing/" target="_blank" rel="external">动态追踪技术漫谈</a>，当时被深深地震撼到了，原来通过使用各种高级的调试技术，解决问题竟然可以做到如此精准而优雅。</p>
 <p>然而当我真正要解决 Android 系统上应用程序的性能问题时，才发现理想很丰满现实很骨感——手头趁手的工具几乎没有。文章中提到的内核态追踪技术 SystemTap / DTrace 在 Android 系统上压根不存在，用户态的追踪技术开销大到可怕：TraceView 开启后程序性能直接下降十倍不止，Systrace 当时功能半残废，使用起来还需要自己插桩；simpleperf 能使，但就是有点 simple……到最后，真正要解决问题的时候，还是靠经验、二分法和 inline hook；为了定位 Android 虚拟机的性能问题，我甚至还自己造了个 <a href="https://github.com/tiann/epic" target="_blank" rel="external">ART HOOK 的轮子</a>。</p>
 <p>然而，时间来到 2022 年，世界已焕然一新：eBPF 这种革命性的技术改变了一切。</p>
