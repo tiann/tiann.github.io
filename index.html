@@ -178,6 +178,77 @@
           
           
             
+              <a class="post-title-link" href="/2022/06/24/eBPF-on-Android/" itemprop="url">
+                在 Android 中使用 eBPF：开篇
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2022-06-24T14:57:10+08:00" content="2022-06-24">
+            2022-06-24
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>若干年前，我还在做 Android 客户端性能优化的时候，读到了 OpenResty 作者章亦春老师的文章：<a href="https://blog.openresty.com.cn/cn/dynamic-tracing/">动态追踪技术漫谈</a>，当时被深深地震撼到了，原来通过使用各种高级的调试技术，解决问题竟然可以做到如此精准而优雅。</p>
+<p>然而当我真正要解决 Android 系统上应用程序的性能问题时，才发现理想很丰满现实很骨感——手头趁手的工具几乎没有。文章中提到的内核态追踪技术 SystemTap / DTrace 在 Android 系统上压根不存在，用户态的追踪技术开销大到可怕：TraceView 开启后程序性能直接下降十倍不止，Systrace 当时功能半残废，使用起来还需要自己插桩；simpleperf 能使，但就是有点 simple……到最后，真正要解决问题的时候，还是靠经验、二分法和 inline hook；为了定位 Android 虚拟机的性能问题，我甚至还自己造了个 <a href="https://github.com/tiann/epic">ART HOOK 的轮子</a>。</p>
+<p>然而，时间来到 2022 年，世界已焕然一新：eBPF 这种革命性的技术改变了一切。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2022/06/24/eBPF-on-Android/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2022/02/11/things-in-my-hometown/" itemprop="url">
                 回乡二三事
               </a>
@@ -815,76 +886,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2018/06/07/free-reflection-above-android-p/" itemprop="url">
-                一种绕过Android P对非SDK接口限制的简单方法
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2018-06-07T21:14:29+08:00" content="2018-06-07">
-            2018-06-07
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>众所周知，Android P 引入了<a href="https://developer.android.com/preview/restrictions-non-sdk-interfaces?hl=zh-cn">针对非 SDK 接口（俗称为隐藏API）的使用限制</a>。这是继 Android N上<a href="https://developer.android.com/about/versions/nougat/android-7.0-changes?hl=zh-cn">针对 NDK 中私有库的链接限制</a>之后的又一次重大调整。从今以后，不论是native层的NDK还是 Java层的SDK，我们只能使用Google提供的、公开的标准接口。这对开发者以及用户乃至整个Android生态，当然是一件好事。但这也同时意味着Android上的各种黑科技有可能会逐渐走向消亡。</p>
-<p>作为一个有追求的开发者，我们既要尊重并遵守规则，也要有能力在必要的时候突破规则的束缚，带着镣铐跳舞。恰好最近有人反馈 <a href="https://github.com/android-hacker/VirtualXposed/issues/115">VirtualXposed 在 Android P上无法运行</a>，那么今天就来探讨一下，如何突破Android P上针对非SDK接口调用的限制。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2018/06/07/free-reflection-above-android-p/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -923,7 +924,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -937,7 +938,7 @@
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">标签</span>
               
           </div>

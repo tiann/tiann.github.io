@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://weishu.me/2022/06/24/eBPF-on-Android/</loc>
+    <lastmod>2022-06-24T07:02:59.601Z</lastmod>
+    <data>
+        <display>
+        <title>在 Android 中使用 eBPF：开篇</title>
+        <pubTime>2022-06-24T06:57:10.000Z</pubTime>
+        
+        <tag>eBPF</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2022/02/11/things-in-my-hometown/</loc>
     <lastmod>2022-02-11T05:59:16.658Z</lastmod>
     <data>
@@ -75,25 +92,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
-    <lastmod>2021-09-13T12:51:47.090Z</lastmod>
-    <data>
-        <display>
-        <title>简化markdown写作中的贴图流程</title>
-        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
-        
-        <tag>markdown</tag>
-         
-        <tag>workflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/12/11/shortcut-of-android-studio-you-may-not-know/</loc>
     <lastmod>2021-09-13T12:51:47.090Z</lastmod>
     <data>
@@ -108,6 +106,25 @@
              
               <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/10/16/simplify-the-img-upload-in-markdown/</loc>
+    <lastmod>2021-09-13T12:51:47.090Z</lastmod>
+    <data>
+        <display>
+        <title>简化markdown写作中的贴图流程</title>
+        <pubTime>2015-10-16T06:15:09.000Z</pubTime>
+        
+        <tag>markdown</tag>
+         
+        <tag>workflow</tag>
+         
+         
+           
         </display>
     </data>
     </url>
@@ -152,23 +169,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
-    <lastmod>2021-09-13T12:51:47.024Z</lastmod>
-    <data>
-        <display>
-        <title>获取迅雷会员工作流</title>
-        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
-        
-        <tag>alfred workflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2015/10/19/how-to-log-safely-in-android/</loc>
     <lastmod>2021-09-13T12:51:47.024Z</lastmod>
     <data>
@@ -179,6 +179,23 @@
         <tag>android</tag>
          
         <tag>log</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
+    <lastmod>2021-09-13T12:51:47.024Z</lastmod>
+    <data>
+        <display>
+        <title>获取迅雷会员工作流</title>
+        <pubTime>2015-11-18T06:59:44.000Z</pubTime>
+        
+        <tag>alfred workflow</tag>
          
          
            
@@ -333,25 +350,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2021/07/24/what-is-bootloader-unlock/</loc>
-    <lastmod>2021-09-13T12:51:35.193Z</lastmod>
-    <data>
-        <display>
-        <title>当我们谈论解锁 BootLoader 时，我们在谈论什么？</title>
-        <pubTime>2021-07-24T12:53:15.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>bootloader</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2016/04/05/understand-plugin-framework-classloader/</loc>
     <lastmod>2021-09-13T12:51:35.193Z</lastmod>
     <data>
@@ -371,26 +369,6 @@
          
          
            
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</loc>
-    <lastmod>2021-09-13T12:51:35.193Z</lastmod>
-    <data>
-        <display>
-        <title>Android Studio你不知道的快捷键(二)</title>
-        <pubTime>2015-12-12T01:51:53.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
         </display>
     </data>
     </url>
@@ -443,6 +421,45 @@
 
     
   <url>
+    <loc>http://weishu.me/2021/07/24/what-is-bootloader-unlock/</loc>
+    <lastmod>2021-09-13T12:51:35.193Z</lastmod>
+    <data>
+        <display>
+        <title>当我们谈论解锁 BootLoader 时，我们在谈论什么？</title>
+        <pubTime>2021-07-24T12:53:15.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>bootloader</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2015/12/12/shortcut-of-android-studio-you-may-not-know-2/</loc>
+    <lastmod>2021-09-13T12:51:35.193Z</lastmod>
+    <data>
+        <display>
+        <title>Android Studio你不知道的快捷键(二)</title>
+        <pubTime>2015-12-12T01:51:53.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/10/13/sharedpreference-advices/</loc>
     <lastmod>2021-09-13T12:51:35.128Z</lastmod>
     <data>
@@ -481,6 +498,26 @@
 
     
   <url>
+    <loc>http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/</loc>
+    <lastmod>2021-09-13T12:51:35.086Z</lastmod>
+    <data>
+        <display>
+        <title>提升markdown的中文输入效率</title>
+        <pubTime>2016-02-01T08:15:56.000Z</pubTime>
+        
+        <tag>markdown</tag>
+         
+         
+           
+             
+              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/</loc>
     <lastmod>2021-09-13T12:51:35.086Z</lastmod>
     <data>
@@ -496,26 +533,6 @@
          
          
            
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/</loc>
-    <lastmod>2021-09-13T12:51:35.086Z</lastmod>
-    <data>
-        <display>
-        <title>提升markdown的中文输入效率</title>
-        <pubTime>2016-02-01T08:15:56.000Z</pubTime>
-        
-        <tag>markdown</tag>
-         
-         
-           
-             
-              <breadCrumb title="实用技巧" url="http://weishu.me/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-          
         </display>
     </data>
     </url>
@@ -615,29 +632,6 @@
 
     
   <url>
-    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
-    <lastmod>2021-09-13T12:51:34.928Z</lastmod>
-    <data>
-        <display>
-        <title>Android插件化原理解析——ContentProvider的插件化</title>
-        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
-        
-        <tag>ContentProvider</tag>
-         
-        <tag>android</tag>
-         
-        <tag>droidplugin</tag>
-         
-        <tag>plugin framework</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://weishu.me/2017/11/23/dexposed-on-art/</loc>
     <lastmod>2021-09-13T12:51:34.928Z</lastmod>
     <data>
@@ -652,6 +646,29 @@
         <tag>Dexposed</tag>
          
         <tag>Hook</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://weishu.me/2016/07/12/understand-plugin-framework-content-provider/</loc>
+    <lastmod>2021-09-13T12:51:34.928Z</lastmod>
+    <data>
+        <display>
+        <title>Android插件化原理解析——ContentProvider的插件化</title>
+        <pubTime>2016-07-12T11:18:07.000Z</pubTime>
+        
+        <tag>ContentProvider</tag>
+         
+        <tag>android</tag>
+         
+        <tag>droidplugin</tag>
+         
+        <tag>plugin framework</tag>
          
          
            
