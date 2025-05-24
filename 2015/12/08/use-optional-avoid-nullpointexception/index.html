@@ -1,38 +1,794 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="java,optional," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.—Tony H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]厌倦了NullPointException？Optional拯救你！">
+<meta property="og:url" content="http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.—Tony H">
+<meta property="og:image" content="http://booluimg.dimenspace.com/blog2015-12-9-1.gif">
+<meta property="og:image" content="http://booluimg.dimenspace.com/blog2015-12-9-2.gif">
+<meta property="og:image" content="http://booluimg.dimenspace.com/blog2015-12-9-3.gif">
+<meta property="og:image" content="http://booluimg.dimenspace.com/blog2015-12-9-4.gif">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.121Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]厌倦了NullPointException？Optional拯救你！">
+<meta name="twitter:description" content="I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.—Tony H">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> [译]厌倦了NullPointException？Optional拯救你！ | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              [译]厌倦了NullPointException？Optional拯救你！
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-08T20:49:40+08:00" content="2015-12-08">
+            2015-12-08
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/java/" itemprop="url" rel="index">
+                  <span itemprop="name">java</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
+</blockquote>
+<p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
+<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://booluimg.dimenspace.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
+<p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
+<p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
+<p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br><a id="more"></a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String version = <span class="string">"UNKNOWN"</span>;</span><br><span class="line"><span class="keyword">if</span>(computer != <span class="keyword">null</span>)&#123;</span><br><span class="line">  Soundcard soundcard = computer.getSoundcard();</span><br><span class="line">  <span class="keyword">if</span>(soundcard != <span class="keyword">null</span>)&#123;</span><br><span class="line">    USB usb = soundcard.getUSB();</span><br><span class="line">    <span class="keyword">if</span>(usb != <span class="keyword">null</span>)&#123;</span><br><span class="line">      version = usb.getVersion();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，上面嵌套if检测的代码确实不怎么好看。但是没办法，我们需要很多这样死板的没什么意义的代码来避免碰到<code>NullPointException</code>。更恼火的是，这部分代码成了我们业务逻辑的一部分，还降低了代码的可读性。</p>
+<p>万一我们忘记对某个可能为<code>null</code>的对象进行非空检测怎么办？<strong>使用<code>null</code>来说明某个值缺失是一种错误的方式</strong>, 下文将说明这个问题并给出更好的解决办法。</p>
+<p>先看看别的编程语言是如何处理这个问题的。</p>
+<h2 id="Null的替代物"><a href="#Null的替代物" class="headerlink" title="Null的替代物"></a>Null的替代物</h2><p>Grovvy语言有一个<code>?.</code>的操作符，可以安全地处理潜在可能的空引用（C#即将包含这个特性，Java7曾被建议引入这个但是并没有发布。）它是这么用的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String version = computer?.getSoundcard()?.getUSB()?.getVersion();</span><br></pre></td></tr></table></figure>
+<p>如果<code>getSoundcard()</code>,<code>getUSB()</code>,<code>getVersion</code>任意一个返回<code>null</code>，变量<code>version</code>就被赋值为<code>null</code>，不需要额外的复杂的嵌套检测。更好的是，Grovvy还有一个<em>Elvis</em>操作符:<code>?:</code>，可以给类似上面的表达式提供默认值。下面的表达式如果<code>?.</code> 返回了<code>null</code>那么变量<code>version</code>会被赋值为<code>&quot;UNKNOW&quot;</code>:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String version = computer?.getSoundcard()?.getUSB()?.getVersion() ?: &#34;UNKNOWN&#34;;</span><br></pre></td></tr></table></figure></p>
+<p>其他的一些函数式编程语言，比如Haskell, Scala，使用了一种别的方式。Haskell有一个<code>Maybe</code>型态，这个型态代表了一种有可选值的类型。Maybe形态的值可能包含一个给定类型的值或者是Nothing(译者注：代表没有值)，完全没有空指针的概念。Scala有一种类似的叫做<strong>Option[T]</strong>的东西来代表类型T的某一个值存在或者没有。因此，你必须显式检测这个值是否存在，如果不存在就不能使用任何Option类型的操作符；这样由于Scala的类型系统，你永远也不会忘记对于空指针的检测。</p>
+<p>貌似有点扯远了，那么，Java8给我们提供了什么呢？</p>
+<h2 id="果壳里的Optional"><a href="#果壳里的Optional" class="headerlink" title="果壳里的Optional"></a>果壳里的<code>Optional</code></h2><p>受到Haskell和Scala的启发，Java8引入了一个叫做<code>java.util.Optional&lt;T&gt;</code>的类，这一个包含一个可选值的类型，你可以把它当作包含单个值的容器——这个容器要么包含一个值要么什么都没有，如下图：</p>
+<p><img src="http://booluimg.dimenspace.com/blog2015-12-9-2.gif" alt="Optional表示"><br>我们在数据模型里面引入<code>Optional</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Optional&lt;Soundcard&gt; soundcard;  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Optional&lt;Soundcard&gt; <span class="title">getSoundcard</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Soundcard</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Optional&lt;USB&gt; usb;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Optional&lt;USB&gt; <span class="title">getUSB</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">USB</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getVersion</span><span class="params">()</span></span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用上面的代码，我们一眼就可以看出来一个computer有没有soundcard（他们是optioal，可选的），更进一步，一个声卡也有一个可选的USB端口；新的模型能清晰地反映出一个给定的值是有可能不存在的。这种做法在某些库里面也存在，比如<strong>Guava</strong>(译：Java5之后就可以使用，不过有局限)</p>
+<p>我们能用<em>Optional</em>对象干什么？Optional对象包含了一些方法来显式地处理某个值是存在还是缺失，Optional类强制你思考值不存在的情况，这样就能避免潜在的空指针异常。</p>
+<p>值得一提的是，设计Optional类的目的并不是完全取代<code>null</code>, 它的目的是设计更易理解的API。通过Optional，可以从方法签名就知道这个函数有可能返回一个缺失的值，这样强制你处理这些缺失值的情况。</p>
+<h2 id="Optional的正确打开方式"><a href="#Optional的正确打开方式" class="headerlink" title="Optional的正确打开方式"></a>Optional的正确打开方式</h2><p>废话扯了这么多，来点实际的例子吧！首先来看看如何使用Optional类来实现传统的空指针检测：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String name = computer.flatMap(Computer::getSoundcard)</span><br><span class="line">                          .flatMap(Soundcard::getUSB)</span><br><span class="line">                          .map(USB::getVersion)</span><br><span class="line">                          .orElse(<span class="string">"UNKNOWN"</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果无法理解这段代码，可以复习Java8的lambda和方法引用,见<a href="http://www.oracle.com/technetwork/articles/java/architect-lambdas-part1-2080972.html" target="_blank" rel="external">Java8 Lambdas</a> 以及stream pipelining概念,见<a href="http://www.oraclejavamagazine-digital.com/javamagazine_open/20140304#pg51" target="_blank" rel="external">Processing Data with Java SE 8 Steams</a></p>
+</blockquote>
+<h3 id="创建Optional对象"><a href="#创建Optional对象" class="headerlink" title="创建Optional对象"></a>创建Optional对象</h3><p>如何创建Optional对象呢，有下面几种方式：</p>
+<ol>
+<li>空的Optional</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Soundcard&gt; sc = Optional.empty();</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>包含非空值的Optional</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SoundCard soundcard = <span class="keyword">new</span> Soundcard();</span><br><span class="line">Optional&lt;Soundcard&gt; sc = Optional.of(soundcard);</span><br></pre></td></tr></table></figure>
+<p>一旦<code>soundcard</code>是<code>null</code>，这段代码会立即抛出一个<code>NullPointException</code>（而不是等你以后你访问这个空的soundcard对象的时候)</p>
+<ol start="3">
+<li>可能为空的Optional</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Soundcard&gt; sc = Optional.ofNullable(soundcard);</span><br></pre></td></tr></table></figure>
+<p>如果<code>soundcard</code>是<code>null</code>那么这个<code>Optional</code>将会是<code>empty</code>.</p>
+<h3 id="值存在的时候进行进一步的操作"><a href="#值存在的时候进行进一步的操作" class="headerlink" title="值存在的时候进行进一步的操作"></a>值存在的时候进行进一步的操作</h3><p>现在你有了一个Optional对象，你可以显式地处理值存在或者不存在的情况，再也不用想这样如履薄冰地进行空指针检测了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SoundCard soundcard = ...;</span><br><span class="line"><span class="keyword">if</span>(soundcard != <span class="keyword">null</span>)&#123;</span><br><span class="line">  System.out.println(soundcard);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，可以使用<code>ifPresent()</code>方法，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Soundcard&gt; soundcard = ...;</span><br><span class="line">soundcard.ifPresent(System.out::println);</span><br></pre></td></tr></table></figure>
+<p>现在，你再也不用显示地进行非空检测了，类型系统帮你干了这件事。如果Optional是empty,上面的代码就不会执行打印了。</p>
+<p>你也可以使用<code>isPresent()</code>方法检查某个值是否存在，另外，<code>get</code> 方法可以返回Optional容器里面包含的那个对象，如果没有这个对象，<code>get</code>方法会立即抛出一个<code>NoSuchElementException</code>，这两个方法可以结合起来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(soundcard.isPresent())&#123;</span><br><span class="line">  System.out.println(soundcard.get());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，并不提倡这样使用Optional。（这么做跟<code>null</code>检测有什么区别？），下面有一些惯用手法，我们来看一下。</p>
+<h3 id="默认值和默认操作"><a href="#默认值和默认操作" class="headerlink" title="默认值和默认操作"></a>默认值和默认操作</h3><p>在某个操作返回空的时候给出一个默认值也是一个典型的场景，通畅的做法是使用三目运算符(<code>?</code>):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Soundcard soundcard = maybeSoundcard != <span class="keyword">null</span> ? </span><br><span class="line">            maybeSoundcard : <span class="keyword">new</span> Soundcard(<span class="string">"basic_sound_card"</span>);</span><br></pre></td></tr></table></figure>
+<p>可以使用Optional对象的<code>ifElse</code>方法改进这个代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Soundcard soundcard = maybeSoundcard.orElse(<span class="keyword">new</span> Soundcard(<span class="string">"defaut"</span>));</span><br></pre></td></tr></table></figure>
+<p>如果你想在空值的时候抛出一个异常，可以使用<code>ifElseThrow</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Soundcard soundcard = </span><br><span class="line">  maybeSoundCard.orElseThrow(IllegalStateException::<span class="keyword">new</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="使用filter过滤特定值"><a href="#使用filter过滤特定值" class="headerlink" title="使用filter过滤特定值"></a>使用<code>filter</code>过滤特定值</h3><p>很多时候你需要调用某个对象的方法并且检查它的一些属性。例如：你可能需要检测一个USB的端口是否是一个特定的版本；如果需要避免空指针异常，通畅的方式是检测非空然后调用<code>getVersion</code>方法，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">USB usb = ...;</span><br><span class="line"><span class="keyword">if</span>(usb != <span class="keyword">null</span> &amp;&amp; <span class="string">"3.0"</span>.equals(usb.getVersion()))&#123;</span><br><span class="line">  System.out.println(<span class="string">"ok"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用Optional的<code>filter</code>可以这么干：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;USB&gt; maybeUSB = ...;</span><br><span class="line">maybeUSB.filter(usb -&gt; <span class="string">"3.0"</span>.equals(usb.getVersion())</span><br><span class="line">                    .ifPresent(() -&gt; System.out.println(<span class="string">"ok"</span>));</span><br></pre></td></tr></table></figure>
+<p><code>filter</code>方法带有一个<code>Predicate</code>的参数，如果Optional容器里面的对象存在并且满足这个predicate,那么<code>filter</code>返回那个对象，否则就返回<code>empty</code>的Optional。（跟<code>Stream</code>接口的<code>filter</code>类似）</p>
+<h3 id="使用map转换值"><a href="#使用map转换值" class="headerlink" title="使用map转换值"></a>使用<code>map</code>转换值</h3><p>另外一个比较常见的场景是需要从某个对象里面提取出特定的值。例如：从一个<code>Soundcard</code>对象里面取出一个<code>USB</code>对象然后检测这个usb对象是否是正确的版本。通常可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(soundcard != <span class="keyword">null</span>)&#123;</span><br><span class="line">  USB usb = soundcard.getUSB();</span><br><span class="line">  <span class="keyword">if</span>(usb != <span class="keyword">null</span> &amp;&amp; <span class="string">"3.0"</span>.equals(usb.getVersion())&#123;</span><br><span class="line">    System.out.println(<span class="string">"ok"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用Optional的<code>map</code>方法，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;USB&gt; usb = maybeSoundcard.map(Soundcard::getUSB);</span><br></pre></td></tr></table></figure>
+<p>Optional容器里面的值被某个函数（这里是USB的方法引用）作为参数“转换”了，如果Optional是<code>empty</code>那么就什么也不会发生。</p>
+<p>结合使用<code>map</code>和<code>filter</code>可以检测某个声卡是否有USB 3.0的接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">maybeSoundcard.map(Soundcard::getUSB)</span><br><span class="line">      .filter(usb -&gt; <span class="string">"3.0"</span>.equals(usb.getVersion())</span><br><span class="line">      .ifPresent(() -&gt; System.out.println(<span class="string">"ok"</span>));</span><br></pre></td></tr></table></figure>
+<p>现在我们的代码看起来比较像是在描述问题了！而且没有任何非空检测，太酷了！</p>
+<h3 id="使用flatMap级联Optional"><a href="#使用flatMap级联Optional" class="headerlink" title="使用flatMap级联Optional"></a>使用<code>flatMap</code>级联Optional</h3><p>我们已经有一些常见的模式可以通过<code>Optional</code>重构了，那么我们如何用一种安全的方式重构下面的代码呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String version = computer.getSoundcard().getUSB().getVersion();</span><br></pre></td></tr></table></figure>
+<p>上面的代码都是从一个对象里面取出另外一个对象， 这不正是上文介绍的<code>map</code>吗？我们改写Computer模型对象，让它拥有一个<code>Optional&lt;Soundcard&gt;</code>和一个<code>Optional&lt;USB&gt;</code>，然后就可以把代码改成这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String version = computer.map(Computer::getSoundcard)</span><br><span class="line">                  .map(Soundcard::getUSB)</span><br><span class="line">                  .map(USB::getVersion)</span><br><span class="line">                  .orElse(<span class="string">"UNKNOWN"</span>);</span><br></pre></td></tr></table></figure>
+<p>但是，这段代码并不能通过编译。为什么？</p>
+<p><code>computer</code>变量类型是<code>Optional&lt;Computer&gt;</code>，因此它调用<code>map</code>方法没有任何问题；但是，<code>getSoundcard()</code>方法的返回类型是<code>Optional&lt;Soundcard&gt;</code>这意味着<code>map</code>操作结果的类型是<code>Optional&lt;Optional&lt;Soundcard&gt;&gt;</code>,因此<code>getUsb</code>这个调用是非法的：外面的那个Optional包含的值是另外一个Optional，自然就没有<code>getUsb</code>方法，下图是这个调用的结构：</p>
+<p><img src="http://booluimg.dimenspace.com/blog2015-12-9-3.gif" alt="two level Optional"><br>如何解决这个问题呢？Optional类提供了一个<code>flapMap</code>的方法。这个方法可以对一个Optional使用一个函数转换为一个Optional然后把结果（两个Optional)flatten为一个单个Optional，下图给出了<code>map</code>和<code>flatMap</code>的区别：</p>
+<p><img src="http://booluimg.dimenspace.com/blog2015-12-9-4.gif" alt="map and flatMap"><br>用<code>flatMap</code>重写我们的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String version = computer.flatMap(Computer::getSoundcard)</span><br><span class="line">                   .flatMap(Soundcard::getUSB)</span><br><span class="line">                   .map(USB::getVersion)</span><br><span class="line">                   .orElse(<span class="string">"UNKNOWN"</span>);</span><br></pre></td></tr></table></figure>
+<p>第一个<code>flatMap</code>确保返回一个<code>Optioan&lt;Soundcard&gt;</code>而不是<code>Optional&lt;&lt;Optional&lt;Soundcard&gt;&gt;</code>，第二个<code>flatMap</code>确保返回一个<code>Optional&lt;USB&gt;</code>；接着第三次调用着需要一个<code>map</code>即可，因为<code>getVersion</code>返回一个<code>String</code>而非<code>Optional</code>方法。</p>
+<p>Cool！现在我们可以抛弃痛苦的嵌套非空检测了，使用Optional可以写出声明式的，更可读的代码，并且永远不会有空指针异常！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了如何使用Java SE 8的<code>java.util.Optional&lt;T&gt;</code>。<code>Optional</code>的目的不是替换你代码里面的每个<code>null</code>，它可以帮助你设计出更好的API，使用者通过方法签名就能知道是否有一个可选的值。另外，Optional通过强迫主动处理空指针情况，可以保护代码不出现<code>NullPointException</code>。</p>
+<h2 id="译后感"><a href="#译后感" class="headerlink" title="译后感"></a>译后感</h2><p>嵌套的非空检测确实是个很头大的问题，虽然有一些静态代码检测工具可以检测到这些异常，但是这样无聊的检测代码很是让人失望。Java 8引入的<code>Optional</code>确实可以部分缓解这部分问题；但是依然存在局限性，比如，如果某个特定的方法调用出了别的运行时异常怎么办？对于?Haskell Maybe Monad只吸收了一部分，不过已经很不错了，期待什么时候能引入Grovvy的<code>?.</code>操作符，在处理空指针问题上，<code>?.</code>更加简洁有力。</p>
+<p><code>Optional</code>虽好，但是Java 8目前并不普及，Android 就不用想了。虽然有<a href="https://github.com/orfjackal/retrolambda" target="_blank" rel="external">retrolambda</a>项目支持在Java 6里面使用lambda，但是它更多地是提供了语法糖：</p>
+<ol>
+<li>lambda的实现使用的是匿名内部类而不是<code>invokedynamic</code>, 见<a href="http://www.infoq.com/cn/articles/Java-8-Lambdas-A-Peek-Under-the-Hood" target="_blank" rel="external">深入探索Java 8 Lambda表达式</a></li>
+<li>方法引用是lambda的语法糖，实现相同</li>
+<li>接口默认方法实际上给接口生成了一个抽象方法，然后给所有接口的实现者添加了这个默认实现</li>
+<li>接口静态方法，实际上把静态方法放在另外一个类里面，然后把所有对接口静态方法的调用更换为对新生成类里面方法的调用</li>
+</ol>
+<p>鉴于以上种种原因，在生产环境基本上不可能使用<em>retrolambda</em>了，大型系统还是老实一点吧。</p>
+<p>虽然Grava项目也有一个<code>Optional</code>类，但是没有函数式接口，我们所能做的不过是把<code>if (obj == null)</code>替换为<code>if (opt.isPresend())</code>罢了；虽说能提高类型安全性，但是还是得写一堆shit一样的嵌套检测。</p>
+<p>对于Android开发，想使用这个是没有希望了。但愿<strong>Kotlin</strong>能给我们惊喜。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>Chapter 9, “Optional: a better alternative to null,” <a href="http://www.manning.com/urma/" target="_blank" rel="external">from Java 8 in Action: Lambdas, Streams, and Functional-style Programming</a></li>
+<li>“<a href="http://www.slideshare.net/mariofusco/monadic-java" target="_blank" rel="external">Monadic Java</a>“ by Mario Fusco</li>
+<li><a href="http://www.oraclejavamagazine-digital.com/javamagazine_open/20140304#pg51" target="_blank" rel="external">Processing Data with Java SE 8 Streams</a></li>
+</ol>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>Thanks to Alan Mycroft and Mario Fusco for going through the adventure of writing Java 8 in Action: Lambdas, Streams, and Functional-style Programming with me.</p>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>Raoul-Gabriel Urma (@raoulUK) is currently completing a PhD in computer science at the University of Cambridge, where he does research in programming languages. He’s a coauthor of the upcoming book Java 8 in Action: Lambdas, Streams, and Functional-style Programming, published by Manning. He is also a regular speaker at major Java conferences (for example, Devoxx and Fosdem) and an instructor. In addition, he has worked at several well-known companies—including Google’s Python team, Oracle’s Java Platform group, eBay, and Goldman Sachs—as well as for several startup projects.</p>
+<p><strong>原文</strong>：<a href="http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html" target="_blank" rel="external">http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/optional/" rel="tag">#optional</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/11/shortcut-of-android-studio-you-may-not-know/" rel="prev">Android Studio你不知道的快捷键(一)</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/07/make-alfred-support-pinyinyin-search/" rel="next">让Alfred支持拼音搜索</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Null的替代物"><span class="nav-number">1.</span> <span class="nav-text">Null的替代物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#果壳里的Optional"><span class="nav-number">2.</span> <span class="nav-text">果壳里的Optional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optional的正确打开方式"><span class="nav-number">3.</span> <span class="nav-text">Optional的正确打开方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Optional对象"><span class="nav-number">3.1.</span> <span class="nav-text">创建Optional对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#值存在的时候进行进一步的操作"><span class="nav-number">3.2.</span> <span class="nav-text">值存在的时候进行进一步的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认值和默认操作"><span class="nav-number">3.3.</span> <span class="nav-text">默认值和默认操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用filter过滤特定值"><span class="nav-number">3.4.</span> <span class="nav-text">使用filter过滤特定值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用map转换值"><span class="nav-number">3.5.</span> <span class="nav-text">使用map转换值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用flatMap级联Optional"><span class="nav-number">3.6.</span> <span class="nav-text">使用flatMap级联Optional</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#译后感"><span class="nav-number">5.</span> <span class="nav-text">译后感</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#致谢"><span class="nav-number">7.</span> <span class="nav-text">致谢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于作者"><span class="nav-number">8.</span> <span class="nav-text">关于作者</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

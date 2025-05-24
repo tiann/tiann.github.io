@@ -1,38 +1,768 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="-android," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。
+存储超大的value第一次看到下面这个sp的时候，我的内心是崩溃的：
+
+一个默认的sp有90K，当我打">
+<meta property="og:type" content="article">
+<meta property="og:title" content="请不要滥用SharedPreference">
+<meta property="og:url" content="http://weishu.me/2016/10/13/sharedpreference-advices/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。
+存储超大的value第一次看到下面这个sp的时候，我的内心是崩溃的：
+
+一个默认的sp有90K，当我打">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1476286071563.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1476282570956.png">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="请不要滥用SharedPreference">
+<meta name="twitter:description" content="SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。
+存储超大的value第一次看到下面这个sp的时候，我的内心是崩溃的：
+
+一个默认的sp有90K，当我打">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> 请不要滥用SharedPreference | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              请不要滥用SharedPreference
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-10-13T00:31:19+08:00" content="2016-10-13">
+            2016-10-13
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
+<h2 id="存储超大的value"><a href="#存储超大的value" class="headerlink" title="存储超大的value"></a>存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
+<p><img src="http://blog.dimenspace.com/201601/1476286071563.png" width="664"></p>
+<p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
+<p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
+<p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>
+<ol>
+<li>第一次从sp中获取值的时候，有可能阻塞主线程，使界面卡顿、掉帧。</li>
+<li>解析sp的时候会产生大量的临时对象，导致频繁GC，引起界面卡顿。</li>
+<li>这些key和value会永远存在于内存之中，占用大量内存。</li>
+</ol>
+<a id="more"></a>
+<p>也许有童鞋会说，sp的加载不是在子线程么，怎么会卡住主线程？子线程IO就一定不会阻塞主线程吗？</p>
+<p>下面是默认的sp实现SharedPreferenceImpl这个类的getString函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getString</span><span class="params">(String key, @Nullable String defValue)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        awaitLoadedLocked();</span><br><span class="line">        String v = (String)mMap.get(key);</span><br><span class="line">        <span class="keyword">return</span> v != <span class="keyword">null</span> ? v : defValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>继续看看这个awaitLoadedLocked：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">awaitLoadedLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!mLoaded) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            wait();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException unused) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一把锁就是挂在那里！！这意味着，如果你直接调用getString，主线程会等待加载sp的那么线程加载完毕！这不就把主线程卡住了么？</p>
+<p>另外，有一个叫诀窍可以节省一下等待的时间：既然getString之类的操作会等待sp加载完成，而加载是在另外一个线程执行的，我们可以让sp先去加载，做一堆事情，然后再getString！如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先让sp去另外一个线程加载</span></span><br><span class="line">SharedPreferences sp = getSharedPreferences(<span class="string">"test"</span>, MODE_PRIVATE);</span><br><span class="line"><span class="comment">// 做一堆别的事情</span></span><br><span class="line">setContentView(testSpJson);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// OK,这时候估计已经加载完了吧,就算没完,我们在原本应该等待的时间也做了一些事!</span></span><br><span class="line">String testValue = sp.getString(<span class="string">"testKey"</span>, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>更为严重的是，被加载进来的这些大对象，会永远存在于内存之中，不会被释放。我们看看ContextImpl这个类，在getSharedPreference的时候会把所有的sp放到一个静态变量里面缓存起来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ArrayMap&lt;File, SharedPreferencesImpl&gt; getSharedPreferencesCacheLocked() &#123;</span><br><span class="line">    <span class="keyword">if</span> (sSharedPrefsCache == <span class="keyword">null</span>) &#123;</span><br><span class="line">        sSharedPrefsCache = <span class="keyword">new</span> ArrayMap&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> String packageName = getPackageName();</span><br><span class="line">    ArrayMap&lt;File, SharedPreferencesImpl&gt; packagePrefs = sSharedPrefsCache.get(packageName);</span><br><span class="line">    <span class="keyword">if</span> (packagePrefs == <span class="keyword">null</span>) &#123;</span><br><span class="line">        packagePrefs = <span class="keyword">new</span> ArrayMap&lt;&gt;();</span><br><span class="line">        sSharedPrefsCache.put(packageName, packagePrefs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> packagePrefs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这个<strong>static</strong>的<code>sSharedPrefsCache</code>，它保存了你所有使用的sp，然后sp里面有一个成员<code>mMap</code>保存了所有的键值对；这样，你程序中使用到的那些个sp永远就呆在内存中，是不是不寒而栗？！</p>
+<p>所以，<strong>请不要在sp里面存储炒鸡大的key</strong>碰到这样的猪队友，请让他自行检讨！！赶紧把自家App检查一下！！</p>
+<h2 id="存储JSON等特殊符号很多的value"><a href="#存储JSON等特殊符号很多的value" class="headerlink" title="存储JSON等特殊符号很多的value"></a>存储JSON等特殊符号很多的value</h2><p>还有一些童鞋，他在sp里面存json或者HTML；这么做不是不可以，但是，如果这个json相对较大，那么也会引起sp读取速度的急剧下降。</p>
+<p>JSON或者HTML格式存放在sp里面的时候，需要转义，这样会带来很多<code>&amp;</code>这种特殊符号，sp在解析碰到这个特殊符号的时候会进行特殊的处理，引发额外的字符串拼接以及函数调用开销。而JSON本来就是可以用来做配置文件的，你干嘛又把它放在sp里面呢？多此一举。下面我写个demo验证一下。</p>
+<p>下面这个sp是某个app的换肤配置：</p>
+<p><img src="http://blog.dimenspace.com/201601/1476282570956.png" width="696"></p>
+<p>我们先用sp进行读取，然后用直接把它丢json文件，直接读取并且解析；json使用的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValueByJson</span><span class="params">(Context context, String key)</span> </span>&#123;</span><br><span class="line">    File jsonFile = <span class="keyword">new</span> File(context.getFilesDir().getParent() + File.separator + SP_DIR_NAME, <span class="string">"skin_beta2.json"</span>);</span><br><span class="line">    FileInputStream fis = <span class="keyword">null</span>;</span><br><span class="line">    ByteArrayOutputStream bao = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fis = <span class="keyword">new</span> FileInputStream(jsonFile);</span><br><span class="line">        FileChannel channel = fis.getChannel();</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1</span> &lt;&lt; <span class="number">13</span>); <span class="comment">// 8K</span></span><br><span class="line">        <span class="keyword">int</span> i1;</span><br><span class="line">        <span class="keyword">while</span> ((i1 = channel.read(buffer)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            buffer.flip();</span><br><span class="line">            bao.write(buffer.array(), <span class="number">0</span>, i1);</span><br><span class="line">            buffer.clear();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String content = bao.toString();</span><br><span class="line">        JSONObject jsonObject = <span class="keyword">new</span> JSONObject(content);</span><br><span class="line">        <span class="keyword">return</span> jsonObject.getInt(key);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"not a json file"</span>);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        close(fis);</span><br><span class="line">        close(bao);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我的测试结果是：直接解析JSON比在xml里面要快一倍！在小米1S上结果如下：</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>json</th>
+<th>sp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mi 1S</td>
+<td>80</td>
+<td>38</td>
+</tr>
+<tr>
+<td>Nexus5X</td>
+<td>3.5</td>
+<td>6.5</td>
+</tr>
+</tbody>
+</table>
+<p>这个JSON的读取还没有做任何的优化，提升潜力巨大！因此，<strong>如果你需要用JSON做配置，请不要把它存放在sp里面！！</strong></p>
+<h2 id="多次edit多次apply"><a href="#多次edit多次apply" class="headerlink" title="多次edit多次apply"></a>多次edit多次apply</h2><p>我见过这样的使用代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SharedPreferences sp = getSharedPreferences(<span class="string">"test"</span>, MODE_PRIVATE);</span><br><span class="line">sp.edit().putString(<span class="string">"test1"</span>, <span class="string">"sss"</span>).apply();</span><br><span class="line">sp.edit().putString(<span class="string">"test2"</span>, <span class="string">"sss"</span>).apply();</span><br><span class="line">sp.edit().putString(<span class="string">"test3"</span>, <span class="string">"sss"</span>).apply();</span><br><span class="line">sp.edit().putString(<span class="string">"test4"</span>, <span class="string">"sss"</span>).apply();</span><br></pre></td></tr></table></figure>
+<p>每次edit都会创建一个Editor对象，额外占用内存；当然多创建几个对象也影响不了多少；但是，多次apply也会卡界面你造吗？</p>
+<p>有童鞋会说，apply不是在别的线程些磁盘的吗，怎么可能卡界面？我带你仔细看一下源码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MemoryCommitResult mcr = commitToMemory();</span><br><span class="line">    <span class="keyword">final</span> Runnable awaitCommit = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    mcr.writtenToDiskLatch.await();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException ignored) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    QueuedWork.add(awaitCommit);</span><br><span class="line"></span><br><span class="line">    Runnable postWriteRunnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                awaitCommit.run();</span><br><span class="line">                QueuedWork.remove(awaitCommit);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    SharedPreferencesImpl.<span class="keyword">this</span>.enqueueDiskWrite(mcr, postWriteRunnable);</span><br><span class="line">    notifyListeners(mcr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意两点，第一，把一个带有await的runnable添加进了<code>QueueWork</code>类的一个队列；第二，把这个写入任务通过enqueueDiskWrite丢给了一个<strong>只有单个线程</strong>的线程池执行。</p>
+<p>到这里一切都OK，在子线程里面写入不会卡UI。但是，你去ActivityThread类的handleStopActivity里看一看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleStopActivity</span><span class="params">(IBinder token, <span class="keyword">boolean</span> show, <span class="keyword">int</span> configChanges, <span class="keyword">int</span> seq)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略无关。。</span></span><br><span class="line">    <span class="comment">// Make sure any pending writes are now committed.</span></span><br><span class="line">    <span class="keyword">if</span> (!r.isPreHoneycomb()) &#123;</span><br><span class="line">        QueuedWork.waitToFinish();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略无关。。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>waitToFinish?? 又要等？源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">waitToFinish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Runnable toFinish;</span><br><span class="line">    <span class="keyword">while</span> ((toFinish = sPendingWorkFinishers.poll()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        toFinish.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还记得这个<code>toFinish</code>的Runnable是啥吗？就是上面那个<code>awaitCommit</code>它里面就一句话，等待写入线程！！如果在Activity Stop的时候，已经写入完毕了，那么万事大吉，不会有任何等待，这个函数会立马返回。但是，如果你使用了太多次的apply，那么意味着写入队列会有很多写入任务，而那里就只有一个线程在写。当App规模很大的时候，这种情况简直就太常见了！</p>
+<p>因此，虽然apply是在子线程执行的，但是请不要无节制地apply；commit我就不多说了吧？直接在当前线程写入，如果你在主线程干这个，小心挨揍。</p>
+<h2 id="用来跨进程"><a href="#用来跨进程" class="headerlink" title="用来跨进程"></a>用来跨进程</h2><p>还有童鞋发现sp有一个貌似可以提供「跨进程」功能的FLAG——<code>MODE_MULTI_PROCESS</code>,我们看看这个FLAG的文档：</p>
+<blockquote>
+<p>@deprecated MODE_MULTI_PROCESS does not work reliably in<br>some versions of Android, and furthermore does not provide any mechanism for reconciling concurrent modifications across processes.  Applications should not attempt to use it.  Instead, they should use an explicit cross-process data management approach such as {@link android.content.ContentProvider ContentProvider}.</p>
+</blockquote>
+<p>文档也说了，这玩意在某些Android版本上不可靠，并且未来也不会提供任何支持，要是用跨进程数据传输需要使用类似ContentProvider的东西。而且，SharedPreference的文档也特别说明：</p>
+<blockquote>
+<p>Note: This class does not support use across multiple processes.</p>
+</blockquote>
+<p>那么我们姑且看一看，设置了这个Flag到底干了啥；在SharedPreferenceImpl里面，没有发现任何对这个Flag的使用；然后我们去ContextImpl类里面找找getSharedPreference的时候做了什么：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SharedPreferences <span class="title">getSharedPreferences</span><span class="params">(File file, <span class="keyword">int</span> mode)</span> </span>&#123;</span><br><span class="line">    checkMode(mode);</span><br><span class="line">    SharedPreferencesImpl sp;</span><br><span class="line">    <span class="keyword">synchronized</span> (ContextImpl.class) &#123;</span><br><span class="line">        <span class="keyword">final</span> ArrayMap&lt;File, SharedPreferencesImpl&gt; cache = getSharedPreferencesCacheLocked();</span><br><span class="line">        sp = cache.get(file);</span><br><span class="line">        <span class="keyword">if</span> (sp == <span class="keyword">null</span>) &#123;</span><br><span class="line">            sp = <span class="keyword">new</span> SharedPreferencesImpl(file, mode);</span><br><span class="line">            cache.put(file, sp);</span><br><span class="line">            <span class="keyword">return</span> sp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((mode &amp; Context.MODE_MULTI_PROCESS) != <span class="number">0</span> ||</span><br><span class="line">        getApplicationInfo().targetSdkVersion &lt; android.os.Build.VERSION_CODES.HONEYCOMB) &#123;</span><br><span class="line">        <span class="comment">// If somebody else (some other process) changed the prefs</span></span><br><span class="line">        <span class="comment">// file behind our back, we reload it.  This has been the</span></span><br><span class="line">        <span class="comment">// historical (if undocumented) behavior.</span></span><br><span class="line">        sp.startReloadIfChangedUnexpectedly();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个flag保证了啥？保证了<strong>在API 11以前</strong>的系统上，如果sp已经被读取进内存，再次获取这个sp的时候，如果有这个flag，会重新读一遍文件，仅此而已！所以，如果仰仗这个Flag做跨进程存取，简直就是丢人现眼。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>总价一下，sp是一种轻量级的存储方式，使用方便，但是也有它适用的场景。要优雅滴使用sp，要注意以下几点：</p>
+<ol>
+<li>不要存放大的key和value！我就不重复三遍了，会引起界面卡、频繁GC、占用内存等等，好自为之！</li>
+<li>毫不相关的配置项就不要丢在一起了！文件越大读取越慢，不知不觉就被猪队友给坑了；蓝后，放进defalut的那个简直就是愚蠢行为！</li>
+<li>读取频繁的key和不易变动的key尽量不要放在一起，影响速度。（如果整个文件很小，那么忽略吧，为了这点性能添加维护成本得不偿失）</li>
+<li>不要乱edit和apply，尽量批量修改一次提交！</li>
+<li>尽量不要存放JSON和HTML，这种场景请直接使用json！</li>
+<li>不要指望用这货进行跨进程通信！！！ </li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#-android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/23/dive-into-android-optimize-vm-heap/" rel="prev">Android性能优化之虚拟机调优</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/12/understand-plugin-framework-content-provider/" rel="next">Android插件化原理解析——ContentProvider的插件化</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#存储超大的value"><span class="nav-number">1.</span> <span class="nav-text">存储超大的value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储JSON等特殊符号很多的value"><span class="nav-number">2.</span> <span class="nav-text">存储JSON等特殊符号很多的value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多次edit多次apply"><span class="nav-number">3.</span> <span class="nav-text">多次edit多次apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用来跨进程"><span class="nav-number">4.</span> <span class="nav-text">用来跨进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

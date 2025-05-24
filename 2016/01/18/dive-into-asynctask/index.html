@@ -1,38 +1,749 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？
+AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你真的了解AsyncTask？">
+<meta property="og:url" content="http://weishu.me/2016/01/18/dive-into-asynctask/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？
+AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将">
+<meta property="og:image" content="http://blog.dimenspace.com/20161-18.jpg">
+<meta property="og:image" content="http://blog.dimenspace.com/201512/1453101991064.png">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.114Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你真的了解AsyncTask？">
+<meta name="twitter:description" content="虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？
+AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> 你真的了解AsyncTask？ | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              你真的了解AsyncTask？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-18T15:41:08+08:00" content="2016-01-18">
+            2016-01-18
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>虽说现在做网络请求有了Volley全家桶和OkHttp这样好用的库，但是在处理其他后台任务以及与UI交互上，还是需要用到AsyncTask。但是你真的了解AsyncTask吗？</p>
+<p>AsyncTask的实现几经修改，因此在不同版本的Android系统上表现各异；我相信，任何一个用户量上千万的产品绝对不会在代码里面使用系统原生的AsynTask，因为它蛋疼的兼容性以及极高的崩溃率实在让人不敢恭维。本文将带你了解AsyncTask背后的原理，并给出一个久经考验的AsyncTask修改版。</p>
+<a id="more"></a>
+<h2 id="AsyncTask是什么？"><a href="#AsyncTask是什么？" class="headerlink" title="AsyncTask是什么？"></a>AsyncTask是什么？</h2><p>AsyncTask到底是什么呢？很简单，<strong>它不过是对线程池和Handler的封装</strong>；用线程池来处理后台任务，用Handler来处理与UI的交互。线程池使用的是<code>Executor</code>接口，我们先了解一下线程池的特性。</p>
+<h2 id="线程池ThreadPoolExecutor"><a href="#线程池ThreadPoolExecutor" class="headerlink" title="线程池ThreadPoolExecutor"></a>线程池ThreadPoolExecutor</h2><p>JDK5带来的一大改进就是Java的并发能力，它提供了三种并发武器：并发框架Executor，并发集合类型如ConcurrentHashMap，并发控制类如CountDownLatch等；圣经《Effective Java》也说，尽量使用Exector而不是直接用Thread类进行并发编程。</p>
+<p>AsyncTask内部也使用了线程池处理并发；线程池通过<code>ThreadPoolExector</code>类构造，这个构造函数参数比较多，它允许开发者对线程池进行定制，我们先看看这每个参数是什么意思，然后看看Android是以何种方式定制的。</p>
+<p>ThreadPoolExecutor的其他构造函数最终都会调用如下的构造函数完成对象创建工作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span><br><span class="line">                          <span class="keyword">int</span> maximumPoolSize,</span><br><span class="line">                          <span class="keyword">long</span> keepAliveTime,</span><br><span class="line">                          TimeUnit unit,</span><br><span class="line">                          BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">                          ThreadFactory threadFactory,</span><br><span class="line">                          RejectedExecutionHandler handler)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>corePoolSize: 核心线程数目，即使线程池没有任务，核心线程也不会终止（除非设置了allowCoreThreadTimeOut参数）可以理解为“常驻线程”</li>
+<li>maximumPoolSize: 线程池中允许的最大线程数目；一般来说，线程越多，线程调度开销越大；因此一般都有这个限制。</li>
+<li>keepAliveTime: 当线程池中的线程数目比核心线程多的时候，如果超过这个keepAliveTime的时间，多余的线程会被回收；这些与核心线程相对的线程通常被称为<em>缓存线程</em></li>
+<li>unit: keepAliveTime的时间单位</li>
+<li>workQueue: 任务执行前保存任务的队列；这个队列仅保存由execute提交的Runnable任务</li>
+<li>threadFactory: 用来构造线程池的工厂；一般都是使用默认的；</li>
+<li>handler: 当线程池由于线程数目和队列限制而导致后续任务阻塞的时候，线程池的处理方式。</li>
+</ul>
+<p>那么，当一个新的任务到达的时候，线程池中的线程是如何调度的呢？（别慌，讲这么一大段线程池的知识，是为了理解AsyncTask；Be Patient）</p>
+<ol>
+<li>如果线程池中线程的数目少于corePoolSize，就算线程池中有其他的没事做的核心线程，线程池还是会重新创建一个核心线程；直到核心线程数目到达corePoolSize（常驻线程就位）</li>
+<li>如果线程池中线程的数目大于或者等于corePoolSize，但是工作队列workQueue没有满，那么新的任务会放在队列workQueue中，按照FIFO的原则依次等待执行；（当有核心线程处理完任务空闲出来后，会检查这个工作队列然后取出任务默默执行去）</li>
+<li>如果线程池中线程数目大于等于corePoolSize，并且工作队列workQueue满了，但是总线程数目小于maximumPoolSize，那么直接创建一个线程处理被添加的任务。</li>
+<li>如果工作队列满了，并且线程池中线程的数目到达了最大数目maximumPoolSize，那么就会用最后一个构造参数<code>handler</code>处理；**默认的处理方式是直接丢掉任务，然后抛出一个异常。</li>
+</ol>
+<p>总结起来，也即是说，当有新的任务要处理时，<strong>先看线程池中的线程数量是否大于 corePoolSize，再看缓冲队列 workQueue 是否满，最后看线程池中的线程数量是否大于 maximumPoolSize</strong>。另外，当线程池中的线程数量大于 corePoolSize 时，如果里面有线程的空闲时间超过了 keepAliveTime，就将其移除线程池，这样，可以动态地调整线程池中线程的数量。</p>
+<p><img src="http://blog.dimenspace.com/20161-18.jpg" alt="风景"></p>
+<p>我们以API 22为例，看一看AsyncTask里面的线程池是以什么参数构造的；AsyncTask里面有“两个”线程池；一个<code>THREAD_POOL_EXECUTOR</code>一个<code>SERIAL_EXECUTOR</code>；之所以打引号，是因为其实<code>SERIAL_EXECUTOR</code>也使用<code>THREAD_POOL_EXECUTOR</code>实现的，只不过加了一个队列弄成了串行而已，那么这个<code>THREAD_POOL_EXECUTOR</code>是如何构造的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CORE_POOL_SIZE = CPU_COUNT + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_POOL_SIZE = CPU_COUNT * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> KEEP_ALIVE = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">            <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">128</span>);</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Executor THREAD_POOL_EXECUTOR</span><br><span class="line">            = <span class="keyword">new</span> ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,</span><br><span class="line">                    TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);</span><br></pre></td></tr></table></figure>
+<p>可以看到，AsyncTask里面线程池是一个核心线程数为<code>CPU + 1</code>，最大线程数为<code>CPU * 2 + 1</code>，工作队列长度为<strong>128</strong>的线程池；并且没有传递<code>handler</code>参数，那么使用的就是默认的Handler（拒绝执行).</p>
+<p>那么问题来了：</p>
+<ol>
+<li><p>如果任务过多，那么超过了工作队列以及线程数目的限制导致这个线程池发生阻塞，那么悲剧发生，默认的处理方式会直接抛出一个异常导致进程挂掉。假设你自己写一个异步图片加载的框架，然后用AsyncTask实现的话，当你快速滑动ListView的时候很容易发生这种异常；这也是为什么各大ImageLoader都是自己写线程池和Handlder的原因。</p>
+</li>
+<li><p>这个线程池是一个静态变量；那么在同一个进程之内，所有地方使用到的AsyncTask默认构造函数构造出来的AsyncTask都使用的是同一个线程池，如果App模块比较多并且不加控制的话，很容易满足第一条的崩溃条件；如果你不幸在不同的AsyncTask的doInBackgroud里面访问了共享资源，那么就会发生各种并发编程问题。</p>
+</li>
+<li><p>在AsyncTask全部执行完毕之后，进程中还是会常驻corePoolSize个线程；在Android 4.4 （API 19）以下，这个corePoolSize是hardcode的，数值是5；API 19改成了<code>cpu + 1</code>；也就是说，在Android 4.4以前；如果你执行了超过五个AsyncTask；然后啥也不干了，进程中还是会有5个AsyncTask线程；不信，你看：</p>
+</li>
+</ol>
+<p><img src="http://blog.dimenspace.com/201512/1453101991064.png" width="277"></p>
+<h3 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h3><p>AsyncTask里面的handler很简单，如下（API 22代码）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> InternalHandler sHandler = <span class="keyword">new</span> InternalHandler();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">InternalHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(Looper.getMainLooper());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，这里直接用的主线程的Looper；如果去看API 22以下的代码，会发现它没有这个构造函数，而是使用默认的；默认情况下，Handler会使用当前线程的Looper，如果你的AsyncTask是在子线程创建的，那么很不幸，你的<code>onPreExecute</code>和<code>onPostExecute</code>并非在UI线程执行，而是被Handler post到创建它的那个线程执行；如果你在这两个线程更新了UI，那么直接导致崩溃。这也是大家口口相传的<strong>AsyncTask必须在主线程创建</strong>的原因。</p>
+<p>另外，AsyncTask里面的这个Handler是一个静态变量，也就是说它是在类加载的时候创建的；如果在你的APP进程里面，以前从来没有使用过AsyncTask，然后在子线程使用AsyncTask的相关变量，那么导致静态Handler初始化，如果在API 16以下，那么会出现上面同样的问题；这就是<strong>AsyncTask必须在主线程初始化</strong> 的原因。</p>
+<p>事实上，在Android 4.1(API 16)以后，在APP主线程ActivityThread的main函数里面，直接调用了<code>AscynTask.init</code>函数确保这个类是在主线程初始化的；另外，init这个函数里面获取了<code>InternalHandler</code>的Looper，由于是在主线程执行的，因此，AsyncTask的Handler用的也是主线程的Looper。这个问题从而得到彻底的解决。</p>
+<h2 id="AsyncTask是并行执行的吗？"><a href="#AsyncTask是并行执行的吗？" class="headerlink" title="AsyncTask是并行执行的吗？"></a>AsyncTask是并行执行的吗？</h2><p>现在知道AsyncTask内部有一个线程池，那么派发给AsyncTask的任务是并行执行的吗？</p>
+<p>答案是不确定。在Android 1.5刚引入的时候，AsyncTask的<code>execute</code>是串行执行的；到了Android 1.6直到Android 2.3.2，又被修改为并行执行了，这个执行任务的线程池就是<code>THREAD_POOL_EXECUTOR</code>，因此在一个进程内，所有的AsyncTask都是并行执行的；但是在Android 3.0以后，如果你使用<code>execute</code>函数直接执行AsyncTask，那么<strong>这些任务是串行执行的</strong>；（你说蛋疼不）源代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) &#123;</span><br><span class="line">    <span class="keyword">return</span> executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>sDefaultExecutor</code>就是用来执行任务的线程池，那么它的值是什么呢？继续看代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Executor sDefaultExecutor = SERIAL_EXECUTOR;</span><br></pre></td></tr></table></figure>
+<p>因此结论就来了：<strong>Android 3.0以上，AsyncTask默认并不是并行执行的</strong>；</p>
+<h3 id="为什么默认不并行执行？"><a href="#为什么默认不并行执行？" class="headerlink" title="为什么默认不并行执行？"></a>为什么默认不并行执行？</h3><p>也许你不理解，为什么AsyncTask默认把它设计为串行执行的呢？</p>
+<p>由于一个进程内所有的AsyncTask都是使用的同一个线程池执行任务；如果同时有几个AsyncTask一起并行执行的话，恰好AysncTask的使用者在<code>doInbackgroud</code>里面访问了相同的资源，但是自己没有处理同步问题；那么就有可能导致灾难性的后果！</p>
+<p>由于开发者通常不会意识到需要对他们创建的所有的AsyncTask对象里面的<code>doInbackgroud</code>做同步处理，因此，API的设计者为了避免这种无意中访问并发资源的问题，干脆把这个API设置为默认所有串行执行的了。如果你明确知道自己需要并行处理任务，那么你需要使用<code>executeOnExecutor(Executor exec,Params... params)</code>这个函数来指定你用来执行任务的线程池，同时为自己的行为负责。（处理同步问题）</p>
+<p>实际上《Effective Java》里面有一条原则说的就是这种情况：不要在同步块里面调用不可信的外来函数。这里明显违背了这个原则：AsyncTask这个类并不知道使用者会在<code>doInBackgroud</code>这个函数里面做什么，但是对它的行为做了某种假设。</p>
+<h3 id="如何让AsyncTask并行执行？"><a href="#如何让AsyncTask并行执行？" class="headerlink" title="如何让AsyncTask并行执行？"></a>如何让AsyncTask并行执行？</h3><p>正如上面所说，如果你确定自己做好了同步处理，或者你没有在不同的AsyncTask里面访问共享资源，需要AsyncTask能够并行处理任务的话，你可以用带有两个参数的<code>executeOnExecutor</code>执行任务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> AsyncTask&lt;Void, Void, Vo</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(Void... params)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);</span><br></pre></td></tr></table></figure>
+<h2 id="更好的AsyncTask"><a href="#更好的AsyncTask" class="headerlink" title="更好的AsyncTask"></a>更好的AsyncTask</h2><p>从上面的分析得知，AsyncTask有如下问题：</p>
+<ol>
+<li>默认的AsyncTask如果处理的任务过多，会导致程序直接崩溃；</li>
+<li>AsyncTask类必须在主线程初始化，必须在主线程创建，不然在API 16以下很大概率崩溃。</li>
+<li>如果你曾经使用过AsyncTask，以后不用了；在Android 4.4以下，进程内也默认有5个AsyncTask线程；在Android 4.4以上，默认有<code>CPU + 1</code>个线程。</li>
+<li>Android 3.0以上的AsyncTask默认是串行执行任务的；如果要并行执行需要调用低版本没有的API，处理麻烦。</li>
+</ol>
+<p>因此我们对系统的AsyncTask做了一些修改，在不同Android版本提供一致的行为，并且提高了使用此类的安全性，主要改动如下：</p>
+<ol>
+<li>添加对于任务过多导致崩溃的异常保护；在这里进行必要的数据统计上报工作；如果出现这个问题，说明AsyncTask不适合这种场景了，需要考虑重构；</li>
+<li>移植API 22对于Handler的处理；这样就算在线程创建异步任务，也不会有任何问题；</li>
+<li>提供串行执行和并行执行的<code>execute</code>方法；默认串行执行，如果明确知道自己在干什么，可以使用<code>executeParallel</code>并行执行。</li>
+<li>在<code>doInbackgroud</code>里面频繁崩溃的地方加上<code>try..catch</code>；自己处理数据上报工作。</li>
+</ol>
+<p>完整代码见gist，<a href="https://gist.github.com/tiann/8860bcc514f067ab4291" target="_blank" rel="external">BetterAsyncTask</a></p>
+<p>原文地址：<a href="http://weishu.me/2016/01/18/dive-into-asynctask/">http://weishu.me/2016/01/18/dive-into-asynctask/</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/28/understand-plugin-framework-overview/" rel="prev">Android插件化原理解析——概要</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/12/binder-index-for-newer/" rel="next">Binder学习指南</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AsyncTask是什么？"><span class="nav-number">1.</span> <span class="nav-text">AsyncTask是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程池ThreadPoolExecutor"><span class="nav-number">2.</span> <span class="nav-text">线程池ThreadPoolExecutor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler"><span class="nav-number">2.1.</span> <span class="nav-text">Handler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AsyncTask是并行执行的吗？"><span class="nav-number">3.</span> <span class="nav-text">AsyncTask是并行执行的吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么默认不并行执行？"><span class="nav-number">3.1.</span> <span class="nav-text">为什么默认不并行执行？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何让AsyncTask并行执行？"><span class="nav-number">3.2.</span> <span class="nav-text">如何让AsyncTask并行执行？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更好的AsyncTask"><span class="nav-number">4.</span> <span class="nav-text">更好的AsyncTask</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,38 +1,811 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android,droidplugin,plugin framework," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="之前的 Android插件化原理解析 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？
+在Java平台要做到动态运行模块、热插拔可以使用ClassLoader技术进行动态类加载，比如广泛使用的OSGi技术。在Android上当然也可以使用动态加载技术，但是仅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 插件化原理解析——Activity生命周期管理">
+<meta property="og:url" content="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="之前的 Android插件化原理解析 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？
+在Java平台要做到动态运行模块、热插拔可以使用ClassLoader技术进行动态类加载，比如广泛使用的OSGi技术。在Android上当然也可以使用动态加载技术，但是仅">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1458296458099.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1458300329231.png">
+<meta property="og:image" content="http://blog.dimenspace.com/201601/1458532084072.png">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.119Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 插件化原理解析——Activity生命周期管理">
+<meta name="twitter:description" content="之前的 Android插件化原理解析 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？
+在Java平台要做到动态运行模块、热插拔可以使用ClassLoader技术进行动态类加载，比如广泛使用的OSGi技术。在Android上当然也可以使用动态加载技术，但是仅">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> Android 插件化原理解析——Activity生命周期管理 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Android 插件化原理解析——Activity生命周期管理
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-21T19:43:32+08:00" content="2016-03-21">
+            2016-03-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>之前的 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？</p>
+<p>在Java平台要做到动态运行模块、热插拔可以使用<code>ClassLoader</code>技术进行动态类加载，比如广泛使用的<code>OSGi</code>技术。在Android上当然也可以使用动态加载技术，但是仅仅把类加载进来就足够了吗？<code>Activity</code>，<code>Service</code>等组件是有生命周期的，它们统一由系统服务<code>AMS</code>管理；使用<code>ClassLoader</code>可以从插件中创建Activity对象，但是，一个没有生命周期的Activity对象有什么用？所以在Android系统上，仅仅完成动态类加载是不够的；我们需要想办法把我们加载进来的Activity等组件交给系统管理，让<code>AMS</code>赋予组件生命周期；这样才算是一个有血有肉的完善的插件化方案。</p>
+<p>接下来的系列文章会讲述 DroidPlugin对于Android四大组件的处理方式，我们且看它如何采用Hook技术坑蒙拐骗把系统玩弄于股掌之中，最终赋予Activity，Service等组件生命周期，完成借尸还魂的。</p>
+<a id="more"></a>
+<p>首先，我们来看看DroidPlugin对于<code>Activity</code>组件的处理方式。</p>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的intercept-activity模块。另外，如果对于Hook技术不甚了解，请先查阅我之前的文章：</p>
+<ol>
+<li><a href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/">Hook机制之动态代理</a></li>
+<li><a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Hook机制之Binder Hook</a></li>
+<li><a href="http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/">Hook机制之AMS&amp;PMS</a></li>
+</ol>
+<h2 id="AndroidManifest-xml的限制"><a href="#AndroidManifest-xml的限制" class="headerlink" title="AndroidManifest.xml的限制"></a>AndroidManifest.xml的限制</h2><p>读到这里，或许有部分读者觉得疑惑了，启动Activity不就是一个<code>startActivity</code>的事吗，有这么神秘兮兮的？</p>
+<p>启动Activity确实非常简单，但是Android却有一个限制：<strong>必须在AndroidManifest.xml中显示声明使用的Activity</strong>；我相信读者肯定会遇到下面这种异常：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">03</span>-<span class="number">18</span> <span class="number">15</span>:<span class="number">29</span>:<span class="number">56.074</span>  <span class="number">20709</span>-<span class="number">20709</span>/com.weishu.intercept_activity.app E/AndroidRuntime﹕ FATAL EXCEPTION: main</span><br><span class="line">    Process: com.weishu.intercept_activity.app, PID: <span class="number">20709</span></span><br><span class="line">    android.content.ActivityNotFoundException: Unable to find explicit activity <span class="class"><span class="keyword">class</span> </span>&#123;com.weishu.intercept_activity.app/com.weishu.intercept_activity.app.TargetActivity&#125;; have you declared <span class="keyword">this</span> activity in your AndroidManifest.xml?</span><br></pre></td></tr></table></figure>
+<p>『必须在AndroidManifest.xml中显示声明使用的Activity』这个硬性要求很大程度上限制了插件系统的发挥：假设我们需要启动一个插件的Activity，插件使用的Activity是无法预知的，这样肯定也不会在Manifest文件中声明；如果插件新添加一个Activity，主程序的AndroidManifest.xml就需要更新；既然双方都需要修改升级，何必要使用插件呢？这已经违背了动态加载的初衷：不修改插件框架而动态扩展功能。</p>
+<p>能不能想办法绕过这个限制呢？</p>
+<p>束手无策啊，怎么办？借刀杀人偷梁换柱无中生有以逸待劳乘火打劫瞒天过海…等等！偷梁换柱瞒天过海？貌似可以一试。</p>
+<p>我们可以耍个障眼法：既然AndroidManifest文件中必须声明，那么我就声明一个（或者有限个）替身Activity好了，当需要启动插件的某个Activity的时候，先让系统以为启动的是AndroidManifest中声明的那个替身，暂时骗过系统；然后到合适的时候又替换回我们需要启动的真正的Activity；所谓瞒天过海，莫过如此！</p>
+<p>现在有了方案了，但是该如何做呢？兵书又说，知己知彼百战不殆！如果连Activity的启动过程都不熟悉，怎么完成这个瞒天过海的过程？</p>
+<h2 id="Activity启动过程"><a href="#Activity启动过程" class="headerlink" title="Activity启动过程"></a>Activity启动过程</h2><p>启动Activity非常简单，一个<code>startActivity</code>就完事了；那么在这个简单调用的背后发生了什么呢？Look the fucking source code！</p>
+<p>关于Activity 的启动过程，也不是三言两语能解释清楚的，如果按照源码一步一步走下来，插件化系列文章就不用写了；所以这里我就给出一个大致流程，只列出关键的调用点（以Android 6.0源码为例）；如果读者希望更详细的讲解，可以参考老罗的 <a href="http://blog.csdn.net/luoshengyang/article/details/6685853" target="_blank" rel="external"> Android应用程序的Activity启动过程简要介绍和学习计划</a></p>
+<p>首先是Activity类的<code>startActivity</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    startActivity(intent, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>跟着这个方法一步一步跟踪，会发现它最后在<code>startActivityForResult</code>里面调用了Instrument对象的<code>execStartActivity</code>方法；接着在这个函数里面调用了ActivityManagerNative类的<code>startActivity</code>方法；这个过程在前文已经反复举例讲解了，我们知道接下来会通过Binder IPC到<code>AMS</code>所在进程调用<code>AMS</code>的<code>startActivity</code>方法；Android系统的组件生命周期管理就是在<code>AMS</code>里面完成的，那么在<code>AMS</code>里面到底做了什么呢？</p>
+<p>ActivityManagerService的<code>startActivity</code>方法如下：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="built_in">int</span> startActivity(IApplicationThread caller, <span class="keyword">String</span> callingPackage,</span><br><span class="line">        Intent intent, <span class="keyword">String</span> resolvedType, IBinder resultTo,</span><br><span class="line">        <span class="keyword">String</span> resultWho, <span class="built_in">int</span> requestCode, <span class="built_in">int</span> startFlags,</span><br><span class="line">        <span class="keyword">String</span> profileFile, ParcelFileDescriptor profileFd, Bundle options) &#123;</span><br><span class="line">    <span class="keyword">return</span> startActivityAsUser(caller, callingPackage, intent, resolvedType, resultTo,</span><br><span class="line">            resultWho, requestCode,</span><br><span class="line">            startFlags, profileFile, profileFd, options, UserHandle.getCallingUserId());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很简单，直接调用了<code>startActivityAsUser</code>这个方法；接着是<code>ActivityStackSupervisor</code>类的<code>startActivityMayWait</code>方法。这个ActivityStackSupervisor类到底是个啥？如果仔细查阅，低版本的Android源码上是没有这个类的；后来AMS的代码进行了部分重构，关于Activity栈管理的部分单独提取出来成为了<code>ActivityStackSupervisor</code>类；好了，继续看代码。</p>
+<p>startActivityMayWait这个方法前面对参数进行了一系列处理，我们需要知道的是，在这个方法内部对传进来的Intent进行了解析，并尝试从中取出关于启动Activity的信息。</p>
+<p>然后这个方法调用了startActivityLocked方法；在startActivityLocked方法内部进行了一系列重要的检查：比如权限检查，Activity的exported属性检查等等；我们上文所述的，启动没有在Manifestfest中显示声明的Activity抛异常也是这里发生的：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">err</span> == ActivityManager.START_SUCCESS &amp;&amp; aInfo == null) &#123;</span><br><span class="line">    <span class="comment">// We couldn't find the specific class specified in the Intent.</span></span><br><span class="line">    <span class="comment">// Also the end of the line.</span></span><br><span class="line">    <span class="keyword">err</span> = ActivityManager.START_CLASS_NOT_FOUND;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里返回ActivityManager.START_CLASS_NOT_FOUND之后，在Instrument的execStartActivity返回之后会检查这个值，然后跑出异常：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> ActivityManager.START_CLASS_NOT_FOUND:</span><br><span class="line">    <span class="keyword">if</span> (intent <span class="keyword">instanceof</span> Intent &amp;&amp; ((Intent)intent).getComponent() != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ActivityNotFoundException(</span><br><span class="line">                <span class="string">"Unable to find explicit activity class "</span></span><br><span class="line">                + ((Intent)intent).getComponent().toShortString()</span><br><span class="line">                + <span class="string">"; have you declared this activity in your AndroidManifest.xml?"</span>);</span><br></pre></td></tr></table></figure>
+<p>源码看到这里，我们已经确认了『必须在AndroidManifest.xml中显示声明使用的Activity』的原因；然而这个校检过程发生在<code>AMS</code>所在的进程<code>system_server</code>，我们没有办法篡改，只能另寻他路。</p>
+<p>OK，我们继续跟踪源码；在startActivityLocked之后处理的都是Activity任务栈相关内容，这一系列ActivityStack和ActivityStackSupervisor纠缠不清的调用看下图就明白了；不明白也没关系: D 目前用处不大。</p>
+<p><img src="http://blog.dimenspace.com/201601/1458296458099.png" alt="调用流程图"></p>
+<p>这一系列调用最终到达了ActivityStackSupervisor的realStartActivityLocked方法；人如其名，这个方法开始了真正的“启动Activity”：它调用了ApplicationThread的scheduleLaunchActivity方法，开始了真正的Activity对象创建以及启动过程。</p>
+<p>这个ApplicationThread是什么，是一个线程吗？与ActivityThread有什么区别和联系？</p>
+<p>不要被名字迷惑了，这个ApplicationThread实际上是一个Binder对象，是App所在的进程与AMS所在进程system_server通信的桥梁；在Activity启动的过程中，App进程会频繁地与AMS进程进行通信：</p>
+<ol>
+<li>App进程会委托AMS进程完成Activity生命周期的管理以及任务栈的管理；这个通信过程AMS是Server端，App进程通过持有AMS的client代理ActivityManagerNative完成通信过程；</li>
+<li>AMS进程完成生命周期管理以及任务栈管理后，会把控制权交给App进程，让App进程完成Activity类对象的创建，以及生命周期回调；这个通信过程也是通过Binder完成的，App所在server端的Binder对象存在于ActivityThread的内部类ApplicationThread；AMS所在client通过持有IApplicationThread的代理对象完成对于App进程的通信。</li>
+</ol>
+<p>App进程与AMS进程的通信过程如图所示：</p>
+<p><img src="http://blog.dimenspace.com/201601/1458300329231.png" width="500"></p>
+<p>App进程内部的ApplicationThread server端内部有自己的Binder线程池，它与App主线程的通信通过Handler完成，这个Handler存在于ActivityThread类，它的名字很简单就叫<code>H</code>，这一点我们接下来就会讲到。</p>
+<p>现在我们明白了这个ApplicationThread到底是个什么东西，接上文继续跟踪Activity的启动过程；我们查看ApplicationThread的<code>scheduleLaunchActivity</code>方法，这个方法很简单，就是包装了参数最终使用Handler发了一个消息。</p>
+<p>正如刚刚所说，ApplicationThread所在的Binder服务端使用Handler与主线程进行通信，这里的scheduleLaunchActivity方法直接把启动Activity的任务通过一个消息转发给了主线程；我们查看Handler类对于这个消息的处理：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "activityStart")<span class="comment">;</span></span><br><span class="line">ActivityClientRecord r = (ActivityClientRecord)msg.obj<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">r.packageInfo = getPackageInfoNoCheck(</span><br><span class="line">        r.activityInfo.applicationInfo, r.compatInfo)<span class="comment">;</span></span><br><span class="line">handleLaunchActivity(r, null)<span class="comment">;</span></span><br><span class="line">Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，这里直接调用了ActivityThread的handleLaunchActivity方法，在这个方法内部有一句非常重要：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Activity a = performLaunchActivity<span class="list">(<span class="keyword">r</span>, customIntent)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>绕了这么多弯，我们的Activity终于被创建出来了！继续跟踪这个performLaunchActivity方法看看发生了什么；由于这个方法较长，我就不贴代码了，读者可以自行查阅；要指出的是，这个方法做了两件很重要的事情：</p>
+<ol>
+<li>使用ClassLoader加载并通过反射创建Activity对象</li>
+</ol>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ClassLoader cl = r.packageInfo.getClassLoader()<span class="comment">;</span></span><br><span class="line">activity = mInstrumentation.newActivity(</span><br><span class="line">        cl, component.getClassName(), r.intent)<span class="comment">;</span></span><br><span class="line">StrictMode.incrementExpectedActivityCount(activity.getClass())<span class="comment">;</span></span><br><span class="line">r.intent.setExtrasClassLoader(cl)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>如果Application还没有创建，那么创建Application对象并回调相应的生命周期方法；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Application app = r.packageInfo.makeApplication(<span class="keyword">false</span>, mInstrumentation);</span><br><span class="line"><span class="comment">// ... 省略</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (r.isPersistable()) &#123;</span><br><span class="line">    mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    mInstrumentation.callActivityOnCreate(activity, r.state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Activity的启动过程到这里就结束了，可能读者还是觉得迷惑：不就是调用了一系列方法吗？具体做了什么还是不太清楚，而且为什么Android要这么设计？</p>
+<p>方法调用链再长也木有关系，有两点需要明白：</p>
+<ol>
+<li>平时我们所说的Application被创建了，onCreate方法被调用了，我们或许并没有意识到我们所说的<code>Application, Activity</code>除了代表Android应用层通常所代表的“组件”之外，它们其实都是普通的Java对象，也是需要被构造函数构造出来的对象的；在这个过程中，我们明白了这些对象到底是如何被创建的。</li>
+<li>为什么需要一直与AMS进行通信？哪些操作是在AMS中进行的？其实<code>AMS</code>正如名字所说，管理所有的“活动”，整个系统的Activity堆栈，Activity生命周期回调都是由AMS所在的系统进程system_server帮开发者完成的；Android的Framework层帮忙完成了诸如生命周期管理等繁琐复杂的过程，简化了应用层的开发。</li>
+</ol>
+<h2 id="瞒天过海——启动不在AndroidManifest-xml中声明的Activity"><a href="#瞒天过海——启动不在AndroidManifest-xml中声明的Activity" class="headerlink" title="瞒天过海——启动不在AndroidManifest.xml中声明的Activity"></a>瞒天过海——启动不在AndroidManifest.xml中声明的Activity</h2><h3 id="简要分析"><a href="#简要分析" class="headerlink" title="简要分析"></a>简要分析</h3><p>通过上文的分析，我们已经对Activity的启动过程了如指掌了；就让我们干点坏事吧 :D</p>
+<p>对与『必须在AndroidManifest.xml中显示声明使用的Activity』这个问题，上文给出了思路——瞒天过海；我们可以在AndroidManifest.xml里面声明一个替身Activity，然后<strong>在合适的时候</strong>把这个假的替换成我们真正需要启动的Activity就OK了。</p>
+<p>那么问题来了，『合适的时候』到底是什么时候？在前文<a href="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/">Hook机制之动态代理</a>中我们提到过Hook过程最重要的一步是<strong>寻找Hook点</strong>；如果是在同一个进程，<code>startActivity</code>到Activity真正启动起来这么长的调用链，我们随便找个地方Hook掉就完事儿了；但是问题木有这么简单。</p>
+<p>Activity启动过程中很多重要的操作（正如上文分析的『必须在AndroidManifest.xml中显式声明要启动的Activity』)都不是在App进程里面执行的，而是在AMS所在的系统进程system_server完成，由于<strong>进程隔离</strong>的存在，我们对别的进程无能为力；所以这个Hook点就需要花点心思了。</p>
+<p>这时候Activity启动过程的知识就派上用场了；虽然整个启动过程非常复杂，但其实一张图就能总结：</p>
+<p><img src="http://blog.dimenspace.com/201601/1458532084072.png" alt="简要启动过程"></p>
+<p>先从App进程调用<code>startActivity</code>；然后通过IPC调用进入系统进程system_server，完成Activity管理以及一些校检工作，最后又回到了APP进程完成真正的Activioty对象创建。</p>
+<p>由于这个检验过程是在AMS进程完成的，我们对system_server进程里面的操作无能为力，只有在我们APP进程里面执行的过程才是有可能被Hook掉的，也就是第一步和第三步；具体应该怎么办呢？</p>
+<p>既然需要一个显式声明的Activity，那就声明一个！<strong>可以在第一步假装启动一个已经在AndroidManifest.xml里面声明过的替身Activity，让这个Activity进入AMS进程接受检验；最后在第三步的时候换成我们真正需要启动的Activity</strong>；这样就成功欺骗了AMS进程，瞒天过海！</p>
+<p>说到这里，是不是有点小激动呢？我们写个demo验证一下：『启动一个并没有在AndroidManifest.xml中显示声明的Activity』</p>
+<h3 id="实战过程"><a href="#实战过程" class="headerlink" title="实战过程"></a>实战过程</h3><p>具体来说，我们打算实现如下功能：在MainActivity中启动一个并没有在AndroidManifest.xml中声明的TargetActivity；按照上文分析，我们需要声明一个替身Activity，我们叫它StubActivity；</p>
+<p>那么，我们的AndroidManifest.xml如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">manifest</span> <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">          <span class="attribute">package</span>=<span class="value">"com.weishu.intercept_activity.app"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">application</span></span><br><span class="line">            <span class="attribute">android:allowBackup</span>=<span class="value">"true"</span></span><br><span class="line">            <span class="attribute">android:label</span>=<span class="value">"@string/app_name"</span></span><br><span class="line">            <span class="attribute">android:icon</span>=<span class="value">"@mipmap/ic_launcher"</span></span><br><span class="line">            &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="title">activity</span> <span class="attribute">android:name</span>=<span class="value">".MainActivity"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.action.MAIN"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">category</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.category.LAUNCHER"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">activity</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 替身Activity, 用来欺骗AMS  --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">activity</span> <span class="attribute">android:name</span>=<span class="value">".StubActivity"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="title">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>OK，那么我们启动TargetActivity很简单，就是个<code>startActivity</code>调用的事：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startActivity(<span class="keyword">new</span> Intent(MainActivity.<span class="keyword">this</span>, TargetActivity.class));</span><br></pre></td></tr></table></figure>
+<p>如果你直接这么运行，肯定会直接抛出ActivityNotFoundException然后直接退出；我们接下来要做的就是让这个调用成功启动TargetActivity。</p>
+<h4 id="狸猫换太子——使用替身Activity绕过AMS"><a href="#狸猫换太子——使用替身Activity绕过AMS" class="headerlink" title="狸猫换太子——使用替身Activity绕过AMS"></a>狸猫换太子——使用替身Activity绕过AMS</h4><p>由于<code>AMS</code>进程会对Activity做显式声明验证，因此在<br>启动Activity的控制权转移到<code>AMS</code>进程之前，我们需要想办法<strong>临时</strong>把TargetActivity替换成替身StubActivity；在这之间有很长的一段调用链，我们可以轻松Hook掉；选择什么地方Hook是一个很自由的事情，但是Hook的步骤越后越可靠——Hook得越早，后面的调用就越复杂，越容易出错。</p>
+<p>我们可以选择在进入<code>AMS</code>进程的入口进行Hook，具体来说也就是Hook <code>AMS</code>在本进程的代理对象ActivityManagerNative。如果你不知道如何Hook掉这个AMS的代理对象，请查阅我之前的文章 <a href="http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/">Hook机制之AMS&amp;PMS</a> </p>
+<p>我们Hook掉ActivityManagerNative对于startActivity方法的调用，替换掉交给AMS的intent对象，将里面的TargetActivity的暂时替换成已经声明好的替身StubActivity；这种Hook方式 <a href="http://weishu.me/2016/03/07/understand-plugin-framework-ams-pms-hook/">前文</a> 讲述的很详细，不赘述；替换的关键代码如下： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="string">"startActivity"</span>.equals(method.getName())) &#123;</span><br><span class="line">    <span class="comment">// 只拦截这个方法</span></span><br><span class="line">    <span class="comment">// 替换参数, 任你所为;甚至替换原始Activity启动别的Activity偷梁换柱</span></span><br><span class="line">    <span class="comment">// API 23:</span></span><br><span class="line">    <span class="comment">// public final Activity startActivityNow(Activity parent, String id,</span></span><br><span class="line">    <span class="comment">// Intent intent, ActivityInfo activityInfo, IBinder token, Bundle state,</span></span><br><span class="line">    <span class="comment">// Activity.NonConfigurationInstances lastNonConfigurationInstances) &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到参数里面的第一个Intent 对象</span></span><br><span class="line"></span><br><span class="line">    Intent raw;</span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; args.length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (args[i] <span class="keyword">instanceof</span> Intent) &#123;</span><br><span class="line">            index = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    raw = (Intent) args[index];</span><br><span class="line"></span><br><span class="line">    Intent newIntent = <span class="keyword">new</span> Intent();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里包名直接写死,如果再插件里,不同的插件有不同的包  传递插件的包名即可</span></span><br><span class="line">    String targetPackage = <span class="string">"com.weishu.intercept_activity.app"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里我们把启动的Activity临时替换为 StubActivity</span></span><br><span class="line">    ComponentName componentName = <span class="keyword">new</span> ComponentName(targetPackage, StubActivity.class.getCanonicalName());</span><br><span class="line">    newIntent.setComponent(componentName);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 把我们原始要启动的TargetActivity先存起来</span></span><br><span class="line">    newIntent.putExtra(HookHelper.EXTRA_TARGET_INTENT, raw);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 替换掉Intent, 达到欺骗AMS的目的</span></span><br><span class="line">    args[index] = newIntent;</span><br><span class="line"></span><br><span class="line">    Log.d(TAG, <span class="string">"hook success"</span>);</span><br><span class="line">    <span class="keyword">return</span> method.invoke(mBase, args);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> method.invoke(mBase, args);</span><br></pre></td></tr></table></figure>
+<p>通过这个替换过程，在ActivityManagerNative的startActivity调用之后，system_server端收到Binder驱动的消息，开始执行ActivityManagerService里面真正的<code>startActivity</code>方法；这时候AMS看到的<code>intent</code>参数里面的组件已经是<code>StubActivity</code>了，因此可以成功绕过检查，这时候如果不做后面的Hook，直接调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startActivity(<span class="keyword">new</span> Intent(MainActivity.<span class="keyword">this</span>, TargetActivity.class));</span><br></pre></td></tr></table></figure>
+<p>也不会出现上文的ActivityNotFoundException</p>
+<h4 id="借尸还魂——拦截Callback从恢复真身"><a href="#借尸还魂——拦截Callback从恢复真身" class="headerlink" title="借尸还魂——拦截Callback从恢复真身"></a>借尸还魂——拦截Callback从恢复真身</h4><p>行百里者半九十。现在我们的<code>startActivity</code>启动一个没有显式声明的Activity已经不会抛异常了，但是要真正正确地把TargetActivity启动起来，还有一些事情要做。其中最重要的一点是，我们用替身StubActivity临时换了TargetActivity，肯定需要在『合适的』时候替换回来；接下来我们就完成这个过程。</p>
+<p>在AMS进程里面我们是没有办法换回来的，因此我们要等AMS把控制权交给App所在进程，也就是上面那个『Activity启动过程简图』的第三步。AMS进程转移到App进程也是通过Binder调用完成的，承载这个功能的Binder对象是IApplicationThread；在App进程它是Server端，在Server端接受Binder远程调用的是Binder线程池，Binder线程池通过Handler将消息转发给App的主线程；（我这里不厌其烦地叙述Binder调用过程，希望读者不要反感，其一加深印象，其二懂Binder真的很重要）我们可以在这个<strong>Handler里面将替身恢复成真身</strong>。</p>
+<p>这里不打算讲述Handler 的原理，我们简单看一下Handler是如何处理接收到的Message的，如果我们能拦截这个Message的接收过程，就有可能完成替身恢复工作；Handler类的<code>dispathMesage</code>如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</span><br><span class="line">        handleCallback(msg);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        handleMessage(msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从这个方法可以看出来，Handler类消息分发的过程如下：</p>
+<ol>
+<li>如果传递的Message本身就有callback，那么直接使用Message对象的callback方法；</li>
+<li>如果Handler类的成员变量<code>mCallback</code>存在，那么首先执行这个<code>mCallback</code>回调；</li>
+<li>如果<code>mCallback</code>的回调返回<code>true</code>，那么表示消息已经成功处理；直接结束。</li>
+<li>如果<code>mCallback</code>的回调返回<code>false</code>，那么表示消息没有处理完毕，会继续使用Handler类的<code>handleMessage</code>方法处理消息。</li>
+</ol>
+<p>那么，ActivityThread中的Handler类<code>H</code>是如何实现的呢？<code>H</code>的部分源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (DEBUG_MESSAGES) Slog.v(TAG, <span class="string">"&gt;&gt;&gt; handling: "</span> + codeToString(msg.what));</span><br><span class="line">    <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">        <span class="keyword">case</span> LAUNCH_ACTIVITY: &#123;</span><br><span class="line">            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"activityStart"</span>);</span><br><span class="line">            ActivityClientRecord r = (ActivityClientRecord)msg.obj;</span><br><span class="line"></span><br><span class="line">            r.packageInfo = getPackageInfoNoCheck(</span><br><span class="line">                    r.activityInfo.applicationInfo, r.compatInfo);</span><br><span class="line">            handleLaunchActivity(r, <span class="keyword">null</span>);</span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">        &#125; <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> RELAUNCH_ACTIVITY: &#123;</span><br><span class="line">            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"activityRestart"</span>);</span><br><span class="line">            ActivityClientRecord r = (ActivityClientRecord)msg.obj;</span><br><span class="line">            handleRelaunchActivity(r);</span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下略</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>H</code>类仅仅重载了<code>handleMessage</code>方法；通过dispathMessage的消息分发过程得知，我们可以拦截这一过程：<strong>把这个<code>H</code>类的<code>mCallback</code>替换为我们的自定义实现</strong>，这样<code>dispathMessage</code>就会首先使用这个自定义的<code>mCallback</code>，然后看情况使用<code>H</code>重载的<code>handleMessage</code>。</p>
+<p>这个<code>Handler.Callback</code>是一个接口，我们可以使用动态代理或者普通代理完成Hook，这里我们使用普通的静态代理方式；创建一个自定义的Callback类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* package */</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityThreadHandlerCallback</span> <span class="keyword">implements</span> <span class="title">Handler</span>.<span class="title">Callback</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Handler mBase;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ActivityThreadHandlerCallback</span><span class="params">(Handler base)</span> </span>&#123;</span><br><span class="line">        mBase = base;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="comment">// ActivityThread里面 "LAUNCH_ACTIVITY" 这个字段的值是100</span></span><br><span class="line">            <span class="comment">// 本来使用反射的方式获取最好, 这里为了简便直接使用硬编码</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">100</span>:</span><br><span class="line">                handleLaunchActivity(msg);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mBase.handleMessage(msg);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleLaunchActivity</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里简单起见,直接取出TargetActivity;</span></span><br><span class="line"></span><br><span class="line">        Object obj = msg.obj;</span><br><span class="line">        <span class="comment">// 根据源码:</span></span><br><span class="line">        <span class="comment">// 这个对象是 ActivityClientRecord 类型</span></span><br><span class="line">        <span class="comment">// 我们修改它的intent字段为我们原来保存的即可.</span></span><br><span class="line"><span class="comment">/*        switch (msg.what) &#123;</span><br><span class="line">/             case LAUNCH_ACTIVITY: &#123;</span><br><span class="line">/                 Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "activityStart");</span><br><span class="line">/                 final ActivityClientRecord r = (ActivityClientRecord) msg.obj;</span><br><span class="line">/</span><br><span class="line">/                 r.packageInfo = getPackageInfoNoCheck(</span><br><span class="line">/                         r.activityInfo.applicationInfo, r.compatInfo);</span><br><span class="line">/                 handleLaunchActivity(r, null);</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 把替身恢复成真身</span></span><br><span class="line">            Field intent = obj.getClass().getDeclaredField(<span class="string">"intent"</span>);</span><br><span class="line">            intent.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            Intent raw = (Intent) intent.get(obj);</span><br><span class="line"></span><br><span class="line">            Intent target = raw.getParcelableExtra(HookHelper.EXTRA_TARGET_INTENT);</span><br><span class="line">            raw.setComponent(target.getComponent());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个Callback类的使命很简单：<strong>把替身StubActivity恢复成真身TargetActivity</strong>；有了这个自定义的Callback之后我们需要把ActivityThread里面处理消息的Handler类<code>H</code>的的<code>mCallback</code>修改为自定义callback类的对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先获取到当前的ActivityThread对象</span></span><br><span class="line">Class&lt;?&gt; activityThreadClass = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">Field currentActivityThreadField = activityThreadClass.getDeclaredField(<span class="string">"sCurrentActivityThread"</span>);</span><br><span class="line">currentActivityThreadField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">Object currentActivityThread = currentActivityThreadField.get(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 由于ActivityThread一个进程只有一个,我们获取这个对象的mH</span></span><br><span class="line">Field mHField = activityThreadClass.getDeclaredField(<span class="string">"mH"</span>);</span><br><span class="line">mHField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">Handler mH = (Handler) mHField.get(currentActivityThread);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置它的回调, 根据源码:</span></span><br><span class="line"><span class="comment">// 我们自己给他设置一个回调,就会替代之前的回调;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        public void dispatchMessage(Message msg) &#123;</span></span><br><span class="line"><span class="comment">//            if (msg.callback != null) &#123;</span></span><br><span class="line"><span class="comment">//                handleCallback(msg);</span></span><br><span class="line"><span class="comment">//            &#125; else &#123;</span></span><br><span class="line"><span class="comment">//                if (mCallback != null) &#123;</span></span><br><span class="line"><span class="comment">//                    if (mCallback.handleMessage(msg)) &#123;</span></span><br><span class="line"><span class="comment">//                        return;</span></span><br><span class="line"><span class="comment">//                    &#125;</span></span><br><span class="line"><span class="comment">//                &#125;</span></span><br><span class="line"><span class="comment">//                handleMessage(msg);</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line"></span><br><span class="line">Field mCallBackField = Handler.class.getDeclaredField(<span class="string">"mCallback"</span>);</span><br><span class="line">mCallBackField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">mCallBackField.set(mH, <span class="keyword">new</span> ActivityThreadHandlerCallback(mH));</span><br></pre></td></tr></table></figure>
+<p>到这里，我们已经成功地绕过<code>AMS</code>，完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的过程；瞒天过海，这种玩弄系统与股掌之中的快感你们能体会到吗？</p>
+<h4 id="僵尸or活人？——能正确收到生命周期回调吗"><a href="#僵尸or活人？——能正确收到生命周期回调吗" class="headerlink" title="僵尸or活人？——能正确收到生命周期回调吗"></a>僵尸or活人？——能正确收到生命周期回调吗</h4><p>虽然我们完成了『启动没有在AndroidManifest.xml中显式声明的Activity 』，但是启动的TargetActivity是否有自己的生命周期呢，我们还需要额外的处理过程吗？</p>
+<p>实际上TargetActivity已经是一个有血有肉的Activity了：它具有自己正常的生命周期；可以运行<a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">Demo代码</a>验证一下。</p>
+<p>这个过程是如何完成的呢？我们以<code>onDestroy</code>为例简要分析一下：</p>
+<blockquote>
+<p>从Activity的<code>finish</code>方法开始跟踪，最终会通过ActivityManagerNative到<code>AMS</code>然后接着通过ApplicationThread到ActivityThread，然后通过<code>H</code>转发消息到ActivityThread的handleDestroyActivity，接着这个方法把任务交给performDestroyActivity完成。</p>
+</blockquote>
+<p>在真正分析这个方法之前，需要说明一点的是：不知读者是否感受得到，App进程与<code>AMS</code>交互几乎都是这么一种模式，几个角色 ActivityManagerNative, ApplicationThread, ActivityThread以及Handler类<code>H</code>分工明确，读者可以按照这几个角色的功能分析<code>AMS</code>的任何调用过程，屡试不爽；这也是我的初衷——希望分析插件框架的过程中能帮助深入理解Android Framework。</p>
+<p>好了继续分析performDestroyActivity，关键代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ActivityClientRecord r = mActivities.get(token);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...略</span></span><br><span class="line"></span><br><span class="line">mInstrumentation.callActivityOnDestroy(r.activity);</span><br></pre></td></tr></table></figure>
+<p>这里通过<code>mActivities</code>拿到了一个ActivityClientRecord，然后直接把这个record里面的Activity交给Instrument类完成了onDestroy的调用。</p>
+<p>在我们这个demo的场景下，r.activity是TargetActivity还是StubActivity？按理说，由于我们欺骗了<code>AMS</code>，<code>AMS</code>应该只知道<code>StubActivity</code>的存在，它压根儿就不知道TargetActivity是什么，为什么它能正确完成对TargetActivity生命周期的回调呢？</p>
+<p>一切的秘密在<code>token</code>里面。<code>AMS</code>与<code>ActivityThread</code>之间对于Activity的生命周期的交互，并没有直接使用Activity对象进行交互，而是使用一个token来标识，这个token是binder对象，因此可以方便地跨进程传递。Activity里面有一个成员变量<code>mToken</code>代表的就是它，token可以唯一地标识一个Activity对象，它在Activity的<code>attach</code>方法里面初始化；</p>
+<p>在<code>AMS</code>处理Activity的任务栈的时候，使用这个token标记Activity，因此在我们的demo里面，<code>AMS</code>进程里面的token对应的是StubActivity，也就是<code>AMS</code>还在傻乎乎地操作StubActivity（关于这一点，你可以dump出任务栈的信息，可以观察到dump出的确实是StubActivity）。但是在我们App进程里面，token对应的却是TargetActivity！因此，在ActivityThread执行回调的时候，能正确地回调到TargetActivity相应的方法。</p>
+<p>为什么App进程里面，token对应的是TargetActivity呢？</p>
+<p>回到代码，ActivityClientRecord是在<code>mActivities</code>里面取出来的，确实是根据token取；那么这个token是什么时候添加进去的呢？我们看performLaunchActivity就完成明白了：它通过classloader加载了TargetActivity，然后完成一切操作之后把这个activity添加进了<code>mActivities</code>！另外，在这个方法里面我们还能看到对Ativity<code>attach</code>方法的调用，它传递给了新创建的Activity一个token对象，而这个token是在ActivityClientRecord构造函数里面初始化的。</p>
+<p>至此我们已经可以确认，通过这种方式启动的Activity有它自己完整而独立的生命周期！</p>
+<h2 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h2><p>本文讲述了『启动一个并没有在AndroidManifest.xml中显示声明的Activity』的解决办法，我们成功地绕过了Android的这个限制，这个是插件Activity管理技术的基础；但是要做到启动一个插件Activity问题远没有这么简单。</p>
+<p>首先，在Android中，Activity有不同的启动模式；我们声明了一个替身StubActivity，肯定没有满足所有的要求；因此，我们需要在AndroidManifest.xml中声明一系列的有不同launchMode的Activity，还需要完成替身与真正Activity launchMode的匹配过程；这样才能完成启动各种类型Activity的需求，关于这一点，在 DroidPlugin 的com.morgoo.droidplugin.stub包下面可以找到。</p>
+<p>另外，每启动一个插件的Activity都需要一个StubActivity，但是AndroidManifest.xml中肯定只能声明有限个，如果一直<code>startActivity</code>而不finish的话，那么理论上就需要无限个StubActivity；这个问题该如何解决呢？事实上，这个问题在技术上没有好的解决办法。但是，如果你的App startActivity了十几次，而没有finish任何一个Activity，这样在Activity的回退栈里面有十几个Activity，用户难道按back十几次回到主页吗？有这种需求说明你的产品设计有问题；一个App一级页面，二级页面..到五六级的页面已经影响体验了，所以，每种LauchMode声明十个StubActivity绝对能满足需求了。</p>
+<p>最后，在本文所述例子中，TargetActivity与StubActivity存在于同一个Apk，因此系统的ClassLoader能够成功加载并创建TargetActivity的实例。但是在实际的插件系统中，要启动的目标Activity肯定存在于一个单独的文件中，系统默认的ClassLoader无法加载插件中的Activity类——系统压根儿就不知道要加载的插件在哪，谈何加载？因此还有一个很重要的问题需要处理：</p>
+<p><strong>我们要完成插件系统中类的加载</strong>，这可以通过自定义ClassLoader实现。解决了『启动没有在AndroidManifest.xml中显式声明的，并且存在于外部文件中的Activity』的问题，插件系统对于Activity的管理才算得上是一个完全体。篇幅所限，欲知后事如何，请听下回分解！</p>
+<p>喜欢就点个赞吧～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>和我的 <a href="http://weishu.me">博客</a>!</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/droidplugin/" rel="tag">#droidplugin</a>
+          
+            <a href="/tags/plugin-framework/" rel="tag">#plugin framework</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/05/understand-plugin-framework-classloader/" rel="prev">Android 插件化原理解析——插件加载机制</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" rel="next">Android 插件化原理解析——Hook机制之AMS&PMS</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AndroidManifest-xml的限制"><span class="nav-number">1.</span> <span class="nav-text">AndroidManifest.xml的限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity启动过程"><span class="nav-number">2.</span> <span class="nav-text">Activity启动过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#瞒天过海——启动不在AndroidManifest-xml中声明的Activity"><span class="nav-number">3.</span> <span class="nav-text">瞒天过海——启动不在AndroidManifest.xml中声明的Activity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简要分析"><span class="nav-number">3.1.</span> <span class="nav-text">简要分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战过程"><span class="nav-number">3.2.</span> <span class="nav-text">实战过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#狸猫换太子——使用替身Activity绕过AMS"><span class="nav-number">3.2.1.</span> <span class="nav-text">狸猫换太子——使用替身Activity绕过AMS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#借尸还魂——拦截Callback从恢复真身"><span class="nav-number">3.2.2.</span> <span class="nav-text">借尸还魂——拦截Callback从恢复真身</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#僵尸or活人？——能正确收到生命周期回调吗"><span class="nav-number">3.2.3.</span> <span class="nav-text">僵尸or活人？——能正确收到生命周期回调吗</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小节"><span class="nav-number">4.</span> <span class="nav-text">小节</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

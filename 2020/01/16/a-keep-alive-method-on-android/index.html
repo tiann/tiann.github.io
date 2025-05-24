@@ -1,38 +1,752 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="一直以来，App 进程保活都是各大厂商，特别是头部应用开发商永恒的追求。毕竟App 进程死了，就什么也干不了了；一旦 App 进程死亡，那就再也无法在用户的手机上开展任何业务，所有的商业模型在用户侧都没有立足之地了。
+早期的 Android 系统不完善，导致 App 侧有很多空子可以钻，因此它们有着有着各种各样的姿势进行保活。譬如说在 Android 5.0 以前，App 内部通过 native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 黑科技保活实现原理揭秘">
+<meta property="og:url" content="http://weishu.me/2020/01/16/a-keep-alive-method-on-android/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="一直以来，App 进程保活都是各大厂商，特别是头部应用开发商永恒的追求。毕竟App 进程死了，就什么也干不了了；一旦 App 进程死亡，那就再也无法在用户的手机上开展任何业务，所有的商业模型在用户侧都没有立足之地了。
+早期的 Android 系统不完善，导致 App 侧有很多空子可以钻，因此它们有着有着各种各样的姿势进行保活。譬如说在 Android 5.0 以前，App 内部通过 native">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 黑科技保活实现原理揭秘">
+<meta name="twitter:description" content="一直以来，App 进程保活都是各大厂商，特别是头部应用开发商永恒的追求。毕竟App 进程死了，就什么也干不了了；一旦 App 进程死亡，那就再也无法在用户的手机上开展任何业务，所有的商业模型在用户侧都没有立足之地了。
+早期的 Android 系统不完善，导致 App 侧有很多空子可以钻，因此它们有着有着各种各样的姿势进行保活。譬如说在 Android 5.0 以前，App 内部通过 native">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> Android 黑科技保活实现原理揭秘 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Android 黑科技保活实现原理揭秘
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2020-01-16T18:05:54+08:00" content="2020-01-16">
+            2020-01-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>一直以来，App 进程保活都是各大厂商，特别是头部应用开发商永恒的追求。毕竟<strong>App 进程死了，就什么也干不了了</strong>；一旦 App 进程死亡，那就再也无法在用户的手机上开展任何业务，所有的商业模型在用户侧都没有立足之地了。</p>
+<p>早期的 Android 系统不完善，导致 App 侧有很多空子可以钻，因此它们有着有着各种各样的姿势进行保活。譬如说在 Android 5.0 以前，App 内部通过 native 方式 fork 出来的进程是不受系统管控的，系统在杀 App 进程的时候，只会去杀 App 启动的 Java 进程；因此诞生了一大批“毒瘤”，他们通过 fork native 进程，在 App 的 Java 进程被杀死的时候通过 <code>am</code>命令拉起自己从而实现永生。那时候的 Android 可谓是魑魅横行，群魔乱舞；系统根本管不住应用，因此长期以来被人诟病耗电、卡顿。同时，系统的软弱导致了 Xposed 框架、阻止运行、绿色守护、黑域、冰箱等一系列管制系统后台进程的框架和 App 出现。</p>
+<p>不过，随着 Android 系统的发展，这一切都在往好的方向演变。</p>
+<a id="more"></a>
+<ul>
+<li>Android 5.0 以上，系统杀进程以 <code>uid</code> 为标识，通过杀死整个进程组来杀进程，因此 native 进程也躲不过系统的法眼。</li>
+<li>Android 6.0 引入了待机模式(doze)，一旦用户拔下设备的电源插头，并在屏幕关闭后的一段时间内使其保持不活动状态，设备会进入低电耗模式，在该模式下设备会尝试让系统保持休眠状态。</li>
+<li>Android 7.0 加强了之前鸡肋的待机模式（不再要求设备静止状态），同时对开启了 Project Svelte，Project Svelte 是专门用来优化 Android 系统后台的项目，在 Android 7.0 上直接移除了一些隐式广播，App 无法再通过监听这些广播拉起自己。</li>
+<li>Android 8.0 进一步加强了应用后台执行限制：一旦应用进入已缓存状态时，如果没有活动的组件，系统将解除应用具有的所有唤醒锁。另外，系统会限制未在前台运行的应用的某些行为，比如说应用的后台服务的访问受到限制，也无法使用 Mainifest 注册大部分隐式广播。</li>
+<li>Android 9.0 进一步改进了省电模式的功能并加入了<strong>应用待机分组</strong>，长时间不用的 App 会被打入冷宫；另外，系统监测到应用消耗过多资源时，系统会通知并询问用户是否需要限制该应用的后台活动。</li>
+</ul>
+<p>然而，道高一尺，魔高一丈。系统在不断演进，保活方法也在不断发展。大约在 4 年前出现过一个 <a href="https://github.com/Marswin/MarsDaemon" target="_blank" rel="external">MarsDaemon</a>，这个库通过双进程守护的方式实现保活，一时间风头无两。不过好景不长，进入 Android 8.0 时代之后，这个库就逐渐消亡。</p>
+<p>一般来说，Android 进程保活分为两个方面：</p>
+<ol>
+<li>保持进程不被系统杀死。</li>
+<li>进程被系统杀死之后，可以重新复活。</li>
+</ol>
+<p>随着 Android 系统变得越来越完善，单单通过自己拉活自己逐渐变得不可能了；因此后面的所谓「保活」基本上是两条路：1. 提升自己进程的优先级，让系统不要轻易弄死自己；2. App 之间互相结盟，一个兄弟死了其他兄弟把它拉起来。</p>
+<p>当然，还有一种终极方法，那就是跟各大系统厂商建立 PY 关系，把自己加入系统内存清理的白名单；比如说国民应用微信。当然这条路一般人是没有资格走的。</p>
+<p>大约一年以前，大神 gityuan 在其<a href="http://gityuan.com/2018/02/24/process-keep-forever/" target="_blank" rel="external">博客</a>上公布了 TIM 使用的一种可以称之为「终极永生术」的保活方法；这种方法在当前 Android 内核的实现上可以大大提升进程的存活率。笔者研究了这种保活思路的实现原理，并且提供了一个参考实现 <a href="https://github.com/tiann/Leoric" target="_blank" rel="external">Leoric</a>。接下来就给大家分享一下这个终极保活黑科技的实现原理。</p>
+<h2 id="保活的底层技术原理"><a href="#保活的底层技术原理" class="headerlink" title="保活的底层技术原理"></a>保活的底层技术原理</h2><p>知己知彼，百战不殆。既然我们想要保活，那么首先得知道我们是怎么死的。一般来说，系统杀进程有两种方法，这两个方法都通过 ActivityManagerService 提供：</p>
+<ol>
+<li>killBackgroundProcesses</li>
+<li>forceStopPackage</li>
+</ol>
+<p>在原生系统上，很多时候杀进程是通过第一种方式，除非用户主动在 App 的设置界面点击「强制停止」。不过国内各厂商以及一加三星等 ROM 现在一般使用第二种方法。第一种方法太过温柔，根本治不住想要搞事情的应用。第二种方法就比较强力了，一般来说被 force-stop 之后，App 就只能乖乖等死了。</p>
+<p>因此，要实现保活，我们就得知道 force-stop 到底是如何运作的。既然如此，我们就跟踪一下系统的 <code>forceStopPackage</code> 这个方法的执行流程：</p>
+<p>首先是 <code>ActivityManagerService</code>里面的 <code>forceStopPackage</code> 这方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">forceStopPackage</span><span class="params">(<span class="keyword">final</span> String packageName, <span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// .. 权限检查，省略</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">long</span> callingId = Binder.clearCallingIdentity();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        IPackageManager pm = AppGlobals.getPackageManager();</span><br><span class="line">        <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] users = userId == UserHandle.USER_ALL</span><br><span class="line">                    ? mUserController.getUsers() : <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; userId &#125;;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> user : users) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 状态判断，省略..</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">int</span> pkgUid = -<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    pkgUid = pm.getPackageUid(packageName, MATCH_DEBUG_TRIAGED_MISSING,</span><br><span class="line">                            user);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (pkgUid == -<span class="number">1</span>) &#123;</span><br><span class="line">                    Slog.w(TAG, <span class="string">"Invalid packageName: "</span> + packageName);</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    pm.setPackageStoppedState(packageName, <span class="keyword">true</span>, user);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">                    Slog.w(TAG, <span class="string">"Failed trying to unstop package "</span></span><br><span class="line">                            + packageName + <span class="string">": "</span> + e);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (mUserController.isUserRunning(user, <span class="number">0</span>)) &#123;</span><br><span class="line">                	<span class="comment">// 根据 UID 和包名杀进程</span></span><br><span class="line">                    forceStopPackageLocked(packageName, pkgUid, <span class="string">"from pid "</span> + callingPid);</span><br><span class="line">                    finishForceStopPackageLocked(packageName, pkgUid);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        Binder.restoreCallingIdentity(callingId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里我们可以知道，系统是通过 <code>uid</code> 为单位 force-stop 进程的，因此不论你是 native 进程还是 Java 进程，force-stop 都会将你统统杀死。我们继续跟踪<code>forceStopPackageLocked</code> 这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">forceStopPackageLocked</span><span class="params">(String packageName, <span class="keyword">int</span> appId,</span><br><span class="line">        <span class="keyword">boolean</span> callerWillRestart, <span class="keyword">boolean</span> purgeCache, <span class="keyword">boolean</span> doit,</span><br><span class="line">        <span class="keyword">boolean</span> evenPersistent, <span class="keyword">boolean</span> uninstalling, <span class="keyword">int</span> userId, String reason)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// .. 状态判断，省略</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> didSomething = mProcessList.killPackageProcessesLocked(packageName, appId, userId,</span><br><span class="line">            ProcessList.INVALID_ADJ, callerWillRestart, <span class="keyword">true</span> <span class="comment">/* allowRestart */</span>, doit,</span><br><span class="line">            evenPersistent, <span class="keyword">true</span> <span class="comment">/* setRemoved */</span>,</span><br><span class="line">            packageName == <span class="keyword">null</span> ? (<span class="string">"stop user "</span> + userId) : (<span class="string">"stop "</span> + packageName));</span><br><span class="line"></span><br><span class="line">    didSomething |=</span><br><span class="line">            mAtmInternal.onForceStopPackage(packageName, doit, evenPersistent, userId);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清理 service</span></span><br><span class="line">    <span class="comment">// 清理 broadcastreceiver</span></span><br><span class="line">    <span class="comment">// 清理 providers</span></span><br><span class="line">    <span class="comment">// 清理其他</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> didSomething;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法实现很清晰：先杀死这个 App 内部的所有进程，然后清理残留在 system_server 内的四大组件信息；我们关心进程是如何被杀死的，因此继续跟踪<code>killPackageProcessesLocked</code>，这个方法最终会调用到 <code>ProcessList</code> 内部的 <code>removeProcessLocked</code> 方法，<code>removeProcessLocked</code> 会调用 <code>ProcessRecord</code> 的 <code>kill</code> 方法，我们看看这个<code>kill</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kill</span><span class="params">(String reason, <span class="keyword">boolean</span> noisy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!killedByAm) &#123;</span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"kill"</span>);</span><br><span class="line">        <span class="keyword">if</span> (mService != <span class="keyword">null</span> &amp;&amp; (noisy || info.uid == mService.mCurOomAdjUid)) &#123;</span><br><span class="line">            mService.reportUidInfoMessageLocked(TAG,</span><br><span class="line">                    <span class="string">"Killing "</span> + toShortString() + <span class="string">" (adj "</span> + setAdj + <span class="string">"): "</span> + reason,</span><br><span class="line">                    info.uid);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (pid &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            EventLog.writeEvent(EventLogTags.AM_KILL, userId, pid, processName, setAdj, reason);</span><br><span class="line">            Process.killProcessQuiet(pid);</span><br><span class="line">            ProcessList.killProcessGroup(uid, pid);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            pendingStart = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!mPersistent) &#123;</span><br><span class="line">            killed = <span class="keyword">true</span>;</span><br><span class="line">            killedByAm = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们可以看到，首先杀掉了目标进程，然后会以<code>uid</code>为单位杀掉目标进程组。如果只杀掉目标进程，那么我们可以通过双进程守护的方式实现保活；关键就在于这个<code>killProcessGroup</code>，继续跟踪之后发现这是一个 native 方法，它的最终实现在 <a href="http://www.aospxref.com/android-10.0.0_r2/xref/system/core/libprocessgroup/processgroup.cpp#390" target="_blank" rel="external">libprocessgroup</a>中，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">killProcessGroup</span><span class="params">(uid_t uid, <span class="keyword">int</span> initialPid, <span class="keyword">int</span> signal)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> KillProcessGroup(uid, initialPid, signal, <span class="number">40</span> <span class="comment">/*retries*/</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这里有个奇怪的数字：40。我们继续跟踪：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">KillProcessGroup</span><span class="params">(uid_t uid, <span class="keyword">int</span> initialPid, <span class="keyword">int</span> signal, <span class="keyword">int</span> retries)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> retry = retries;</span><br><span class="line">    <span class="keyword">int</span> processes;</span><br><span class="line">    <span class="keyword">while</span> ((processes = DoKillProcessGroupOnce(cgroup, uid, initialPid, signal)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        LOG(VERBOSE) &lt;&lt; <span class="string">"Killed "</span> &lt;&lt; processes &lt;&lt; <span class="string">" processes for processgroup "</span> &lt;&lt; initialPid;</span><br><span class="line">        <span class="keyword">if</span> (retry &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">std</span>::this_thread::sleep_for(<span class="number">5</span>ms);</span><br><span class="line">            --retry;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>瞧瞧我们的系统做了什么骚操作？<strong>循环 40 遍不停滴杀进程，每次杀完之后等 5ms</strong>，循环完毕之后就算过去了。</p>
+<p>看到这段代码，我想任何人都会蹦出一个疑问：假设经历连续 40 次的杀进程之后，如果 App 还有进程存在，那不就侥幸逃脱了吗？</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p>那么，如何实现这个目的呢？我们看这个关键的 <strong>5ms</strong>。假设，App 进程在被杀掉之后，能够以足够快的速度（5ms 内）启动一堆新的进程，那么系统在一次循环杀掉老的所有进程之后，sleep 5ms 之后又会遇到一堆新的进程；如此循环 40 次，只要我们每次都能够拉起新的进程，那我们的 App 就能逃过系统的追杀，实现永生。是的，炼狱般的 200ms，只要我们熬过 200ms 就能渡劫成功，得道飞升。不知道大家有没有玩过打地鼠这个游戏，整个过程非常类似，按下去一个又冒出一个，只要每次都能足够快地冒出来，我们就赢了。</p>
+<p>现在问题的关键就在于：<strong>如何在 5ms 内启动一堆新的进程</strong>？</p>
+<p>再回过头来看原来的保活方式，它们拉起进程最开始通过<code>am</code>命令，这个命令实际上是一个 java 程序，它会经历启动一个进程然后启动一个 ART 虚拟机，接着获取 ams 的 binder 代理，然后与 ams 进行 binder 同步通信。这个过程实在是太慢了，在这与死神赛跑的 5ms 里，它的速度的确是不敢恭维。</p>
+<p>后来，MarsDaemon 提出了一种新的方式，它用 binder 引用直接给 ams 发送 Parcel，这个过程相比 <code>am</code>命令快了很多，从而大大提高了成功率。其实这里还有改进的空间，毕竟这里还是在 Java 层调用，Java 语言在这种实时性要求极高的场合有一个非常令人诟病的特性：垃圾回收（GC）；虽然我们在这 5ms 内直接碰上 gc 引发停顿的可能性非常小，但是由于 GC 的存在，ART 中的 Java 代码存在非常多的 checkpoint；想象一下你现在是一个信使有重要军情要报告，但是在路上却碰到很多关隘，而且很可能被勒令暂时停止一下，这种情况是不可接受的。因此，最好的方法是通过 native code 给 ams 发送 binder 调用；当然，如果再底层一点，我们甚至可以通过 <code>ioctl</code> 直接给 binder 驱动发送数据进而完成调用，但是这种方法的兼容性比较差，没有用 native 方式省心。</p>
+<p>通过在 native 层给 ams 发送 binder 消息拉起进程，我们算是解决了「快速拉起进程」这个问题。但是这个还是不够。还是回到打地鼠这个游戏，假设你摁下一个地鼠，会冒起一个新的地鼠，那么你每次都能摁下去最后获取胜利的概率还是比较高的；但如果你每次摁下一个地鼠，其他所有地鼠都能冒出来呢？这个难度系数可是要高多了。如果我们的进程能够在<strong>任意一个进程死亡之后，都能让把其他所有进程全部拉起</strong>，这样系统就很难杀死我们了。</p>
+<p>新的黑科技保活中通过 2 个机制来保证进程之间的互相拉起：</p>
+<ol>
+<li>2 个进程通过互相监听文件锁的方式，来感知彼此的死亡。</li>
+<li>通过 fork 产生子进程，fork 的进程同属一个进程组，一个被杀之后会触发另外一个进程被杀，从而被文件锁感知。</li>
+</ol>
+<p>具体来说，创建 2 个进程 p1, p2，这两个进程通过文件锁互相关联，一个被杀之后拉起另外一个；同时 p1 经过 2 次 fork 产生孤儿进程 c1，p2 经过 2 次 fork 产生孤儿进程 c2，c1 和 c2 之间建立文件锁关联。这样假设 p1 被杀，那么 p2 会立马感知到，然后 p1 和 c1 同属一个进程组，p1 被杀会触发 c1 被杀，c1 死后 c2 立马感受到从而拉起 p1，因此这四个进程三三之间形成了铁三角，从而保证了存活率。</p>
+<p>分析到这里，这种方案的大致原理我们已经清晰了。基于以上原理，我写了一个简单的 PoC，代码在这里：<a href="https://github.com/tiann/Leoric" target="_blank" rel="external">https://github.com/tiann/Leoric</a> 有兴趣的可以看一下。</p>
+<h2 id="改进空间"><a href="#改进空间" class="headerlink" title="改进空间"></a>改进空间</h2><p>本方案的原理还是比较简单直观的，但是要实现稳定的保活，还需要很多细节要补充；特别是那与死神赛跑的 5ms，需要不计一切代价去优化才能提升成功率。具体来说，就是当前的实现是在 Java 层用 binder 调用的，我们应该在 native 层完成。笔者曾经实现过这个方案，但是这个库本质上是有损用户利益的，因此并不打算公开代码，这里简单提一下实现思路供大家学习：</p>
+<h3 id="如何在-native-层进行-binder-通信？"><a href="#如何在-native-层进行-binder-通信？" class="headerlink" title="如何在 native 层进行 binder 通信？"></a>如何在 native 层进行 binder 通信？</h3><p>libbinder 是 NDK 公开库，拿到对应头文件，动态链接即可。</p>
+<p>难点：依赖繁多，剥离头文件是个体力活。</p>
+<p>如何组织 binder 通信的数据？</p>
+<p>通信的数据其实就是二进制流；具体表现就是 (C++/Java) Parcel 对象。native 层没有对应的 Intent Parcel，兼容性差。</p>
+<p>方案：</p>
+<ol>
+<li>Java 层创建 Parcel （含 Intent），拿到 Parcel 对象的 mNativePtr(native peer)，传到 Native 层。</li>
+<li>native 层直接把 mNativePtr 强转为结构体指针。</li>
+<li>fork 子进程，建立管道，准备传输 parcel 数据。</li>
+<li>子进程读管道，拿到二进制流，重组为 parcel。</li>
+</ol>
+<h2 id="如何应对？"><a href="#如何应对？" class="headerlink" title="如何应对？"></a>如何应对？</h2><p>今天我把这个实现原理公开，并且提供 PoC 代码，并不是鼓励大家使用这种方式保活，而是希望各大系统厂商能感知到这种黑科技的存在，推动自己的系统彻底解决这个问题。</p>
+<p>两年前我就知道了这个方案的存在，不过当时鲜为人知。最近一个月我发现很多 App 都使用了这种方案，把我的 Android 手机折腾的惨不忍睹；毕竟本人手机上安装了将近 800 个 App，假设每个 App 都用这个方案保活，那这系统就没法用了。</p>
+<h3 id="系统如何应对？"><a href="#系统如何应对？" class="headerlink" title="系统如何应对？"></a>系统如何应对？</h3><p>如果我们把系统杀进程比喻为斩首，那么这个保活方案的精髓在于能快速长出一个新的头；因此应对之法也很简单，只要我们在斩杀一个进程的时候，让别的进程老老实实呆着别搞事情就 OK 了。具体的实现方法多种多样，不赘述。</p>
+<h3 id="用户如何应对？"><a href="#用户如何应对？" class="headerlink" title="用户如何应对？"></a>用户如何应对？</h3><p>在厂商没有推出解决方案之前，用户可以有一些方案来缓解使用这个方案进行保活的流氓 App。这里推荐两个应用给大家：</p>
+<ul>
+<li><a href="https://www.coolapk.com/apk/com.catchingnow.icebox" target="_blank" rel="external">冰箱</a></li>
+<li><a href="https://www.coolapk.com/apk/com.oasisfeng.island" target="_blank" rel="external">Island</a></li>
+</ul>
+<p>通过冰箱的冻结和 Island 的深度休眠可以彻底阻止 App 的这种保活行为。当然，如果你喜欢别的这种“冻结”类型的应用，比如<a href="https://www.coolapk.com/apk/web1n.stopapp" target="_blank" rel="external">小黑屋</a>或者<a href="https://www.coolapk.com/apk/me.weishu.exp" target="_blank" rel="external">太极</a>的阴阳之门也是可以的。</p>
+<p>其他不是通过“冻结”这种机制来压制后台的应用理论上对这种保活方案的作用非常有限。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>对技术来说，黑科技没有什么黑的，不过是对系统底层原理的深入了解从而反过来对抗系统的一种手段。很多人会说，了解系统底层有什么用，本文应该可以给出一个答案：可以实现别人永远也无法实现的功能，通过技术推动产品，从而产生巨大的商业价值。</li>
+<li>黑科技虽强，但是它不该存在于这世上。没有规矩，不成方圆。黑科技黑的了一时，黑不了一世。要提升产品的存活率，终归要落到产品本身上面来，尊重用户，提升体验方是正途。</li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/10/30/logcat-lose-message/" rel="prev">从一次日志丢失所想到的</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/16/another-free-reflection-above-android-p/" rel="next">另一种绕过 Android P以上非公开API限制的办法</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#保活的底层技术原理"><span class="nav-number">1.</span> <span class="nav-text">保活的底层技术原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方法"><span class="nav-number">2.</span> <span class="nav-text">实现方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改进空间"><span class="nav-number">3.</span> <span class="nav-text">改进空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何在-native-层进行-binder-通信？"><span class="nav-number">3.1.</span> <span class="nav-text">如何在 native 层进行 binder 通信？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何应对？"><span class="nav-number">4.</span> <span class="nav-text">如何应对？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统如何应对？"><span class="nav-number">4.1.</span> <span class="nav-text">系统如何应对？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户如何应对？"><span class="nav-number">4.2.</span> <span class="nav-text">用户如何应对？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

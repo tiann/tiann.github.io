@@ -1,23 +1,1112 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
 
-{% block title %} {{ config.title }} - {{ theme.description }} {% endblock %}
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-{% block page_class %}
-  {% if is_home() %} page-home {% endif %}
-{% endblock %}
 
-{% block content %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="为数不多的维术">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Weishu's Notes">
+<meta property="og:url" content="http://weishu.me/page/3/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="为数不多的维术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Weishu's Notes">
+<meta name="twitter:description" content="为数不多的维术">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> Weishu's Notes - 为数不多的维术 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column 
+   page-home 
+">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
   <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true, false) }}
-    {% endfor %}
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/05/30/how-to-debug-android-framework/" itemprop="url">
+                如何调试Android Framework？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-05-30T17:26:05+08:00" content="2016-05-30">
+            2016-05-30
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Linus有一句名言广为人知：Read the fucking source code. 但其实，要深入理解某个软件、框架或者系统的工作原理，仅仅「看」代码是远远不够的。就拿Android Framework来说，整个代码量非常大不说，那些个动辄几万行的类如何去理解？所以我今天要说的就是：</p>
+<p><strong>Debug the fucking source code!!</strong></p>
+<p>之前分享过一个答案：<a href="https://www.zhihu.com/question/40300713/answer/86706105">大家遇到过什么 Android 兼容性问题？</a>，这里面的有一些非常诡异的问题，我相信光靠看代码你是永远定位不出来的。还有我写的一系列<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件框架原理</a>的文章，这里面涉及到大量Android Framework层的知识，有小伙伴会问，这些Framework层的原理，你是如何学习的呢，有诀窍吗？有！那就是调试。</p>
+<p>Debug是一项非常非常重要的技能，毋庸多言。今天我就给大家分享一下「调试Android Framework」的经验，一旦掌握这项技能，那么Java层的任何问题都拦不住你了。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/30/how-to-debug-android-framework/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/05/11/understand-plugin-framework-service/" itemprop="url">
+                Android 插件化原理解析——Service的插件化
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-05-11T21:02:50+08:00" content="2016-05-11">
+            2016-05-11
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 以及 <a href="http://weishu.me/2016/04/12/understand-plugin-framework-receiver/">广播的管理</a> 中我们详细探讨了Android系统中的Activity、BroadcastReceiver组件的工作原理以及它们的插件化方案，相信读者已经对Android Framework和插件化技术有了一定的了解；本文将探讨Android四大组件之一——Service组件的插件化方式。</p>
+<p>与Activity, BroadcastReceiver相比，Service组件的不同点在哪里呢？我们能否用与之相同的方式实现Service的插件化？如果不行，它们的差别在哪里，应该如何实现Service的插件化？</p>
+<p>我们接下来将围绕这几个问题展开，最终给出Service组件的插件化方式；阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的 service-management 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/11/understand-plugin-framework-service/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/04/12/understand-plugin-framework-receiver/" itemprop="url">
+                Android插件化原理解析——广播的管理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-12T19:08:16+08:00" content="2016-04-12">
+            2016-04-12
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在<a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 以及 <a href="http://weishu.me/2016/04/05/understand-plugin-framework-classloader/">插件加载机制</a> 中我们详细讲述了插件化过程中对于Activity组件的处理方式，为了实现Activity的插件化我们付出了相当多的努力；那么Android系统的其他组件，比如BroadcastReceiver，Service还有ContentProvider，它们又该如何处理呢？</p>
+<p>相比Activity，BroadcastReceiver要简单很多——广播的生命周期相当简单；如果希望插件能够支持广播，这意味着什么？</p>
+<p>回想一下我们日常开发的时候是如何使用BroadcastReceiver的：<strong>注册</strong>, <strong>发送</strong>和<strong>接收</strong>；因此，要实现BroadcastReceiver的插件化就这三种操作提供支持；接下来我们将一步步完成这个过程。</p>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的<code>receiver-management</code> 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/12/understand-plugin-framework-receiver/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/04/05/understand-plugin-framework-classloader/" itemprop="url">
+                Android 插件化原理解析——插件加载机制
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-05T20:13:01+08:00" content="2016-04-05">
+            2016-04-05
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>上文 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 中我们地完成了『启动没有在AndroidManifest.xml中显式声明的Activity』的任务；通过Hook <code>AMS</code>和拦截ActivityThread中<code>H</code>类对于组件调度我们成功地绕过了AndroidMAnifest.xml的限制。</p>
+<p>但是我们启动的『没有在AndroidManifet.xml中显式声明』的Activity和宿主程序存在于同一个Apk中；通常情况下，插件均以独立的文件存在甚至通过网络获取，这时候插件中的Activity能否成功启动呢？</p>
+<p>要启动Activity组件肯定先要创建对应的Activity类的对象，从上文 <a href="http://weishu.me/2016/03/21/understand-plugin-framework-activity-management/">Activity生命周期管理</a> 知道，创建Activity类对象的过程如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ClassLoader cl = r.packageInfo.getClassLoader();</span><br><span class="line">activity = mInstrumentation.newActivity(</span><br><span class="line">        cl, component.getClassName(), r.intent);</span><br><span class="line">StrictMode.incrementExpectedActivityCount(activity.getClass());</span><br><span class="line">r.intent.setExtrasClassLoader(cl);</span><br></pre></td></tr></table></figure>
+<p>也就是说，系统通过<code>ClassLoader</code>加载了需要的Activity类并通过反射调用构造函数创建出了Activity对象。如果Activity组件存在于独立于宿主程序的文件之中，系统的ClassLoader怎么知道去哪里加载呢？因此，如果不做额外的处理，插件中的Activity对象甚至都没有办法创建出来，谈何启动？</p>
+<p>因此，要使存在于独立文件或者网络中的插件被成功启动，首先就需要解决这个<strong>插件类加载</strong>的问题。<br>下文将围绕此问题展开，完成『启动没有在AndroidManifest.xml中显示声明，并且存在于外部插件中的Activity』的任务。</p>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的<code>classloader-hook</code> 模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/05/understand-plugin-framework-classloader/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/03/21/understand-plugin-framework-activity-management/" itemprop="url">
+                Android 插件化原理解析——Activity生命周期管理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-21T19:43:32+08:00" content="2016-03-21">
+            2016-03-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>之前的 <a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">Android插件化原理解析</a> 系列文章揭开了Hook机制的神秘面纱，现在我们手握倚天屠龙，那么如何通过这种技术完成插件化方案呢？具体来说，插件中的Activity，Service等组件如何在Android系统上运行起来？</p>
+<p>在Java平台要做到动态运行模块、热插拔可以使用<code>ClassLoader</code>技术进行动态类加载，比如广泛使用的<code>OSGi</code>技术。在Android上当然也可以使用动态加载技术，但是仅仅把类加载进来就足够了吗？<code>Activity</code>，<code>Service</code>等组件是有生命周期的，它们统一由系统服务<code>AMS</code>管理；使用<code>ClassLoader</code>可以从插件中创建Activity对象，但是，一个没有生命周期的Activity对象有什么用？所以在Android系统上，仅仅完成动态类加载是不够的；我们需要想办法把我们加载进来的Activity等组件交给系统管理，让<code>AMS</code>赋予组件生命周期；这样才算是一个有血有肉的完善的插件化方案。</p>
+<p>接下来的系列文章会讲述 DroidPlugin对于Android四大组件的处理方式，我们且看它如何采用Hook技术坑蒙拐骗把系统玩弄于股掌之中，最终赋予Activity，Service等组件生命周期，完成借尸还魂的。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/21/understand-plugin-framework-activity-management/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" itemprop="url">
+                Android 插件化原理解析——Hook机制之AMS&PMS
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-07T16:35:46+08:00" content="2016-03-07">
+            2016-03-07
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在前面的文章中我们介绍了DroidPlugin的Hook机制，也就是<strong>代理方式</strong>和<strong>Binder Hook</strong>；插件框架通过AOP实现了插件使用和开发的透明性。在讲述DroidPlugin如何实现四大组件的插件化之前，有必要说明一下它对ActivityManagerServiche以及PackageManagerService的Hook方式（以下简称AMS，PMS）。</p>
+<p>ActivityManagerService对于FrameWork层的重要性不言而喻，Android的四大组件无一不与它打交道：</p>
+<ol>
+<li><code>startActivity</code>最终调用了AMS的<code>startActivity</code>系列方法，实现了Activity的启动；Activity的生命周期回调，也在AMS中完成；</li>
+<li><code>startService,bindService</code>最终调用到AMS的startService和bindService方法；</li>
+<li>动态广播的注册和接收在<code>AMS</code>中完成（静态广播在<code>PMS</code>中完成）</li>
+<li><code>getContentResolver</code>最终从<code>AMS</code>的<code>getContentProvider</code>获取到ContentProvider</li>
+</ol>
+<p>而<code>PMS</code>则完成了诸如权限校捡(<code>checkPermission,checkUidPermission</code>)，Apk meta信息获取(<code>getApplicationInfo</code>等)，四大组件信息获取(<code>query</code>系列方法)等重要功能。</p>
+<p>在上文<a href="http://weishu.me/2016/02/16/understand-plugin-framework-binder-hook/">Android插件化原理解析——Hook机制之Binder Hook</a>中讲述了DroidPlugin的Binder Hook机制；我们知道<code>AMS</code>和<code>PMS</code>就是以Binder方式提供给应用程序使用的系统服务，理论上我们也可以采用这种方式Hook掉它们。但是由于这两者使用得如此频繁，Framework给他们了一些“特别优待”，这也给了我们相对于Binder Hook更加稳定可靠的hook方式。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/07/understand-plugin-framework-ams-pms-hook/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/02/16/understand-plugin-framework-binder-hook/" itemprop="url">
+                Android插件化原理解析——Hook机制之Binder Hook
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-02-16T19:22:45+08:00" content="2016-02-16">
+            2016-02-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Android系统通过Binder机制给应用程序提供了一系列的系统服务，诸如<code>ActivityManagerService</code>，<code>ClipboardManager</code>， <code>AudioManager</code>等；这些广泛存在系统服务给应用程序提供了诸如任务管理，音频，视频等异常强大的功能。</p>
+<p>插件框架作为各个插件的管理者，为了使得插件能够<strong>无缝地</strong>使用这些系统服务，自然会对这些系统服务做出一定的改造(Hook)，使得插件的开发和使用更加方便，从而大大降低插件的开发和维护成本。比如，Hook住<code>ActivityManagerService</code>可以让插件无缝地使用<code>startActivity</code>方法而不是使用特定的方式(比如that语法)来启动插件或者主程序的任意界面。</p>
+<p>我们把这种Hook系统服务的机制称之为Binder Hook，因为本质上这些服务提供者都是存在于系统各个进程的Binder对象。因此，要理解接下来的内容必须了解Android的Binder机制，可以参考我之前的文章<a href="http://weishu.me/2016/01/12/binder-index-for-newer/">Binder学习指南</a></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/16/understand-plugin-framework-binder-hook/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/02/01/avoid-switching-keyboard-in-markdown/" itemprop="url">
+                提升markdown的中文输入效率
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-02-01T16:15:56+08:00" content="2016-02-01">
+            2016-02-01
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/实用技巧/" itemprop="url" rel="index">
+                  <span itemprop="name">实用技巧</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Markdown这种格式的出现大大提升了写作的效率，但是它对于非英文的用户其实并不友好：每当我们需要使用<code>#[-</code>等标志符的时候，需要不断地切换输入法。</p>
+<p>首先，切换输入法(就算是按<code>shift</code>键)让我们的思维不连贯；其次，一旦中间有一次切换出错，那么又有撤销的成本；我相信每一个非英文markdown的使用者都有这种困惑；实际想要达到的效果如下：</p>
+<p><img src="http://blog.dimenspace.com/201602markdown_keymap_remapping.gif" alt="效果图"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/01/avoid-switching-keyboard-in-markdown/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/01/28/understand-plugin-framework-proxy-hook/" itemprop="url">
+                Android插件化原理解析——Hook机制之动态代理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-28T20:27:13+08:00" content="2016-01-28">
+            2016-01-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。</p>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的<code>dynamic-proxy-hook</code>模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+<h2 id="代理是什么"><a href="#代理是什么" class="headerlink" title="代理是什么"></a>代理是什么</h2><p>为什么需要代理呢？其实这个代理与日常生活中的“代理”，“中介”差不多；比如你想海淘买东西，总不可能亲自飞到国外去购物吧，这时候我们使用第三方海淘服务比如惠惠购物助手等；同样拿购物为例，有时候第三方购物会有折扣比如当初的米折网，这时候我们可以少花点钱；当然有时候这个“代理”比较坑，坑我们的钱，坑我们的货。</p>
+<p>从这个例子可以看出来，代理可以实现<strong>方法增强</strong>，比如常用的<em>日志</em>,<em>缓存</em>等；也可以实现方法拦截，通过代理方法修改原方法的参数和返回值，从而实现某种不可告人的目的～接下来我们用代码解释一下。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/28/understand-plugin-framework-proxy-hook/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/01/28/understand-plugin-framework-overview/" itemprop="url">
+                Android插件化原理解析——概要
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-28T11:07:36+08:00" content="2016-01-28">
+            2016-01-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
+<ol>
+<li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
+<li>在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个app进行升级，那么发布流程不仅复杂而且效率低下；在讲究小步快跑和持续迭代的移动互联网必将遭到淘汰。</li>
+</ol>
+<p>H5和Hybird可以解决这些问题，但是始终比不上native的用户体验；于是，国外的FaceBook推出了<code>react-native</code>；而国内各大厂商几乎都选择纯native的插件化技术。可以说，Android的未来必将是<code>react-native</code>和插件化的天下。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/28/understand-plugin-framework-overview/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">&raquo;</a>
+  </nav>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+ </div>
+
+        
+
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+    
+
+    
+      
+    
+
+   
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

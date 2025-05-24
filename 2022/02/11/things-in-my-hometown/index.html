@@ -1,38 +1,689 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="去年春节之前，妈妈打电话给我说，我们老家那边有疫情，听说高速路口都封锁了；今年你在外面过年，一定要好好搞点吃的，过个好年。
+我听完之后一时间有点恍惚：长这么大，我还没有在外面过年过；每年春节，无论我身处何地，无论回家要转多少趟车，我都会回家陪爸妈过节。电话完之后我赶紧又给老家那边的疾控中心打电话确认了一遍，被告知疫情是隔壁县的，可以放心回家，心里一块石头落了地。终于，我在腊月廿七那一天踏上了回乡的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回乡二三事">
+<meta property="og:url" content="http://weishu.me/2022/02/11/things-in-my-hometown/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="去年春节之前，妈妈打电话给我说，我们老家那边有疫情，听说高速路口都封锁了；今年你在外面过年，一定要好好搞点吃的，过个好年。
+我听完之后一时间有点恍惚：长这么大，我还没有在外面过年过；每年春节，无论我身处何地，无论回家要转多少趟车，我都会回家陪爸妈过节。电话完之后我赶紧又给老家那边的疾控中心打电话确认了一遍，被告知疫情是隔壁县的，可以放心回家，心里一块石头落了地。终于，我在腊月廿七那一天踏上了回乡的">
+<meta property="og:image" content="https://blog.dimenspace.com/uPic/xKlxM0.jpg">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.118Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回乡二三事">
+<meta name="twitter:description" content="去年春节之前，妈妈打电话给我说，我们老家那边有疫情，听说高速路口都封锁了；今年你在外面过年，一定要好好搞点吃的，过个好年。
+我听完之后一时间有点恍惚：长这么大，我还没有在外面过年过；每年春节，无论我身处何地，无论回家要转多少趟车，我都会回家陪爸妈过节。电话完之后我赶紧又给老家那边的疾控中心打电话确认了一遍，被告知疫情是隔壁县的，可以放心回家，心里一块石头落了地。终于，我在腊月廿七那一天踏上了回乡的">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> 回乡二三事 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              回乡二三事
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2022-02-11T13:57:14+08:00" content="2022-02-11">
+            2022-02-11
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>去年春节之前，妈妈打电话给我说，我们老家那边有疫情，听说高速路口都封锁了；今年你在外面过年，一定要好好搞点吃的，过个好年。</p>
+<p>我听完之后一时间有点恍惚：长这么大，我还没有在外面过年过；每年春节，无论我身处何地，无论回家要转多少趟车，我都会回家陪爸妈过节。电话完之后我赶紧又给老家那边的疾控中心打电话确认了一遍，被告知疫情是隔壁县的，可以放心回家，心里一块石头落了地。终于，我在腊月廿七那一天踏上了回乡的旅途。</p>
+<h2 id="偷渡长江"><a href="#偷渡长江" class="headerlink" title="偷渡长江"></a>偷渡长江</h2><p>那一天我早早地起了床，在经过大半天的转车之后，终于在下午五点左右下了高速出口；结果出人意料的事情发生了：路上的一座大桥被人为堵住，回家的路被彻底堵死了；我辗转千里，却在离家不到两公里的地方被拒之门外。</p>
+<a id="more"></a>
+<p><img src="https://blog.dimenspace.com/uPic/xKlxM0.jpg" alt="pic"></p>
+<p>这座桥大约有四层楼房那么高，其实按照障碍物的高度我是可以从侧边翻过去的，不过万一掉下去我可能就凉了；从上面翻的话，没有着力点，而且对面的就是社区的管理人员，看到你爬越就过来推你。常规方法这条路行不通。</p>
+<p>我也尝试过跟工作人员沟通，说我们（很多人都被堵住）大老远回家过年，也不知道路会封，行行好让大家回家团个圆；它的话让我印象深刻：我不管你回来干啥的，这条路就是不让过。</p>
+<p>后来实在没有办法，我们选择了直接从河里渡过去；就这样，在室外温度 3℃ 的条件下，我们徒步渡过了 30m 宽的河，美其名曰：大冬天偷渡长江（支流）。</p>
+<p>当天晚上我非常气愤，打算直接去举报，并且还准备在公众号发文揭露一下；深思熟虑之后还是作罢了。社区工作人员都是村里人，我的亲人们不可能像我一样常年旅居在外，举报之后难免被穿小鞋；唉，成年人的生活就是这么无奈。</p>
+<h2 id="智能手机"><a href="#智能手机" class="headerlink" title="智能手机"></a>智能手机</h2><p>到家之后我惊奇地发现，老妈竟然换成了智能手机；我爸妈都是 50 后，之前有好多次劝说给他们换智能手机，我还放了几个手机在家里，我爸慢慢学会使用了，可是我妈却坚持使十几年前那种小灵通样式的手机；我实在没办法，专程去给她买了个老人机。</p>
+<p>没想到短短的一年间，她竟然自己主动换成了智能机。我就问我妈怎么突然想通了要用智能机了，她说老人机用不了健康码——疫情已经持续两年多，它深刻地改变了我们的生活方式。</p>
+<h2 id="拼多多"><a href="#拼多多" class="headerlink" title="拼多多"></a>拼多多</h2><p>后来有一天在家我打准备开电脑摸摸鱼，四处寻找插线板；然后我爸给我找了一个出来，一脸得意地跟我说，这是我两块五在拼多多上买的，又便宜又好用。我顿时大为震惊。</p>
+<p>我爸，一个年过花甲的老人，当了一辈子农民，手机上连打字都不顺畅，竟然学会了网购？</p>
+<p>用着那个两块五的插线板，我越想越不安：这玩意会不会漏电，便宜的没好货啊。于是我就去给我爸说，拼多多上好多假货，他们那个砍一刀啥的都是骗人的，然后我还费了老大劲给他解释砍一刀小数点后面六位数的故事；我告诉他插线板这种东西还是要看质量，万一出现安全问题就完了，以后你要是想买东西就给你儿子说，我给你买；说完我就把它手机上的拼多多卸载了。我爸听完之后一脸失望地走开了。</p>
+<p>又过了几天，我叔叔他们来我家拜年，无意之中聊到了拼多多。没想到拼多多获得了大家的一致好评，甚至是追捧。这一次，我没有说拼多多的坏话，安静地听他们讲拼多多的各种好：拼多多上的纸巾几块钱一大袋，质量比街上的那些破纸好多了；拼多多上的空调几百块钱很耐用，街上买的空调几千块用了几个星期就坏了；拼多多上买的水果又便宜又新鲜；拼多多…又便宜质量又好。乡亲们对拼多多的评价，跟我们在公众号、微博，知乎上的评价大相径庭，仿佛彼此生活不在一个世界。</p>
+<p>再后来，我去街上逛了一圈，终于释怀了：拼多多上某些商品的质量可能的确比不上京东淘宝，但是秒杀农村街上的那些劣质商品绝对是绰绰有余；拼多多，让五六线城市的普通民众感受到了「性价比」和「质量」。这个结论可能会让人觉得非常诧异，但这的的确确是我亲身体味到的；拼多多改善了亿万人民的生活，它让我肃然起敬。</p>
+<h2 id="七大姑八大姨"><a href="#七大姑八大姨" class="headerlink" title="七大姑八大姨"></a>七大姑八大姨</h2><p>年轻人回家过年，总免不了被七大姑八大姨围观；问一些诸如“工资多少呀？”、“这么大了还不结婚？”，“什么时候生小孩？”的问题。很久以前我也非常反感这种问题，甚至会恶意抬杠：“今年挣的不多，也就四五百万的样子”。谈到结婚生娃的问题，我会反驳说：咱们又不是猪，到了年龄就要生崽。</p>
+<p>不过后来，我再也不会这样了。乡亲们没有去过外面的世界，他们一辈子待在农村，对他们来说，结婚生娃，一辈子就圆满了。虽然在我们看来这种观念非常不对，但在他们的世界观里面，这就是所谓的好日子；他们本质上是希望你过得好或者说往过得好的路上走的，并没有什么恶意。也许你会说：“我不需要这种关心”，“你觉得好跟我觉得好不是一回事”，“以爱之名”；但遗憾的是，在他们有限的认知里面，你跟他们讲这些，他们脑子里面也许是一片空白。他们不懂这些道理，不理解我们，这是时代的局限性，不怪他们；而我们有幸懂得了这些道理，更应该去包容和理解他们，而不是觉得自己懂几个道理就很了不起。</p>
+<h2 id="完"><a href="#完" class="headerlink" title="完"></a>完</h2><p>大年初六，我又踏上了离乡的客车。看着窗外消逝的轮廓，我想起了无数次离乡时的场景；这么多年在外漂泊，我们以为自己经历了很多，但不过是翻开了现实的一点皮毛；曾经有一句话很火：“我懂得很多道理，却仍过不好这一生”；我更想说的是：“我们懂得了很多道理，更应该好好过这一生。”</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/06/12/eBPF-on-Android/" rel="prev">在 Android 中使用 eBPF：开篇</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/26/start-to-use-Rust/" rel="next">开始学习和使用 Rust</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#偷渡长江"><span class="nav-number">1.</span> <span class="nav-text">偷渡长江</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能手机"><span class="nav-number">2.</span> <span class="nav-text">智能手机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拼多多"><span class="nav-number">3.</span> <span class="nav-text">拼多多</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七大姑八大姨"><span class="nav-number">4.</span> <span class="nav-text">七大姑八大姨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完"><span class="nav-number">5.</span> <span class="nav-text">完</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

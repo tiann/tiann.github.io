@@ -1,38 +1,716 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android,droidplugin,plugin framework," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。
+阅读本文之前，可以先clone一份 understand-plugin-framework，参考此项目的dynamic-pro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android插件化原理解析——Hook机制之动态代理">
+<meta property="og:url" content="http://weishu.me/2016/01/28/understand-plugin-framework-proxy-hook/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。
+阅读本文之前，可以先clone一份 understand-plugin-framework，参考此项目的dynamic-pro">
+<meta property="og:image" content="http://blog.dimenspace.com/201512/1453981415720.png">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.121Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android插件化原理解析——Hook机制之动态代理">
+<meta name="twitter:description" content="使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。
+阅读本文之前，可以先clone一份 understand-plugin-framework，参考此项目的dynamic-pro">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> Android插件化原理解析——Hook机制之动态代理 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Android插件化原理解析——Hook机制之动态代理
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-28T20:27:13+08:00" content="2016-01-28">
+            2016-01-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。</p>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>，参考此项目的<code>dynamic-proxy-hook</code>模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+<h2 id="代理是什么"><a href="#代理是什么" class="headerlink" title="代理是什么"></a>代理是什么</h2><p>为什么需要代理呢？其实这个代理与日常生活中的“代理”，“中介”差不多；比如你想海淘买东西，总不可能亲自飞到国外去购物吧，这时候我们使用第三方海淘服务比如惠惠购物助手等；同样拿购物为例，有时候第三方购物会有折扣比如当初的米折网，这时候我们可以少花点钱；当然有时候这个“代理”比较坑，坑我们的钱，坑我们的货。</p>
+<p>从这个例子可以看出来，代理可以实现<strong>方法增强</strong>，比如常用的<em>日志</em>,<em>缓存</em>等；也可以实现方法拦截，通过代理方法修改原方法的参数和返回值，从而实现某种不可告人的目的～接下来我们用代码解释一下。<br><a id="more"></a></p>
+<h2 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h2><p>静态代理，是最原始的代理方式；假设我们有一个购物的接口，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Shopping</span> </span>&#123;</span><br><span class="line">    Object[] doShopping(<span class="keyword">long</span> money);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它有一个原始的实现，我们可以理解为亲自，直接去商店购物：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShoppingImpl</span> <span class="keyword">implements</span> <span class="title">Shopping</span> </span>&#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object[] doShopping(<span class="keyword">long</span> money) &#123;</span><br><span class="line">        System.out.println(<span class="string">"逛淘宝 ,逛商场,买买买!!"</span>);</span><br><span class="line">        System.out.println(String.format(<span class="string">"花了%s块钱"</span>, money));</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Object[] &#123; <span class="string">"鞋子"</span>, <span class="string">"衣服"</span>, <span class="string">"零食"</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，现在我们自己没时间但是需要买东西，于是我们就找了个代理帮我们买：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyShopping</span> <span class="keyword">implements</span> <span class="title">Shopping</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Shopping base;</span><br><span class="line"></span><br><span class="line">    ProxyShopping(Shopping base) &#123;</span><br><span class="line">        <span class="keyword">this</span>.base = base;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object[] doShopping(<span class="keyword">long</span> money) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 先黑点钱(修改输入参数)</span></span><br><span class="line">        <span class="keyword">long</span> readCost = (<span class="keyword">long</span>) (money * <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(String.format(<span class="string">"花了%s块钱"</span>, readCost));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 帮忙买东西</span></span><br><span class="line">        Object[] things = base.doShopping(readCost);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 偷梁换柱(修改返回值)</span></span><br><span class="line">        <span class="keyword">if</span> (things != <span class="keyword">null</span> &amp;&amp; things.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            things[<span class="number">0</span>] = <span class="string">"被掉包的东西!!"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> things;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>很不幸，我们找的这个代理有点坑，坑了我们的钱还坑了我们的货；先忍忍。</p>
+<h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><p>传统的静态代理模式需要为每一个需要代理的类写一个代理类，如果需要代理的类有几百个那不是要累死？为了更优雅地实现代理模式，JDK提供了动态代理方式，可以简单理解为JVM可以在运行时帮我们动态生成一系列的代理类，这样我们就不需要手写每一个静态的代理类了。依然以购物为例，用动态代理实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Shopping women = <span class="keyword">new</span> ShoppingImpl();</span><br><span class="line">    <span class="comment">// 正常购物</span></span><br><span class="line">    System.out.println(Arrays.toString(women.doShopping(<span class="number">100</span>)));</span><br><span class="line">    <span class="comment">// 招代理</span></span><br><span class="line">    women = (Shopping) Proxy.newProxyInstance(Shopping.class.getClassLoader(),</span><br><span class="line">            women.getClass().getInterfaces(), <span class="keyword">new</span> ShoppingHandler(women));</span><br><span class="line"></span><br><span class="line">    System.out.println(Arrays.toString(women.doShopping(<span class="number">100</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>动态代理主要处理<code>InvocationHandler</code>和<code>Proxy</code>类；完整代码可以见<a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">github</a></p>
+<h2 id="代理Hook"><a href="#代理Hook" class="headerlink" title="代理Hook"></a>代理Hook</h2><p>我们知道代理有比原始对象更强大的能力，比如飞到国外买东西，比如坑钱坑货；那么很自然，如果我们自己创建代理对象，然后把原始对象替换为我们的代理对象，那么就可以在这个代理对象为所欲为了；修改参数，替换返回值，我们称之为Hook。</p>
+<p>下面我们Hook掉<code>startActivity</code>这个方法，使得每次调用这个方法之前输出一条日志；（当然，这个输入日志有点点弱，只是为了展示原理；只要你想，你想可以替换参数，拦截这个<code>startActivity</code>过程，使得调用它导致启动某个别的Activity，指鹿为马！）</p>
+<p>首先我们得找到被Hook的对象，我称之为Hook点；什么样的对象比较好Hook呢？自然是<strong>容易找到的对象</strong>。什么样的对象容易找到？<strong>静态变量和单例</strong>；在一个进程之内，静态变量和单例变量是相对不容易发生变化的，因此非常容易定位，而普通的对象则要么无法标志，要么容易改变。我们根据这个原则找到所谓的Hook点。</p>
+<p>然后我们分析一下<code>startActivity</code>的调用链，找出合适的Hook点。我们知道对于<code>Context.startActivity</code>（Activity.startActivity的调用链与之不同），由于<code>Context</code>的实现实际上是<code>ContextImpl</code>;我们看<code>ConetxtImpl</code>类的<code>startActivity</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startActivity</span><span class="params">(Intent intent, Bundle options)</span> </span>&#123;</span><br><span class="line">    warnIfCallingFromSystemProcess();</span><br><span class="line">    <span class="keyword">if</span> ((intent.getFlags()&amp;Intent.FLAG_ACTIVITY_NEW_TASK) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AndroidRuntimeException(</span><br><span class="line">                <span class="string">"Calling startActivity() from outside of an Activity "</span></span><br><span class="line">                + <span class="string">" context requires the FLAG_ACTIVITY_NEW_TASK flag."</span></span><br><span class="line">                + <span class="string">" Is this really what you want?"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    mMainThread.getInstrumentation().execStartActivity(</span><br><span class="line">        getOuterContext(), mMainThread.getApplicationThread(), <span class="keyword">null</span>,</span><br><span class="line">        (Activity)<span class="keyword">null</span>, intent, -<span class="number">1</span>, options);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里，实际上使用了<code>ActivityThread</code>类的<code>mInstrumentation</code>成员的<code>execStartActivity</code>方法；注意到，<code>ActivityThread</code> 实际上是主线程，而主线程一个进程只有一个，因此这里是一个良好的Hook点。</p>
+<p>接下来就是想要Hook掉我们的主线程对象，也就是把这个主线程对象里面的<code>mInstrumentation</code>给替换成我们修改过的代理对象；要替换主线程对象里面的字段，首先我们得拿到主线程对象的引用，如何获取呢？<code>ActivityThread</code>类里面有一个静态方法<code>currentActivityThread</code>可以帮助我们拿到这个对象类；但是<code>ActivityThread</code>是一个隐藏类，我们需要用反射去获取，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先获取到当前的ActivityThread对象</span></span><br><span class="line">Class&lt;?&gt; activityThreadClass = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod(<span class="string">"currentActivityThread"</span>);</span><br><span class="line">currentActivityThreadMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">Object currentActivityThread = currentActivityThreadMethod.invoke(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>拿到这个<code>currentActivityThread</code>之后，我们需要修改它的<code>mInstrumentation</code>这个字段为我们的代理对象，我们先实现这个代理对象，由于JDK动态代理只支持接口，而这个<code>Instrumentation</code>是一个类，没办法，我们只有手动写静态代理类，覆盖掉原始的方法即可。（<code>cglib</code>可以做到基于类的动态代理，这里先不介绍）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EvilInstrumentation</span> <span class="keyword">extends</span> <span class="title">Instrumentation</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"EvilInstrumentation"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ActivityThread中原始的对象, 保存起来</span></span><br><span class="line">    Instrumentation mBase;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EvilInstrumentation</span><span class="params">(Instrumentation base)</span> </span>&#123;</span><br><span class="line">        mBase = base;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(</span><br><span class="line">            Context who, IBinder contextThread, IBinder token, Activity target,</span><br><span class="line">            Intent intent, <span class="keyword">int</span> requestCode, Bundle options)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Hook之前, <span class="label">XXX到此一游!</span></span></span><br><span class="line">        Log.d(TAG, <span class="string">"\n执行了startActivity, 参数如下: \n"</span> + <span class="string">"who = ["</span> + who + <span class="string">"], "</span> +</span><br><span class="line">                <span class="string">"\ncontextThread = ["</span> + contextThread + <span class="string">"], \ntoken = ["</span> + token + <span class="string">"], "</span> +</span><br><span class="line">                <span class="string">"\ntarget = ["</span> + target + <span class="string">"], \nintent = ["</span> + intent +</span><br><span class="line">                <span class="string">"], \nrequestCode = ["</span> + requestCode + <span class="string">"], \noptions = ["</span> + options + <span class="string">"]"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 开始调用原始的方法, 调不调用随你,但是不调用的话, 所有的startActivity都失效了.</span></span><br><span class="line">        <span class="comment">// 由于这个方法是隐藏的,因此需要使用反射调用;首先找到这个方法</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Method execStartActivity = Instrumentation.class.getDeclaredMethod(</span><br><span class="line">                    <span class="string">"execStartActivity"</span>,</span><br><span class="line">                    Context.class, IBinder.class, IBinder.class, Activity.class, </span><br><span class="line">                    Intent.class, <span class="keyword">int</span>.class, Bundle.class);</span><br><span class="line">            execStartActivity.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> (ActivityResult) execStartActivity.invoke(mBase, who, </span><br><span class="line">                    contextThread, token, target, intent, requestCode, options);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// 某该死的rom修改了  需要手动适配</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"do not support!!! pls adapt it"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Ok，有了代理对象，我们要做的就是偷梁换柱！代码比较简单，采用反射直接修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">attachContext</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="comment">// 先获取到当前的ActivityThread对象</span></span><br><span class="line">    Class&lt;?&gt; activityThreadClass = Class.forName(<span class="string">"android.app.ActivityThread"</span>);</span><br><span class="line">    Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod(<span class="string">"currentActivityThread"</span>);</span><br><span class="line">    currentActivityThreadMethod.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Object currentActivityThread = currentActivityThreadMethod.invoke(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拿到原始的 mInstrumentation字段</span></span><br><span class="line">    Field mInstrumentationField = activityThreadClass.getDeclaredField(<span class="string">"mInstrumentation"</span>);</span><br><span class="line">    mInstrumentationField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Instrumentation mInstrumentation = (Instrumentation) mInstrumentationField.get(currentActivityThread);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建代理对象</span></span><br><span class="line">    Instrumentation evilInstrumentation = <span class="keyword">new</span> EvilInstrumentation(mInstrumentation);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 偷梁换柱</span></span><br><span class="line">    mInstrumentationField.set(currentActivityThread, evilInstrumentation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，我们启动一个Activity测试一下，结果如下：</p>
+<p><img src="http://blog.dimenspace.com/201512/1453981415720.png" width="866"></p>
+<p>可见，Hook确实成功了！这就是使用代理进行Hook的原理——偷梁换柱。整个Hook过程简要总结如下：</p>
+<ol>
+<li>寻找Hook点，原则是静态变量或者单例对象，尽量Hook pulic的对象和方法，非public不保证每个版本都一样，需要适配。</li>
+<li>选择合适的代理方式，如果是接口可以用动态代理；如果是类可以手动写代理也可以使用cglib。</li>
+<li>偷梁换柱——用代理对象替换原始对象</li>
+</ol>
+<p>完整代码参照：<a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>；里面留有一个作业：我们目前仅Hook了<code>Context</code>类的<code>startActivity</code>方法，但是<code>Activity</code>类却使用了自己的<code>mInstrumentation</code>；你可以尝试Hook掉Activity类的<code>startActivity</code>方法。</p>
+<p>喜欢就点个赞吧～持续更新，请关注github项目 <a href="https://github.com/tiann/understand-plugin-framework" target="_blank" rel="external">understand-plugin-framework</a>和我的 <a href="http://weishu.me">博客</a>!</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/droidplugin/" rel="tag">#droidplugin</a>
+          
+            <a href="/tags/plugin-framework/" rel="tag">#plugin framework</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/01/avoid-switching-keyboard-in-markdown/" rel="prev">提升markdown的中文输入效率</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/28/understand-plugin-framework-overview/" rel="next">Android插件化原理解析——概要</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代理是什么"><span class="nav-number">1.</span> <span class="nav-text">代理是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态代理"><span class="nav-number">2.</span> <span class="nav-text">静态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态代理"><span class="nav-number">3.</span> <span class="nav-text">动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理Hook"><span class="nav-number">4.</span> <span class="nav-text">代理Hook</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

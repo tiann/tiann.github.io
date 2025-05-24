@@ -1,38 +1,702 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="android,art," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 AndFix。
+为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ART深度探索开篇：从Method Hook谈起">
+<meta property="og:url" content="http://weishu.me/2017/03/20/dive-into-art-hello-world/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 AndFix。
+为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一">
+<meta property="og:updated_time" content="2025-05-24T12:28:07.114Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ART深度探索开篇：从Method Hook谈起">
+<meta name="twitter:description" content="Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 AndFix。
+为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> ART深度探索开篇：从Method Hook谈起 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page, false, true) }}
+    
 
-    {% include '_partials/donate.swig' %}
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              ART深度探索开篇：从Method Hook谈起
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-20T23:37:08+08:00" content="2017-03-20">
+            2017-03-20
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>Android上的热修复框架 AndFix 想必已经是耳熟能详，它的原理实际上很简单：方法替换——Java层的每一个方法在虚拟机实现里面都对应着一个ArtMethod的结构体，只要把原方法的结构体内容替换成新的结构体的内容，在调用原方法的时候，真正执行的指令会是新方法的指令；这样就能实现热修复，详细代码见 <a href="https://github.com/alibaba/AndFix" target="_blank" rel="external">AndFix</a>。</p>
+<p>为什么可以这么做呢？那得从 Android 虚拟机的方法调用过程说起。作为一个系列的开篇，本文不打算展开讲虚拟机原理等内容，首先给大家一道开胃菜；后续我们再深入探索ART。</p>
+<p>众所周知，AndFix是一种 native 的hotfix方案，它的替换过程是用 c 在 native层完成的，但其实，我们也可以用纯Java实现它！而且，代码还非常精简，且看——</p>
+<a id="more"></a>
+<h2 id="方法替换原理"><a href="#方法替换原理" class="headerlink" title="方法替换原理"></a>方法替换原理</h2><p>既然我们知道 AndFix 的原理是方法替换，那么为什么直接替换Java里面的 <code>java.lang.reflect.Method</code> 有什么问题吗？直接这样貌似很难下结论，那我们换个思路。我们实现方法替换的结果，就是调用原方法的时候最终是调用被替换的方法。因此，我们可以看看 <code>java.lang.reflect.Method</code>类的 <code>invoke</code> 方法。（这里有个疑问，Foo.bar()这种直接调用与反射调用Foo.class.getDeclaredMethod(“bar”).invoke(null) 有什么区别吗？这个问题后续再谈）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">native</span> Object <span class="title">invoke</span><span class="params">(Object receiver, Object[] args, <span class="keyword">boolean</span> accessible)</span></span><br><span class="line">        <span class="keyword">throws</span> IllegalAccessException, IllegalArgumentException, InvocationTargetException</span>;</span><br></pre></td></tr></table></figure>
+<p>这个invoke是一个native方法，它的native实现在 <code>art/runtime/native/java_lang_reflect_Method.cc</code> 里面，这个jni方法最终调用了 <code>art/runtime/reflection.cc</code> 的 <code>InvokeMethod</code>方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">object <span class="title">InvokeMethod</span><span class="params">(<span class="keyword">const</span> ScopedObjectAccessAlreadyRunnable&amp; soa, jobject javaMethod,</span><br><span class="line">                     jobject javaReceiver, jobject javaArgs, <span class="keyword">bool</span> accessible)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 略...</span></span><br><span class="line"></span><br><span class="line">  mirror::ArtMethod* m = mirror::ArtMethod::FromReflectedMethod(soa, javaMethod);</span><br><span class="line"></span><br><span class="line">  mirror::Class* declaring_class = m-&gt;GetDeclaringClass();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 按需初始化类，略。。</span></span><br><span class="line"></span><br><span class="line">  mirror::Object* receiver = <span class="literal">nullptr</span>;</span><br><span class="line">  <span class="keyword">if</span> (!m-&gt;IsStatic()) &#123;</span><br><span class="line">    <span class="comment">// Check that the receiver is non-null and an instance of the field's declaring class.</span></span><br><span class="line">    receiver = soa.Decode&lt;mirror::Object*&gt;(javaReceiver);</span><br><span class="line">    <span class="keyword">if</span> (!VerifyObjectIsClass(receiver, declaring_class)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find the actual implementation of the virtual method.</span></span><br><span class="line">    m = receiver-&gt;GetClass()-&gt;FindVirtualMethodForVirtualOrInterface(m);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 略..</span></span><br><span class="line">  InvokeWithArgArray(soa, m, &amp;arg_array, &amp;result, shorty);</span><br><span class="line">  <span class="comment">// 略 。。</span></span><br><span class="line">  <span class="comment">// Box if necessary and return.</span></span><br><span class="line">  <span class="keyword">return</span> soa.AddLocalReference&lt;jobject&gt;(BoxPrimitive(mh.GetReturnType()-&gt;GetPrimitiveType(),</span><br><span class="line">                                                     result));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面函数 InvokeMethod 的第二个参数 <code>javaMethod</code> 就是Java层我们进行反射调用的那个Method对象，在jni层反映为一个jobject；InvokeMethod这个native方法首先通过 <code>mirror::ArtMethod::FromReflectedMethod</code> 获取了Java对象的在native层的 ArtMethod指针，我们跟进去看看是怎么实现的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ArtMethod* ArtMethod::FromReflectedMethod(<span class="keyword">const</span> ScopedObjectAccessAlreadyRunnable&amp; soa,</span><br><span class="line">                                          jobject jlr_method) &#123;</span><br><span class="line">  mirror::ArtField* f =</span><br><span class="line">      soa.DecodeField(WellKnownClasses::java_lang_reflect_AbstractMethod_artMethod);</span><br><span class="line">  mirror::ArtMethod* method = f-&gt;GetObject(soa.Decode&lt;mirror::Object*&gt;(jlr_method))-&gt;AsArtMethod();</span><br><span class="line">  DCHECK(method != <span class="literal">nullptr</span>);</span><br><span class="line">  <span class="keyword">return</span> method;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在这里看到了一点端倪，获取到了Java层那个Method对象的一个叫做 <code>artMethod</code>的字段，然后强转成了ArtMethod指针（这里的说法不是很准确，但是要搞明白这里面的细节一两篇文章讲不清楚 ~_~，我们暂且这么认为吧。）</p>
+<p>AndFix的实现里面，也正是使用这个 <code>FromReflectedMethod</code> 方法拿到Java层Method对应native层的ArtMethod指针，然后执行替换的。</p>
+<p>上面我们也看到了，我们在native层替换的那个 ArtMethod 不是在 Java 层也有对应的东西么？我们直接替换掉 Java 层的这个artMethod 字段不就OK了？但是我们要注意的是，在Java里面除了基本类型，其他东西都是引用。要实现类似C++里面那种替换引用所指向内容的机智，需要一些黑科技。</p>
+<h2 id="Unsafe-和-Memory"><a href="#Unsafe-和-Memory" class="headerlink" title="Unsafe 和 Memory"></a>Unsafe 和 Memory</h2><p>要在Java层操作内容，也不是没有办法做到；JDK给我们留了一个后门：<code>sun.misc.Unsafe</code> 类；在OpenJDK里面这个类灰常强大，从内存操作到CAS到锁机制，无所不能（可惜的是据说JDK8要去掉？）但是在Android 平台还有一点点不一样，在 Android N之前，Android的JDK实现是 Apache Harmony，这个实现里面的Unsafe就有点鸡肋了，没法写内存；好在Android 又开了一个后门：<code>Memory</code> 类。</p>
+<p>有了这两个类，我们就能在Java层进行简单的内存操作了！！由于这两个类是隐藏类，我写了一个wrapper，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Memory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// libcode.io.Memory#peekByte</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">byte</span> <span class="title">peekByte</span><span class="params">(<span class="keyword">long</span> address)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Byte) Reflection.call(<span class="keyword">null</span>, <span class="string">"libcore.io.Memory"</span>, <span class="string">"peekByte"</span>, <span class="keyword">null</span>, <span class="keyword">new</span> Class[]&#123;<span class="keyword">long</span>.class&#125;, <span class="keyword">new</span> Object[]&#123;address&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pokeByte</span><span class="params">(<span class="keyword">long</span> address, <span class="keyword">byte</span> value)</span> </span>&#123;</span><br><span class="line">        Reflection.call(<span class="keyword">null</span>, <span class="string">"libcore.io.Memory"</span>, <span class="string">"pokeByte"</span>, <span class="keyword">null</span>, <span class="keyword">new</span> Class[]&#123;<span class="keyword">long</span>.class, <span class="keyword">byte</span>.class&#125;, <span class="keyword">new</span> Object[]&#123;address, value&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">memcpy</span><span class="params">(<span class="keyword">long</span> dst, <span class="keyword">long</span> src, <span class="keyword">long</span> length)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            pokeByte(dst, peekByte(src));</span><br><span class="line">            dst++;</span><br><span class="line">            src++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Unsafe</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String UNSAFE_CLASS = <span class="string">"sun.misc.Unsafe"</span>;</span><br><span class="line">    <span class="keyword">static</span> Object THE_UNSAFE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> is64Bit;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        THE_UNSAFE = Reflection.get(<span class="keyword">null</span>, UNSAFE_CLASS, <span class="string">"THE_ONE"</span>, <span class="keyword">null</span>);</span><br><span class="line">        Object runtime = Reflection.call(<span class="keyword">null</span>, <span class="string">"dalvik.system.VMRuntime"</span>, <span class="string">"getRuntime"</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        is64Bit = (Boolean) Reflection.call(<span class="keyword">null</span>, <span class="string">"dalvik.system.VMRuntime"</span>, <span class="string">"is64Bit"</span>, runtime, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getObjectAddress</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        Object[] objects = &#123;o&#125;;</span><br><span class="line">        Integer baseOffset = (Integer) Reflection.call(<span class="keyword">null</span>, UNSAFE_CLASS,</span><br><span class="line">                <span class="string">"arrayBaseOffset"</span>, THE_UNSAFE, <span class="keyword">new</span> Class[]&#123;Class.class&#125;, <span class="keyword">new</span> Object[]&#123;Object[].class&#125;);</span><br><span class="line">        <span class="keyword">return</span> ((Number) Reflection.call(<span class="keyword">null</span>, UNSAFE_CLASS, is64Bit ? <span class="string">"getLong"</span> : <span class="string">"getInt"</span>, THE_UNSAFE,</span><br><span class="line">                <span class="keyword">new</span> Class[]&#123;Object.class, <span class="keyword">long</span>.class&#125;, <span class="keyword">new</span> Object[]&#123;objects, baseOffset.longValue()&#125;)).longValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>接下来思路就很简单了呀，用伪代码表示就是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">memcopy(originArtMethod, replaceArtMethod);</span><br></pre></td></tr></table></figure>
+<p>但是还有一个问题，我们要整个把 originMethod 的 artMethod 所在的内存直接替换为 replaceMethod 的artMethod 所在的内存（上面我们已经知道，Java层Method类的artMethod实际上就是native层的指针表示，在Android N上更明显，这玩意儿直接就是一个long），现在我们已经知道这两个地址是什么，那么我们把 replaceArtMethod 代表的内存复制到 originArtMethod 的区域，应该还需要知道一个 artMethod 有多大。</p>
+<p>但是事情没有一个 sizeof 那么简单。你看AndFix的实现是在每个Android版本把ArtMethod这个结构体复制一份的；要想用sizeof还得把这个类所有的引用复制过来，及其麻烦。更何况在Java里面 sizeof都没有。不过也不是没有办法，既然我们已经能在Java层拿到对象的地址，只需要创建一个数组，丢两个ArtMethod，把两个数组元素的起始地址相减不就得到一个 artMethod的大小了吗？(此方法来自<a href="https://yq.aliyun.com/articles/74598?t=t1" target="_blank" rel="external">Android热修复升级探索——追寻极致的代码热替换</a>)</p>
+<p>不过，既然我们实现了方法替换；还有最后一个问题，如果我们需要在替换后的方法里面调用原函数呢？这个也很简单，我们只需要把原函数copy一份保存起来，需要调用原函数的时候调用那个copy的函数不就行了？不过在具体实现的时候，会遇到一个问题，就是 Java的非static 非private的方法默认是虚方法，在调用这个方法的时候会有一个类似查找虚函数表的过程，这个在上面的代码 <code>InvokeMethod</code> 里面可以看到：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mirror::Object* receiver = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="keyword">if</span> (!m-&gt;IsStatic()) &#123;</span><br><span class="line">  <span class="comment">// Check that the receiver is non-null and an instance of the field's declaring class.</span></span><br><span class="line">  receiver = soa.Decode&lt;mirror::Object*&gt;(javaReceiver);</span><br><span class="line">  <span class="keyword">if</span> (!VerifyObjectIsClass(receiver, declaring_class)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Find the actual implementation of the virtual method.</span></span><br><span class="line">  m = receiver-&gt;GetClass()-&gt;FindVirtualMethodForVirtualOrInterface(m);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在调用的时候，如果不是static的方法，会去查找这个方法的真正实现；我们直接把原方法做了备份之后，去调用备份的那个方法，如果此方法是public的，则会查找到原来的那个函数，于是就无限循环了；我们只需要阻止这个过程，查看 FindVirtualMethodForVirtualOrInterface 这个方法的实现就知道，只要方法是 invoke-direct 进行调用的，就会直接返回原方法，这些方法包括：构造函数，private的方法( 见 <a href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html" target="_blank" rel="external">https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html</a>) 因此，我们手动把这个备份的方法属性修改为private即可解决这个问题。</p>
+<p>详细代码见：<a href="https://github.com/tiann/epic" target="_blank" rel="external">github/epic</a></p>
+<p>至此，我们就用纯Java实现了一个 AndFix，代码只有200行不到！！是不是很神奇？当然，这里面包含了很多黑科技，接下来我们将以这个为引子，深入探索Android ART的方方面面，揭开虚拟机底层的神秘面纱，敬请期待～～</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/art/" rel="tag">#art</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/23/dexposed-on-art/" rel="prev">我为Dexposed续一秒——论ART上运行时 Method AOP实现</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/14/how-to-debug-android-native-framework-source/" rel="next">如何调试Android Native Framework</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法替换原理"><span class="nav-number">1.</span> <span class="nav-text">方法替换原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsafe-和-Memory"><span class="nav-number">2.</span> <span class="nav-text">Unsafe 和 Memory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现"><span class="nav-number">3.</span> <span class="nav-text">具体实现</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+    
 
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.dimenspace.com" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
