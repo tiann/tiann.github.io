@@ -181,6 +181,168 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/08/use-optional-avoid-nullpointexception/" itemprop="url">
+                [译]厌倦了NullPointException？Optional拯救你！
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-08T20:49:40+08:00" content="2015-12-08">
+            2015-12-08
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/java/" itemprop="url" rel="index">
+                  <span itemprop="name">java</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
+</blockquote>
+<p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
+<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://booluimg.dimenspace.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
+<p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
+<p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
+<p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/08/use-optional-avoid-nullpointexception/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/12/07/make-alfred-support-pinyinyin-search/" itemprop="url">
+                让Alfred支持拼音搜索
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-07T04:39:49+08:00" content="2015-12-07">
+            2015-12-07
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>Alfred是个好东西，不过检索程序的时候不支持拼音搜索；我在论坛看到有人给作者反馈过，无奈作者说支持中文，他不知道拼音是什么，于是就不了了之了。举个例子：我想打开<code>网易云音乐</code>,可是当我输入<code>wangyiyunyinyue</code>的时候却是这样的结果:</p>
+<p><img src="http://booluimg.dimenspace.com/test/1449431593204.png" width="536" alt="不支持拼音的搜索结果"/></p>
+<p>要么我知道这个App的名字叫做<code>NeteaseMusic</code>，要么我就需要用中文输入<code>网易云音乐</code>打开了；如果恰巧输入法是英文输入状态，那么就会遇到上图的情况；这时候再把已经输入的删除然后切换输入法打开，效率无疑大大折扣。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/07/make-alfred-support-pinyinyin-search/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/01/autoswitch-keyboard-in-mac/" itemprop="url">
                 mac下自动切换输入法
               </a>
@@ -830,7 +992,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-count">50</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

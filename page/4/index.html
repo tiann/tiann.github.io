@@ -181,6 +181,152 @@
           
           
             
+              <a class="post-title-link" href="/2016/01/28/understand-plugin-framework-proxy-hook/" itemprop="url">
+                Android插件化原理解析——Hook机制之动态代理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-28T20:27:13+08:00" content="2016-01-28">
+            2016-01-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>使用代理机制进行API Hook进而达到方法增强是框架的常用手段，比如J2EE框架Spring通过动态代理优雅地实现了AOP编程，极大地提升了Web开发效率；同样，插件框架也广泛使用了代理机制来增强系统API从而达到插件化的目的。本文将带你了解基于动态代理的Hook机制。</p>
+<p>阅读本文之前，可以先clone一份 <a href="https://github.com/tiann/understand-plugin-framework">understand-plugin-framework</a>，参考此项目的<code>dynamic-proxy-hook</code>模块。另外，插件框架原理解析系列文章见<a href="http://weishu.me/2016/01/28/understand-plugin-framework-overview/">索引</a>。</p>
+<h2 id="代理是什么"><a href="#代理是什么" class="headerlink" title="代理是什么"></a>代理是什么</h2><p>为什么需要代理呢？其实这个代理与日常生活中的“代理”，“中介”差不多；比如你想海淘买东西，总不可能亲自飞到国外去购物吧，这时候我们使用第三方海淘服务比如惠惠购物助手等；同样拿购物为例，有时候第三方购物会有折扣比如当初的米折网，这时候我们可以少花点钱；当然有时候这个“代理”比较坑，坑我们的钱，坑我们的货。</p>
+<p>从这个例子可以看出来，代理可以实现<strong>方法增强</strong>，比如常用的<em>日志</em>,<em>缓存</em>等；也可以实现方法拦截，通过代理方法修改原方法的参数和返回值，从而实现某种不可告人的目的～接下来我们用代码解释一下。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/28/understand-plugin-framework-proxy-hook/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/01/28/understand-plugin-framework-overview/" itemprop="url">
+                Android插件化原理解析——概要
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-28T11:07:36+08:00" content="2016-01-28">
+            2016-01-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>2015年是Android插件化技术突飞猛进的一年，随着业务的发展各大厂商都碰到了Android Native平台的瓶颈：</p>
+<ol>
+<li>从技术上讲，业务逻辑的复杂导致代码量急剧膨胀，各大厂商陆续出到65535方法数的天花板；同时，运营为王的时代对于模块热更新提出了更高的要求。</li>
+<li>在业务层面上，功能模块的解耦以及维护团队的分离也是大势所趋；各个团队维护着同一个App的不同模块，如果每个模块升级新功能都需要对整个app进行升级，那么发布流程不仅复杂而且效率低下；在讲究小步快跑和持续迭代的移动互联网必将遭到淘汰。</li>
+</ol>
+<p>H5和Hybird可以解决这些问题，但是始终比不上native的用户体验；于是，国外的FaceBook推出了<code>react-native</code>；而国内各大厂商几乎都选择纯native的插件化技术。可以说，Android的未来必将是<code>react-native</code>和插件化的天下。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/28/understand-plugin-framework-overview/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/01/18/dive-into-asynctask/" itemprop="url">
                 你真的了解AsyncTask？
               </a>
@@ -813,168 +959,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/08/use-optional-avoid-nullpointexception/" itemprop="url">
-                [译]厌倦了NullPointException？Optional拯救你！
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-08T20:49:40+08:00" content="2015-12-08">
-            2015-12-08
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/java/" itemprop="url" rel="index">
-                  <span itemprop="name">java</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement.<br>—Tony Hoare</p>
-</blockquote>
-<p>有人说，当你处理过了空指针异常才真正成为一个Java开发者。抛开玩笑话不谈，空指针确实是很多bug的根源。Java SE 8引入了一个新的叫做<code>java.util.Optional</code> 的类来缓解这个问题。</p>
-<p>我们首先看看空指针有什么危险，<code>Computer</code>是一个嵌套的对象，如图：<br><img src="http://booluimg.dimenspace.com/blog2015-12-9-1.gif" alt="Comtuper对象"></p>
-<p>下面的代码有什么潜在的问题呢？<br><code>String version = computer.getSoundcard().getUSB().getVersion();</code></p>
-<p>貌似可行，但是，很多电脑（比如 Raspberry Pi）并没有Soundcard，因此调用<code>getSoundcard</code>会发生什么？毫无疑问，结果自然是在运行时给你抛出一个<code>NullPointException</code>，然后终止程序的执行。</p>
-<p>如何避免上面的空指针异常呢？一般的做法就是在调用方法之前进行检测：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/08/use-optional-avoid-nullpointexception/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/07/make-alfred-support-pinyinyin-search/" itemprop="url">
-                让Alfred支持拼音搜索
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-07T04:39:49+08:00" content="2015-12-07">
-            2015-12-07
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>Alfred是个好东西，不过检索程序的时候不支持拼音搜索；我在论坛看到有人给作者反馈过，无奈作者说支持中文，他不知道拼音是什么，于是就不了了之了。举个例子：我想打开<code>网易云音乐</code>,可是当我输入<code>wangyiyunyinyue</code>的时候却是这样的结果:</p>
-<p><img src="http://booluimg.dimenspace.com/test/1449431593204.png" width="536" alt="不支持拼音的搜索结果"/></p>
-<p>要么我知道这个App的名字叫做<code>NeteaseMusic</code>，要么我就需要用中文输入<code>网易云音乐</code>打开了；如果恰巧输入法是英文输入状态，那么就会遇到上图的情况；这时候再把已经输入的删除然后切换输入法打开，效率无疑大大折扣。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/07/make-alfred-support-pinyinyin-search/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1013,7 +997,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-count">50</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

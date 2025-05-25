@@ -181,6 +181,148 @@
           
           
             
+              <a class="post-title-link" href="/2020/01/16/a-keep-alive-method-on-android/" itemprop="url">
+                Android 黑科技保活实现原理揭秘
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2020-01-16T18:05:54+08:00" content="2020-01-16">
+            2020-01-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>一直以来，App 进程保活都是各大厂商，特别是头部应用开发商永恒的追求。毕竟<strong>App 进程死了，就什么也干不了了</strong>；一旦 App 进程死亡，那就再也无法在用户的手机上开展任何业务，所有的商业模型在用户侧都没有立足之地了。</p>
+<p>早期的 Android 系统不完善，导致 App 侧有很多空子可以钻，因此它们有着有着各种各样的姿势进行保活。譬如说在 Android 5.0 以前，App 内部通过 native 方式 fork 出来的进程是不受系统管控的，系统在杀 App 进程的时候，只会去杀 App 启动的 Java 进程；因此诞生了一大批“毒瘤”，他们通过 fork native 进程，在 App 的 Java 进程被杀死的时候通过 <code>am</code>命令拉起自己从而实现永生。那时候的 Android 可谓是魑魅横行，群魔乱舞；系统根本管不住应用，因此长期以来被人诟病耗电、卡顿。同时，系统的软弱导致了 Xposed 框架、阻止运行、绿色守护、黑域、冰箱等一系列管制系统后台进程的框架和 App 出现。</p>
+<p>不过，随着 Android 系统的发展，这一切都在往好的方向演变。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2020/01/16/a-keep-alive-method-on-android/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2019/03/16/another-free-reflection-above-android-p/" itemprop="url">
+                另一种绕过 Android P以上非公开API限制的办法
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2019-03-16T16:34:45+08:00" content="2019-03-16">
+            2019-03-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>去年发布的 Android P上引入了针对非公开API的限制，对开发者来说，这绝对是有史以来最重大的变化之一。前天 Google 发布了 Android Q 的 Beta 版，越来越多的 API 被加入了黑名单，而且 Google 要求下半年 APP 必须 target 28，这意味着现在的深灰名单也会生效；可以预见，在不久的将来，我们要跟大量的 API 说再见了。</p>
+<p>去年我给出了<a href="http://weishu.me/2018/06/07/free-reflection-above-android-p/">一种绕过Android P对非SDK接口限制的简单方法</a>，经验证，这办法在 Android Q 的 Beta 版上依然能正常使用。虽然这个方法需要进行内存搜索，理论上有可能失败，但实际上它曾在 VirtualXposed 和 太极 中得到了较为广泛的验证，从未收到过由于反射失败而导致问题的反馈。而且据我所知，有若干用户量不少的 APP 在线上使用了我提供的 <a href="https://github.com/tiann/FreeReflection/">FreeReflection</a> 库，想来应该也是没有问题的吧。</p>
+<p>不过今天，我打算给出另外一种绕过限制的办法。这个办法目前来说是最优方案，我个人使用了一个多月，不存在任何问题。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2019/03/16/another-free-reflection-above-android-p/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2018/08/27/understand-plugin-framework-book/" itemprop="url">
                 Android插件化原理解析——剧终
               </a>
@@ -740,158 +882,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/10/13/sharedpreference-advices/" itemprop="url">
-                请不要滥用SharedPreference
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-10-13T00:31:19+08:00" content="2016-10-13">
-            2016-10-13
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>SharedPreference是Android上一种非常易用的轻量级存储方式，由于其API及其友好，得到了很多很多开发者的青睐。但是，SharedPreference并不是万能的，如果把它用在不合适的使用场景，那么将会带来灾难性的后果；本文将讲述一些SharedPreference的使用误区。</p>
-<h2 id="存储超大的value"><a href="#存储超大的value" class="headerlink" title="存储超大的value"></a>存储超大的value</h2><p>第一次看到下面这个sp的时候，我的内心是崩溃的：</p>
-<p><img src="http://blog.dimenspace.com/201601/1476286071563.png" width="664"/></p>
-<p>一个默认的sp有90K，当我打开它的时候，我都快哭了：除了零零星星的几个很小的key之外，存储了一个炒鸡大的key，这一个key至少占了其中的89K。知道这是什么概念吗？</p>
-<p>在小米1S这种手机上，<strong>就算获取这个sp里面一个很小的key，会花费120+ms！！</strong>那个毫不相干的key拖慢了其他所有key的读取速度！当然，在性能稍好的手机上，这个问题不是特别严重。但是要知道，120ms这个是完全不能忍的！</p>
-<p>之所以说SharedPreference（下文简称sp）是一种轻量级的存储方式，是它的设计所决定的：sp在创建的时候会把整个文件全部加载进内存，如果你的sp文件比较大，那么会带来两个严重问题：</p>
-<ol>
-<li>第一次从sp中获取值的时候，有可能阻塞主线程，使界面卡顿、掉帧。</li>
-<li>解析sp的时候会产生大量的临时对象，导致频繁GC，引起界面卡顿。</li>
-<li>这些key和value会永远存在于内存之中，占用大量内存。</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/13/sharedpreference-advices/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/07/12/understand-plugin-framework-content-provider/" itemprop="url">
-                Android插件化原理解析——ContentProvider的插件化
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-07-12T19:18:07+08:00" content="2016-07-12">
-            2016-07-12
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>目前为止我们已经完成了Android四大组件中Activity，Service以及BroadcastReceiver的插件化，这几个组件各不相同，我们根据它们的特点定制了不同的插件化方案；那么对于ContentProvider，它又有什么特点？应该如何实现它的插件化？</p>
-<p>与Activity，BroadcastReceiver等频繁被使用的组件不同，我们接触和使用ContentProvider的机会要少得多；但是，ContentProvider这个组件对于Android系统有着特别重要的作用——作为一种极其方便的<strong>数据共享</strong>的手段，ContentProvider使得广大第三方App能够在壁垒森严的系统中自由呼吸。</p>
-<p>在Android系统中，每一个应用程序都有自己的用户ID，而每一个应用程序所创建的文件的读写权限都是只赋予给自己所属的用户，这就限制了应用程序之间相互读写数据的操作。应用程序之间如果希望能够进行交互，只能采取跨进程通信的方式；Binder机制能够满足一般的IPC需求，但是如果应用程序之间需要共享大量数据，单纯使用Binder是很难办到的——我相信大家对于Binder 1M缓冲区以及TransactionTooLargeException一定不陌生；ContentProvider使用了匿名共享内存(Ashmem)机制完成数据共享，因此它可以很方便地完成大量数据的传输。Android系统的短信，联系人，相册，媒体库等等一系列的基础功能都依赖与ContentProvider，它的重要性可见一斑。</p>
-<p>既然ContentProvider的核心特性是数据共享，那么要实现它的插件化，必须能让插件能够把它的ContentProvider共享给系统——如果不能「<strong>provide content</strong>」那还叫什么ContentProvider？</p>
-<p>但是，如果回想一下Activity等组件的插件化方式，在涉及到「共享」这个问题上，一直没有较好的解决方案：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/12/understand-plugin-framework-content-provider/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -930,7 +920,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-count">50</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
