@@ -1,0 +1,711 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="最近这一个月，我深度使用 Coding Agent 完成了好几个项目：
+
+KernelSU 的 metamodule 功能
+一个内核文件系统 (ksufs?)
+公司的全栈项目
+
+除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。
+经过这段时间的实战，我认为行业已经到了一个拐点：C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 时代，何以自处？">
+<meta property="og:url" content="http://weishu.me/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="最近这一个月，我深度使用 Coding Agent 完成了好几个项目：
+
+KernelSU 的 metamodule 功能
+一个内核文件系统 (ksufs?)
+公司的全栈项目
+
+除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。
+经过这段时间的实战，我认为行业已经到了一个拐点：C">
+<meta property="og:updated_time" content="2025-12-26T07:24:17.231Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI 时代，何以自处？">
+<meta name="twitter:description" content="最近这一个月，我深度使用 Coding Agent 完成了好几个项目：
+
+KernelSU 的 metamodule 功能
+一个内核文件系统 (ksufs?)
+公司的全栈项目
+
+除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。
+经过这段时间的实战，我认为行业已经到了一个拐点：C">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> AI 时代，何以自处？ | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              AI 时代，何以自处？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2025-12-08T20:08:10+08:00" content="2025-12-08">
+            2025-12-08
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>最近这一个月，我深度使用 Coding Agent 完成了好几个项目：</p>
+<ol>
+<li>KernelSU 的 metamodule 功能</li>
+<li>一个内核文件系统 (ksufs?)</li>
+<li>公司的全栈项目</li>
+</ol>
+<p>除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。</p>
+<p>经过这段时间的实战，我认为行业已经到了一个拐点：<strong>Coding Agent 的综合能力，已经超过了市面上人类工程师的平均水平。</strong></p>
+<p>当然，现在的 AI 并不完美。它会犯错，会“幻觉”，有时候需要反复纠正。但仔细想想，人类工程师不也一样吗？我们自己也会卡壳，也会写了前面忘了后面，也会因为项目迭代太快而堆砌“屎山”。</p>
+<p>如果我们不把 AI 视作完美的“神”，而是把它当做一个<strong>允许犯错、但极其勤奋的中级工程师</strong>，你会发现它完全能胜任当下的工作。</p>
+<p>真正让人“细思恐极”的是：这个 AI 工程师可以 7 x 24 小时待命，听话不抱怨，执行力超强且有问必答，而成本只有人类的一半甚至更低。</p>
+<p>面对这样的“竞争对手”，我们人类工程师的护城河到底在哪里？</p>
+<h3 id="品味"><a href="#品味" class="headerlink" title="品味"></a>品味</h3><p>品味，可能是 AI 时代最稀缺的能力。</p>
+<a id="more"></a>
+<p>AI 就像一个拥有无穷体力的工匠，它能给你提供十种实现方案，每一种都能跑通。但它不知道哪一种是“对”的。</p>
+<p>所谓的品味，就是<strong>判断对错，区分好坏</strong>。<br>是知道在什么场景下该用什么架构；<br>是知道什么时候该为了性能牺牲可读性，什么时候该为了简洁放弃炫技；<br>是知道如何定义一个优雅的 API，而不是仅仅堆砌功能。</p>
+<p>代码生成的门槛越低，<strong>选择</strong>的价值就越高。</p>
+<h3 id="非线性知识"><a href="#非线性知识" class="headerlink" title="非线性知识"></a>非线性知识</h3><p>AI 擅长处理结构化的文档和代码，但软件工程中大量的信息是混沌的。</p>
+<p>比如一个奇怪的 Bug，修它的线索可能不在代码里，而是在数年前的一次业务妥协里；或者某个功能为什么这么设计，是因为老板的某个执念，或者是为了规避某个政策风险。</p>
+<p>处理这些模糊、非线性、甚至充满“人情世故”的复杂语境，目前仍是人类的优势。</p>
+<h3 id="共情能力"><a href="#共情能力" class="headerlink" title="共情能力"></a>共情能力</h3><p>AI 活在 IDE 和云端里，它无法感知物理世界。</p>
+<p>它不知道 App 运行久了手机会烫手；它体会不到在地铁弱网环境下，Loading 转圈太久会让用户多烦躁；它也看不出那个按钮设计得太小，手指粗点的人根本按不到。  </p>
+<p>软件最终是给人用的。只要用户还是人，就需要同样拥有肉体和情感的人类工程师，去把控那些无法被量化的体验。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>当写代码不再是瓶颈，我们终于有时间停下来思考一个更本质的问题：</p>
+<p><strong>如果不写代码，我们要创造什么？</strong></p>
+<p>当所有的技术细节都可以被瞬间填满，剩下的那部分——那个关于“我要做一个什么样的东西，以及为什么要由我来做”的念头，或许才是我们最后，也是唯一的依仗。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/09/18/coding-versus-creating/" rel="next">写好代码容易，创造价值很难</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">51</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#品味"><span class="nav-number">1.</span> <span class="nav-text">品味</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非线性知识"><span class="nav-number">2.</span> <span class="nav-text">非线性知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共情能力"><span class="nav-number">3.</span> <span class="nav-text">共情能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+    
+
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.weishu.me" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

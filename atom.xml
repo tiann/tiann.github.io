@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://weishu.me/"/>
-  <updated>2025-05-25T02:35:50.705Z</updated>
+  <updated>2025-12-26T07:24:17.231Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AI 时代，何以自处？</title>
+    <link href="http://weishu.me/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/"/>
+    <id>http://weishu.me/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/</id>
+    <published>2025-12-08T12:08:10.000Z</published>
+    <updated>2025-12-26T07:24:17.231Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近这一个月，我深度使用 Coding Agent 完成了好几个项目：</p><ol><li>KernelSU 的 metamodule 功能</li><li>一个内核文件系统 (ksufs?)</li><li>公司的全栈项目</li></ol><p>除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。</p><p>经过这段时间的实战，我认为行业已经到了一个拐点：<strong>Coding Agent 的综合能力，已经超过了市面上人类工程师的平均水平。</strong></p><p>当然，现在的 AI 并不完美。它会犯错，会“幻觉”，有时候需要反复纠正。但仔细想想，人类工程师不也一样吗？我们自己也会卡壳，也会写了前面忘了后面，也会因为项目迭代太快而堆砌“屎山”。</p><p>如果我们不把 AI 视作完美的“神”，而是把它当做一个<strong>允许犯错、但极其勤奋的中级工程师</strong>，你会发现它完全能胜任当下的工作。</p><p>真正让人“细思恐极”的是：这个 AI 工程师可以 7 x 24 小时待命，听话不抱怨，执行力超强且有问必答，而成本只有人类的一半甚至更低。</p><p>面对这样的“竞争对手”，我们人类工程师的护城河到底在哪里？</p><h3 id="品味"><a href="#品味" class="headerlink" title="品味"></a>品味</h3><p>品味，可能是 AI 时代最稀缺的能力。</p><a id="more"></a><p>AI 就像一个拥有无穷体力的工匠，它能给你提供十种实现方案，每一种都能跑通。但它不知道哪一种是“对”的。</p><p>所谓的品味，就是<strong>判断对错，区分好坏</strong>。<br>是知道在什么场景下该用什么架构；<br>是知道什么时候该为了性能牺牲可读性，什么时候该为了简洁放弃炫技；<br>是知道如何定义一个优雅的 API，而不是仅仅堆砌功能。</p><p>代码生成的门槛越低，<strong>选择</strong>的价值就越高。</p><h3 id="非线性知识"><a href="#非线性知识" class="headerlink" title="非线性知识"></a>非线性知识</h3><p>AI 擅长处理结构化的文档和代码，但软件工程中大量的信息是混沌的。</p><p>比如一个奇怪的 Bug，修它的线索可能不在代码里，而是在数年前的一次业务妥协里；或者某个功能为什么这么设计，是因为老板的某个执念，或者是为了规避某个政策风险。</p><p>处理这些模糊、非线性、甚至充满“人情世故”的复杂语境，目前仍是人类的优势。</p><h3 id="共情能力"><a href="#共情能力" class="headerlink" title="共情能力"></a>共情能力</h3><p>AI 活在 IDE 和云端里，它无法感知物理世界。</p><p>它不知道 App 运行久了手机会烫手；它体会不到在地铁弱网环境下，Loading 转圈太久会让用户多烦躁；它也看不出那个按钮设计得太小，手指粗点的人根本按不到。  </p><p>软件最终是给人用的。只要用户还是人，就需要同样拥有肉体和情感的人类工程师，去把控那些无法被量化的体验。</p><h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>当写代码不再是瓶颈，我们终于有时间停下来思考一个更本质的问题：</p><p><strong>如果不写代码，我们要创造什么？</strong></p><p>当所有的技术细节都可以被瞬间填满，剩下的那部分——那个关于“我要做一个什么样的东西，以及为什么要由我来做”的念头，或许才是我们最后，也是唯一的依仗。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近这一个月，我深度使用 Coding Agent 完成了好几个项目：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;KernelSU 的 metamodule 功能&lt;/li&gt;
+&lt;li&gt;一个内核文件系统 (ksufs?)&lt;/li&gt;
+&lt;li&gt;公司的全栈项目&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。&lt;/p&gt;
+&lt;p&gt;经过这段时间的实战，我认为行业已经到了一个拐点：&lt;strong&gt;Coding Agent 的综合能力，已经超过了市面上人类工程师的平均水平。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当然，现在的 AI 并不完美。它会犯错，会“幻觉”，有时候需要反复纠正。但仔细想想，人类工程师不也一样吗？我们自己也会卡壳，也会写了前面忘了后面，也会因为项目迭代太快而堆砌“屎山”。&lt;/p&gt;
+&lt;p&gt;如果我们不把 AI 视作完美的“神”，而是把它当做一个&lt;strong&gt;允许犯错、但极其勤奋的中级工程师&lt;/strong&gt;，你会发现它完全能胜任当下的工作。&lt;/p&gt;
+&lt;p&gt;真正让人“细思恐极”的是：这个 AI 工程师可以 7 x 24 小时待命，听话不抱怨，执行力超强且有问必答，而成本只有人类的一半甚至更低。&lt;/p&gt;
+&lt;p&gt;面对这样的“竞争对手”，我们人类工程师的护城河到底在哪里？&lt;/p&gt;
+&lt;h3 id=&quot;品味&quot;&gt;&lt;a href=&quot;#品味&quot; class=&quot;headerlink&quot; title=&quot;品味&quot;&gt;&lt;/a&gt;品味&lt;/h3&gt;&lt;p&gt;品味，可能是 AI 时代最稀缺的能力。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>写好代码容易，创造价值很难</title>
@@ -456,37 +486,6 @@
       <category term="android source" scheme="http://weishu.me/tags/android-source/"/>
     
       <category term="compile" scheme="http://weishu.me/tags/compile/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android性能优化之虚拟机调优</title>
-    <link href="http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/"/>
-    <id>http://weishu.me/2016/12/23/dive-into-android-optimize-vm-heap/</id>
-    <published>2016-12-23T14:53:09.000Z</published>
-    <updated>2025-05-24T12:28:07.113Z</updated>
-    
-    <content type="html"><![CDATA[<p>介绍完 <a href="https://zhuanlan.zhihu.com/p/24414378" target="_blank" rel="external">深入学习Android：虚拟机&amp;运行时</a> 之后，很多小伙伴问我，你描述的这些知识结构看起来艰深晦涩高大上，实际工作中能有多大用途呢？今天我就简单举个例子。</p><p>众所周知，我们的Android App运行在Java虚拟机之上，而Java是一门带GC的语言。在虚拟机进行垃圾回收的时候，要做一件很形象的事叫做STW（stop the world）；也就是说，为了回收那些不再使用的对象，虚拟机必须要停止所有的线程来进行必要的工作。虽说这一点在ART运行时上得到了很大的改善，但是GC的存在对App运行时的性能始终有着微妙的影响。如果你观察过手机输入的日志，一定会看到类似如下的内容：</p><blockquote><p>12-23 18:46:07.300 28643-28658/? I/art: Background sticky concurrent mark sweep GC freed 15442(1400KB) AllocSpace objects, 8(128KB) LOS objects, 4% free, 32MB/33MB, paused 10.356ms total 53.023ms at GCDaemon thread CareAboutPauseTimes 1<br>12-23 18:46:12.250 28643-28658/? I/art: Background partial concurrent mark sweep GC freed 28723(1856KB) AllocSpace objects, 6(92KB) LOS objects, 11% free, 31MB/35MB, paused 2.380ms <strong>total 108.502ms</strong> at GCDaemon thread CareAboutPauseTimes 1</p></blockquote><p>上面的日志反映一个事实：GC是有代价的。有很多有关性能优化的文章提到GC，会花长篇大论讲述垃圾回收的过程以及原理，但所做的策略无非就是「不要创建不必要的对象」，「避免内存泄漏」最终就提到MAT，LeakCanary等工具的使用上去了；我只能说这很苍白无力——写出这样的代码、学会使用工具应该是基本要求。</p><a id="more"></a><p>虽说Android也支持NDK开发，但是我们不可能把所有代码全用C++重写吧？那么，我们有没有办法能<strong>影响GC的策略</strong>，使得GC尽量减少呢？答案是肯定的。原理在于Android的进程机制——每一个App都有一个单独的虚拟机实例，在App自己的进程空间，我们有相当大的主动权。</p><p>我举个简单的例子。（下面的内容基于Android 5.1系统，所有的原理以及代码不保证能在其他系统版本甚至ROM上工作）</p><p>Android上所有的App进程都从Zygote进程fork而来，App子进程采用copy on write机制共享了Zygote进程的进程空间；其中Android虚拟机以及运行时的创建在Android系统启动，创建Zygote进程的时候已经完成了。垃圾回收机制是虚拟机的一部分，因此，我们先从Zygote进程的启动过程谈起。</p><p>我们知道，Android系统是基于Linux内核的，而在Linux系统中，所有的进程都是init进程的子孙进程，Zygote进程也不例外，它是在系统启动的过程，由init进程创建的。在系统启动脚本system/core/rootdir/init.rc文件中，我们可以看到启动Zygote进程的脚本命令：</p><blockquote><p>service zygote /system/bin/app_process -Xzygote /system/bin –zygote –start-system-server</p></blockquote><p>也就是说init进程通过执行 /system/bin/app_process 这个可执行文件来创建zygote进程；app_process的源码可见 <a href="http://androidxref.com/5.1.1_r6/xref/frameworks/base/cmds/app_process/app_main.cpp" target="_blank" rel="external">这里</a>；在main函数的最后有这么一句话：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (zygote) &#123;</span><br><span class="line">    runtime.start(<span class="string">"com.android.internal.os.ZygoteInit"</span>, args);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (className) &#123;</span><br></pre></td></tr></table></figure><p>最终调用到了<a href="http://androidxref.com/5.1.1_r6/xref/frameworks/base/core/jni/AndroidRuntime.cpp" target="_blank" rel="external">AndroidRuntime.cpp</a> 的<code>start</code>函数，而这个函数中最重要的一步就是启动虚拟机：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JNIEnv* env;</span><br><span class="line"><span class="keyword">if</span> (startVm(&amp;mJavaVM, &amp;env) != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这个函数相当之长，不过都是解析虚拟机启动的参数，比如堆大小等等；<a href="http://droidyue.com/blog/2015/08/01/dive-into-android-large-heap/index.html" target="_blank" rel="external">探究largeHeap</a> 这篇文章对一些重要的参数做了说明，这些参数对虚拟机非常重要，后面我们会见到。解析参数完毕之后，最终调用<code>JNI_CreateJavaVM</code>来真正创建Java虚拟机。这个接口是Android虚拟机定义的三个接口这一，dalvik能切换到art很大程度上与这个有关。它的具体是现在 <a href="http://androidxref.com/5.1.1_r6/xref/art/runtime/jni_internal.cc" target="_blank" rel="external">jni_internal.cc</a>；JNI_CreateJavaVM 这个函数在拿到虚拟机的相关参数之后，就直接创建了Android运行时：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!Runtime::Create(options, ignore_unrecognized)) &#123;</span><br><span class="line">  <span class="keyword">return</span> JNI_ERR;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Runtime的创建非常复杂，其中，跟GC相关的是，App的堆空间被创建出来了；Heap的构造函数接受了一大堆参数，这些参数对于GC有着重大的影响，如果要调整GC的策略，从这里入手，是比较靠谱的。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">heap_ = <span class="keyword">new</span> gc::Heap(options-&gt;heap_initial_size_,</span><br><span class="line">                     options-&gt;heap_growth_limit_,</span><br><span class="line">                     options-&gt;heap_min_free_,</span><br><span class="line">                     options-&gt;heap_max_free_,</span><br><span class="line">                     options-&gt;heap_target_utilization_,</span><br><span class="line">                     options-&gt;foreground_heap_growth_multiplier_,</span><br><span class="line">                     options-&gt;heap_maximum_size_,</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure><p>其中 heap_initial_size_ 是堆的初始大小，heap_growth_limit_是堆增长的最大限制，heap_min_free_以及heap_max_free_ 是什么呢？详细的用途见 <a href="http://hello2mao.github.io/2015/12/16/Android_ART_GC_GrowForUtilization.html" target="_blank" rel="external">Android ART GC之GrowForUtilization的分析</a> 简单来说就是，Android系统为了保证堆的利用效率，减少堆中的内存碎片；每次执行GC回收到一些内存之后，会对堆大小进行调整。比如说你进入了一个图片非常多的页面，这时候申请了100M内存，当你退出这个页面的时候，这100M自然就被回收了，成为了空闲内存；但是系统为了防止浪费，并不会把这100M的空闲内存全部留给你，而是做一个调整。而具体调整到多大，则与   <code>heap_min_free_</code>, <code>heap_max_free_</code> 以及 <code>heap_target_utilization_</code> 相关。</p><p>说到这里，原理性的部分已经解释完了；除了流程稍微复杂，也没有什么难点。那么这个堆，跟我们的启动性能优化有什么关系呢？</p><p>在Android App的启动过程中，进程占用的内存在一段时间内是持续上涨的；假设堆的初始大小为8M，启动过程中的占用内存峰值30M；启动过程的进行中，伴随着大量临时对象的创建，它们朝生夕死，不久就被回收掉：</p><p><img src="http://blog.dimenspace.com/201601/1482494040946.png" width="446"></p><p>如上图，这是某次启动过程中某App的内存占用情况；我们看到了有很多小折线，专业术语叫做内存抖动；原因呢，也很明显——有大量的临时对象被创建。怎么解决？有人说，不要创建大量的临时对象。道理我都懂，可是做不到。对于很多大型App来说，启动的过程是相当复杂的，而很多操作也不能简单滴去掉。那么问题来了，30M并不是一个很大的数字，为什么系统如此恐慌，还需要不停滴回收内存呢？</p><p>有一种冷，叫做你妈妈觉得你冷。垃圾回收并不是说有垃圾了才去回收，而是只要系统觉得你需要回收垃圾就会进行。</p><p>那么，能不能在启动过程中让堆保持持续增长而不进行GC呢？毕竟，30M并不会造成什么OOM。是什么原因导致系统没有这么做？答案是空闲内存。比如说一开始堆有8M，随着启动过程的进行，堆增长到了24M；这时候执行了一次GC，回收掉了8M内存，也是堆回到了16M；我们还有8M的空闲内存。系统就会说，小伙子，你占这么多空闲内存干嘛呀？来妈妈帮你保管，于是你就只剩下2M的空闲内存了。但显然App使用的堆内存很快就会超过18M，于是又引发一系列GC以及堆大小调整，周而复始直至启动完成内存平稳。至此，我们的结论已经很明显：</p><p><strong>如果我们能够调整 heap_min_free_ 以及 heap_max_free_，就能很大程度上影响GC的过程</strong></p><p>如何调整这两个参数的大小呢？<em>拿到Heap对象的指针，找到这两个参数的偏移量，直接修改内存即可</em> 这里稍微需要一点C++内存布局的知识；至于如何拿到Heap对象的指针，只有去源码里面寻找答案了。这里我给出最终的实现代码：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modifyHeap</span><span class="params">(<span class="keyword">unsigned</span> size)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// JavaVMExt指针 可以从JNI_OnLoad中拿到 </span></span><br><span class="line">JavaVMExt * vmExt = (JavaVMExt *)g_javaVM;</span><br><span class="line"><span class="keyword">if</span> (vmExt-&gt;runtime == <span class="literal">NULL</span>) &#123;</span><br><span class="line"><span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">char</span>* runtime_ptr = (<span class="keyword">char</span>*) vmExt-&gt;runtime;</span><br><span class="line">    <span class="keyword">void</span>** heap_pp = (<span class="keyword">void</span>**)(runtime_ptr + <span class="number">188</span>);</span><br><span class="line">    <span class="keyword">char</span>* c_heap = (<span class="keyword">char</span>*) (*heap_pp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>* min_free_offset = c_heap + <span class="number">532</span>;</span><br><span class="line">    <span class="keyword">char</span>* max_free_offset = min_free_offset + <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">char</span>* target_utilization_offset = max_free_offset + <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span>* min_free_ = (<span class="keyword">size_t</span>*) min_free_offset;</span><br><span class="line">    <span class="keyword">size_t</span>* max_free_ = (<span class="keyword">size_t</span>*) max_free_offset;</span><br><span class="line">    </span><br><span class="line">    *min_free_ = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">2</span>;</span><br><span class="line">    *max_free_ = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">8</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>修改之后启动过程中内存占用如下，可以看到我们的目的已经达到：</p><p><img src="http://blog.dimenspace.com/201601/1482496070927.png" width="452"></p><p>顺便说明一下，上面的代码没有考虑任何的可移植性和适配性，只起演示作用。真正投入使用是一个体力活：其一，我们依赖了某特定Android版本某个类的内存布局，其中的成员变量的偏移量可能不同版本不同；其二，这个 min_free_ 以及 max_free_ 具体调整为多大，跟手机的物理内存，App使用的内存，手机配置的初始堆大小等等因素密切相关；调整一个合适的参数需要花费一些时间，Android机型如此之多，这里需要一些小技巧。</p><p>不知道上面这个例子有木有让你感受到深入系统底层，那种呼风唤雨无所不能的快感？可能很多人觉得我们都是写写if else而已，调节面改动画写业务已经够了；但我想说明的是，深入学习系统原理是非常有好处的，它可以赋予你在应用层永远无法拥有的能力。</p><p>另外留个作业，我们上面提到观察GC的次数，除了使用debug模式下用工具观察，能不能用代码监听到呢？本文主要说明了虚拟机运行时等native层的重要性，而这个答案可以在Java Framework中找到 ^_^</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍完 &lt;a href=&quot;https://zhuanlan.zhihu.com/p/24414378&quot;&gt;深入学习Android：虚拟机&amp;amp;运行时&lt;/a&gt; 之后，很多小伙伴问我，你描述的这些知识结构看起来艰深晦涩高大上，实际工作中能有多大用途呢？今天我就简单举个例子。&lt;/p&gt;
-&lt;p&gt;众所周知，我们的Android App运行在Java虚拟机之上，而Java是一门带GC的语言。在虚拟机进行垃圾回收的时候，要做一件很形象的事叫做STW（stop the world）；也就是说，为了回收那些不再使用的对象，虚拟机必须要停止所有的线程来进行必要的工作。虽说这一点在ART运行时上得到了很大的改善，但是GC的存在对App运行时的性能始终有着微妙的影响。如果你观察过手机输入的日志，一定会看到类似如下的内容：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;12-23 18:46:07.300 28643-28658/? I/art: Background sticky concurrent mark sweep GC freed 15442(1400KB) AllocSpace objects, 8(128KB) LOS objects, 4% free, 32MB/33MB, paused 10.356ms total 53.023ms at GCDaemon thread CareAboutPauseTimes 1&lt;br&gt;12-23 18:46:12.250 28643-28658/? I/art: Background partial concurrent mark sweep GC freed 28723(1856KB) AllocSpace objects, 6(92KB) LOS objects, 11% free, 31MB/35MB, paused 2.380ms &lt;strong&gt;total 108.502ms&lt;/strong&gt; at GCDaemon thread CareAboutPauseTimes 1&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;上面的日志反映一个事实：GC是有代价的。有很多有关性能优化的文章提到GC，会花长篇大论讲述垃圾回收的过程以及原理，但所做的策略无非就是「不要创建不必要的对象」，「避免内存泄漏」最终就提到MAT，LeakCanary等工具的使用上去了；我只能说这很苍白无力——写出这样的代码、学会使用工具应该是基本要求。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="android" scheme="http://weishu.me/tags/android/"/>
-    
-      <category term="heap" scheme="http://weishu.me/tags/heap/"/>
-    
-      <category term="performance" scheme="http://weishu.me/tags/performance/"/>
-    
-      <category term="vm" scheme="http://weishu.me/tags/vm/"/>
     
   </entry>
   

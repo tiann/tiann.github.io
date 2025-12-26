@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://weishu.me/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/</loc>
+    <lastmod>2025-12-26</lastmod>
+  </url>
+  <url>
     <loc>http://weishu.me/2024/09/18/coding-versus-creating/</loc>
     <lastmod>2025-05-25</lastmod>
   </url>
@@ -9,15 +13,11 @@
     <lastmod>2025-05-25</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2021/09/13/what-is-root/</loc>
-    <lastmod>2025-05-24</lastmod>
-  </url>
-  <url>
     <loc>http://weishu.me/2015/11/18/xunlei-vip-account-workflow/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
+    <loc>http://weishu.me/2021/09/13/what-is-root/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
@@ -25,11 +25,15 @@
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2016/05/11/understand-plugin-framework-service/</loc>
+    <loc>http://weishu.me/2016/01/03/use-pure-ascii-present-graph/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
     <loc>http://weishu.me/2015/12/08/use-optional-avoid-nullpointexception/</loc>
+    <lastmod>2025-05-24</lastmod>
+  </url>
+  <url>
+    <loc>http://weishu.me/2016/05/11/understand-plugin-framework-service/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
@@ -125,10 +129,6 @@
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2018/06/07/free-reflection-above-android-p/</loc>
-    <lastmod>2025-05-24</lastmod>
-  </url>
-  <url>
     <loc>http://weishu.me/2017/01/14/how-to-debug-android-native-framework-source/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
@@ -137,15 +137,19 @@
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
+    <loc>http://weishu.me/2018/06/07/free-reflection-above-android-p/</loc>
+    <lastmod>2025-05-24</lastmod>
+  </url>
+  <url>
     <loc>http://weishu.me/2015/11/10/fast-split-in-android/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
+    <loc>http://weishu.me/2022/06/12/eBPF-on-Android/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2022/06/12/eBPF-on-Android/</loc>
+    <loc>http://weishu.me/2016/01/18/dive-into-asynctask/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
@@ -169,10 +173,6 @@
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2019/03/16/another-free-reflection-above-android-p/</loc>
-    <lastmod>2025-05-24</lastmod>
-  </url>
-  <url>
     <loc>http://weishu.me/2016/02/01/avoid-switching-keyboard-in-markdown/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
@@ -185,11 +185,15 @@
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
-    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
+    <loc>http://weishu.me/2019/03/16/another-free-reflection-above-android-p/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>
     <loc>http://weishu.me/2015/12/21/android-studio-debug-tips-you-may-not-know/</loc>
+    <lastmod>2025-05-24</lastmod>
+  </url>
+  <url>
+    <loc>http://weishu.me/2015/12/31/add-sublime-editor-to-finder-context-menu/</loc>
     <lastmod>2025-05-24</lastmod>
   </url>
   <url>

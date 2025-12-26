@@ -181,6 +181,87 @@
           
           
             
+              <a class="post-title-link" href="/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/" itemprop="url">
+                AI 时代，何以自处？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2025-12-08T20:08:10+08:00" content="2025-12-08">
+            2025-12-08
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近这一个月，我深度使用 Coding Agent 完成了好几个项目：</p>
+<ol>
+<li>KernelSU 的 metamodule 功能</li>
+<li>一个内核文件系统 (ksufs?)</li>
+<li>公司的全栈项目</li>
+</ol>
+<p>除了第二个项目我写了 MVP 原型外，其余项目我几乎没有动一行代码，全程指挥 AI 完成。从需求规划、架构讨论，到具体代码执行，以及后续的迭代重构，AI 都能极好地配合。</p>
+<p>经过这段时间的实战，我认为行业已经到了一个拐点：<strong>Coding Agent 的综合能力，已经超过了市面上人类工程师的平均水平。</strong></p>
+<p>当然，现在的 AI 并不完美。它会犯错，会“幻觉”，有时候需要反复纠正。但仔细想想，人类工程师不也一样吗？我们自己也会卡壳，也会写了前面忘了后面，也会因为项目迭代太快而堆砌“屎山”。</p>
+<p>如果我们不把 AI 视作完美的“神”，而是把它当做一个<strong>允许犯错、但极其勤奋的中级工程师</strong>，你会发现它完全能胜任当下的工作。</p>
+<p>真正让人“细思恐极”的是：这个 AI 工程师可以 7 x 24 小时待命，听话不抱怨，执行力超强且有问必答，而成本只有人类的一半甚至更低。</p>
+<p>面对这样的“竞争对手”，我们人类工程师的护城河到底在哪里？</p>
+<h3 id="品味"><a href="#品味" class="headerlink" title="品味"></a>品味</h3><p>品味，可能是 AI 时代最稀缺的能力。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2024/09/18/coding-versus-creating/" itemprop="url">
                 写好代码容易，创造价值很难
               </a>
@@ -820,81 +901,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2020/10/30/logcat-lose-message/" itemprop="url">
-                从一次日志丢失所想到的
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2020-10-30T10:29:07+08:00" content="2020-10-30">
-            2020-10-30
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-
-      
-
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近我在编写一个 Android 上的驱动程序，这个驱动程序的某些部分用到了 Unix domain socket，守护进程和客户端进程使用 C/S 模式进行通信。在调试程序的时候发现一个非常奇怪的问题：如果客户端开启若干个线程连上 socket，send/recv 若干消息之后立即退出进程，从日志上看，server 端有 10% 左右的概率无法正常回收资源。</p>
-<p>一开始我以为是我自己程序写的有问题，毕竟这个驱动是使用纯 C 语言实现的，并且用到了 epoll 的 <a href="https://linux.die.net/man/7/epoll">ET 模式</a>，这种非阻塞的编程模型的确有许多微妙的地方，一不小心就容易出错。我排查了很久都没有发现问题所在，更有趣的是，虽然看起来我的程序无法回收资源，但是在压力测试下他也能正常工作，完全没有资源泄漏的迹象；实在没办法，我就祭出了大杀器 <a href="https://linux.die.net/man/1/strace">strace</a>。不看不知道，一看就好笑：strace 显示，我的程序逻辑是正常的，它正确地调用了相关的资源释放函数！但是，logcat 中没有相关的日志，在客户端退出之后 server 端的日志就戛然而止了。看起来，好像不是我程序的问题，而是系统的 logcat 丢失了日志？</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2020/10/30/logcat-lose-message/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
   </nav>
 
  </div>
@@ -928,7 +939,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">51</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
