@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://weishu.me/"/>
-  <updated>2025-12-26T07:24:17.231Z</updated>
+  <updated>2026-06-29T03:18:23.357Z</updated>
   <id>http://weishu.me/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>KernelSU 与“开挂”，规则与被构建的公平</title>
+    <link href="http://weishu.me/2026/03/12/KernelSU-and-cheating-rules-and-the-constructed-fairness/"/>
+    <id>http://weishu.me/2026/03/12/KernelSU-and-cheating-rules-and-the-constructed-fairness/</id>
+    <published>2026-03-12T03:16:40.000Z</published>
+    <updated>2026-06-29T03:18:23.357Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>【导语】<br>很多年前，折腾 KernelSU 让我饱受“为开挂提供温床”的批评。主流观念总是一刀切地认为：只要和“破坏规则”沾边，就是可耻的。<br>但后来我发现，无论是在技术发展的莽荒时代，还是在我们习以为常的现实社会中，创新往往源于对边界的试探；而那些被大众不假思索地捍卫的“公平”和“规则”，很多时候，只不过是系统为了维持运转而精心构建的一套控制代码。</p></blockquote><p>几年前，我<a href="https://mp.weixin.qq.com/s/CY-sTRV86A43-Iz2UTxyPQ" target="_blank" rel="external">曾提到过</a>，KernelSU 某种程度上算是我早年折腾科技留下的副产品。那之后，我收到过不少批评，其中很多都围绕一个判断：只要和“开挂”沾边，就是可耻的，就是不正当的。</p><p>现在回想起来，我探索写科技的那几年，我的人生也开挂了。这并非说我靠技术去盈利、改变了人生，而是因为我从中领悟到了一些关于技术、规则和社会运行的东西。</p><a id="more"></a><h2 id="创新"><a href="#创新" class="headerlink" title="创新"></a>创新</h2><p>雷军在《小米创业思考》中说过，<strong>“创新，是创造性地破坏”</strong>。如果你想改变什么东西，往往要先打破点什么。做漏洞挖掘的人，如果发现某些情况会导致系统重启，往往会很兴奋，因为这意味着他们已经 break something 了；而普通人遇到手机重启，只会觉得这系统怎么这么不稳定。</p><p>乔布斯自传里也提到过，他人生的第一桶金，来自一个叫“蓝盒子”的东西。它利用了电信系统的漏洞，实现免费拨打长途电话。放在今天，这种行为显然会面临严重的法律后果，但在当年，它处在一个完全不同的技术和监管环境中。乔布斯确实从中获得了最早的一笔资本，也由此更早接触到了“通过技术撬动系统”的可能性。</p><p>以前有个软件叫“金山游侠”，可以篡改游戏数据，本质上也是对游戏规则的绕过。而开发它的公司后来变成了今天的金山，老板是雷军。</p><p>技术创新的源动力之一，恰恰来自于对边界的试探和突破。如果没有那些喜欢“不按套路出牌”的极客，就不会有今天繁荣的科技发展。</p><p>当然了，对边界的突破，不等于一切行为都天然正当；但是，不假思索地批判这种行为，同样值得怀疑。</p><h2 id="规则与公平"><a href="#规则与公平" class="headerlink" title="规则与公平"></a>规则与公平</h2><p>还有一种常见说法是，这样做破坏了游戏平衡，对其他玩家不公平。在多人对抗环境里，作弊确实会损害其他玩家的体验，但问题是，游戏的匹配机制本身就是绝对公平的吗？</p><p>算法知道，如果你一直赢，你会觉得无聊而下线；如果你一直输，你会愤怒而卸载。所以，系统会精准计算你的“挫败阈值”。当你快要绝望退坑时，它可能故意给你匹配一局极其弱的对手（“福利局”），让你大杀四方，重新获得巨大的多巴胺分泌；当你连胜自满时，又可能把你塞进更难打的局里，让你继续留在这个循环中。</p><p>游戏厂商的规则，很多时候并不只是为了维护抽象意义上的公平，而是利用人性的弱点通过算法调动你的情绪和时间，让你持续投入、欲罢不能。</p><p>为什么很多人谈到“公平”时，只盯着最容易谴责的个体行为，却很少去质疑那些同样在操纵玩家、但因为写进规则里就显得理所当然的机制。</p><p>他们似乎默认规则本身就是公平的，仿佛只要遵守规则，结果就天然正义。</p><p>现实并没有这么简单。</p><p>这个世界何时真正公平过？现实世界里，又有多少人从来没有享受过某种“开挂”般的不对称优势？</p><h2 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h2><p>开科技其实有两种完全不同的用法，也有两种完全不同的结局：自己用和拿去卖；造成不同结局的原因，是外部约束条件完全不同。</p><p>“高风险，高回报”，“风浪越大鱼越贵”。风险，本质上是一种杠杆。绝对的风险厌恶者，不加任何杠杆，往往也很难获得非常规的回报。</p><table><thead><tr><th>做法</th><th>风险</th><th>回报</th></tr></thead><tbody><tr><td>自己用</td><td>违反游戏规则，被封号</td><td>不一样的游戏体验</td></tr><tr><td>拿去卖</td><td>可能触犯刑法，面临严重法律后果</td><td>经济报酬</td></tr></tbody></table><p>如果仅仅是自己用，代价通常就是游戏账号被封禁。在权衡利弊之后，这种风险对有些人来说可能是可接受的；但如果是拿去卖，那就完全是另一回事了，风险和性质都变了。</p><p>然而可笑的是，很多人在面临人生中的重大选择，比如买房、结婚、生娃这些问题时，压根不认真评估风险和收益，往往是随大流、凭惯性；但对于自己开科技这种几乎不会影响现实生活走向的事，却格外谨慎，甚至还对别人进行道德审判。</p><p>当然，如果你是开挂卖钱，这种违法行为毫无疑问不值得提倡；就像如果乔布斯生在现代，他大概率也不会去开发“蓝盒子”一样。</p><h2 id="教育和观念"><a href="#教育和观念" class="headerlink" title="教育和观念"></a>教育和观念</h2><p>我无从考究“开挂可耻”这种观念究竟从何而来，也许它确实来自人们心中某种朴素的正义感。但也存在另一种可能：很多观念，会在规则制定者、平台方、既得利益者，以及舆论和教育的共同作用下，被不断强化，最后变成一种无需思考的本能判断。</p><p>我们大多数普通人接受的教育，某种程度上是为了让我们成为社会运转中的标准件。我们按部就班地走完生命流程，从而维持整个系统的稳定。一旦某些人的思想或行为偏离轨道，就会被贴上“异类”的标签，因为这些人可能会破坏当前系统的运行逻辑，也可能损害既有利益结构。</p><p>对于开科技自用这种场景来说，我们维护的那个“利益”，其中究竟包括不包括我们自己，这件事未必总是那么清楚。</p><p>就像《黑客帝国》一样，<strong>你所认为的公平和规则，很多时候只是 Matrix 为了维持运转而写下的一套代码。</strong></p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>如果你对本文感到不适，我深感抱歉。我也并非完全认同本文里的所有观点。当我想起这些时，我同样会对这个世界、对规则、对公平，产生很多怀疑。</p><p>我想表达的并不是“开挂有理”，更不是为一切作弊行为开脱。我真正想说的是：<strong>技术上的突破往往来自对边界的试探，而人们对规则的崇拜、对公平的理解、对风险的判断，很多时候并没有自己想象得那么清醒和牢靠。</strong></p><p>顺带一提，原神的挪德卡莱剧情简直是神一般的存在，而我也早已脱离“科学家”行列了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;【导语】&lt;br&gt;很多年前，折腾 KernelSU 让我饱受“为开挂提供温床”的批评。主流观念总是一刀切地认为：只要和“破坏规则”沾边，就是可耻的。&lt;br&gt;但后来我发现，无论是在技术发展的莽荒时代，还是在我们习以为常的现实社会中，创新往往源于对边界的试探；而那些被大众不假思索地捍卫的“公平”和“规则”，很多时候，只不过是系统为了维持运转而精心构建的一套控制代码。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;几年前，我&lt;a href=&quot;https://mp.weixin.qq.com/s/CY-sTRV86A43-Iz2UTxyPQ&quot;&gt;曾提到过&lt;/a&gt;，KernelSU 某种程度上算是我早年折腾科技留下的副产品。那之后，我收到过不少批评，其中很多都围绕一个判断：只要和“开挂”沾边，就是可耻的，就是不正当的。&lt;/p&gt;
+&lt;p&gt;现在回想起来，我探索写科技的那几年，我的人生也开挂了。这并非说我靠技术去盈利、改变了人生，而是因为我从中领悟到了一些关于技术、规则和社会运行的东西。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>AI 时代，何以自处？</title>
@@ -461,31 +483,6 @@
       <category term="native" scheme="http://weishu.me/tags/native/"/>
     
       <category term="source" scheme="http://weishu.me/tags/source/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>史上最简单Android源码编译环境搭建方法</title>
-    <link href="http://weishu.me/2016/12/30/simple-way-to-compile-android-source/"/>
-    <id>http://weishu.me/2016/12/30/simple-way-to-compile-android-source/</id>
-    <published>2016-12-29T17:08:41.000Z</published>
-    <updated>2025-05-24T12:28:07.117Z</updated>
-    
-    <content type="html"><![CDATA[<p>有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。</p><p>今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。</p><p>首先，下载问题可以通过镜像解决；<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a> 和 <a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">科大镜像</a> 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。</p><p>然后就是编译环境问题。由于Android源码庞大，依赖复杂；一旦使用的编译工具链有细微的不同就可能引发编译失败。<a href="https://source.android.com/source/initializing.html" target="_blank" rel="external">官方文档</a> 推荐使用Ubuntu 14.04进行编译。如果我们用Windows或者Mac系统，传统方式是使用虚拟机；但是在今天，我们完全可以使用 <strong>Docker</strong> 替代！！借助Docker，我们可以不用担心编译环境问题；不论我们的开发机是什么系统，可以使用Docker创建Ubuntu Image，并且直接在这个Ubuntu系统环境中创建编译所需要的工具链（JDK，ubuntu系统的依赖库等等）；而且，Docker运行的Ubuntu的系统开销比虚拟机低得多，这样下载以及编译速度就有了质的提升。更重要的是，这个环境可以作为一个Image打包发布！这样，你在不同的开发机，还有你与你的同事之间有了同一套编译环境，这会省去很多不必要的麻烦。关于Docker的更多内容，见 <a href="http://www.docker.com/" target="_blank" rel="external">Docker官网</a></p><a id="more"></a><p>当然，这个伟大的创举并不是我完成的，而是 <a href="https://github.com/kylemanna/docker-aosp" target="_blank" rel="external">kylemanna/docker-aosp</a>！我针对Docker以及天朝的网络环境做了一部分修改，fork了一份 <a href="https://github.com/tiann/docker-aosp" target="_blank" rel="external">tiann/docker-aosp</a>。</p><p>废话不多说，我们看看具体如何使用，以及怎么个简单法。</p><h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>Docker的下载地址见 <a href="https://www.docker.com/products/overview" target="_blank" rel="external">Docker下载</a> ；下载完毕安装即可。</p><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>如果你不是Mac系统，可以直接略过这一步。</p><p>Mac的文件系统默认不区分大小写，这不满足Android源码编译系统的要求（编译的时候直接Error）；因此需要单独创建一个大小写敏感的磁盘映像。步骤如下：</p><ol><li>打开Mac的系统软件：<strong>磁盘工具</strong></li><li><p>CMD + N，创建新的磁盘映像，参数设置如下图：</p><p> <img src="http://blog.dimenspace.com/201601/1483019239159.png" width="430"></p><p> 其中磁盘大小设置为 50~100G合适，<strong>格式一定要选择带区分大小写标志的。</strong></p></li></ol><h3 id="开始下载编译"><a href="#开始下载编译" class="headerlink" title="开始下载编译"></a>开始下载编译</h3><p>真正的下载编译过程相当简单，脚本会自动完成；步骤如下：</p><ol><li><p>设置Android源码下载存放的目录；如果是Mac系统，这一步必须设置为一个大小写敏感的目录；不然后面编译的时候会失败。如果不设置这一步，那么源码会下载到 <code>~/aosp-root</code> 目录；设置过程如下：</p><p> <code>export AOSP_VOL=/Volume/Android/</code></p></li><li><p>下载wrapper脚本；如果需要下载其他系统版本，直接修改下载完毕后的build-nougat.sh文件的 android-4.4.4_r2.0.1改成你需要的分支即可，分支的信息见 <a href="https://source.android.com/source/build-numbers.html#source-code-tags-and-builds" target="_blank" rel="external">分支列表</a></p><p> <code>curl -O https://raw.githubusercontent.com/kylemanna/docker-aosp/master/tests/build-nougat.sh</code></p></li><li><p>运行脚本，开始自动下载安装过程；Windows系统可以使用 <a href="https://msdn.microsoft.com/en-us/commandline/wsl/about" target="_blank" rel="external">Bash for Windows</a> 或者cygwin。</p><p> <code>bash ./build-nougat.sh</code></p></li></ol><p>这样，所有的工作就都做完了。只需静静等待即可；时间视下载速度而定，清华的镜像速度还可以，笔者使用不到2小时就完成了下载编译过程。</p><p>三步完成，是不是灰常简单？赶紧下载编译安装属于你的Android系统吧 ^_^</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有史以来，Android源码编译环境的搭建始终是一件麻烦事儿。网上有数不清的文章介绍如何编译Android源代码，但是他们要么方法复杂、步骤太多；要么自称解决了一些编译问题（需要修改头文件，系统配置等），让人对其可信度产生质疑。有的童鞋硬着头皮照做了，但是由于伟大的GFW，大部分都死在了第一步——repo脚本都下载不下来，就算下载过了过不了gerrit那一关。另外，就算你具备科学上网的能力，下载时间又成为了拦路虎；普通的VPN通常需要下载七八个小时，简直就是痛不欲生。久而久之，很多人对下载编译Android源码望而却步。&lt;/p&gt;
-&lt;p&gt;今天，我给大家提供一个极其简单、稳定的方案，来解决Android源码的下载编译问题。&lt;/p&gt;
-&lt;p&gt;首先，下载问题可以通过镜像解决；&lt;a href=&quot;https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/&quot;&gt;清华镜像&lt;/a&gt; 和 &lt;a href=&quot;https://lug.ustc.edu.cn/wiki/mirrors/help/aosp&quot;&gt;科大镜像&lt;/a&gt; 都是非常不错的选择，正常情况下一到两个小时即可下载完一个Android源码分支。&lt;/p&gt;
-&lt;p&gt;然后就是编译环境问题。由于Android源码庞大，依赖复杂；一旦使用的编译工具链有细微的不同就可能引发编译失败。&lt;a href=&quot;https://source.android.com/source/initializing.html&quot;&gt;官方文档&lt;/a&gt; 推荐使用Ubuntu 14.04进行编译。如果我们用Windows或者Mac系统，传统方式是使用虚拟机；但是在今天，我们完全可以使用 &lt;strong&gt;Docker&lt;/strong&gt; 替代！！借助Docker，我们可以不用担心编译环境问题；不论我们的开发机是什么系统，可以使用Docker创建Ubuntu Image，并且直接在这个Ubuntu系统环境中创建编译所需要的工具链（JDK，ubuntu系统的依赖库等等）；而且，Docker运行的Ubuntu的系统开销比虚拟机低得多，这样下载以及编译速度就有了质的提升。更重要的是，这个环境可以作为一个Image打包发布！这样，你在不同的开发机，还有你与你的同事之间有了同一套编译环境，这会省去很多不必要的麻烦。关于Docker的更多内容，见 &lt;a href=&quot;http://www.docker.com/&quot;&gt;Docker官网&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="android source" scheme="http://weishu.me/tags/android-source/"/>
-    
-      <category term="compile" scheme="http://weishu.me/tags/compile/"/>
     
   </entry>
   

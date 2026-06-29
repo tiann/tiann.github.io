@@ -1,0 +1,721 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="为数不多的维术" />
+
+
+
+  <meta name="keywords" content="Android核心技术, 插件化, react-native, 插件框架, android, plugin, framework" />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Weishu's Notes" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="【导语】很多年前，折腾 KernelSU 让我饱受“为开挂提供温床”的批评。主流观念总是一刀切地认为：只要和“破坏规则”沾边，就是可耻的。但后来我发现，无论是在技术发展的莽荒时代，还是在我们习以为常的现实社会中，创新往往源于对边界的试探；而那些被大众不假思索地捍卫的“公平”和“规则”，很多时候，只不过是系统为了维持运转而精心构建的一套控制代码。
+
+几年前，我曾提到过，KernelSU 某种程度上算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KernelSU 与“开挂”，规则与被构建的公平">
+<meta property="og:url" content="http://weishu.me/2026/03/12/KernelSU-and-cheating-rules-and-the-constructed-fairness/index.html">
+<meta property="og:site_name" content="Weishu's Notes">
+<meta property="og:description" content="【导语】很多年前，折腾 KernelSU 让我饱受“为开挂提供温床”的批评。主流观念总是一刀切地认为：只要和“破坏规则”沾边，就是可耻的。但后来我发现，无论是在技术发展的莽荒时代，还是在我们习以为常的现实社会中，创新往往源于对边界的试探；而那些被大众不假思索地捍卫的“公平”和“规则”，很多时候，只不过是系统为了维持运转而精心构建的一套控制代码。
+
+几年前，我曾提到过，KernelSU 某种程度上算">
+<meta property="og:updated_time" content="2026-06-29T03:18:23.357Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KernelSU 与“开挂”，规则与被构建的公平">
+<meta name="twitter:description" content="【导语】很多年前，折腾 KernelSU 让我饱受“为开挂提供温床”的批评。主流观念总是一刀切地认为：只要和“破坏规则”沾边，就是可耻的。但后来我发现，无论是在技术发展的莽荒时代，还是在我们习以为常的现实社会中，创新往往源于对边界的试探；而那些被大众不假思索地捍卫的“公平”和“规则”，很多时候，只不过是系统为了维持运转而精心构建的一套控制代码。
+
+几年前，我曾提到过，KernelSU 某种程度上算">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4345548567024241"
+     crossorigin="anonymous"></script>
+
+  <title> KernelSU 与“开挂”，规则与被构建的公平 | Weishu's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?5ba59f635a6de43d516b52632af83325";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Weishu's Notes</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              KernelSU 与“开挂”，规则与被构建的公平
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2026-03-12T11:16:40+08:00" content="2026-03-12">
+            2026-03-12
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+
+      
+      <span>&nbsp; | &nbsp;
+      <span id="busuanzi_value_page_pv" ></span>次阅读
+      </span>    
+      
+
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p>【导语】<br>很多年前，折腾 KernelSU 让我饱受“为开挂提供温床”的批评。主流观念总是一刀切地认为：只要和“破坏规则”沾边，就是可耻的。<br>但后来我发现，无论是在技术发展的莽荒时代，还是在我们习以为常的现实社会中，创新往往源于对边界的试探；而那些被大众不假思索地捍卫的“公平”和“规则”，很多时候，只不过是系统为了维持运转而精心构建的一套控制代码。</p>
+</blockquote>
+<p>几年前，我<a href="https://mp.weixin.qq.com/s/CY-sTRV86A43-Iz2UTxyPQ" target="_blank" rel="external">曾提到过</a>，KernelSU 某种程度上算是我早年折腾科技留下的副产品。那之后，我收到过不少批评，其中很多都围绕一个判断：只要和“开挂”沾边，就是可耻的，就是不正当的。</p>
+<p>现在回想起来，我探索写科技的那几年，我的人生也开挂了。这并非说我靠技术去盈利、改变了人生，而是因为我从中领悟到了一些关于技术、规则和社会运行的东西。</p>
+<a id="more"></a>
+<h2 id="创新"><a href="#创新" class="headerlink" title="创新"></a>创新</h2><p>雷军在《小米创业思考》中说过，<strong>“创新，是创造性地破坏”</strong>。如果你想改变什么东西，往往要先打破点什么。做漏洞挖掘的人，如果发现某些情况会导致系统重启，往往会很兴奋，因为这意味着他们已经 break something 了；而普通人遇到手机重启，只会觉得这系统怎么这么不稳定。</p>
+<p>乔布斯自传里也提到过，他人生的第一桶金，来自一个叫“蓝盒子”的东西。它利用了电信系统的漏洞，实现免费拨打长途电话。放在今天，这种行为显然会面临严重的法律后果，但在当年，它处在一个完全不同的技术和监管环境中。乔布斯确实从中获得了最早的一笔资本，也由此更早接触到了“通过技术撬动系统”的可能性。</p>
+<p>以前有个软件叫“金山游侠”，可以篡改游戏数据，本质上也是对游戏规则的绕过。而开发它的公司后来变成了今天的金山，老板是雷军。</p>
+<p>技术创新的源动力之一，恰恰来自于对边界的试探和突破。如果没有那些喜欢“不按套路出牌”的极客，就不会有今天繁荣的科技发展。</p>
+<p>当然了，对边界的突破，不等于一切行为都天然正当；但是，不假思索地批判这种行为，同样值得怀疑。</p>
+<h2 id="规则与公平"><a href="#规则与公平" class="headerlink" title="规则与公平"></a>规则与公平</h2><p>还有一种常见说法是，这样做破坏了游戏平衡，对其他玩家不公平。在多人对抗环境里，作弊确实会损害其他玩家的体验，但问题是，游戏的匹配机制本身就是绝对公平的吗？</p>
+<p>算法知道，如果你一直赢，你会觉得无聊而下线；如果你一直输，你会愤怒而卸载。所以，系统会精准计算你的“挫败阈值”。当你快要绝望退坑时，它可能故意给你匹配一局极其弱的对手（“福利局”），让你大杀四方，重新获得巨大的多巴胺分泌；当你连胜自满时，又可能把你塞进更难打的局里，让你继续留在这个循环中。</p>
+<p>游戏厂商的规则，很多时候并不只是为了维护抽象意义上的公平，而是利用人性的弱点通过算法调动你的情绪和时间，让你持续投入、欲罢不能。</p>
+<p>为什么很多人谈到“公平”时，只盯着最容易谴责的个体行为，却很少去质疑那些同样在操纵玩家、但因为写进规则里就显得理所当然的机制。</p>
+<p>他们似乎默认规则本身就是公平的，仿佛只要遵守规则，结果就天然正义。</p>
+<p>现实并没有这么简单。</p>
+<p>这个世界何时真正公平过？现实世界里，又有多少人从来没有享受过某种“开挂”般的不对称优势？</p>
+<h2 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h2><p>开科技其实有两种完全不同的用法，也有两种完全不同的结局：自己用和拿去卖；造成不同结局的原因，是外部约束条件完全不同。</p>
+<p>“高风险，高回报”，“风浪越大鱼越贵”。风险，本质上是一种杠杆。绝对的风险厌恶者，不加任何杠杆，往往也很难获得非常规的回报。</p>
+<table>
+<thead>
+<tr>
+<th>做法</th>
+<th>风险</th>
+<th>回报</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自己用</td>
+<td>违反游戏规则，被封号</td>
+<td>不一样的游戏体验</td>
+</tr>
+<tr>
+<td>拿去卖</td>
+<td>可能触犯刑法，面临严重法律后果</td>
+<td>经济报酬</td>
+</tr>
+</tbody>
+</table>
+<p>如果仅仅是自己用，代价通常就是游戏账号被封禁。在权衡利弊之后，这种风险对有些人来说可能是可接受的；但如果是拿去卖，那就完全是另一回事了，风险和性质都变了。</p>
+<p>然而可笑的是，很多人在面临人生中的重大选择，比如买房、结婚、生娃这些问题时，压根不认真评估风险和收益，往往是随大流、凭惯性；但对于自己开科技这种几乎不会影响现实生活走向的事，却格外谨慎，甚至还对别人进行道德审判。</p>
+<p>当然，如果你是开挂卖钱，这种违法行为毫无疑问不值得提倡；就像如果乔布斯生在现代，他大概率也不会去开发“蓝盒子”一样。</p>
+<h2 id="教育和观念"><a href="#教育和观念" class="headerlink" title="教育和观念"></a>教育和观念</h2><p>我无从考究“开挂可耻”这种观念究竟从何而来，也许它确实来自人们心中某种朴素的正义感。但也存在另一种可能：很多观念，会在规则制定者、平台方、既得利益者，以及舆论和教育的共同作用下，被不断强化，最后变成一种无需思考的本能判断。</p>
+<p>我们大多数普通人接受的教育，某种程度上是为了让我们成为社会运转中的标准件。我们按部就班地走完生命流程，从而维持整个系统的稳定。一旦某些人的思想或行为偏离轨道，就会被贴上“异类”的标签，因为这些人可能会破坏当前系统的运行逻辑，也可能损害既有利益结构。</p>
+<p>对于开科技自用这种场景来说，我们维护的那个“利益”，其中究竟包括不包括我们自己，这件事未必总是那么清楚。</p>
+<p>就像《黑客帝国》一样，<strong>你所认为的公平和规则，很多时候只是 Matrix 为了维持运转而写下的一套代码。</strong></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>如果你对本文感到不适，我深感抱歉。我也并非完全认同本文里的所有观点。当我想起这些时，我同样会对这个世界、对规则、对公平，产生很多怀疑。</p>
+<p>我想表达的并不是“开挂有理”，更不是为一切作弊行为开脱。我真正想说的是：<strong>技术上的突破往往来自对边界的试探，而人们对规则的崇拜、对公平的理解、对风险的判断，很多时候并没有自己想象得那么清醒和牢靠。</strong></p>
+<p>顺带一提，原神的挪德卡莱剧情简直是神一般的存在，而我也早已脱离“科学家”行列了。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/12/08/How-should-we-position-ourselves-in-the-AI-era/" rel="next">AI 时代，何以自处？</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <! -- 添加捐赠图标 -->
+<div class ="post-donate">
+    <div id="donate_board" class="donate_bar center">
+        <a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a>
+        <span class="donate_txt">
+           <br>
+		   免费分享，随意打赏 ^ ^
+        </span>
+        <br>
+      </div>  
+	<div id="donate_guide" class="donate_bar center hidden" >
+		<a id="donate_weixin" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/weixin.jpg" fuck="微信打赏"/> 
+		</a>&nbsp;
+		<a id="donate_zhifubao" href="/images/weixin.jpg" class="fancybox" rel="article0">
+			<img src="/images/zhifubao.jpg" fuck="支付宝打赏"/>
+		</a>  
+    </div>
+	<script type="text/javascript">
+		document.getElementById('btn_donate').onclick = function(){
+			$('#donate_board').addClass('hidden');
+			$('#donate_guide').removeClass('hidden');
+		}
+	</script>
+</div>
+<! -- 添加捐赠图标 -->
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <section id="isso-thread"></section>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="weishu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">weishu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">为数不多的维术</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创新"><span class="nav-number">1.</span> <span class="nav-text">创新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规则与公平"><span class="nav-number">2.</span> <span class="nav-text">规则与公平</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#风险"><span class="nav-number">3.</span> <span class="nav-text">风险</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#教育和观念"><span class="nav-number">4.</span> <span class="nav-text">教育和观念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">weishu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+    
+
+    
+      
+    
+
+   
+        <!-- UY BEGIN -->
+        <script 
+        data-isso="https://isso.weishu.me" 
+        data-isso-require-author="true"
+        data-isso-require-email="true"
+        data-isso-vote="false"
+        data-isso-avatar="true"
+        src="/js/isso.embed.min.js"></script>
+        <!-- UY END -->
+    
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script> -->
+  <!-- <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script> -->
+
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.min.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/velocity/1.2.3/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
